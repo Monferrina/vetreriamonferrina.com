@@ -1,7 +1,33 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactMap from '../components/ContactMap.astro';
+import { fetchWithFallback, queries } from '../lib/sanity';
 export const prerender = true;
+
+// Fetch site settings from Sanity for contact details
+interface OpeningHour { days: string; hours: string; }
+interface SiteSettings {
+  address?: string;
+  city?: string;
+  phone?: string;
+  email?: string;
+  openingHours?: OpeningHour[];
+}
+
+const settings = await fetchWithFallback<SiteSettings | null>(queries.siteSettings, null);
+
+// Use Sanity data if available, otherwise keep static defaults
+const address = settings?.address || 'Via Lanza 27';
+const city = settings?.city || '15033 Casale Monferrato (AL)';
+const phone = settings?.phone || '+39 0142 000000';
+const email = settings?.email || 'info@vetreriamonferrina.com';
+const openingHours: OpeningHour[] = settings?.openingHours && settings.openingHours.length > 0
+  ? settings.openingHours
+  : [
+      { days: "Lunedi' - Venerdi'", hours: '8:00 - 12:00 / 14:00 - 18:00' },
+      { days: 'Sabato', hours: 'Chiuso' },
+      { days: 'Domenica', hours: 'Chiuso' },
+    ];
 ---
 
 <BaseLayout
@@ -52,7 +78,7 @@ export const prerender = true;
             <div>
               <h3 class="font-semibold text-neutral-800">Indirizzo</h3>
               <p class="mt-1 text-neutral-700">
-                Via Lanza 27, 15033 Casale Monferrato (AL)
+                {address}, {city}
               </p>
             </div>
           </div>
@@ -78,10 +104,10 @@ export const prerender = true;
             <div>
               <h3 class="font-semibold text-neutral-800">Telefono</h3>
               <a
-                href="tel:+390142000000"
+                href={`tel:${phone.replace(/\s/g, '')}`}
                 class="mt-1 inline-block text-primary hover:underline"
               >
-                +39 0142 000000
+                {phone}
               </a>
             </div>
           </div>
@@ -107,10 +133,10 @@ export const prerender = true;
             <div>
               <h3 class="font-semibold text-neutral-800">Email</h3>
               <a
-                href="mailto:info@vetreriamonferrina.com"
+                href={`mailto:${email}`}
                 class="mt-1 inline-block text-primary hover:underline"
               >
-                info@vetreriamonferrina.com
+                {email}
               </a>
             </div>
           </div>
@@ -137,18 +163,12 @@ export const prerender = true;
               <h3 class="font-semibold text-neutral-800">Orari di apertura</h3>
               <table class="mt-2 text-sm text-neutral-700">
                 <tbody>
-                  <tr>
-                    <td class="pr-4 py-0.5 font-medium">Lunedi' - Venerdi'</td>
-                    <td class="py-0.5">8:00 - 12:00 / 14:00 - 18:00</td>
-                  </tr>
-                  <tr>
-                    <td class="pr-4 py-0.5 font-medium">Sabato</td>
-                    <td class="py-0.5">Chiuso</td>
-                  </tr>
-                  <tr>
-                    <td class="pr-4 py-0.5 font-medium">Domenica</td>
-                    <td class="py-0.5">Chiuso</td>
-                  </tr>
+                  {openingHours.map((oh) => (
+                    <tr>
+                      <td class="pr-4 py-0.5 font-medium">{oh.days}</td>
+                      <td class="py-0.5">{oh.hours}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

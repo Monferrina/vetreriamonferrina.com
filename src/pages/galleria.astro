@@ -2,7 +2,19 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GalleryGrid from '../components/GalleryGrid.astro';
 import Lightbox from '../components/Lightbox.astro';
+import { fetchWithFallback, queries } from '../lib/sanity';
 export const prerender = true;
+
+// Fetch gallery items from Sanity; null means GalleryGrid uses its own static data
+interface SanityGalleryItem {
+  title: string;
+  category: string;
+  image?: unknown;
+}
+const sanityGalleryItems = await fetchWithFallback<SanityGalleryItem[] | null>(queries.galleryItems, null);
+const galleryItems = sanityGalleryItems && Array.isArray(sanityGalleryItems) && sanityGalleryItems.length > 0
+  ? sanityGalleryItems
+  : null;
 ---
 
 <BaseLayout
@@ -58,7 +70,7 @@ export const prerender = true;
     </div>
 
     <!-- Gallery grid -->
-    <GalleryGrid />
+    <GalleryGrid items={galleryItems} />
   </section>
 
   <!-- Lightbox overlay -->

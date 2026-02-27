@@ -1,8 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ServiceCategory from '../components/ServiceCategory.astro';
-import { categories, getServicesByCategory, type CategoryKey } from '../data/services';
+import { services as staticServices, categories, type CategoryKey } from '../data/services';
+import { fetchWithFallback, queries } from '../lib/sanity';
 export const prerender = true;
+
+// Try Sanity, fall back to static data
+const sanityServices = await fetchWithFallback(queries.services, null);
+const servicesData = sanityServices && Array.isArray(sanityServices) && sanityServices.length > 0
+  ? sanityServices
+  : staticServices;
+
+// Group services by category, preserving the same interface as getServicesByCategory
+function getServicesByCat(category: CategoryKey) {
+  return servicesData.filter((s: { category: string }) => s.category === category);
+}
 ---
 
 <BaseLayout
@@ -18,7 +30,7 @@ export const prerender = true;
     {Object.entries(categories).map(([key, title]) => (
       <ServiceCategory
         title={title}
-        services={getServicesByCategory(key as CategoryKey)}
+        services={getServicesByCat(key as CategoryKey)}
       />
     ))}
   </section>
