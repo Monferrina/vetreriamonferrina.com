@@ -3,6 +3,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Chatbot from '../components/Chatbot.astro';
 
 export interface Props {
   title: string;
@@ -55,5 +56,6 @@ const canonicalURL = Astro.site
       <slot />
     </main>
     <Footer />
+    <Chatbot />
   </body>
 </html>

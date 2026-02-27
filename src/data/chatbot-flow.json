@@ -1,0 +1,182 @@
+{
+  "welcome": {
+    "message": "Ciao! Sono l'assistente virtuale della Vetreria Monferrina. Come posso aiutarti?",
+    "options": [
+      { "label": "Che lavori fate?", "next": "servizi" },
+      { "label": "Orari e dove trovarci", "next": "orari" },
+      { "label": "Voglio un preventivo", "action": "open_form" },
+      { "label": "Altra domanda", "next": "altra" }
+    ]
+  },
+  "servizi": {
+    "message": "Lavoriamo il vetro da oltre 40 anni! Ecco cosa facciamo:",
+    "options": [
+      { "label": "Installazioni (box doccia, parapetti, pensiline...)", "next": "servizi_installazioni" },
+      { "label": "Tipi di vetro (blindati, stratificati, camera...)", "next": "servizi_vetri" },
+      { "label": "Lavorazioni (sagomature, fori, molature)", "next": "servizi_lavorazioni" },
+      { "label": "\u2190 Torna indietro", "next": "welcome" }
+    ]
+  },
+  "servizi_installazioni": {
+    "message": "Ecco i nostri servizi di installazione:",
+    "options": [
+      { "label": "Box doccia", "next": "dettaglio_doccia" },
+      { "label": "Parapetti", "next": "dettaglio_parapetti" },
+      { "label": "Pensiline", "next": "dettaglio_pensiline" },
+      { "label": "Porte interne", "next": "dettaglio_porte" },
+      { "label": "Posa di vetrine", "next": "dettaglio_vetrine" },
+      { "label": "Sostituzione vetri finestre", "next": "dettaglio_sostituzione_vetri" },
+      { "label": "\u2190 Torna indietro", "next": "servizi" }
+    ]
+  },
+  "servizi_vetri": {
+    "message": "Trattiamo diversi tipi di vetro per ogni esigenza:",
+    "options": [
+      { "label": "Vetri blindati", "next": "dettaglio_blindati" },
+      { "label": "Vetri Madras", "next": "dettaglio_madras" },
+      { "label": "Vetri stratificati", "next": "dettaglio_stratificati" },
+      { "label": "Vetri monolitici", "next": "dettaglio_monolitici" },
+      { "label": "Vetri camera", "next": "dettaglio_vetrocamera" },
+      { "label": "Vetri camera tripli", "next": "dettaglio_vetrocamera_tripli" },
+      { "label": "Specchi", "next": "dettaglio_specchi" },
+      { "label": "\u2190 Torna indietro", "next": "servizi" }
+    ]
+  },
+  "servizi_lavorazioni": {
+    "message": "Offriamo lavorazioni di precisione sul vetro:",
+    "options": [
+      { "label": "Sagomature", "next": "dettaglio_sagomature" },
+      { "label": "Fori", "next": "dettaglio_fori" },
+      { "label": "Molature", "next": "dettaglio_molature" },
+      { "label": "\u2190 Torna indietro", "next": "servizi" }
+    ]
+  },
+  "dettaglio_doccia": {
+    "message": "Box doccia su misura in vetro temperato. Realizziamo cabine doccia con design moderno, sicurezza garantita e finiture personalizzate per ogni tipo di bagno.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "box-doccia" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
+    ]
+  },
+  "dettaglio_parapetti": {
+    "message": "Parapetti in vetro per balconi, scale e terrazze. Soluzioni trasparenti che garantiscono sicurezza senza rinunciare alla vista e alla luminosit\u00e0.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "parapetti" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
+    ]
+  },
+  "dettaglio_pensiline": {
+    "message": "Pensiline in vetro per ingressi e terrazze. Protezione dagli agenti atmosferici con un tocco di eleganza e modernit\u00e0.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "pensiline" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
+    ]
+  },
+  "dettaglio_porte": {
+    "message": "Porte interne in vetro, scorrevoli e a battente. Ideali per dividere gli ambienti lasciando passare la luce, con design elegante e moderno.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "porte-interne" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
+    ]
+  },
+  "dettaglio_vetrine": {
+    "message": "Installazione e posa di vetrine per negozi e attivit\u00e0 commerciali. Vetrine resistenti e trasparenti per valorizzare la tua esposizione.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "vetrine" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
+    ]
+  },
+  "dettaglio_sostituzione_vetri": {
+    "message": "Sostituzione vetri per finestre esistenti. Interveniamo rapidamente per sostituire vetri rotti o migliorare l'isolamento delle tue finestre.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "sostituzione-vetri" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
+    ]
+  },
+  "dettaglio_blindati": {
+    "message": "Vetri blindati antieffrazione per massima sicurezza. Protezione certificata per abitazioni, uffici e attivit\u00e0 commerciali.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "blindati" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
+    ]
+  },
+  "dettaglio_madras": {
+    "message": "Vetro decorativo Madras\u00ae per privacy e design d'interni. Superfici satinate e decorate disponibili in molteplici fantasie e texture.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "madras" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
+    ]
+  },
+  "dettaglio_stratificati": {
+    "message": "Vetri stratificati trasparenti, satinati e colorati. Composti da pi\u00f9 lastre unite da pellicola PVB per sicurezza e versatilit\u00e0.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "stratificati" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
+    ]
+  },
+  "dettaglio_monolitici": {
+    "message": "Vetri monolitici trasparenti e satinati per ogni esigenza. Lastre singole di alta qualit\u00e0 disponibili in diversi spessori.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "monolitici" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
+    ]
+  },
+  "dettaglio_vetrocamera": {
+    "message": "Vetrocamera doppi per isolamento termico e acustico. Due lastre di vetro separate da un'intercapedine di gas inerte per massima efficienza energetica.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "vetrocamera" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
+    ]
+  },
+  "dettaglio_vetrocamera_tripli": {
+    "message": "Triplo vetro per massimo isolamento termico e acustico. Tre lastre con doppie intercapedini per prestazioni superiori in climi estremi.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "vetrocamera-tripli" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
+    ]
+  },
+  "dettaglio_specchi": {
+    "message": "Specchi su misura per bagni, armadi e complementi d'arredo. Taglio personalizzato, molatura bordi e installazione professionale.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "specchi" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
+    ]
+  },
+  "dettaglio_sagomature": {
+    "message": "Taglio e sagomatura del vetro su misura per qualsiasi forma. Realizziamo sagome personalizzate con precisione millimetrica.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "sagomature" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_lavorazioni" }
+    ]
+  },
+  "dettaglio_fori": {
+    "message": "Foratura del vetro per maniglie, cerniere e fissaggi. Fori precisi eseguiti con macchinari a controllo numerico.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "fori" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_lavorazioni" }
+    ]
+  },
+  "dettaglio_molature": {
+    "message": "Molatura bordi del vetro a filo lucido, filo opaco e bisello. Finitura professionale per un risultato elegante e sicuro al tatto.",
+    "options": [
+      { "label": "Richiedi preventivo", "action": "open_form", "param": "molature" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_lavorazioni" }
+    ]
+  },
+  "orari": {
+    "message": "Siamo aperti dal luned\u00ec al venerd\u00ec, 8:00\u201312:00 e 14:00\u201318:00. Ci trovi in Strada Valenza 4, Casale Monferrato (AL). Vieni a trovarci!",
+    "options": [
+      { "label": "Apri contatti", "action": "open_contacts" },
+      { "label": "Chiamaci ora", "action": "call_phone" },
+      { "label": "\u2190 Torna indietro", "next": "welcome" }
+    ]
+  },
+  "altra": {
+    "message": "Per qualsiasi altra domanda, chiamaci al 0142 452540 o scrivi a info@vetreriamonferrina.com. Saremo felici di aiutarti!",
+    "options": [
+      { "label": "Chiamaci ora", "action": "call_phone" },
+      { "label": "Apri contatti", "action": "open_contacts" },
+      { "label": "\u2190 Torna indietro", "next": "welcome" }
+    ]
+  }
+}
