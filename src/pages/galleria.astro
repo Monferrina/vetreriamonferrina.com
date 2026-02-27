@@ -1,0 +1,186 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GalleryGrid from '../components/GalleryGrid.astro';
+import Lightbox from '../components/Lightbox.astro';
+export const prerender = true;
+---
+
+<BaseLayout
+  title="Galleria"
+  description="Galleria lavori della Vetreria Monferrina: box doccia, parapetti, pensiline, vetri e lavorazioni su misura."
+>
+  <!-- Hero section -->
+  <section class="bg-primary py-16 sm:py-24">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Galleria</h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+        Una selezione dei nostri lavori: installazioni, vetri e lavorazioni
+        realizzati nel nostro laboratorio a Casale Monferrato.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
+    <!-- Category filters -->
+    <div class="mb-10 flex flex-wrap gap-2" role="group" aria-label="Filtra per categoria">
+      <button
+        type="button"
+        class="rounded-full px-5 py-2 text-sm font-medium transition-colors bg-primary text-white"
+        data-filter="tutti"
+        aria-pressed="true"
+      >
+        Tutti
+      </button>
+      <button
+        type="button"
+        class="rounded-full px-5 py-2 text-sm font-medium transition-colors bg-neutral-200 text-neutral-700 hover:bg-neutral-300"
+        data-filter="installazioni"
+        aria-pressed="false"
+      >
+        Installazioni
+      </button>
+      <button
+        type="button"
+        class="rounded-full px-5 py-2 text-sm font-medium transition-colors bg-neutral-200 text-neutral-700 hover:bg-neutral-300"
+        data-filter="vetri"
+        aria-pressed="false"
+      >
+        Vetri
+      </button>
+      <button
+        type="button"
+        class="rounded-full px-5 py-2 text-sm font-medium transition-colors bg-neutral-200 text-neutral-700 hover:bg-neutral-300"
+        data-filter="lavorazioni"
+        aria-pressed="false"
+      >
+        Lavorazioni
+      </button>
+    </div>
+
+    <!-- Gallery grid -->
+    <GalleryGrid />
+  </section>
+
+  <!-- Lightbox overlay -->
+  <Lightbox />
+</BaseLayout>
+
+<script>
+  function initGallery() {
+    // --- Filter logic ---
+    const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const galleryItems = document.querySelectorAll<HTMLElement>('[data-gallery-item]');
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
+
+        // Update button styles
+        filterButtons.forEach((b) => {
+          const isActive = b === btn;
+          b.setAttribute('aria-pressed', String(isActive));
+          if (isActive) {
+            b.className =
+              'rounded-full px-5 py-2 text-sm font-medium transition-colors bg-primary text-white';
+          } else {
+            b.className =
+              'rounded-full px-5 py-2 text-sm font-medium transition-colors bg-neutral-200 text-neutral-700 hover:bg-neutral-300';
+          }
+        });
+
+        // Show/hide items
+        galleryItems.forEach((item) => {
+          if (filter === 'tutti' || item.dataset.category === filter) {
+            item.style.display = '';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // --- Lightbox logic ---
+    const lightbox = document.querySelector<HTMLElement>('[data-lightbox]');
+    const lightboxTitle = document.querySelector<HTMLElement>('[data-lightbox-title]');
+    const closeBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-close]');
+    const prevBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-prev]');
+    const nextBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-next]');
+
+    if (!lightbox || !lightboxTitle || !closeBtn || !prevBtn || !nextBtn) return;
+
+    let currentIndex = 0;
+    let visibleItems: HTMLElement[] = [];
+
+    function getVisibleItems(): HTMLElement[] {
+      return Array.from(galleryItems).filter(
+        (item) => item.style.display !== 'none'
+      );
+    }
+
+    function openLightbox(index: number) {
+      visibleItems = getVisibleItems();
+      currentIndex = index;
+      updateLightboxContent();
+      lightbox!.classList.remove('hidden');
+      lightbox!.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      closeBtn!.focus();
+    }
+
+    function closeLightbox() {
+      lightbox!.classList.add('hidden');
+      lightbox!.classList.remove('flex');
+      document.body.style.overflow = '';
+      // Return focus to the gallery item that was clicked
+      if (visibleItems[currentIndex]) {
+        (visibleItems[currentIndex] as HTMLElement).focus();
+      }
+    }
+
+    function updateLightboxContent() {
+      const item = visibleItems[currentIndex];
+      if (!item) return;
+      lightboxTitle!.textContent = item.dataset.galleryTitle || '';
+    }
+
+    function showPrev() {
+      currentIndex = (currentIndex - 1 + visibleItems.length) % visibleItems.length;
+      updateLightboxContent();
+    }
+
+    function showNext() {
+      currentIndex = (currentIndex + 1) % visibleItems.length;
+      updateLightboxContent();
+    }
+
+    // Click gallery items to open lightbox
+    galleryItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        const visible = getVisibleItems();
+        const index = visible.indexOf(item);
+        if (index !== -1) openLightbox(index);
+      });
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    prevBtn.addEventListener('click', showPrev);
+    nextBtn.addEventListener('click', showNext);
+
+    // Close on backdrop click
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') showPrev();
+      if (e.key === 'ArrowRight') showNext();
+    });
+  }
+
+  // Run on initial load and on Astro page transitions
+  initGallery();
+  document.addEventListener('astro:after-swap', initGallery);
+</script>

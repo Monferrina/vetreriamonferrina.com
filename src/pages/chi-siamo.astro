@@ -1,0 +1,292 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+export const prerender = true;
+---
+
+<BaseLayout
+  title="Chi siamo"
+  description="Vetreria Monferrina di Fioravanti Giuseppe: oltre 40 anni di esperienza nella lavorazione del vetro a Casale Monferrato."
+>
+  <!-- Hero section -->
+  <section class="bg-primary py-16 sm:py-24">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Chi siamo</h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+        Vetreria Monferrina di Fioravanti Giuseppe: artigiani del vetro
+        a Casale Monferrato dal cuore del Monferrato.
+      </p>
+    </div>
+  </section>
+
+  <!-- Story section -->
+  <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
+    <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
+      <div>
+        <h2 class="font-heading text-3xl text-primary">La nostra storia</h2>
+        <p class="mt-4 text-lg leading-relaxed text-neutral-700">
+          La Vetreria Monferrina nasce dalla passione di Giuseppe Fioravanti per
+          la lavorazione del vetro. Da oltre 40 anni, il nostro laboratorio
+          a Casale Monferrato e' un punto di riferimento per privati, aziende
+          e professionisti dell'edilizia in tutto il Monferrato e nelle province
+          limitrofe.
+        </p>
+        <p class="mt-4 text-lg leading-relaxed text-neutral-700">
+          Ogni progetto viene seguito con cura artigianale, dalla consulenza
+          iniziale alla posa in opera, garantendo qualita' e precisione in
+          ogni dettaglio.
+        </p>
+      </div>
+
+      <!-- Photo placeholder -->
+      <div
+        class="flex aspect-video items-center justify-center rounded-2xl bg-neutral-200 text-neutral-500"
+        aria-label="Foto del laboratorio in arrivo"
+      >
+        <div class="text-center">
+          <svg
+            class="mx-auto h-16 w-16 text-neutral-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"
+            />
+          </svg>
+          <p class="mt-2 text-sm font-medium">Foto in arrivo</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline section -->
+  <section class="bg-neutral-100 py-16">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h2 class="font-heading text-3xl text-primary text-center mb-12">
+        Il nostro percorso
+      </h2>
+
+      <div class="relative">
+        <!-- Vertical line -->
+        <div
+          class="absolute left-4 top-0 hidden h-full w-0.5 bg-primary/20 md:left-1/2 md:block"
+          aria-hidden="true"
+        ></div>
+
+        <div class="space-y-12">
+          <!-- Milestone 1 -->
+          <div class="relative md:flex md:items-center">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="rounded-xl bg-white p-6 shadow-sm">
+                <span class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50">
+                  Anni '80
+                </span>
+                <h3 class="mt-3 font-heading text-xl text-primary">Le origini</h3>
+                <p class="mt-2 text-neutral-700">
+                  Giuseppe Fioravanti avvia la sua attivita' artigianale a Casale
+                  Monferrato, specializzandosi nella lavorazione e posa del vetro.
+                </p>
+              </div>
+            </div>
+            <div
+              class="absolute left-2.5 top-6 hidden h-3 w-3 rounded-full border-2 border-primary bg-white md:left-1/2 md:-translate-x-1/2 md:block"
+              aria-hidden="true"
+            ></div>
+            <div class="hidden md:block md:w-1/2"></div>
+          </div>
+
+          <!-- Milestone 2 -->
+          <div class="relative md:flex md:items-center">
+            <div class="hidden md:block md:w-1/2"></div>
+            <div
+              class="absolute left-2.5 top-6 hidden h-3 w-3 rounded-full border-2 border-primary bg-white md:left-1/2 md:-translate-x-1/2 md:block"
+              aria-hidden="true"
+            ></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="rounded-xl bg-white p-6 shadow-sm">
+                <span class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50">
+                  Anni '90 - 2000
+                </span>
+                <h3 class="mt-3 font-heading text-xl text-primary">Crescita e specializzazione</h3>
+                <p class="mt-2 text-neutral-700">
+                  L'azienda amplia la gamma di servizi: box doccia su misura,
+                  parapetti in vetro, pensiline e vetri camera diventano il
+                  cuore dell'offerta.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Milestone 3 -->
+          <div class="relative md:flex md:items-center">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="rounded-xl bg-white p-6 shadow-sm">
+                <span class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50">
+                  Oggi
+                </span>
+                <h3 class="mt-3 font-heading text-xl text-primary">Tradizione e innovazione</h3>
+                <p class="mt-2 text-neutral-700">
+                  Oltre 40 anni di esperienza al servizio del territorio.
+                  Continuiamo a coniugare la cura artigianale con le tecnologie
+                  piu' avanzate nella lavorazione del vetro.
+                </p>
+              </div>
+            </div>
+            <div
+              class="absolute left-2.5 top-6 hidden h-3 w-3 rounded-full border-2 border-primary bg-white md:left-1/2 md:-translate-x-1/2 md:block"
+              aria-hidden="true"
+            ></div>
+            <div class="hidden md:block md:w-1/2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values section -->
+  <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
+    <h2 class="font-heading text-3xl text-primary text-center mb-12">I nostri valori</h2>
+
+    <div class="grid gap-8 sm:grid-cols-3">
+      <!-- Artigianalita' -->
+      <div class="rounded-2xl border border-neutral-200 p-8 text-center">
+        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+          <svg
+            class="h-8 w-8 text-primary"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z"
+            />
+          </svg>
+        </div>
+        <h3 class="mt-4 font-heading text-xl text-primary">Artigianalita'</h3>
+        <p class="mt-2 text-neutral-700">
+          Ogni lavorazione e' eseguita a mano con la precisione e la cura
+          che solo l'esperienza artigianale puo' garantire.
+        </p>
+      </div>
+
+      <!-- Qualita' -->
+      <div class="rounded-2xl border border-neutral-200 p-8 text-center">
+        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+          <svg
+            class="h-8 w-8 text-primary"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+            />
+          </svg>
+        </div>
+        <h3 class="mt-4 font-heading text-xl text-primary">Qualita'</h3>
+        <p class="mt-2 text-neutral-700">
+          Selezioniamo solo materiali di prima scelta e lavoriamo con
+          attrezzature professionali per risultati eccellenti.
+        </p>
+      </div>
+
+      <!-- Territorio -->
+      <div class="rounded-2xl border border-neutral-200 p-8 text-center">
+        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+          <svg
+            class="h-8 w-8 text-primary"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+            />
+          </svg>
+        </div>
+        <h3 class="mt-4 font-heading text-xl text-primary">Territorio</h3>
+        <p class="mt-2 text-neutral-700">
+          Radicati a Casale Monferrato, serviamo con orgoglio il Monferrato
+          e tutto il Piemonte. Il legame con il territorio e' la nostra forza.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team photo placeholder -->
+  <section class="bg-neutral-100 py-16">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h2 class="font-heading text-3xl text-primary text-center mb-8">Il nostro laboratorio</h2>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {[1, 2, 3].map((i) => (
+          <div
+            class="flex aspect-[4/3] items-center justify-center rounded-xl bg-neutral-200 text-neutral-500"
+            aria-label={`Foto laboratorio ${i} in arrivo`}
+          >
+            <div class="text-center">
+              <svg
+                class="mx-auto h-12 w-12 text-neutral-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"
+                />
+              </svg>
+              <p class="mt-2 text-sm font-medium">Foto in arrivo</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mx-auto max-w-7xl px-4 py-16 text-center lg:px-8">
+    <h2 class="font-heading text-3xl text-primary">Vuoi saperne di piu'?</h2>
+    <p class="mx-auto mt-4 max-w-xl text-lg text-neutral-700">
+      Contattaci per un preventivo gratuito o passa a trovarci nel nostro laboratorio
+      a Casale Monferrato.
+    </p>
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+      <a
+        href="/contatti"
+        class="inline-block rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-neutral-50 transition-colors hover:bg-primary-dark"
+      >
+        Contattaci
+      </a>
+      <a
+        href="/preventivo"
+        class="inline-block rounded-full border-2 border-primary px-8 py-3 text-base font-semibold text-primary transition-colors hover:bg-primary hover:text-neutral-50"
+      >
+        Richiedi preventivo
+      </a>
+    </div>
+  </section>
+</BaseLayout>

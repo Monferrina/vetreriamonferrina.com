@@ -1,0 +1,27 @@
+---
+// src/components/ContactMap.astro
+// OpenStreetMap embed for the contact page — no third-party cookies.
+---
+
+<div class="overflow-hidden rounded-xl border border-neutral-200">
+  <iframe
+    src="https://www.openstreetmap.org/export/embed.html?bbox=8.44,45.12,8.46,45.15&layer=mapnik"
+    title="Mappa posizione Vetreria Monferrina"
+    width="100%"
+    height="400"
+    loading="lazy"
+    class="block w-full"
+    style="border: 0;"
+    referrerpolicy="no-referrer"
+  ></iframe>
+  <p class="bg-neutral-100 px-4 py-2 text-sm text-neutral-700">
+    <a
+      href="https://www.openstreetmap.org/?mlat=45.134&mlon=8.449#map=15/45.134/8.449"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-primary hover:underline"
+    >
+      Visualizza mappa ingrandita
+    </a>
+  </p>
+</div>
