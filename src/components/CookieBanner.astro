@@ -1,0 +1,99 @@
+---
+// src/components/CookieBanner.astro
+// Informative cookie banner (NOT a consent banner).
+// Only technical cookies are used — GDPR requires only notice, not consent.
+---
+
+<div
+  id="cookie-banner"
+  data-cookie-banner
+  role="alert"
+  aria-live="polite"
+  class="cookie-banner fixed bottom-0 left-0 right-0 z-40 hidden border-t border-primary-light/30 bg-primary-dark text-white"
+>
+  <div class="mx-auto flex max-w-4xl flex-col items-center gap-4 px-4 py-4 sm:flex-row sm:justify-between">
+    <p class="text-sm leading-relaxed text-center sm:text-left">
+      Questo sito utilizza solo cookie tecnici necessari al funzionamento.
+      Nessun cookie di profilazione.
+      <a
+        href="/cookie"
+        class="ml-1 inline-block whitespace-nowrap font-semibold underline underline-offset-2 transition-colors hover:text-secondary-light"
+      >
+        Leggi la Cookie Policy
+      </a>
+    </p>
+    <button
+      id="cookie-banner-dismiss"
+      type="button"
+      class="shrink-0 rounded-full bg-secondary px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-dark"
+    >
+      Ho capito
+    </button>
+  </div>
+</div>
+
+<style>
+  /* Slide-up animation */
+  .cookie-banner.cookie-banner-visible {
+    display: block;
+    animation: cookie-slide-up 0.3s ease-out;
+  }
+
+  @keyframes cookie-slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Respect prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .cookie-banner.cookie-banner-visible {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  function initCookieBanner(): void {
+    const STORAGE_KEY = 'cookie_notice_seen';
+    const banner = document.getElementById('cookie-banner');
+    const dismissBtn = document.getElementById('cookie-banner-dismiss');
+
+    if (!banner || !dismissBtn) return;
+
+    // Check if user has already seen the banner
+    let alreadySeen = false;
+    try {
+      alreadySeen = localStorage.getItem(STORAGE_KEY) === 'true';
+    } catch {
+      // localStorage might be unavailable (private mode, quota)
+    }
+
+    if (alreadySeen) {
+      // Keep banner hidden
+      return;
+    }
+
+    // Show the banner
+    banner.classList.remove('hidden');
+    banner.classList.add('cookie-banner-visible');
+
+    // Dismiss handler
+    dismissBtn.addEventListener('click', () => {
+      try {
+        localStorage.setItem(STORAGE_KEY, 'true');
+      } catch {
+        // localStorage might be unavailable
+      }
+      banner.classList.remove('cookie-banner-visible');
+      banner.classList.add('hidden');
+    });
+  }
+
+  initCookieBanner();
+</script>

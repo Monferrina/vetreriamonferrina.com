@@ -3,6 +3,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CookieBanner from '../components/CookieBanner.astro';
 import Chatbot from '../components/Chatbot.astro';
 
 export interface Props {
@@ -56,6 +57,7 @@ const canonicalURL = Astro.site
       <slot />
     </main>
     <Footer />
+    <CookieBanner />
     <Chatbot />
   </body>
 </html>
