@@ -1,0 +1,385 @@
+---
+// src/components/QuoteForm.astro
+// Interactive quote request form with client-side validation,
+// honeypot anti-spam, and fetch-based submission.
+---
+
+<form id="quote-form" novalidate class="space-y-6">
+  <!-- Honeypot: hidden from humans, traps bots -->
+  <div
+    style="position:absolute;left:-9999px;opacity:0"
+    aria-hidden="true"
+  >
+    <label for="website">Non compilare questo campo</label>
+    <input
+      type="text"
+      id="website"
+      name="website"
+      tabindex="-1"
+      autocomplete="off"
+    />
+  </div>
+
+  <!-- Nome e cognome -->
+  <div>
+    <label for="name" class="block text-sm font-medium text-neutral-700">
+      Nome e cognome <span class="text-error">*</span>
+    </label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      required
+      minlength="2"
+      maxlength="100"
+      autocomplete="name"
+      class="mt-1 block w-full rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+      placeholder="es. Mario Rossi"
+    />
+    <p data-error="name" class="mt-1 hidden text-sm text-error"></p>
+  </div>
+
+  <!-- Telefono -->
+  <div>
+    <label for="phone" class="block text-sm font-medium text-neutral-700">
+      Telefono <span class="text-error">*</span>
+    </label>
+    <input
+      type="tel"
+      id="phone"
+      name="phone"
+      required
+      autocomplete="tel"
+      class="mt-1 block w-full rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+      placeholder="es. +39 0142 123456"
+    />
+    <p data-error="phone" class="mt-1 hidden text-sm text-error"></p>
+  </div>
+
+  <!-- Email -->
+  <div>
+    <label for="email" class="block text-sm font-medium text-neutral-700">
+      Email <span class="text-error">*</span>
+    </label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      required
+      autocomplete="email"
+      class="mt-1 block w-full rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+      placeholder="es. mario@esempio.it"
+    />
+    <p data-error="email" class="mt-1 hidden text-sm text-error"></p>
+  </div>
+
+  <!-- Tipo di lavoro -->
+  <div>
+    <label for="serviceType" class="block text-sm font-medium text-neutral-700">
+      Tipo di lavoro <span class="text-error">*</span>
+    </label>
+    <select
+      id="serviceType"
+      name="serviceType"
+      required
+      class="mt-1 block w-full rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+    >
+      <option value="">— Seleziona —</option>
+      <option value="box-doccia">Box doccia</option>
+      <option value="parapetti">Parapetti</option>
+      <option value="pensiline">Pensiline</option>
+      <option value="porte-interne">Porte interne</option>
+      <option value="vetrine">Vetrine</option>
+      <option value="sostituzione-vetri">Sostituzione vetri</option>
+      <option value="specchi">Specchi</option>
+      <option value="lavorazione-vetro">Lavorazione vetro</option>
+      <option value="altro">Altro</option>
+    </select>
+    <p data-error="serviceType" class="mt-1 hidden text-sm text-error"></p>
+  </div>
+
+  <!-- Descrizione -->
+  <div>
+    <label for="description" class="block text-sm font-medium text-neutral-700">
+      Descrizione / note
+    </label>
+    <textarea
+      id="description"
+      name="description"
+      rows="4"
+      maxlength="2000"
+      class="mt-1 block w-full rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+      placeholder="Descrivi il lavoro di cui hai bisogno..."
+    ></textarea>
+    <p data-error="description" class="mt-1 hidden text-sm text-error"></p>
+  </div>
+
+  <!-- Misure -->
+  <div>
+    <label for="measurements" class="block text-sm font-medium text-neutral-700">
+      Misure approssimative
+    </label>
+    <input
+      type="text"
+      id="measurements"
+      name="measurements"
+      maxlength="500"
+      class="mt-1 block w-full rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+      placeholder="es. 120x80 cm"
+    />
+    <p data-error="measurements" class="mt-1 hidden text-sm text-error"></p>
+  </div>
+
+  <!-- Privacy -->
+  <div>
+    <label class="flex items-start gap-3 cursor-pointer">
+      <input
+        type="checkbox"
+        id="privacy"
+        name="privacy"
+        class="mt-0.5 h-5 w-5 rounded border-neutral-200 text-primary focus:ring-primary/20"
+      />
+      <span class="text-sm text-neutral-700">
+        Acconsento al trattamento dei dati personali come descritto nella
+        <a href="/privacy" class="text-primary underline hover:text-primary-dark">Privacy Policy</a>
+        <span class="text-error">*</span>
+      </span>
+    </label>
+    <p data-error="privacy" class="mt-1 hidden text-sm text-error"></p>
+  </div>
+
+  <!-- Submit -->
+  <div>
+    <button
+      type="submit"
+      id="submit-btn"
+      class="inline-flex items-center justify-center gap-2 rounded-full bg-secondary px-8 py-3.5 text-base font-semibold text-neutral-50 shadow-lg transition-colors hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-secondary-light focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+    >
+      <span id="submit-text">Invia richiesta</span>
+      <svg
+        id="submit-spinner"
+        class="hidden h-5 w-5 animate-spin"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+        ></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Global status messages -->
+  <div
+    id="form-success"
+    class="hidden rounded-lg border border-success/30 bg-success/10 p-4 text-success"
+    role="alert"
+  >
+    <p class="font-medium">Richiesta inviata con successo!</p>
+    <p class="mt-1 text-sm">Ti ricontatteremo al piu' presto.</p>
+  </div>
+
+  <div
+    id="form-error"
+    class="hidden rounded-lg border border-error/30 bg-error/10 p-4 text-error"
+    role="alert"
+  >
+    <p class="font-medium" id="form-error-message">Errore durante l'invio.</p>
+  </div>
+</form>
+
+<script>
+  const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const PHONE_REGEX = /^[\d\s+\-().]{7,20}$/;
+  const VALID_SERVICE_TYPES = [
+    'box-doccia', 'parapetti', 'pensiline', 'porte-interne',
+    'vetrine', 'sostituzione-vetri', 'specchi', 'lavorazione-vetro', 'altro',
+  ];
+
+  interface FieldError {
+    field: string;
+    message: string;
+  }
+
+  function validateClient(): FieldError[] {
+    const errors: FieldError[] = [];
+    const form = document.getElementById('quote-form') as HTMLFormElement;
+
+    const name = (form.querySelector('[name="name"]') as HTMLInputElement).value;
+    const phone = (form.querySelector('[name="phone"]') as HTMLInputElement).value;
+    const email = (form.querySelector('[name="email"]') as HTMLInputElement).value;
+    const serviceType = (form.querySelector('[name="serviceType"]') as HTMLSelectElement).value;
+    const description = (form.querySelector('[name="description"]') as HTMLTextAreaElement).value;
+    const measurements = (form.querySelector('[name="measurements"]') as HTMLInputElement).value;
+    const privacy = (form.querySelector('[name="privacy"]') as HTMLInputElement).checked;
+
+    if (!name || name.trim().length < 2 || name.length > 100) {
+      errors.push({ field: 'name', message: 'Nome richiesto (2-100 caratteri)' });
+    }
+    if (!phone || !PHONE_REGEX.test(phone)) {
+      errors.push({ field: 'phone', message: 'Numero di telefono non valido' });
+    }
+    if (!email || !EMAIL_REGEX.test(email)) {
+      errors.push({ field: 'email', message: 'Email non valida' });
+    }
+    if (!serviceType || !VALID_SERVICE_TYPES.includes(serviceType)) {
+      errors.push({ field: 'serviceType', message: 'Seleziona un tipo di lavoro' });
+    }
+    if (description && description.length > 2000) {
+      errors.push({ field: 'description', message: 'Descrizione troppo lunga (max 2000 caratteri)' });
+    }
+    if (measurements && measurements.length > 500) {
+      errors.push({ field: 'measurements', message: 'Misure troppo lunghe (max 500 caratteri)' });
+    }
+    if (!privacy) {
+      errors.push({ field: 'privacy', message: 'Devi accettare la privacy policy' });
+    }
+
+    return errors;
+  }
+
+  const KNOWN_FIELDS = ['name', 'phone', 'email', 'serviceType', 'description', 'measurements', 'privacy'];
+
+  function showErrors(errors: FieldError[]) {
+    // Clear all previous errors
+    document.querySelectorAll('[data-error]').forEach((el) => {
+      el.classList.add('hidden');
+      el.textContent = '';
+    });
+
+    for (const err of errors) {
+      // Only allow known field names to prevent selector injection
+      if (!KNOWN_FIELDS.includes(err.field)) continue;
+      const el = document.querySelector(`[data-error="${err.field}"]`);
+      if (el) {
+        el.textContent = err.message;
+        el.classList.remove('hidden');
+      }
+    }
+  }
+
+  function setLoading(loading: boolean) {
+    const btn = document.getElementById('submit-btn') as HTMLButtonElement;
+    const text = document.getElementById('submit-text') as HTMLSpanElement;
+    const spinner = document.getElementById('submit-spinner') as SVGElement;
+
+    btn.disabled = loading;
+    if (loading) {
+      text.textContent = 'Invio in corso...';
+      spinner.classList.remove('hidden');
+    } else {
+      text.textContent = 'Invia richiesta';
+      spinner.classList.add('hidden');
+    }
+  }
+
+  function showSuccess() {
+    const form = document.getElementById('quote-form') as HTMLFormElement;
+    const success = document.getElementById('form-success') as HTMLDivElement;
+    const error = document.getElementById('form-error') as HTMLDivElement;
+
+    // Hide form fields, show success
+    const fieldsets = form.querySelectorAll(':scope > div:not(#form-success):not(#form-error)');
+    fieldsets.forEach((el) => (el as HTMLElement).classList.add('hidden'));
+    error.classList.add('hidden');
+    success.classList.remove('hidden');
+    success.focus();
+  }
+
+  function showGlobalError(message: string) {
+    const error = document.getElementById('form-error') as HTMLDivElement;
+    const errorMsg = document.getElementById('form-error-message') as HTMLParagraphElement;
+    errorMsg.textContent = message;
+    error.classList.remove('hidden');
+  }
+
+  // Pre-select service from URL query param
+  function preSelectService() {
+    const params = new URLSearchParams(window.location.search);
+    const servizio = params.get('servizio');
+    if (servizio && VALID_SERVICE_TYPES.includes(servizio)) {
+      const select = document.querySelector('[name="serviceType"]') as HTMLSelectElement;
+      if (select) {
+        select.value = servizio;
+      }
+    }
+  }
+
+  // Initialize
+  preSelectService();
+
+  const form = document.getElementById('quote-form') as HTMLFormElement;
+  form.addEventListener('submit', async (e: Event) => {
+    e.preventDefault();
+
+    // Hide previous global error
+    const errorDiv = document.getElementById('form-error') as HTMLDivElement;
+    errorDiv.classList.add('hidden');
+
+    // Client-side validation
+    const errors = validateClient();
+    showErrors(errors);
+    if (errors.length > 0) {
+      // Focus first error field
+      const firstErrorField = document.querySelector(
+        `[name="${errors[0].field}"]`
+      ) as HTMLElement;
+      firstErrorField?.focus();
+      return;
+    }
+
+    // Gather form data
+    const formData = {
+      name: (form.querySelector('[name="name"]') as HTMLInputElement).value,
+      phone: (form.querySelector('[name="phone"]') as HTMLInputElement).value,
+      email: (form.querySelector('[name="email"]') as HTMLInputElement).value,
+      serviceType: (form.querySelector('[name="serviceType"]') as HTMLSelectElement).value,
+      description: (form.querySelector('[name="description"]') as HTMLTextAreaElement).value,
+      measurements: (form.querySelector('[name="measurements"]') as HTMLInputElement).value,
+      privacy: (form.querySelector('[name="privacy"]') as HTMLInputElement).checked,
+      honeypot: (form.querySelector('[name="website"]') as HTMLInputElement).value,
+    };
+
+    setLoading(true);
+
+    try {
+      const res = await fetch('/api/send-quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        showSuccess();
+        return;
+      }
+
+      // Server validation errors
+      if (json.errors && Array.isArray(json.errors)) {
+        showErrors(json.errors);
+        return;
+      }
+
+      // Generic server error
+      showGlobalError(json.error || 'Errore durante l\'invio. Riprova.');
+    } catch {
+      showGlobalError('Errore di rete. Controlla la connessione e riprova.');
+    } finally {
+      setLoading(false);
+    }
+  });
+</script>
