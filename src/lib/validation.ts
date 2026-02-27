@@ -1,3 +1,5 @@
+import { services } from '../data/services';
+
 export interface QuoteFormData {
   name: string;
   phone: string;
@@ -14,15 +16,8 @@ export interface ValidationError {
   message: string;
 }
 
-const VALID_SERVICE_TYPES = [
-  'box-doccia',
-  'parapetti',
-  'pensiline',
-  'porte-interne',
-  'vetrine',
-  'sostituzione-vetri',
-  'specchi',
-  'lavorazione-vetro',
+export const VALID_SERVICE_TYPES = [
+  ...services.map((s) => s.slug),
   'altro',
 ];
 

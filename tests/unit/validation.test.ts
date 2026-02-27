@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { validateQuoteForm } from '../../src/lib/validation';
+import { validateQuoteForm, VALID_SERVICE_TYPES } from '../../src/lib/validation';
+import { services } from '../../src/data/services';
 
 describe('validateQuoteForm', () => {
   const validData = {
@@ -81,21 +82,17 @@ describe('validateQuoteForm', () => {
   });
 
   it('tutti i tipi servizio validi passano', () => {
-    const types = [
-      'box-doccia',
-      'parapetti',
-      'pensiline',
-      'porte-interne',
-      'vetrine',
-      'sostituzione-vetri',
-      'specchi',
-      'lavorazione-vetro',
-      'altro',
-    ];
-    for (const st of types) {
+    for (const st of VALID_SERVICE_TYPES) {
       const errors = validateQuoteForm({ ...validData, serviceType: st });
       expect(errors.some((e) => e.field === 'serviceType')).toBe(false);
     }
+  });
+
+  it('VALID_SERVICE_TYPES include tutti gli slug dei servizi + altro', () => {
+    for (const s of services) {
+      expect(VALID_SERVICE_TYPES).toContain(s.slug);
+    }
+    expect(VALID_SERVICE_TYPES).toContain('altro');
   });
 
   it('privacy non accettata: errore', () => {

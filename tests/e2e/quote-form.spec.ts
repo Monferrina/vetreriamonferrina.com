@@ -16,8 +16,12 @@ test.describe('Form preventivo', () => {
 
   test('honeypot e\' nascosto e non accessibile', async ({ page }) => {
     await page.goto('/preventivo');
+    // Honeypot is offscreen (left:-9999px, opacity:0) — invisible to humans, visible to bots
+    const honeypotWrapper = page.locator('input[name="website"]').locator('..');
+    await expect(honeypotWrapper).toHaveAttribute('aria-hidden', 'true');
     const honeypot = page.locator('input[name="website"]');
-    await expect(honeypot).toBeHidden();
+    await expect(honeypot).toHaveAttribute('tabindex', '-1');
+    await expect(honeypot).toHaveAttribute('autocomplete', 'off');
   });
 
   test('checkbox privacy non e\' pre-selezionata', async ({ page }) => {
@@ -40,6 +44,12 @@ test.describe('Form preventivo', () => {
     await page.goto('/preventivo?servizio=parapetti');
     const select = page.locator('select[name="serviceType"]');
     await expect(select).toHaveValue('parapetti');
+  });
+
+  test('pre-compila servizio vetri blindati da query param', async ({ page }) => {
+    await page.goto('/preventivo?servizio=blindati');
+    const select = page.locator('select[name="serviceType"]');
+    await expect(select).toHaveValue('blindati');
   });
 
   test('query param invalido non seleziona nulla', async ({ page }) => {

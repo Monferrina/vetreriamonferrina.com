@@ -2,6 +2,10 @@
 // src/components/QuoteForm.astro
 // Interactive quote request form with client-side validation,
 // honeypot anti-spam, and fetch-based submission.
+import { services, categories, type CategoryKey } from '../data/services';
+import { VALID_SERVICE_TYPES } from '../lib/validation';
+
+const categoryKeys = Object.keys(categories) as CategoryKey[];
 ---
 
 <form id="quote-form" novalidate class="space-y-6">
@@ -85,14 +89,15 @@
       class="mt-1 block w-full rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
     >
       <option value="">— Seleziona —</option>
-      <option value="box-doccia">Box doccia</option>
-      <option value="parapetti">Parapetti</option>
-      <option value="pensiline">Pensiline</option>
-      <option value="porte-interne">Porte interne</option>
-      <option value="vetrine">Vetrine</option>
-      <option value="sostituzione-vetri">Sostituzione vetri</option>
-      <option value="specchi">Specchi</option>
-      <option value="lavorazione-vetro">Lavorazione vetro</option>
+      {categoryKeys.map((cat) => (
+        <optgroup label={categories[cat]}>
+          {services
+            .filter((s) => s.category === cat)
+            .map((s) => (
+              <option value={s.slug}>{s.name}</option>
+            ))}
+        </optgroup>
+      ))}
       <option value="altro">Altro</option>
     </select>
     <p data-error="serviceType" class="mt-1 hidden text-sm text-error"></p>
@@ -203,10 +208,10 @@
 <script>
   const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const PHONE_REGEX = /^[\d\s+\-().]{7,20}$/;
-  const VALID_SERVICE_TYPES = [
-    'box-doccia', 'parapetti', 'pensiline', 'porte-interne',
-    'vetrine', 'sostituzione-vetri', 'specchi', 'lavorazione-vetro', 'altro',
-  ];
+  // Derive valid service types from the DOM select options (single source of truth)
+  const VALID_SERVICE_TYPES = Array.from(
+    document.querySelectorAll<HTMLOptionElement>('#serviceType option[value]')
+  ).map((o) => o.value).filter(Boolean);
 
   interface FieldError {
     field: string;
