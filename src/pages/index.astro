@@ -1,15 +1,9 @@
 ---
-// src/pages/index.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
 export const prerender = true;
 ---
-<html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vetreria Monferrina</title>
-  </head>
-  <body>
-    <h1>Vetreria Monferrina</h1>
-    <p>Sito in costruzione</p>
-  </body>
-</html>
+
+<BaseLayout title="Home">
+  <h1 class="text-4xl font-heading text-primary">Vetreria Monferrina</h1>
+  <p class="text-lg font-body text-neutral-700">Sito in costruzione</p>
+</BaseLayout>
