@@ -1,9 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import ServiceHighlight from '../components/ServiceHighlight.astro';
+import StatsSection from '../components/StatsSection.astro';
+import CtaSection from '../components/CtaSection.astro';
 export const prerender = true;
 ---
 
 <BaseLayout title="Home">
-  <h1 class="text-4xl font-heading text-primary">Vetreria Monferrina</h1>
-  <p class="text-lg font-body text-neutral-700">Sito in costruzione</p>
+  <HeroSection />
+  <ServiceHighlight />
+  <StatsSection />
+  <CtaSection />
 </BaseLayout>

@@ -1,0 +1,61 @@
+---
+// src/components/HeroSection.astro
+---
+
+<section
+  data-section="hero"
+  class="relative overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-primary"
+>
+  <!-- Decorative glass pattern -->
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-10 right-10 h-64 w-64 rounded-full bg-secondary blur-3xl"></div>
+    <div class="absolute bottom-10 left-10 h-48 w-48 rounded-full bg-secondary-light blur-3xl"></div>
+  </div>
+
+  <div class="relative mx-auto max-w-7xl px-4 py-20 sm:py-28 lg:px-8 lg:py-36">
+    <div class="max-w-3xl">
+      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl lg:text-6xl">
+        Vetreria Monferrina
+      </h1>
+
+      <p class="mt-4 font-heading text-xl text-secondary-light sm:text-2xl lg:text-3xl">
+        Artigiani del vetro dal cuore del Monferrato
+      </p>
+
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-neutral-200">
+        Box doccia, parapetti, pensiline, vetri camera e lavorazioni su misura.
+        Qualità artigianale e attenzione al dettaglio dal 1980.
+      </p>
+
+      <div class="mt-10 flex flex-wrap items-center gap-4">
+        <a
+          href="/preventivo"
+          class="inline-block rounded-full bg-secondary px-8 py-3.5 text-base font-semibold text-neutral-50 shadow-lg transition-colors hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-secondary-light focus:ring-offset-2 focus:ring-offset-primary"
+        >
+          Richiedi preventivo
+        </a>
+
+        <a
+          href="/servizi"
+          class="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-base font-medium text-neutral-50 transition-colors hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-neutral-50 focus:ring-offset-2 focus:ring-offset-primary"
+        >
+          Scopri i nostri servizi
+          <svg
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+            />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
