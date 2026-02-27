@@ -24,6 +24,9 @@ pnpm-debug.log*
 # testing
 playwright-report/
 test-results/
+.playwright-mcp/
+coverage/
+blob-report/
 
 # TypeScript
 *.tsbuildinfo
