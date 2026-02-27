@@ -2,7 +2,7 @@
 // When SANITY_PROJECT_ID is not set, all fetches return the provided fallback.
 
 import { createClient, type SanityClient } from '@sanity/client';
-import imageUrlBuilder from '@sanity/image-url';
+import { createImageUrlBuilder } from '@sanity/image-url';
 
 const projectId = import.meta.env.SANITY_PROJECT_ID;
 const dataset = import.meta.env.SANITY_DATASET || 'production';
@@ -17,7 +17,7 @@ export const sanityClient: SanityClient | null = projectId
     })
   : null;
 
-const builder = projectId ? imageUrlBuilder({ projectId, dataset }) : null;
+const builder = projectId ? createImageUrlBuilder({ projectId, dataset }) : null;
 
 /**
  * Build an image URL from a Sanity image reference.
