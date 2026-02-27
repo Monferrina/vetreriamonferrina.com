@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test("privacy policy e' accessibile e contiene GDPR", async ({ page }) => {
   await page.goto('/privacy');
-  await expect(page.locator('h1')).toContainText(/privacy/i);
+  await expect(page.locator('main h1')).toContainText(/privacy/i);
   const text = await page.textContent('main');
   expect(text).toContain('GDPR');
   expect(text).toContain('Fioravanti');
@@ -39,7 +39,7 @@ test('privacy policy ha link alla cookie policy', async ({ page }) => {
 
 test("cookie policy e' accessibile", async ({ page }) => {
   await page.goto('/cookie');
-  await expect(page.locator('h1')).toContainText(/cookie/i);
+  await expect(page.locator('main h1')).toContainText(/cookie/i);
   const text = await page.textContent('main');
   expect(text).toContain('sessionStorage');
 });
@@ -67,13 +67,15 @@ test('cookie banner appare e si chiude', async ({ page }) => {
   await page.goto('/');
   const banner = page.locator('[data-cookie-banner]');
   await expect(banner).toBeVisible();
-  await page.getByRole('button', { name: /capito/i }).click();
+  // Use force to bypass Astro dev toolbar overlay interception
+  await page.getByRole('button', { name: /capito/i }).click({ force: true });
   await expect(banner).toBeHidden();
 });
 
 test('cookie banner non riappare dopo chiusura', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /capito/i }).click();
+  // Use force to bypass Astro dev toolbar overlay interception
+  await page.getByRole('button', { name: /capito/i }).click({ force: true });
   await page.reload();
   await expect(page.locator('[data-cookie-banner]')).toBeHidden();
 });

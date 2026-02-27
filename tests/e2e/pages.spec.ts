@@ -10,7 +10,8 @@ const pages = [
 for (const { path, title } of pages) {
   test(`${path} carica correttamente`, async ({ page }) => {
     await page.goto(path);
-    await expect(page.locator('h1')).toContainText(title);
+    // Scope to main to avoid Astro dev toolbar injected headings
+    await expect(page.locator('main h1')).toContainText(title);
     // Use first() to avoid strict mode with Astro dev toolbar headers
     await expect(page.locator('header').first()).toBeVisible();
     await expect(page.locator('footer').first()).toBeVisible();
