@@ -1,0 +1,140 @@
+---
+// src/components/Header.astro
+import MobileMenu from './MobileMenu.astro';
+
+const pathname = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/chi-siamo', label: 'Chi siamo' },
+  { href: '/servizi', label: 'Servizi' },
+  { href: '/galleria', label: 'Galleria' },
+  { href: '/contatti', label: 'Contatti' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return pathname === '/';
+  return pathname.startsWith(href);
+}
+---
+
+<header
+  class="sticky top-0 z-50 border-b border-neutral-200 bg-neutral-50/80 backdrop-blur-md"
+>
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2" aria-label="Torna alla home">
+      <span class="font-heading text-xl text-primary lg:text-2xl">
+        Vetreria Monferrina
+      </span>
+    </a>
+
+    <!-- Desktop nav -->
+    <nav aria-label="Navigazione principale" class="hidden md:block">
+      <ul class="flex items-center gap-1 lg:gap-2">
+        {navLinks.map(({ href, label }) => (
+          <li>
+            <a
+              href={href}
+              class:list={[
+                'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                isActive(href)
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-neutral-700 hover:bg-neutral-100 hover:text-primary',
+              ]}
+              aria-current={isActive(href) ? 'page' : undefined}
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <a
+            href="/preventivo"
+            class="ml-2 inline-block rounded-full bg-primary px-5 py-2 text-sm font-semibold text-neutral-50 transition-colors hover:bg-primary-dark"
+          >
+            Preventivo
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Mobile hamburger button -->
+    <button
+      type="button"
+      class="inline-flex items-center justify-center rounded-md p-2 text-neutral-700 hover:bg-neutral-100 hover:text-primary md:hidden"
+      aria-label="Apri menu"
+      aria-expanded="false"
+      data-menu-toggle
+    >
+      <svg
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+        />
+      </svg>
+    </button>
+  </div>
+
+  <MobileMenu navLinks={navLinks} pathname={pathname} />
+</header>
+
+<script>
+  function initMobileMenu() {
+    const toggleBtn = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+    const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
+    const closeBtn = document.querySelector<HTMLButtonElement>('[data-menu-close]');
+    const overlay = document.querySelector<HTMLElement>('[data-menu-overlay]');
+    const panel = menu?.querySelector<HTMLElement>('[data-menu-panel]');
+
+    if (!toggleBtn || !menu || !closeBtn || !overlay || !panel) return;
+
+    function openMenu() {
+      menu!.classList.remove('hidden');
+      // Force reflow so transitions work after display change
+      void menu!.offsetHeight;
+      overlay!.classList.remove('opacity-0');
+      overlay!.classList.add('opacity-100');
+      panel!.classList.remove('translate-x-full');
+      panel!.classList.add('translate-x-0');
+      toggleBtn!.setAttribute('aria-expanded', 'true');
+      closeBtn!.focus();
+    }
+
+    function closeMenu() {
+      overlay!.classList.remove('opacity-100');
+      overlay!.classList.add('opacity-0');
+      panel!.classList.remove('translate-x-0');
+      panel!.classList.add('translate-x-full');
+      toggleBtn!.setAttribute('aria-expanded', 'false');
+      toggleBtn!.focus();
+      // Wait for transition to finish before hiding
+      setTimeout(() => {
+        menu!.classList.add('hidden');
+      }, 300);
+    }
+
+    toggleBtn.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click', closeMenu);
+    overlay.addEventListener('click', closeMenu);
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggleBtn.getAttribute('aria-expanded') === 'true') {
+        closeMenu();
+      }
+    });
+  }
+
+  // Run on initial load and on Astro page transitions
+  initMobileMenu();
+  document.addEventListener('astro:after-swap', initMobileMenu);
+</script>

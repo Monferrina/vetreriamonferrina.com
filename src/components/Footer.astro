@@ -1,0 +1,104 @@
+---
+// src/components/Footer.astro
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-neutral-200 bg-neutral-100 text-neutral-700">
+  <div class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <!-- Colonna 1: Ragione sociale -->
+      <div>
+        <h2 class="font-heading text-lg text-primary">Vetreria Monferrina</h2>
+        <p class="mt-2 text-sm leading-relaxed">
+          Vetreria Monferrina di Fioravanti Giuseppe
+        </p>
+        <p class="mt-1 text-sm">
+          Sede legale: Via Lanza 27, 15033 Casale Monferrato (AL)
+        </p>
+        <p class="mt-1 text-sm">P.IVA: 01234567890</p>
+      </div>
+
+      <!-- Colonna 2: Contatti -->
+      <div>
+        <h3 class="font-heading text-lg text-primary">Contatti</h3>
+        <ul class="mt-2 space-y-2 text-sm">
+          <li>
+            <a
+              href="tel:+390142000000"
+              class="transition-colors hover:text-primary"
+            >
+              Tel: +39 0142 000000
+            </a>
+          </li>
+          <li>
+            <a
+              href="mailto:info@vetreriamonferrina.com"
+              class="transition-colors hover:text-primary"
+            >
+              info@vetreriamonferrina.com
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Colonna 3: Navigazione -->
+      <div>
+        <h3 class="font-heading text-lg text-primary">Navigazione</h3>
+        <ul class="mt-2 space-y-2 text-sm">
+          <li>
+            <a href="/" class="transition-colors hover:text-primary">Home</a>
+          </li>
+          <li>
+            <a href="/chi-siamo" class="transition-colors hover:text-primary">
+              Chi siamo
+            </a>
+          </li>
+          <li>
+            <a href="/servizi" class="transition-colors hover:text-primary">
+              Servizi
+            </a>
+          </li>
+          <li>
+            <a href="/galleria" class="transition-colors hover:text-primary">
+              Galleria
+            </a>
+          </li>
+          <li>
+            <a href="/contatti" class="transition-colors hover:text-primary">
+              Contatti
+            </a>
+          </li>
+          <li>
+            <a href="/preventivo" class="transition-colors hover:text-primary">
+              Preventivo
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Colonna 4: Legale -->
+      <div>
+        <h3 class="font-heading text-lg text-primary">Legale</h3>
+        <ul class="mt-2 space-y-2 text-sm">
+          <li>
+            <a href="/privacy" class="transition-colors hover:text-primary">
+              Privacy Policy
+            </a>
+          </li>
+          <li>
+            <a href="/cookie" class="transition-colors hover:text-primary">
+              Cookie Policy
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div
+      class="mt-10 border-t border-neutral-200 pt-6 text-center text-sm text-neutral-700"
+    >
+      <p>&copy; {currentYear} Vetreria Monferrina. Tutti i diritti riservati.</p>
+    </div>
+  </div>
+</footer>
