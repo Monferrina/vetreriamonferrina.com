@@ -1,13 +1,25 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceCategory from '../components/ServiceCategory.astro';
+import { categories, getServicesByCategory, type CategoryKey } from '../data/services';
 export const prerender = true;
 ---
 
-<BaseLayout title="Servizi">
-  <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
-    <h1 class="font-heading text-4xl text-primary">I nostri servizi</h1>
-    <p class="mt-4 text-lg text-neutral-700">
-      Pagina in costruzione. L'elenco completo dei servizi sarà disponibile a breve.
+<BaseLayout
+  title="Servizi"
+  description="Tutti i servizi della Vetreria Monferrina: box doccia, parapetti, pensiline, vetri camera, specchi e lavorazioni su misura."
+>
+  <section class="mx-auto max-w-6xl px-4 py-16">
+    <h1 class="font-heading text-4xl text-primary mb-4">I nostri servizi</h1>
+    <p class="text-lg text-neutral-700 mb-12">
+      Oltre 40 anni di esperienza nella lavorazione del vetro.
     </p>
+
+    {Object.entries(categories).map(([key, title]) => (
+      <ServiceCategory
+        title={title}
+        services={getServicesByCategory(key as CategoryKey)}
+      />
+    ))}
   </section>
 </BaseLayout>

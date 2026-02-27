@@ -1,0 +1,25 @@
+---
+// src/components/ServiceCategory.astro
+import ServiceCard from './ServiceCard.astro';
+import type { Service } from '../data/services';
+
+export interface Props {
+  title: string;
+  services: Service[];
+}
+
+const { title, services } = Astro.props;
+---
+
+<section class="mb-16 last:mb-0">
+  <h2 class="font-heading text-2xl text-primary sm:text-3xl">{title}</h2>
+  <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {services.map((service) => (
+      <ServiceCard
+        name={service.name}
+        description={service.description}
+        slug={service.slug}
+      />
+    ))}
+  </div>
+</section>
