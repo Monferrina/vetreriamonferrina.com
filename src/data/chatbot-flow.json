@@ -164,7 +164,7 @@
     ]
   },
   "orari": {
-    "message": "Siamo aperti dal luned\u00ec al venerd\u00ec, 8:00\u201312:00 e 14:00\u201318:00. Ci trovi in Strada Valenza 4, Casale Monferrato (AL). Vieni a trovarci!",
+    "message": "Siamo aperti dal luned\u00ec al venerd\u00ec, 8:00\u201312:00 e 14:00\u201318:00. Ci trovi in Strada Statale 31, 98/C — Casale Monferrato (AL). Vieni a trovarci!",
     "options": [
       { "label": "Apri contatti", "action": "open_contacts" },
       { "label": "Chiamaci ora", "action": "call_phone" },
@@ -172,7 +172,7 @@
     ]
   },
   "altra": {
-    "message": "Per qualsiasi altra domanda, chiamaci al 0142 452540 o scrivi a info@vetreriamonferrina.com. Saremo felici di aiutarti!",
+    "message": "Per qualsiasi altra domanda, chiamaci al 0142 563728 o scrivi a info@vetreriamonferrina.com. Saremo felici di aiutarti!",
     "options": [
       { "label": "Chiamaci ora", "action": "call_phone" },
       { "label": "Apri contatti", "action": "open_contacts" },

@@ -17,10 +17,10 @@ const settings = await fetchWithFallback<SiteSettings | null>(queries.siteSettin
 
 // Use Sanity data if available, otherwise keep static defaults
 const companyName = settings?.companyName || 'Vetreria Monferrina di Fioravanti Giuseppe';
-const vatNumber = settings?.vatNumber || '01234567890';
-const address = settings?.address || 'Via Lanza 27';
+const vatNumber = settings?.vatNumber || '01574530067';
+const address = settings?.address || 'Strada Statale 31, 98/C';
 const city = settings?.city || '15033 Casale Monferrato (AL)';
-const phone = settings?.phone || '+39 0142 000000';
+const phone = settings?.phone || '+39 0142 563728';
 const email = settings?.email || 'info@vetreriamonferrina.com';
 ---
 
@@ -62,39 +62,17 @@ const email = settings?.email || 'info@vetreriamonferrina.com';
         </ul>
       </div>
 
-      <!-- Colonna 3: Navigazione -->
+      <!-- Colonna 3: Navigazione (due colonne) -->
       <div>
         <h3 class="font-heading text-lg text-primary">Navigazione</h3>
-        <ul class="mt-2 space-y-2 text-sm">
-          <li>
-            <a href="/" class="transition-colors hover:text-primary">Home</a>
-          </li>
-          <li>
-            <a href="/chi-siamo" class="transition-colors hover:text-primary">
-              Chi siamo
-            </a>
-          </li>
-          <li>
-            <a href="/servizi" class="transition-colors hover:text-primary">
-              Servizi
-            </a>
-          </li>
-          <li>
-            <a href="/galleria" class="transition-colors hover:text-primary">
-              Galleria
-            </a>
-          </li>
-          <li>
-            <a href="/contatti" class="transition-colors hover:text-primary">
-              Contatti
-            </a>
-          </li>
-          <li>
-            <a href="/preventivo" class="transition-colors hover:text-primary">
-              Preventivo
-            </a>
-          </li>
-        </ul>
+        <div class="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+          <a href="/" class="transition-colors hover:text-primary">Home</a>
+          <a href="/galleria" class="transition-colors hover:text-primary">Galleria</a>
+          <a href="/chi-siamo" class="transition-colors hover:text-primary">Chi siamo</a>
+          <a href="/contatti" class="transition-colors hover:text-primary">Contatti</a>
+          <a href="/servizi" class="transition-colors hover:text-primary">Servizi</a>
+          <a href="/preventivo" class="transition-colors hover:text-primary">Preventivo</a>
+        </div>
       </div>
 
       <!-- Colonna 4: Legale -->

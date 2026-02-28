@@ -17,9 +17,9 @@ interface SiteSettings {
 const settings = await fetchWithFallback<SiteSettings | null>(queries.siteSettings, null);
 
 // Use Sanity data if available, otherwise keep static defaults
-const address = settings?.address || 'Via Lanza 27';
+const address = settings?.address || 'Strada Statale 31, 98/C';
 const city = settings?.city || '15033 Casale Monferrato (AL)';
-const phone = settings?.phone || '+39 0142 000000';
+const phone = settings?.phone || '+39 0142 563728';
 const email = settings?.email || 'info@vetreriamonferrina.com';
 const openingHours: OpeningHour[] = settings?.openingHours && settings.openingHours.length > 0
   ? settings.openingHours

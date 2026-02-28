@@ -30,11 +30,11 @@ const jsonLd = {
   "description": "Vetreria storica a Casale Monferrato. Box doccia, parapetti, pensiline, vetri camera, specchi e lavorazioni su misura.",
   "@id": "https://vetreriamonferrina.com",
   "url": "https://vetreriamonferrina.com",
-  "telephone": "+390142000000",
+  "telephone": "+390142563728",
   "email": "info@vetreriamonferrina.com",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Via Lanza 27",
+    "streetAddress": "Strada Statale 31, 98/C",
     "addressLocality": "Casale Monferrato",
     "postalCode": "15033",
     "addressRegion": "AL",
@@ -60,7 +60,7 @@ const jsonLd = {
     },
   ],
   "priceRange": "$$",
-  "image": "https://vetreriamonferrina.com/favicon.svg",
+  "image": "https://vetreriamonferrina.com/images/og-image.jpg",
 };
 ---
 
@@ -76,8 +76,11 @@ const jsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="it_IT" />
-    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta property="og:image" content={ogImage || 'https://vetreriamonferrina.com/images/og-image.jpg'} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link
       rel="preload"
       href="/fonts/inter-latin-variable.woff2"
