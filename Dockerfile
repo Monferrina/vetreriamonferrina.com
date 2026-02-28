@@ -6,6 +6,11 @@ FROM base AS deps
 COPY package*.json ./
 RUN npm ci
 
+FROM deps AS dev
+COPY . .
+EXPOSE 4321
+CMD ["npx", "astro", "dev", "--host", "0.0.0.0"]
+
 FROM deps AS test-unit
 COPY . .
 USER appuser

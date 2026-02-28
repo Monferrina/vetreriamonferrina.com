@@ -1,0 +1,19 @@
+services:
+  dev:
+    container_name: MonferrinaProject
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "4321:4321"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    env_file:
+      - .env.local
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

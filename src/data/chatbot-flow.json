@@ -11,8 +11,8 @@
   "servizi": {
     "message": "Lavoriamo il vetro da oltre 40 anni! Ecco cosa facciamo:",
     "options": [
-      { "label": "Installazioni (box doccia, parapetti, pensiline...)", "next": "servizi_installazioni" },
-      { "label": "Tipi di vetro (blindati, stratificati, camera...)", "next": "servizi_vetri" },
+      { "label": "Installazioni (box doccia, parapetti, pensiline)", "next": "servizi_installazioni" },
+      { "label": "Tipi di vetro (blindati, stratificati, camera)", "next": "servizi_vetri" },
       { "label": "Lavorazioni (sagomature, fori, molature)", "next": "servizi_lavorazioni" },
       { "label": "\u2190 Torna indietro", "next": "welcome" }
     ]

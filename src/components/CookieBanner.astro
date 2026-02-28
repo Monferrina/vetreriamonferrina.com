@@ -11,23 +11,20 @@
   aria-live="polite"
   class="cookie-banner fixed bottom-0 left-0 right-0 z-40 hidden border-t border-primary-light/30 bg-primary-dark text-white"
 >
-  <div class="mx-auto flex max-w-4xl flex-col items-center gap-4 px-4 py-4 sm:flex-row sm:justify-between">
-    <p class="text-sm leading-relaxed text-center sm:text-left">
-      Questo sito utilizza solo cookie tecnici necessari al funzionamento.
-      Nessun cookie di profilazione.
+  <div class="mx-auto flex max-w-3xl items-center gap-3 px-5 py-3">
+    <p class="flex-1 text-sm leading-relaxed">
+      Questo sito usa solo cookie tecnici di sessione e navigazione, nessun tracciamento o profilazione.
       <a
         href="/cookie"
-        class="ml-1 inline-block whitespace-nowrap font-semibold underline underline-offset-2 transition-colors hover:text-secondary-light"
-      >
-        Leggi la Cookie Policy
-      </a>
+        class="ml-1 whitespace-nowrap font-semibold underline underline-offset-2 transition-colors hover:text-secondary-light"
+      >Dettagli</a>
     </p>
     <button
       id="cookie-banner-dismiss"
       type="button"
-      class="shrink-0 rounded-full bg-secondary px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-dark"
+      class="shrink-0 rounded-full bg-secondary px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-dark"
     >
-      Ho capito
+      OK
     </button>
   </div>
 </div>
@@ -95,5 +92,5 @@
     });
   }
 
-  initCookieBanner();
+  document.addEventListener('astro:page-load', () => initCookieBanner());
 </script>
