@@ -98,6 +98,14 @@ const jsonLd = {
     />
     <ViewTransitions />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <!-- Theme detection: system preference + time-based (inline to prevent FOUC) -->
+    <script is:inline>
+      (function(){
+        var h = new Date().getHours();
+        var dark = window.matchMedia('(prefers-color-scheme: dark)').matches || h >= 20 || h < 7;
+        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+      })();
+    </script>
   </head>
   <body class="font-body text-neutral-800 bg-neutral-50 antialiased">
     <Header />
@@ -107,5 +115,25 @@ const jsonLd = {
     <Footer />
     <CookieBanner />
     <Chatbot />
+    <!-- Dynamic theme updates: recheck time every 15 min + listen for system changes -->
+    <script>
+      function applyTheme(): void {
+        const h = new Date().getHours();
+        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const nightTime = h >= 20 || h < 7;
+        const dark = systemDark || nightTime;
+        if (dark) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+        }
+      }
+      // Listen for system theme changes (e.g. macOS Auto switching)
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+      // Recheck time-based theme every 15 minutes
+      setInterval(applyTheme, 15 * 60 * 1000);
+      // Re-apply on Astro page transitions
+      document.addEventListener('astro:page-load', applyTheme);
+    </script>
   </body>
 </html>

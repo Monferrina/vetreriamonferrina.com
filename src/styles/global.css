@@ -29,10 +29,44 @@
   --color-neutral-700: #404040;
   --color-neutral-800: #262626;
   --color-neutral-900: #171717;
+  --color-surface: #FFFFFF;
   --color-success: #16A34A;
   --color-error: #DC2626;
   --font-heading: "DM Serif Display", serif;
   --font-body: "Inter", sans-serif;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
   --shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+}
+
+/* Dark mode — activated by inline script in BaseLayout */
+[data-theme="dark"] {
+  --color-primary: #5BA3CC;
+  --color-primary-light: #7BB8D9;
+  --color-primary-dark: #1B4965;
+  --color-secondary: #D4955E;
+  --color-secondary-light: #E0A875;
+  --color-secondary-dark: #B86E35;
+  --color-neutral-50: #111318;
+  --color-neutral-100: #1A1D24;
+  --color-neutral-200: #2A2D34;
+  --color-neutral-700: #9CA3AF;
+  --color-neutral-800: #D1D5DB;
+  --color-neutral-900: #F3F4F6;
+  --color-surface: #1A1D24;
+  --color-success: #22C55E;
+  --color-error: #EF4444;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.2);
+  --shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+}
+
+/* Smooth transition between themes */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Respect users who prefer no transitions */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    transition: none;
+  }
 }
