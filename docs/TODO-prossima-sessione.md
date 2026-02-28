@@ -1,74 +1,83 @@
-# Vetreria Monferrina — TODO Prossima Sessione
+# Vetreria Monferrina — Stato Lavori
 
 > Branch: `feat/initial-build`
-> Ultimo commit verificato: tutti i 94 unit test e 142 E2E passano
-> Modifiche non committate: fix chatbot (style is:global, scrollToBottom, tooltip, opzioni con bordi), cookie banner, Makefile, .nvmrc
+> Ultimo aggiornamento: 2026-02-28
 
-## 0. Commit lavoro in sospeso
-- Committare tutte le modifiche della sessione corrente (chatbot, cookie banner, Makefile, Dockerfile, docker-compose.yml, .nvmrc)
-- Verificare che i test passino dopo il commit
+## Completato
 
-## 1. Test visuale tutte le pagine (Playwright)
-- Homepage `/` — verificare hero, servizi, stats, CTA
-- Chi siamo `/chi-siamo` — timeline, valori, placeholder foto
-- Servizi `/servizi` — categorie, card, link a preventivo
-- Galleria `/galleria` — filtri, lightbox, navigazione frecce
-- Contatti `/contatti` — mappa OpenStreetMap, orari, tel/email/CTA
-- Preventivo `/preventivo` — form completo, validazione, honeypot
-- Privacy `/privacy` e Cookie `/cookie` — contenuto GDPR
-- **Mobile viewport** (375px, 390px, 768px) — ogni pagina deve essere ultra-light e leggibile
+- [x] Scaffold progetto Astro 5 + Tailwind CSS 4 + Docker
+- [x] Tutte le pagine: Home, Chi siamo, Servizi, Galleria, Preventivo, Contatti, Privacy, Cookie
+- [x] Form preventivo con validazione client + server + honeypot + rate limiting
+- [x] Chatbot a flusso (JSON statico, sessione persistente, animazioni)
+- [x] SEO: JSON-LD LocalBusiness, Open Graph, sitemap, canonical URLs, meta tags
+- [x] Accessibilita': aria-labels, focus management, prefers-reduced-motion
+- [x] View Transitions (navigazione fluida tra pagine)
+- [x] Logo aziendale SVG (potrace da raster originale) + favicon SVG/PNG
+- [x] Cookie banner informativo (solo cookie tecnici, GDPR)
+- [x] Footer con dati legali, social (Facebook + Instagram), navigazione
+- [x] Docker per dev e test (unit + E2E)
+- [x] **Dark mode automatica** — orario notturno (20-7) + `prefers-color-scheme`
+- [x] **Sezione recensioni Google** — build-time, validazione schema, stelle, filtro >= 4 stelle
+- [x] **Script fetch-reviews.mjs** — Google Places API, abbreviazione nomi GDPR
+- [x] Code review completa homepage (zero dead code, zero hardcoded, best practice)
 
-## 2. Foto e dati reali
-- Sostituire le immagini placeholder con foto reali della vetreria
-- Verificare/aggiornare dati: indirizzo, telefono, email, P.IVA, ragione sociale
+## Da fare — Prossimi step
+
+### 1. Collegare recensioni Google reali
+- Creare progetto Google Cloud + abilitare Places API
+- Trovare Place ID della Vetreria Monferrina
+- Eseguire `scripts/fetch-reviews.mjs` con API key reale
+- Vedi: `docs/plans/google-reviews-setup.md`
+
+### 2. Foto e dati reali
+- Sostituire immagini placeholder con foto reali (laboratorio, lavori, team)
 - Aggiungere foto per la galleria (categorie: installazioni, vetri, lavorazioni)
+- Verificare tutti i dati aziendali (indirizzo, P.IVA, telefono)
 
-## 3. Sentry
+### 3. Test visuale tutte le pagine (Playwright)
+- Homepage, Chi siamo, Servizi, Galleria, Contatti, Preventivo, Privacy, Cookie
+- Mobile viewport (375px, 390px, 768px)
+- Verificare dark mode visivamente su tutte le pagine
+
+### 4. Sentry
 - Installare `@sentry/astro`
 - Configurare DSN in variabili d'ambiente
-- Error tracking client-side e server-side
-- Source maps
+- Error tracking client-side e server-side + source maps
 
-## 4. Sanity CMS
+### 5. Sanity CMS
 - Verificare connessione con project ID `7bqabdpn`
-- Popolare i contenuti iniziali nello studio
+- Popolare contenuti iniziali nello studio
 - Testare `fetchWithFallback` con dati reali
-- Growth Plan: attivare quando si va live
 
-## 5. CI/CD GitHub Actions (ultra strette)
-- Lint (ESLint + Prettier)
-- Type check (`astro check`)
-- Unit test (Vitest)
-- E2E test (Playwright con Chromium)
-- Build di produzione
+### 6. CI/CD GitHub Actions
+- Lint + type check + unit test + E2E + build
 - Lighthouse CI (performance, a11y, SEO)
 - Pre-commit hooks (husky + lint-staged)
+- Workflow automatico aggiornamento recensioni (cron giornaliero)
 
-## 6. Mobile testing approfondito
-- Tutti gli schermi: iPhone SE, iPhone 15, Pixel 7, iPad, Samsung Galaxy Fold
+### 7. Mobile testing approfondito
+- iPhone SE, iPhone 15, Pixel 7, iPad, Samsung Galaxy Fold
 - Chatbot fullscreen su mobile
-- Navigazione hamburger menu
-- Form preventivo usabilità touch
-- Performance: Core Web Vitals sotto soglia
+- Form preventivo usabilita' touch
+- Core Web Vitals sotto soglia
 
-## 7. Cloudflare
-- DNS corretto verso Vercel
-- SSL/TLS mode Full (Strict)
+### 8. Cloudflare
+- DNS verso Vercel
+- SSL/TLS Full (Strict)
 - Cloudflare Web Analytics (zero cookie, GDPR compliant)
 - Cache rules
-- Proxy ON/OFF per Vercel
 
-## 8. Vercel (ultimo)
+### 9. Vercel (ultimo)
 - Deploy da branch `main`
-- Environment variables (RESEND_API_KEY, SANITY_PROJECT_ID, ecc.)
-- Vercel Analytics
-- Security headers (già in vercel.json)
+- Environment variables (RESEND_API_KEY, SANITY_PROJECT_ID, GOOGLE_PLACES_API_KEY)
 - Custom domain `vetreriamonferrina.com`
 - Preview deployments per PR
 
 ## Note tecniche
-- Node v24.12.0 (via nvm, v14 rimossa)
-- Docker per dev (`make start`) e test (`make test`)
-- Astro `<style>` scoped non si applica a elementi creati da JS — usare `is:global`
-- ViewTransitions richiedono `astro:page-load` per re-inizializzare gli script
-- Tailwind CSS 4: `space-y-*` non affidabile con elementi JS-injected, usare `flex` + `gap` in CSS
+
+- Node v24.12.0 (via nvm)
+- Dark mode: CSS custom properties in `[data-theme="dark"]`, script inline anti-FOUC
+- Token `--color-surface` per superfici (sostituisce `bg-white`)
+- Recensioni: validazione schema a build-time, troncamento 500 char, max 50 recensioni
+- ViewTransitions: usare `astro:page-load` per re-inizializzare script
+- Tailwind CSS 4: `space-y-*` non affidabile con elementi JS-injected, usare `flex` + `gap`

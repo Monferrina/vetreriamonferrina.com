@@ -131,10 +131,14 @@ const hasHalfStar = rating - fullStars >= 0.3;
       </div>
     </div>
 
-    <!-- Review cards -->
-    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- Review cards — horizontal scroll carousel -->
+    <div
+      class="reviews-carousel mt-12 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4"
+      role="region"
+      aria-label="Recensioni clienti"
+    >
       {reviews.map((review) => (
-        <article class="flex flex-col rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm">
+        <article class="flex w-80 shrink-0 snap-start flex-col rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm sm:w-96">
           <!-- Stars -->
           <div class="flex items-center gap-0.5">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -156,7 +160,6 @@ const hasHalfStar = rating - fullStars >= 0.3;
 
           <!-- Author and date -->
           <div class="mt-4 flex items-center gap-2 text-sm text-neutral-700">
-            <!-- Avatar placeholder -->
             <div class="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
               {review.author.charAt(0)}
             </div>
@@ -177,3 +180,35 @@ const hasHalfStar = rating - fullStars >= 0.3;
     </p>
   </div>
 </section>
+
+<style>
+  /* Minimal scrollbar for the carousel */
+  .reviews-carousel {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-neutral-200) transparent;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .reviews-carousel::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .reviews-carousel::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .reviews-carousel::-webkit-scrollbar-thumb {
+    background-color: var(--color-neutral-200);
+    border-radius: 3px;
+  }
+
+  /* Hide scrollbar on touch devices (swipe is intuitive) */
+  @media (pointer: coarse) {
+    .reviews-carousel {
+      scrollbar-width: none;
+    }
+    .reviews-carousel::-webkit-scrollbar {
+      display: none;
+    }
+  }
+</style>
