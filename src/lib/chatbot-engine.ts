@@ -32,12 +32,6 @@ export class ChatbotEngine {
     return this.getNode(nodeId);
   }
 
-  goBack(): ChatNode | undefined {
-    this.history.pop(); // remove current
-    const prev = this.history[this.history.length - 1] ?? 'welcome';
-    return this.getNode(prev);
-  }
-
   getHistory(): string[] {
     return [...this.history];
   }

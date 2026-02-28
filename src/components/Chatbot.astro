@@ -279,20 +279,20 @@
     padding: 0.625rem 0.875rem;
     border-radius: 0.5rem;
     border: 1px solid var(--color-neutral-200);
-    background-color: white;
+    background-color: var(--color-neutral-50);
     color: var(--color-primary);
     font-size: 0.875rem;
     font-weight: 500;
     line-height: 1.4;
     cursor: pointer;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-sm);
     transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
   }
 
   .chatbot-option-btn:hover {
     background-color: var(--color-neutral-100);
     border-color: var(--color-primary-light);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
   }
 
   .chatbot-option-btn:focus-visible {
@@ -302,7 +302,7 @@
 
   .chatbot-option-cta {
     background-color: var(--color-secondary);
-    color: white;
+    color: var(--color-neutral-50);
     border-color: var(--color-secondary);
     text-align: center !important;
   }

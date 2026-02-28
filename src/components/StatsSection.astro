@@ -1,8 +1,9 @@
 ---
 // src/components/StatsSection.astro
 
+const yearsActive = new Date().getFullYear() - 1980;
 const stats = [
-  { value: '40+', label: 'Anni di esperienza' },
+  { value: `${yearsActive}+`, label: 'Anni di esperienza' },
   { value: 'Casale Monferrato', label: 'Dal cuore del Monferrato' },
   { value: 'Su misura', label: 'Ogni lavoro è unico' },
 ];

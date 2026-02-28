@@ -1,5 +1,6 @@
 ---
 // src/components/ServiceHighlight.astro
+const yearsActive = new Date().getFullYear() - 1980;
 
 const services = [
   {
@@ -36,7 +37,7 @@ const services = [
         I nostri servizi
       </h2>
       <p class="mx-auto mt-4 max-w-2xl text-lg text-neutral-700">
-        Da oltre 40 anni offriamo soluzioni in vetro per privati e professionisti.
+        Da oltre {yearsActive} anni offriamo soluzioni in vetro per privati e professionisti.
       </p>
     </div>
 

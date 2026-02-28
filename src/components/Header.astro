@@ -145,6 +145,5 @@ function isActive(href: string): boolean {
   }
 
   // Run on initial load and on Astro page transitions
-  initMobileMenu();
-  document.addEventListener('astro:after-swap', initMobileMenu);
+  document.addEventListener('astro:page-load', initMobileMenu);
 </script>

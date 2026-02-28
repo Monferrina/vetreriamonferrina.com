@@ -80,6 +80,10 @@
     banner.classList.remove('hidden');
     banner.classList.add('cookie-banner-visible');
 
+    // Guard against duplicate handlers on re-init
+    if (dismissBtn.dataset.initialized) return;
+    dismissBtn.dataset.initialized = 'true';
+
     // Dismiss handler
     dismissBtn.addEventListener('click', () => {
       try {
@@ -92,5 +96,5 @@
     });
   }
 
-  document.addEventListener('astro:page-load', () => initCookieBanner());
+  document.addEventListener('astro:page-load', initCookieBanner);
 </script>

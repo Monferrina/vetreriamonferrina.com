@@ -9,7 +9,7 @@
     ]
   },
   "servizi": {
-    "message": "Lavoriamo il vetro da oltre 40 anni! Ecco cosa facciamo:",
+    "message": "Lavoriamo il vetro da generazioni! Ecco cosa facciamo:",
     "options": [
       { "label": "Installazioni (box doccia, parapetti, pensiline)", "next": "servizi_installazioni" },
       { "label": "Tipi di vetro (blindati, stratificati, camera)", "next": "servizi_vetri" },
@@ -172,7 +172,7 @@
     ]
   },
   "altra": {
-    "message": "Per qualsiasi altra domanda, chiamaci al 0142 563728 o scrivi a info@vetreriamonferrina.com. Saremo felici di aiutarti!",
+    "message": "Per qualsiasi altra domanda, chiamaci al +39 0142 563728 o scrivi a info@vetreriamonferrina.com. Saremo felici di aiutarti!",
     "options": [
       { "label": "Chiamaci ora", "action": "call_phone" },
       { "label": "Apri contatti", "action": "open_contacts" },
