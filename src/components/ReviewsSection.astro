@@ -131,47 +131,41 @@ const hasHalfStar = rating - fullStars >= 0.3;
       </div>
     </div>
 
-    <!-- Review cards — horizontal scroll carousel -->
-    <div
-      class="reviews-carousel mt-12 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4"
-      role="region"
-      aria-label="Recensioni clienti"
-    >
-      {reviews.map((review) => (
-        <article class="flex w-80 shrink-0 snap-start flex-col rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm sm:w-96">
-          <!-- Stars -->
-          <div class="flex items-center gap-0.5">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <svg
-                class={`h-4 w-4 ${i < review.rating ? 'text-amber-400' : 'text-neutral-200'}`}
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-            ))}
-          </div>
-
-          <!-- Review text -->
-          <p class="mt-3 flex-1 text-sm leading-relaxed text-neutral-700">
-            "{review.text}"
-          </p>
-
-          <!-- Author and date -->
-          <div class="mt-4 flex items-center gap-2 text-sm text-neutral-700">
-            <div class="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
-              {review.author.charAt(0)}
+    <!-- Review cards — auto-scrolling infinite carousel (CSS-only) -->
+    <div class="reviews-carousel mt-12 overflow-hidden" role="region" aria-label="Recensioni clienti">
+      <div class="reviews-track flex gap-6">
+        {/* Original + duplicate for seamless loop */}
+        {[...reviews, ...reviews].map((review) => (
+          <article class="flex w-80 shrink-0 flex-col rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm sm:w-96">
+            <div class="flex items-center gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <svg
+                  class={`h-4 w-4 ${i < review.rating ? 'text-amber-400' : 'text-neutral-200'}`}
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
             </div>
-            <div>
-              <p class="font-medium text-neutral-800">{review.author}</p>
-              <p class="text-xs text-neutral-700">
-                {new Date(review.date).toLocaleDateString('it-IT', { month: 'long', year: 'numeric' })}
-              </p>
+            <p class="mt-3 flex-1 text-sm leading-relaxed text-neutral-700">
+              "{review.text}"
+            </p>
+            <div class="mt-4 flex items-center gap-2 text-sm text-neutral-700">
+              <div class="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                {review.author.charAt(0)}
+              </div>
+              <div>
+                <p class="font-medium text-neutral-800">{review.author}</p>
+                <p class="text-xs text-neutral-700">
+                  {new Date(review.date).toLocaleDateString('it-IT', { month: 'long', year: 'numeric' })}
+                </p>
+              </div>
             </div>
-          </div>
-        </article>
-      ))}
+          </article>
+        ))}
+      </div>
     </div>
 
     <!-- Google attribution -->
@@ -182,33 +176,34 @@ const hasHalfStar = rating - fullStars >= 0.3;
 </section>
 
 <style>
-  /* Minimal scrollbar for the carousel */
-  .reviews-carousel {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-neutral-200) transparent;
-    -webkit-overflow-scrolling: touch;
+  /* Infinite auto-scroll — CSS only, zero JS */
+  .reviews-track {
+    animation: reviews-scroll 30s linear infinite;
   }
 
-  .reviews-carousel::-webkit-scrollbar {
-    height: 6px;
+  /* Pause on hover so users can read */
+  .reviews-carousel:hover .reviews-track {
+    animation-play-state: paused;
   }
 
-  .reviews-carousel::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .reviews-carousel::-webkit-scrollbar-thumb {
-    background-color: var(--color-neutral-200);
-    border-radius: 3px;
-  }
-
-  /* Hide scrollbar on touch devices (swipe is intuitive) */
-  @media (pointer: coarse) {
-    .reviews-carousel {
-      scrollbar-width: none;
+  @keyframes reviews-scroll {
+    0% {
+      transform: translateX(0);
     }
-    .reviews-carousel::-webkit-scrollbar {
-      display: none;
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Respect prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .reviews-track {
+      animation: none;
+    }
+    .reviews-carousel {
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-neutral-200) transparent;
     }
   }
 </style>
