@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactMap from '../components/ContactMap.astro';
+import WeatherWidget from '../components/WeatherWidget.astro';
 import { fetchWithFallback, queries } from '../lib/sanity';
 export const prerender = true;
 
@@ -16,18 +17,27 @@ interface SiteSettings {
 
 const settings = await fetchWithFallback<SiteSettings | null>(queries.siteSettings, null);
 
-// Use Sanity data if available, otherwise keep static defaults
+// Opening hours: Google Places data (build-time) → Sanity → static fallback
+let googleHours: OpeningHour[] = [];
+try {
+  const hoursData = await import('../data/opening-hours.json');
+  googleHours = hoursData.schedule || [];
+} catch { /* file not yet generated */ }
+
 const address = settings?.address || 'Strada Statale 31, 98/C';
 const city = settings?.city || '15033 Casale Monferrato (AL)';
 const phone = settings?.phone || '+39 0142 563728';
 const email = settings?.email || 'info@vetreriamonferrina.com';
-const openingHours: OpeningHour[] = settings?.openingHours && settings.openingHours.length > 0
-  ? settings.openingHours
-  : [
-      { days: "Lunedì - Venerdì", hours: '8:00 - 12:00 / 14:00 - 18:00' },
-      { days: 'Sabato', hours: 'Chiuso' },
-      { days: 'Domenica', hours: 'Chiuso' },
-    ];
+const openingHours: OpeningHour[] =
+  settings?.openingHours && settings.openingHours.length > 0
+    ? settings.openingHours
+    : googleHours.length > 0
+      ? googleHours
+      : [
+          { days: 'Lunedì - Venerdì', hours: '08:00 - 12:00 / 13:30 - 17:30' },
+          { days: 'Sabato', hours: '08:00 - 12:00' },
+          { days: 'Domenica', hours: 'Chiuso' },
+        ];
 ---
 
 <BaseLayout
@@ -186,10 +196,11 @@ const openingHours: OpeningHour[] = settings?.openingHours && settings.openingHo
         </div>
       </div>
 
-      <!-- Map -->
-      <div>
+      <!-- Map + Weather -->
+      <div class="space-y-6">
         <h2 class="font-heading text-2xl text-primary mb-6">Dove siamo</h2>
         <ContactMap />
+        <WeatherWidget />
       </div>
     </div>
   </section>

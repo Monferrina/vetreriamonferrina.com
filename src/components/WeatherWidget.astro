@@ -1,0 +1,119 @@
+---
+// src/components/WeatherWidget.astro
+// Client-side weather widget using Open-Meteo (free, no API key).
+// Shows current weather for Casale Monferrato with smart glass tips.
+const LAT = 45.1334;
+const LON = 8.4525;
+---
+
+<div
+  id="weather-widget"
+  class="rounded-xl border border-neutral-200 bg-surface p-5 text-sm"
+  aria-label="Meteo Casale Monferrato"
+>
+  <div class="flex items-center gap-3">
+    <div id="weather-icon" class="text-3xl" aria-hidden="true"></div>
+    <div>
+      <p class="font-semibold text-neutral-800" id="weather-temp"></p>
+      <p class="text-neutral-500" id="weather-desc"></p>
+    </div>
+  </div>
+  <div
+    id="weather-tip"
+    class="mt-3 rounded-lg bg-primary/5 px-3 py-2 text-primary"
+    style="display: none;"
+  ></div>
+  <p class="mt-2 text-xs text-neutral-400">
+    Casale Monferrato &middot; <span id="weather-time"></span>
+  </p>
+</div>
+
+<script define:vars={{ LAT, LON }}>
+  async function initWeather() {
+    const widget = document.getElementById('weather-widget');
+    if (!widget || widget.dataset.loaded) return;
+    widget.dataset.loaded = 'true';
+
+    try {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Europe/Rome`;
+      const res = await fetch(url);
+      if (!res.ok) return;
+      const data = await res.json();
+      const current = data.current;
+
+      const temp = Math.round(current.temperature_2m);
+      const code = current.weather_code;
+      const humidity = current.relative_humidity_2m;
+      const wind = Math.round(current.wind_speed_10m);
+
+      // WMO Weather codes → icon + description
+      const weatherMap = {
+        0: { icon: '☀️', desc: 'Sereno' },
+        1: { icon: '🌤️', desc: 'Prevalentemente sereno' },
+        2: { icon: '⛅', desc: 'Parzialmente nuvoloso' },
+        3: { icon: '☁️', desc: 'Coperto' },
+        45: { icon: '🌫️', desc: 'Nebbia' },
+        48: { icon: '🌫️', desc: 'Nebbia gelata' },
+        51: { icon: '🌦️', desc: 'Pioggerella leggera' },
+        53: { icon: '🌦️', desc: 'Pioggerella' },
+        55: { icon: '🌧️', desc: 'Pioggerella intensa' },
+        61: { icon: '🌧️', desc: 'Pioggia leggera' },
+        63: { icon: '🌧️', desc: 'Pioggia' },
+        65: { icon: '🌧️', desc: 'Pioggia forte' },
+        71: { icon: '🌨️', desc: 'Neve leggera' },
+        73: { icon: '🌨️', desc: 'Neve' },
+        75: { icon: '❄️', desc: 'Neve forte' },
+        80: { icon: '🌦️', desc: 'Rovesci' },
+        81: { icon: '🌧️', desc: 'Rovesci moderati' },
+        82: { icon: '⛈️', desc: 'Rovesci violenti' },
+        95: { icon: '⛈️', desc: 'Temporale' },
+        96: { icon: '⛈️', desc: 'Temporale con grandine' },
+        99: { icon: '⛈️', desc: 'Temporale con grandine forte' },
+      };
+
+      const weather = weatherMap[code] || { icon: '🌡️', desc: 'N/D' };
+
+      document.getElementById('weather-icon').textContent = weather.icon;
+      document.getElementById('weather-temp').textContent = `${temp}°C · Umidità ${humidity}% · Vento ${wind} km/h`;
+      document.getElementById('weather-desc').textContent = weather.desc;
+
+      // Smart glass tips based on weather
+      const tipEl = document.getElementById('weather-tip');
+      let tip = '';
+
+      if (temp <= 5) {
+        tip = '🥶 Giornata gelida — i vetricamera tripli riducono la dispersione termica fino al 70%.';
+      } else if (temp <= 12) {
+        tip = '🌡️ Freddo in arrivo — un buon vetrocamera fa la differenza sulla bolletta del riscaldamento.';
+      } else if (temp >= 32) {
+        tip = '☀️ Caldo intenso — i vetri a controllo solare mantengono fresco l\'ambiente.';
+      } else if (code >= 61 && code <= 82) {
+        tip = '🌧️ Pioggia — verifica le guarnizioni dei tuoi vetri e infissi.';
+      } else if (code >= 95) {
+        tip = '⛈️ Temporale — i vetri stratificati offrono massima resistenza agli agenti atmosferici.';
+      } else if (humidity >= 80) {
+        tip = '💧 Umidità alta — i vetricamera prevengono la condensa sulle finestre.';
+      }
+
+      if (tip) {
+        tipEl.textContent = tip;
+        tipEl.style.display = '';
+      }
+
+      // Time
+      const now = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('weather-time').textContent = `aggiornato alle ${now}`;
+
+    } catch {
+      // Silently fail — widget just stays empty
+      widget.style.display = 'none';
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initWeather);
+  } else {
+    initWeather();
+  }
+  document.addEventListener('astro:after-swap', initWeather);
+</script>
