@@ -9,16 +9,24 @@ Sito web della Vetreria Monferrina di Fioravanti Giuseppe — Casale Monferrato 
 - **Resend** (email transazionali)
 - **Vercel** (hosting + serverless)
 - **Google Places API** (recensioni a build-time)
+- **Leaflet.js** (mappa interattiva contatti)
 
-## Funzionalita'
+## Funzionalità
 
-- Homepage con hero, servizi, stats, recensioni Google, CTA
+- Homepage con hero, servizi in evidenza, stats, recensioni Google, CTA
+- Pagine servizi e galleria con **filtri a pill buttons** coerenti (categorie: Installazioni, Vetri, Lavorazioni)
+- Galleria con **lightbox** e navigazione tastiera
+- **Mappa interattiva Leaflet** con marker SVG rosso a spillo e popup indirizzo
 - Chatbot a flusso (JSON statico, zero API)
 - Form preventivo con validazione client + server + honeypot
-- Dark mode automatica (orario notturno + preferenza di sistema)
+- **Dark mode automatica** (orario notturno + preferenza di sistema) con design token CSS
 - Cookie banner informativo (solo cookie tecnici, GDPR)
 - SEO: JSON-LD, Open Graph, sitemap, canonical URLs
 - View Transitions per navigazione fluida
+
+## Screenshot
+
+Vedi `docs/screenshots/` per gli screenshot di tutte le pagine (dark mode e light mode).
 
 ## Sviluppo
 
@@ -52,12 +60,14 @@ npm run test:e2e
 
 ```
 MonferrinaProject/
-├── docs/plans/               # Design doc, architettura, guide
+├── docs/
+│   ├── plans/                # Design doc, architettura, guide
+│   └── screenshots/          # Screenshot pagine (dark/light mode)
 ├── scripts/                  # Script build-time (logo, recensioni)
 ├── src/
-│   ├── components/           # Componenti Astro
-│   ├── data/                 # Dati statici (chatbot-flow, reviews)
-│   ├── layouts/              # Layout base
+│   ├── components/           # Componenti Astro (mappa Leaflet, lightbox, filtri)
+│   ├── data/                 # Dati statici (chatbot-flow, reviews, servizi)
+│   ├── layouts/              # Layout base con dark mode
 │   ├── lib/                  # Logica condivisa (sanity, chatbot, validazione)
 │   ├── pages/                # Pagine + API routes
 │   │   └── api/              # Edge functions (form preventivo)
