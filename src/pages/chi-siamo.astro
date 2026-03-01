@@ -38,13 +38,13 @@ const heroIntro = aboutData?.intro ||
         <p class="mt-4 text-lg leading-relaxed text-neutral-700">
           La Vetreria Monferrina nasce dalla passione di Giuseppe Fioravanti per
           la lavorazione del vetro. Da oltre 40 anni, il nostro laboratorio
-          a Casale Monferrato e' un punto di riferimento per privati, aziende
+          a Casale Monferrato è un punto di riferimento per privati, aziende
           e professionisti dell'edilizia in tutto il Monferrato e nelle province
           limitrofe.
         </p>
         <p class="mt-4 text-lg leading-relaxed text-neutral-700">
           Ogni progetto viene seguito con cura artigianale, dalla consulenza
-          iniziale alla posa in opera, garantendo qualita' e precisione in
+          iniziale alla posa in opera, garantendo qualità e precisione in
           ogni dettaglio.
         </p>
       </div>
@@ -82,10 +82,11 @@ const heroIntro = aboutData?.intro ||
         Il nostro percorso
       </h2>
 
-      <div class="relative">
-        <!-- Vertical line -->
+      <div class="relative" data-timeline>
+        <!-- Vertical line (grows on scroll) -->
         <div
-          class="absolute left-4 top-0 hidden h-full w-0.5 bg-primary/20 md:left-1/2 md:block"
+          data-timeline-line
+          class="absolute left-4 top-0 hidden h-full w-0.5 bg-primary/40 md:left-1/2 md:block"
           aria-hidden="true"
         ></div>
 
@@ -93,18 +94,19 @@ const heroIntro = aboutData?.intro ||
           <!-- Milestone 1 -->
           <div class="relative md:flex md:items-center">
             <div class="md:w-1/2 md:pr-12 md:text-right">
-              <div class="rounded-xl bg-surface p-6 shadow-sm">
+              <div data-reveal class="rounded-xl bg-surface p-6 shadow-sm">
                 <span class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50">
                   Anni '80
                 </span>
                 <h3 class="mt-3 font-heading text-xl text-primary">Le origini</h3>
                 <p class="mt-2 text-neutral-700">
-                  Giuseppe Fioravanti avvia la sua attivita' artigianale a Casale
+                  Giuseppe Fioravanti avvia la sua attività artigianale a Casale
                   Monferrato, specializzandosi nella lavorazione e posa del vetro.
                 </p>
               </div>
             </div>
             <div
+              data-reveal-dot
               class="absolute left-2.5 top-6 hidden h-3 w-3 rounded-full border-2 border-primary bg-surface md:left-1/2 md:-translate-x-1/2 md:block"
               aria-hidden="true"
             ></div>
@@ -115,11 +117,12 @@ const heroIntro = aboutData?.intro ||
           <div class="relative md:flex md:items-center">
             <div class="hidden md:block md:w-1/2"></div>
             <div
+              data-reveal-dot
               class="absolute left-2.5 top-6 hidden h-3 w-3 rounded-full border-2 border-primary bg-surface md:left-1/2 md:-translate-x-1/2 md:block"
               aria-hidden="true"
             ></div>
             <div class="md:w-1/2 md:pl-12">
-              <div class="rounded-xl bg-surface p-6 shadow-sm">
+              <div data-reveal class="rounded-xl bg-surface p-6 shadow-sm">
                 <span class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50">
                   Anni '90 - 2000
                 </span>
@@ -136,7 +139,7 @@ const heroIntro = aboutData?.intro ||
           <!-- Milestone 3 -->
           <div class="relative md:flex md:items-center">
             <div class="md:w-1/2 md:pr-12 md:text-right">
-              <div class="rounded-xl bg-surface p-6 shadow-sm">
+              <div data-reveal class="rounded-xl bg-surface p-6 shadow-sm">
                 <span class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50">
                   Oggi
                 </span>
@@ -144,11 +147,12 @@ const heroIntro = aboutData?.intro ||
                 <p class="mt-2 text-neutral-700">
                   Oltre 40 anni di esperienza al servizio del territorio.
                   Continuiamo a coniugare la cura artigianale con le tecnologie
-                  piu' avanzate nella lavorazione del vetro.
+                  più avanzate nella lavorazione del vetro.
                 </p>
               </div>
             </div>
             <div
+              data-reveal-dot
               class="absolute left-2.5 top-6 hidden h-3 w-3 rounded-full border-2 border-primary bg-surface md:left-1/2 md:-translate-x-1/2 md:block"
               aria-hidden="true"
             ></div>
@@ -164,8 +168,8 @@ const heroIntro = aboutData?.intro ||
     <h2 class="font-heading text-3xl text-primary text-center mb-12">I nostri valori</h2>
 
     <div class="grid gap-8 sm:grid-cols-3">
-      <!-- Artigianalita' -->
-      <div class="rounded-2xl border border-neutral-200 bg-surface p-8 text-center">
+      <!-- Artigianalità -->
+      <div class="rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
         <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
           <svg
             class="h-8 w-8 text-primary"
@@ -182,15 +186,15 @@ const heroIntro = aboutData?.intro ||
             />
           </svg>
         </div>
-        <h3 class="mt-4 font-heading text-xl text-primary">Artigianalita'</h3>
+        <h3 class="mt-4 font-heading text-xl text-primary">Artigianalità</h3>
         <p class="mt-2 text-neutral-700">
-          Ogni lavorazione e' eseguita a mano con la precisione e la cura
-          che solo l'esperienza artigianale puo' garantire.
+          Ogni lavorazione è eseguita a mano con la precisione e la cura
+          che solo l'esperienza artigianale può garantire.
         </p>
       </div>
 
-      <!-- Qualita' -->
-      <div class="rounded-2xl border border-neutral-200 bg-surface p-8 text-center">
+      <!-- Qualità -->
+      <div class="rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
         <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
           <svg
             class="h-8 w-8 text-primary"
@@ -207,7 +211,7 @@ const heroIntro = aboutData?.intro ||
             />
           </svg>
         </div>
-        <h3 class="mt-4 font-heading text-xl text-primary">Qualita'</h3>
+        <h3 class="mt-4 font-heading text-xl text-primary">Qualità</h3>
         <p class="mt-2 text-neutral-700">
           Selezioniamo solo materiali di prima scelta e lavoriamo con
           attrezzature professionali per risultati eccellenti.
@@ -215,7 +219,7 @@ const heroIntro = aboutData?.intro ||
       </div>
 
       <!-- Territorio -->
-      <div class="rounded-2xl border border-neutral-200 bg-surface p-8 text-center">
+      <div class="rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
         <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
           <svg
             class="h-8 w-8 text-primary"
@@ -240,25 +244,26 @@ const heroIntro = aboutData?.intro ||
         <h3 class="mt-4 font-heading text-xl text-primary">Territorio</h3>
         <p class="mt-2 text-neutral-700">
           Radicati a Casale Monferrato, serviamo con orgoglio il Monferrato
-          e tutto il Piemonte. Il legame con il territorio e' la nostra forza.
+          e tutto il Piemonte. Il legame con il territorio è la nostra forza.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Team photo placeholder -->
+  <!-- Lab photo carousel (identical structure to ReviewsSection) -->
   <section class="bg-neutral-100 py-16">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <h2 class="font-heading text-3xl text-primary text-center mb-8">Il nostro laboratorio</h2>
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {[1, 2, 3].map((i) => (
-          <div
-            class="flex aspect-[4/3] items-center justify-center rounded-xl bg-neutral-200 text-neutral-500"
-            aria-label={`Foto laboratorio ${i} in arrivo`}
-          >
-            <div class="text-center">
+
+      <div class="lab-carousel mt-8 overflow-hidden" role="region" aria-label="Foto del laboratorio">
+        <div class="lab-track flex gap-6">
+          {[...Array(6)].map((_, idx) => (
+            <div
+              class="flex w-80 shrink-0 flex-col items-center justify-center rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm aspect-[4/3] sm:w-96"
+              aria-label={`Foto laboratorio ${(idx % 3) + 1} in arrivo`}
+            >
               <svg
-                class="mx-auto h-12 w-12 text-neutral-400"
+                class="h-12 w-12 text-neutral-400"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="1"
@@ -271,17 +276,17 @@ const heroIntro = aboutData?.intro ||
                   d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"
                 />
               </svg>
-              <p class="mt-2 text-sm font-medium">Foto in arrivo</p>
+              <p class="mt-2 text-sm font-medium text-neutral-500">Foto in arrivo</p>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   </section>
 
   <!-- CTA -->
   <section class="mx-auto max-w-7xl px-4 py-16 text-center lg:px-8">
-    <h2 class="font-heading text-3xl text-primary">Vuoi saperne di piu'?</h2>
+    <h2 class="font-heading text-3xl text-primary">Vuoi saperne di più?</h2>
     <p class="mx-auto mt-4 max-w-xl text-lg text-neutral-700">
       Contattaci per un preventivo gratuito o passa a trovarci nel nostro laboratorio
       a Casale Monferrato.
@@ -301,4 +306,140 @@ const heroIntro = aboutData?.intro ||
       </a>
     </div>
   </section>
+
+  <!-- Scroll-reveal animations -->
+  <style is:global>
+    /* Card reveal — progressive enhancement (no-JS: fully visible) */
+    [data-reveal].reveal-ready {
+      opacity: 0;
+      transform: translateY(2rem);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    [data-reveal].in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Timeline dot pop-in (desktop only — dots hidden on mobile) */
+    @media (min-width: 768px) {
+      [data-reveal-dot].reveal-ready {
+        scale: 0;
+        transition: scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      [data-reveal-dot].in-view {
+        scale: 1;
+      }
+    }
+
+    /* Timeline line — scroll-driven growth */
+    [data-timeline-line] {
+      transform: scaleY(var(--progress, 1));
+      transform-origin: top;
+    }
+
+    /* Lab photo carousel — infinite auto-scroll (CSS only, zero JS) */
+    .lab-track {
+      animation: lab-scroll 30s linear infinite;
+    }
+    .lab-carousel:hover .lab-track {
+      animation-play-state: paused;
+    }
+    @keyframes lab-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Respect users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      [data-reveal].reveal-ready {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      [data-reveal-dot].reveal-ready {
+        scale: 1;
+        transition: none;
+      }
+      [data-timeline-line] {
+        transform: scaleY(1);
+      }
+      .lab-track {
+        animation: none;
+      }
+      .lab-carousel {
+        overflow-x: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-neutral-200) transparent;
+      }
+    }
+  </style>
+
+  <script>
+    let cleanupFn: (() => void) | null = null;
+
+    function initScrollReveal(): void {
+      // Cleanup previous instance (View Transitions navigation)
+      if (cleanupFn) {
+        cleanupFn();
+        cleanupFn = null;
+      }
+
+      const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      const dotEls = document.querySelectorAll<HTMLElement>('[data-reveal-dot]');
+      const line = document.querySelector<HTMLElement>('[data-timeline-line]');
+      const container = document.querySelector<HTMLElement>('[data-timeline]');
+
+      if (revealEls.length === 0 && dotEls.length === 0) return;
+
+      // Progressive enhancement: hide only when JS is active
+      revealEls.forEach((el) => el.classList.add('reveal-ready'));
+      dotEls.forEach((el) => el.classList.add('reveal-ready'));
+
+      // Observe elements entering viewport
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
+      );
+
+      revealEls.forEach((el) => observer.observe(el));
+      dotEls.forEach((el) => observer.observe(el));
+
+      // Timeline line grows with scroll progress
+      let scrollHandler: (() => void) | null = null;
+      if (line && container) {
+        line.style.setProperty('--progress', '0');
+        let ticking = false;
+        scrollHandler = () => {
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              const rect = container.getBoundingClientRect();
+              const vh = window.innerHeight;
+              const progress = Math.max(0, Math.min(1, (vh - rect.top) / rect.height));
+              line.style.setProperty('--progress', String(progress));
+              ticking = false;
+            });
+            ticking = true;
+          }
+        };
+        window.addEventListener('scroll', scrollHandler, { passive: true });
+        scrollHandler();
+      }
+
+      cleanupFn = () => {
+        observer.disconnect();
+        if (scrollHandler) {
+          window.removeEventListener('scroll', scrollHandler);
+        }
+      };
+    }
+
+    document.addEventListener('astro:page-load', initScrollReveal);
+  </script>
 </BaseLayout>
