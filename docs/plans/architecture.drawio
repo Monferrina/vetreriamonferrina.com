@@ -14,7 +14,7 @@
         <mxCell id="cms_group" value="Content Management" style="swimlane;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
           <mxGeometry x="40" y="90" width="300" height="220" as="geometry" />
         </mxCell>
-        <mxCell id="sanity" value="Sanity CMS v3&#xa;(contenuti dinamici)&#xa;&#xa;• Testi pagine&#xa;• Servizi&#xa;• Galleria foto&#xa;• Orari apertura&#xa;• Chatbot flow" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="cms_group">
+        <mxCell id="sanity" value="Sanity CMS v3&#xa;(contenuti dinamici)&#xa;&#xa;• Servizi + Galleria foto&#xa;• Impostazioni sito&#xa;• Chi siamo&#xa;• Studio: localhost:3334&#xa;• Project: 7bqabdpn" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="cms_group">
           <mxGeometry x="20" y="40" width="260" height="160" as="geometry" />
         </mxCell>
 

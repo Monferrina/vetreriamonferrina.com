@@ -33,6 +33,9 @@
 - [x] **Mappa Leaflet interattiva** — marker SVG rosso a spillo, popup indirizzo, coordinate esatte (Plus Code 5C3X+PW)
 - [x] **CSS classes design-token aware** — gallery-filter-active/inactive per dark mode
 - [x] **Screenshot tutte le pagine** — dark mode e light mode in `docs/screenshots/`
+- [x] **Chatbot orari corretti** — aggiornati da Google (Lun-Ven 08:00-12:00/13:30-17:30, Sab 08:00-12:00)
+- [x] **Chatbot rendering multilinea** — split su `\n` per paragrafi separati nel bubble
+- [x] **Sanity Studio verificato** — funzionante su localhost:3334, 4 schemi, dati non ancora popolati
 
 ## Da fare — Prossimi step
 
@@ -70,10 +73,14 @@
 - Configurare DSN in variabili d'ambiente
 - Error tracking client-side e server-side + source maps
 
-### 7. Sanity CMS
-- Verificare connessione con project ID `7bqabdpn`
-- Popolare contenuti iniziali nello studio
-- Testare `fetchWithFallback` con dati reali
+### 7. Sanity CMS — Studio verificato, da popolare
+- [x] Studio funzionante (`cd sanity && npx sanity dev --port 3334`)
+- [x] Project ID `7bqabdpn`, dataset `production`, CORS localhost:3333 attivo
+- [ ] Popolare Impostazioni Sito (dati aziendali — gia' corretti nei fallback)
+- [ ] Popolare servizi con foto reali
+- [ ] Popolare galleria con foto reali
+- [ ] Testare `fetchWithFallback` con dati reali dal CMS
+- [ ] Deploy studio su `vetreriamonferrina.sanity.studio` (quando pronto)
 
 ### 8. Mobile testing approfondito
 - iPhone SE, iPhone 15, Pixel 7, iPad, Samsung Galaxy Fold
@@ -108,3 +115,5 @@
 - Orari contatti: fallback chain Sanity → `opening-hours.json` (Google) → valori statici
 - Foto Google: scaricate localmente in `public/images/google-photos/`, `place-photos.json` gitignored
 - Sicurezza: API key MAI nel frontend, solo variabili d'ambiente, impostare quote GCP (50 req/day + budget $5/mese)
+- Sanity Studio: `cd sanity && npx sanity dev --port 3334`, richiede `npm install` nella cartella sanity
+- Chatbot: messaggi con `\n` vengono renderizzati come paragrafi separati (split su newline + ". ")
