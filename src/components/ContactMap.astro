@@ -1,22 +1,28 @@
 ---
 // src/components/ContactMap.astro
-// OpenStreetMap embed for the contact page — no third-party cookies.
+// Interactive Leaflet map with custom red pin marker.
+const LAT = 45.15431;
+const LON = 8.44981;
+const ZOOM = 17;
 ---
 
 <div class="overflow-hidden rounded-xl border border-neutral-200">
-  <iframe
-    src="https://www.openstreetmap.org/export/embed.html?bbox=8.44,45.12,8.46,45.15&layer=mapnik"
-    title="Mappa posizione Vetreria Monferrina"
-    width="100%"
-    height="400"
-    loading="lazy"
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <div
+    id="contact-map"
     class="block w-full"
-    style="border: 0;"
-    referrerpolicy="no-referrer"
-  ></iframe>
+    style="height: 400px;"
+    role="img"
+    aria-label="Mappa posizione Vetreria Monferrina — Strada Statale 31, 98/C, Casale Monferrato"
+  ></div>
   <p class="bg-neutral-100 px-4 py-2 text-sm text-neutral-700">
     <a
-      href="https://www.openstreetmap.org/?mlat=45.134&mlon=8.449#map=15/45.134/8.449"
+      href={`https://www.openstreetmap.org/?mlat=${LAT}&mlon=${LON}#map=17/${LAT}/${LON}`}
       target="_blank"
       rel="noopener noreferrer"
       class="text-primary hover:underline"
@@ -25,3 +31,67 @@
     </a>
   </p>
 </div>
+
+<script define:vars={{ LAT, LON, ZOOM }}>
+  function initContactMap() {
+    const container = document.getElementById('contact-map');
+    if (!container || container.dataset.leafletReady) return;
+    container.dataset.leafletReady = 'true';
+
+    // Load Leaflet JS dynamically
+    if (!window.L) {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+      script.crossOrigin = '';
+      script.onload = () => createMap();
+      document.head.appendChild(script);
+    } else {
+      createMap();
+    }
+
+    function createMap() {
+      const map = window.L.map('contact-map', {
+        scrollWheelZoom: false,
+      }).setView([LAT, LON], ZOOM);
+
+      window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+
+      // Custom red pin marker (SVG)
+      const redPinSvg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="45" viewBox="0 0 30 45">
+          <path d="M15 0C6.716 0 0 6.716 0 15c0 10.5 15 30 15 30s15-19.5 15-30C30 6.716 23.284 0 15 0z"
+                fill="#E53E3E" stroke="#C53030" stroke-width="1"/>
+          <circle cx="15" cy="14" r="7" fill="#FFF" opacity="0.9"/>
+          <circle cx="15" cy="14" r="4" fill="#E53E3E"/>
+        </svg>
+      `;
+
+      const pinIcon = window.L.divIcon({
+        html: redPinSvg,
+        className: '',
+        iconSize: [30, 45],
+        iconAnchor: [15, 45],
+        popupAnchor: [0, -40],
+      });
+
+      window.L.marker([LAT, LON], { icon: pinIcon })
+        .addTo(map)
+        .bindPopup(
+          '<strong>Vetreria Monferrina</strong><br>Strada Statale 31, 98/C<br>15033 Casale Monferrato (AL)'
+        )
+        .openPopup();
+    }
+  }
+
+  // Init on load and on Astro page transitions
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initContactMap);
+  } else {
+    initContactMap();
+  }
+  document.addEventListener('astro:after-swap', initContactMap);
+</script>
