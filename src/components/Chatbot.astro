@@ -423,8 +423,8 @@
       const bubble = document.createElement('div');
       bubble.className = 'chatbot-bubble chatbot-bubble-bot';
       bubble.setAttribute('data-chatbot-message', '');
-      // Split on ". " to create separate paragraphs for readability
-      const sentences = text.split(/(?<=\.)\s+/);
+      // Split on newlines or ". " to create separate paragraphs for readability
+      const sentences = text.split(/\n+|(?<=\.)\s+/).filter(Boolean);
       if (sentences.length > 1) {
         for (const sentence of sentences) {
           const p = document.createElement('p');

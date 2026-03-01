@@ -164,7 +164,7 @@
     ]
   },
   "orari": {
-    "message": "Siamo aperti dal luned\u00ec al venerd\u00ec, 8:00\u201312:00 e 14:00\u201318:00. Ci trovi in Strada Statale 31, 98/C — Casale Monferrato (AL). Vieni a trovarci!",
+    "message": "Orari di apertura:\nLuned\u00ec \u2013 Venerd\u00ec: 08:00\u201312:00 / 13:30\u201317:30\nSabato: 08:00\u201312:00\nDomenica: Chiuso\nCi trovi in Strada Statale 31, 98/C \u2014 15033 Casale Monferrato (AL).",
     "options": [
       { "label": "Apri contatti", "action": "open_contacts" },
       { "label": "Chiamaci ora", "action": "call_phone" },
