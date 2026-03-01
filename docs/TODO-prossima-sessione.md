@@ -18,7 +18,12 @@
 - [x] Docker per dev e test (unit + E2E)
 - [x] **Dark mode automatica** — orario notturno (20-7) + `prefers-color-scheme`
 - [x] **Sezione recensioni Google** — build-time, validazione schema, stelle, filtro >= 4 stelle
-- [x] **Script fetch-reviews.mjs** — Google Places API, abbreviazione nomi GDPR
+- [x] **Script fetch-place-data.mjs** — Google Places API (New), singola chiamata per recensioni + orari + foto
+- [x] **Recensioni Google reali** — 3 recensioni >= 4 stelle, rating 4.4/5, Place ID `ChIJcx_Q1ESwh0cRqv3FdLTrU1w`
+- [x] **Orari apertura da Google** — fallback chain: Sanity → Google JSON → statico
+- [x] **10 foto Google scaricate localmente** — `public/images/google-photos/`, no API key nei file
+- [x] **Widget meteo Open-Meteo** — gratis, no API key, consigli intelligenti sul vetro
+- [x] **Sicurezza API key** — chiavi limitate a Places API, place-photos.json gitignored, zero key nel codice
 - [x] Code review completa homepage (zero dead code, zero hardcoded, best practice)
 - [x] **Accenti italiani corretti** — è, né, modalità, dopodiché, Portabilità (privacy, cookie, contatti)
 - [x] **Hero section preventivo** — coerente con tutte le altre pagine
@@ -36,46 +41,54 @@
 - Variabili d'ambiente separate per dev e prod
 - Branch `main` → production, branch/PR → preview automatico
 
-### 2. Collegare recensioni Google reali
-- Creare progetto Google Cloud + abilitare Places API
-- Trovare Place ID della Vetreria Monferrina
-- Eseguire `scripts/fetch-reviews.mjs` con API key reale
-- Vedi: `docs/plans/google-reviews-setup.md`
+### 2. Configurare soglie Google Cloud (IMPORTANTE)
+- Impostare quota Places API (New): **50 richieste/giorno** max
+- Impostare quota Places API: **50 richieste/giorno** max
+- Creare budget alert in Fatturazione: **$5/mese** con notifica a 50% e 100%
+- Percorso: Google Cloud Console → IAM e amministrazione → Quote e limiti di sistema
+- Percorso: Google Cloud Console → Fatturazione → Budget e avvisi
+- Dopo 90 giorni i $300 credito scadono, ma i $200/mese Maps Platform restano gratis per sempre
 
-### 3. Foto e dati reali
-- Sostituire immagini placeholder con foto reali (laboratorio, lavori, team)
-- Aggiungere foto per la galleria (categorie: installazioni, vetri, lavorazioni)
+### 3. Firebase App Check (futuro, quando si usa Google Maps JS)
+- Protezione chiamate API lato client con reCAPTCHA
+- Gratis fino a 10.000 richieste/mese
+- Non serve ora (API key usata solo server-side a build-time)
+- Docs: https://developers.google.com/maps/documentation/javascript/places-app-check
+
+### 4. Foto e dati reali
+- Usare le 10 foto Google scaricate nella galleria (`public/images/google-photos/`)
+- Aggiungere foto proprie per la galleria (laboratorio, lavori, team)
 - Verificare tutti i dati aziendali (indirizzo, P.IVA, telefono)
 
-### 4. CI/CD GitHub Actions
+### 5. CI/CD GitHub Actions
 - Lint + type check + unit test + E2E + build
 - Lighthouse CI (performance, a11y, SEO)
 - Pre-commit hooks (husky + lint-staged)
 - Workflow automatico aggiornamento recensioni (cron giornaliero)
 
-### 5. Sentry
+### 6. Sentry
 - Installare `@sentry/astro`
 - Configurare DSN in variabili d'ambiente
 - Error tracking client-side e server-side + source maps
 
-### 6. Sanity CMS
+### 7. Sanity CMS
 - Verificare connessione con project ID `7bqabdpn`
 - Popolare contenuti iniziali nello studio
 - Testare `fetchWithFallback` con dati reali
 
-### 7. Mobile testing approfondito
+### 8. Mobile testing approfondito
 - iPhone SE, iPhone 15, Pixel 7, iPad, Samsung Galaxy Fold
 - Chatbot fullscreen su mobile
 - Form preventivo usabilità touch
 - Core Web Vitals sotto soglia
 
-### 8. Cloudflare
+### 9. Cloudflare
 - DNS verso Vercel
 - SSL/TLS Full (Strict)
 - Cloudflare Web Analytics (zero cookie, GDPR compliant)
 - Cache rules
 
-### 9. Vercel deploy (ultimo)
+### 10. Vercel deploy (ultimo)
 - Deploy da branch `main`
 - Environment variables (RESEND_API_KEY, SANITY_PROJECT_ID, GOOGLE_PLACES_API_KEY)
 - Custom domain `vetreriamonferrina.com`
@@ -87,7 +100,12 @@
 - Dark mode: CSS custom properties in `[data-theme="dark"]`, script inline anti-FOUC
 - Token `--color-surface` per superfici (sostituisce `bg-white`)
 - Recensioni: validazione schema a build-time, troncamento 500 char, max 50 recensioni
-- ViewTransitions: usare `astro:after-swap` per re-inizializzare script (filtri, mappa, lightbox)
+- ViewTransitions: usare `astro:after-swap` per re-inizializzare script (filtri, mappa, lightbox, meteo)
 - Tailwind CSS 4: `space-y-*` non affidabile con elementi JS-injected, usare `flex` + `gap`
 - Mappa: Leaflet.js caricato dinamicamente, scrollWheelZoom disabilitato, marker SVG inline
 - Filtri: CSS classes `.gallery-filter-active`/`.gallery-filter-inactive` leggono design token per dark mode
+- Google Places API (New): singola chiamata per reviews + hours + photos, key in `GOOGLE_PLACES_API_KEY`
+- Open-Meteo: API meteo gratis, no API key, coordinate Casale Monferrato (45.1334, 8.4525)
+- Orari contatti: fallback chain Sanity → `opening-hours.json` (Google) → valori statici
+- Foto Google: scaricate localmente in `public/images/google-photos/`, `place-photos.json` gitignored
+- Sicurezza: API key MAI nel frontend, solo variabili d'ambiente, impostare quote GCP (50 req/day + budget $5/mese)

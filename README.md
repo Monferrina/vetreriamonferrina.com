@@ -8,7 +8,8 @@ Sito web della Vetreria Monferrina di Fioravanti Giuseppe — Casale Monferrato 
 - **Sanity v3** (CMS headless)
 - **Resend** (email transazionali)
 - **Vercel** (hosting + serverless)
-- **Google Places API** (recensioni a build-time)
+- **Google Places API (New)** (recensioni, orari, foto a build-time)
+- **Open-Meteo** (widget meteo gratis, no API key)
 - **Leaflet.js** (mappa interattiva contatti)
 
 ## Funzionalità
@@ -17,6 +18,8 @@ Sito web della Vetreria Monferrina di Fioravanti Giuseppe — Casale Monferrato 
 - Pagine servizi e galleria con **filtri a pill buttons** coerenti (categorie: Installazioni, Vetri, Lavorazioni)
 - Galleria con **lightbox** e navigazione tastiera
 - **Mappa interattiva Leaflet** con marker SVG rosso a spillo e popup indirizzo
+- **Widget meteo** con consigli intelligenti sul vetro (Open-Meteo, gratis)
+- **Orari di apertura da Google** con fallback chain (Sanity → Google → statico)
 - Chatbot a flusso (JSON statico, zero API)
 - Form preventivo con validazione client + server + honeypot
 - **Dark mode automatica** (orario notturno + preferenza di sistema) con design token CSS
@@ -63,10 +66,10 @@ MonferrinaProject/
 ├── docs/
 │   ├── plans/                # Design doc, architettura, guide
 │   └── screenshots/          # Screenshot pagine (dark/light mode)
-├── scripts/                  # Script build-time (logo, recensioni)
+├── scripts/                  # Script build-time (logo, Google Places data)
 ├── src/
 │   ├── components/           # Componenti Astro (mappa Leaflet, lightbox, filtri)
-│   ├── data/                 # Dati statici (chatbot-flow, reviews, servizi)
+│   ├── data/                 # Dati statici (chatbot-flow, reviews, orari, servizi)
 │   ├── layouts/              # Layout base con dark mode
 │   ├── lib/                  # Logica condivisa (sanity, chatbot, validazione)
 │   ├── pages/                # Pagine + API routes
@@ -77,13 +80,22 @@ MonferrinaProject/
 └── package.json
 ```
 
-## Aggiornare le recensioni Google
+## Aggiornare dati Google (recensioni, orari, foto)
 
 ```bash
-GOOGLE_PLACES_API_KEY=xxx GOOGLE_PLACE_ID=yyy node scripts/fetch-reviews.mjs
+GOOGLE_PLACES_API_KEY=xxx node scripts/fetch-place-data.mjs
 ```
 
+Genera: `reviews.json`, `opening-hours.json`, `place-photos.json` + scarica foto in `public/images/google-photos/`.
+
 Vedi `docs/plans/google-reviews-setup.md` per la guida completa.
+
+### Sicurezza API
+
+- API key **mai committata** — solo variabili d'ambiente o GitHub Secrets
+- Chiavi limitate a Places API e Places API (New) nella Google Cloud Console
+- `place-photos.json` in `.gitignore` (contiene solo path locali, ma per cautela)
+- Impostare quote GCP: 50 req/giorno + budget alert $5/mese
 
 ## Documentazione
 

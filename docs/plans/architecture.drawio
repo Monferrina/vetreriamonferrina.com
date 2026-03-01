@@ -34,12 +34,20 @@
           <mxGeometry x="20" y="40" width="260" height="160" as="geometry" />
         </mxCell>
 
-        <!-- GOOGLE REVIEWS -->
-        <mxCell id="google_group" value="Google Reviews" style="swimlane;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="40" y="340" width="300" height="130" as="geometry" />
+        <!-- GOOGLE PLACES API (New) -->
+        <mxCell id="google_group" value="Google Places API (New)" style="swimlane;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="340" width="300" height="180" as="geometry" />
         </mxCell>
-        <mxCell id="google_api" value="Google Places API&#xa;&#xa;• Fetch a build-time ($0 con credito gratuito)&#xa;• Filtro recensioni >= 4 stelle&#xa;• Nomi abbreviati (GDPR)&#xa;• Validazione schema JSON" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="google_group">
-          <mxGeometry x="20" y="35" width="260" height="85" as="geometry" />
+        <mxCell id="google_api" value="fetch-place-data.mjs (singola chiamata)&#xa;&#xa;• Recensioni >= 4★ (nomi abbreviati GDPR)&#xa;• Orari apertura reali&#xa;• 10 foto scaricate localmente&#xa;• API key solo server-side (env var)&#xa;• Quote: 50 req/day + budget $5/mese" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="google_group">
+          <mxGeometry x="20" y="35" width="260" height="130" as="geometry" />
+        </mxCell>
+
+        <!-- OPEN-METEO WEATHER -->
+        <mxCell id="weather_group" value="Open-Meteo (gratis)" style="swimlane;startSize=25;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="540" width="300" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="weather_api" value="Widget meteo client-side | No API key&#xa;Consigli intelligenti sul vetro (temp/umidità/pioggia)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="weather_group">
+          <mxGeometry x="20" y="30" width="260" height="50" as="geometry" />
         </mxCell>
 
         <!-- Arrows: CMS -> Build -> Host -->
@@ -50,7 +58,11 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <!-- Google -> Build -->
-        <mxCell id="arrow_google" value="reviews.json&#xa;(build-time)" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#d6b656;" edge="1" parent="1" source="google_group" target="build_group">
+        <mxCell id="arrow_google" value="reviews.json + hours.json&#xa;+ photos (build-time)" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#d6b656;" edge="1" parent="1" source="google_group" target="build_group">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Weather -> Browser (client-side) -->
+        <mxCell id="arrow_weather" value="fetch client-side&#xa;(no API key)" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#82b366;dashed=1;" edge="1" parent="1" source="weather_group" target="browser">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
@@ -72,7 +84,7 @@
 
         <!-- PAGES -->
         <mxCell id="pages_group" value="Pagine" style="swimlane;startSize=30;fillColor=#f5f5f5;strokeColor=#666;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="40" y="500" width="350" height="380" as="geometry" />
+          <mxGeometry x="40" y="660" width="350" height="420" as="geometry" />
         </mxCell>
         <mxCell id="page_home" value="Home" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="pages_group">
           <mxGeometry x="20" y="40" width="95" height="35" as="geometry" />
@@ -119,6 +131,11 @@
           <mxGeometry x="20" y="330" width="305" height="35" as="geometry" />
         </mxCell>
 
+        <!-- WEATHER WIDGET -->
+        <mxCell id="weather_box" value="Widget Meteo Open-Meteo (Contatti) | Consigli vetro | No API key" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="pages_group">
+          <mxGeometry x="20" y="375" width="305" height="35" as="geometry" />
+        </mxCell>
+
         <!-- FORM FLOW -->
         <mxCell id="form_group" value="Flusso Preventivo" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
           <mxGeometry x="440" y="500" width="340" height="290" as="geometry" />
@@ -154,8 +171,8 @@
         <mxCell id="legend_title" value="Costi" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#333;" vertex="1" parent="1">
           <mxGeometry x="850" y="660" width="100" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="legend" value="Dominio .it: ~12 EUR/anno&#xa;Vercel hosting: gratis&#xa;Sanity CMS: gratis&#xa;Resend email: gratis&#xa;Google Places API: gratis ($200/mese credito)&#xa;HTTPS/SSL: gratis (Vercel)&#xa;─────────────&#xa;Totale: ~12 EUR/anno" style="text;html=1;align=left;verticalAlign=top;fontSize=11;fontColor=#666;spacingLeft=5;" vertex="1" parent="1">
-          <mxGeometry x="850" y="690" width="250" height="130" as="geometry" />
+        <mxCell id="legend" value="Dominio .it: ~12 EUR/anno&#xa;Vercel hosting: gratis&#xa;Sanity CMS: gratis&#xa;Resend email: gratis&#xa;Google Places API (New): gratis ($200/mese credito)&#xa;Open-Meteo meteo: gratis (no API key)&#xa;HTTPS/SSL: gratis (Vercel)&#xa;─────────────&#xa;Totale: ~12 EUR/anno&#xa;&#xa;⚠ Soglie consigliate GCP:&#xa;• Quote: 50 req/giorno&#xa;• Budget alert: $5/mese" style="text;html=1;align=left;verticalAlign=top;fontSize=11;fontColor=#666;spacingLeft=5;" vertex="1" parent="1">
+          <mxGeometry x="850" y="690" width="260" height="190" as="geometry" />
         </mxCell>
 
       </root>

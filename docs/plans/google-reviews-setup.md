@@ -1,22 +1,34 @@
-# Google Reviews — Guida Configurazione
+# Google Places — Guida Configurazione
 
-> Questa guida spiega come collegare le recensioni Google alla Vetreria Monferrina.
-> Le recensioni vengono scaricate a build-time (gratis) e mostrate nel sito.
+> Questa guida spiega come collegare i dati Google (recensioni, orari, foto)
+> alla Vetreria Monferrina. Tutto viene scaricato a build-time (gratis).
 
 ## Costi
 
-**Gratis.** Google Cloud offre **$200/mese di credito gratuito** per Maps Platform.
+**Gratis.** Google Cloud offre **$200/mese di credito gratuito** per Maps Platform (per sempre).
+I primi 90 giorni hanno anche $300 di credito aggiuntivo.
 
 | Endpoint | Costo per richiesta | Con $200/mese |
 |---|---|---|
 | Place Details (Basic) | $0.00 (gratis) | Illimitato |
 | Place Details (Contact) | $0.003 | ~66.600 richieste |
 | Place Details (Atmosphere — include reviews) | $0.005 | ~40.000 richieste |
+| Place Photos | $0.007 | ~28.500 richieste |
 
-Noi usiamo il campo `reviews` che rientra nella categoria **Atmosphere** ($0.005/richiesta).
-Con un fetch al giorno: **30 richieste/mese = $0.15/mese** — ampiamente coperto dal credito gratuito.
+Noi facciamo **1 chiamata a build-time** che recupera tutto (recensioni, orari, foto).
+Con un fetch al giorno: **30 richieste/mese = ~$0.15/mese** — ampiamente coperto dal credito.
 
 **Costo effettivo: $0/mese** (anche con fetch giornaliero automatico via CI).
+
+## Soglie consigliate (IMPORTANTE)
+
+| Azione | Dove in Google Cloud Console | Valore |
+|---|---|---|
+| Quota Places API (New) | IAM e amministrazione → Quote | 50 req/giorno |
+| Quota Places API | IAM e amministrazione → Quote | 50 req/giorno |
+| Budget alert | Fatturazione → Budget e avvisi | $5/mese (notifica a 50% e 100%) |
+
+Queste soglie proteggono da usi accidentali o abusi. Docs: https://docs.cloud.google.com/docs/quotas/view-manage
 
 ---
 
@@ -27,11 +39,11 @@ Con un fetch al giorno: **30 richieste/mese = $0.15/mese** — ampiamente copert
 3. Nome progetto: `vetreria-monferrina` (qualsiasi nome va bene)
 4. Clicca **"Crea"**
 
-## Step 2: Abilitare la Places API
+## Step 2: Abilitare le API
 
 1. Nel progetto appena creato, vai su **API e servizi → Libreria**
-2. Cerca **"Places API"** (NON "Places API (New)" — serve la versione legacy per i reviews)
-3. Clicca **"Abilita"**
+2. Cerca e abilita **"Places API (New)"** — versione moderna, singola chiamata per tutto
+3. Cerca e abilita **"Places API"** — versione legacy (backup)
 
 ## Step 3: Creare una API Key
 
@@ -41,7 +53,7 @@ Con un fetch al giorno: **30 richieste/mese = $0.15/mese** — ampiamente copert
 4. **IMPORTANTE — Limita la chiave:**
    - Clicca sulla chiave appena creata
    - In "Restrizioni API" seleziona **"Limita chiave"**
-   - Seleziona solo **"Places API"**
+   - Seleziona **"Places API"** e **"Places API (New)"**
    - In "Restrizioni applicazione" seleziona **"Nessuna"** (uso server-side a build time)
    - Salva
 
@@ -54,29 +66,37 @@ Con un fetch al giorno: **30 richieste/mese = $0.15/mese** — ampiamente copert
 
 > **Alternativa**: cerca direttamente su Google Maps, clicca sull'attivita', e nell'URL troverai il Place ID.
 
-## Step 5: Testare il fetch delle recensioni
+## Step 5: Testare il fetch dei dati
 
 ```bash
 # Dal terminale, nella root del progetto:
-GOOGLE_PLACES_API_KEY=AIzaSy... GOOGLE_PLACE_ID=ChIJ... node scripts/fetch-reviews.mjs
+GOOGLE_PLACES_API_KEY=AIzaSy... node scripts/fetch-place-data.mjs
 ```
 
 Output atteso:
 ```
-Fetching reviews for place: ChIJ...
-Saved 4 positive reviews (of 5 total) to src/data/reviews.json
-Overall rating: 4.1/5 (18 reviews)
+Fetching place data from Places API (New)...
+  Reviews: 3 positive (of 5 total)
+  Hours: 3 time slots
+  Photos: 10 downloaded to public/images/google-photos/
+
+Done! Rating: 4.4/5 (34 reviews)
 ```
 
-Il file `src/data/reviews.json` viene aggiornato con le recensioni reali.
+File generati:
+- `src/data/reviews.json` — recensioni filtrate
+- `src/data/opening-hours.json` — orari di apertura
+- `src/data/place-photos.json` — metadata foto (gitignored)
+- `public/images/google-photos/` — 10 foto scaricate localmente
 
 ## Step 6: Verificare e buildare
 
 ```bash
-# Controlla il JSON generato
+# Controlla i JSON generati
 cat src/data/reviews.json
+cat src/data/opening-hours.json
 
-# Build del sito (le recensioni verranno incluse)
+# Build del sito (i dati verranno inclusi)
 npm run build
 ```
 
@@ -111,27 +131,26 @@ jobs:
         with:
           node-version: 24
 
-      - name: Fetch recensioni
+      - name: Fetch dati Google Places
         env:
           GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
-          GOOGLE_PLACE_ID: ${{ secrets.GOOGLE_PLACE_ID }}
-        run: node scripts/fetch-reviews.mjs
+        run: node scripts/fetch-place-data.mjs
 
       - name: Commit e push se cambiate
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/reviews.json
-          git diff --staged --quiet || git commit -m "chore: aggiorna recensioni Google" && git push
+          git add src/data/reviews.json src/data/opening-hours.json public/images/google-photos/
+          git diff --staged --quiet || git commit -m "chore: aggiorna dati Google Places" && git push
 ```
 
 ### Manualmente
 
 Basta eseguire:
 ```bash
-GOOGLE_PLACES_API_KEY=xxx GOOGLE_PLACE_ID=yyy node scripts/fetch-reviews.mjs
-git add src/data/reviews.json
-git commit -m "chore: aggiorna recensioni Google"
+GOOGLE_PLACES_API_KEY=xxx node scripts/fetch-place-data.mjs
+git add src/data/reviews.json src/data/opening-hours.json public/images/google-photos/
+git commit -m "chore: aggiorna dati Google Places"
 git push
 ```
 
@@ -141,12 +160,14 @@ Vercel fara' il rebuild automatico dopo il push.
 
 ## Note tecniche
 
+- **Script unificato** `fetch-place-data.mjs` — una sola chiamata API per tutto
+- **Places API (New)** — endpoint moderno, headers `X-Goog-Api-Key` e `X-Goog-FieldMask`
 - **Solo recensioni >= 4 stelle** vengono incluse (filtro nello script)
 - **Nomi abbreviati** per privacy GDPR: "Mario Rossi" → "Mario R."
-- **Validazione a build-time**: se il JSON e' corrotto, il build fallisce con errore chiaro
-- **Testo troncato** a 500 caratteri per sicurezza
-- **Massimo 50 recensioni** per evitare pagine troppo pesanti
 - **Google Places API** restituisce al massimo 5 recensioni per richiesta (limite dell'API)
+- **Foto scaricate localmente** — nessun URL con API key nei file committati
+- **Orari di apertura** — usati nella pagina contatti con fallback chain (Sanity → Google → statico)
+- **Place ID**: `ChIJcx_Q1ESwh0cRqv3FdLTrU1w` (hardcoded come default nello script)
 - Il rating complessivo e il numero totale di recensioni vengono sempre aggiornati
 
 ## Troubleshooting
@@ -164,6 +185,10 @@ Vercel fara' il rebuild automatico dopo il push.
 
 - La API key **non va mai committata** nel repository
 - Usare variabili d'ambiente o GitHub Secrets
-- La chiave e' limitata alla sola Places API (non puo' fare altro)
+- La chiave e' limitata a Places API + Places API (New) nella Google Cloud Console
 - Lo script gira solo a build-time (server-side), la chiave non finisce mai nel browser
-- Il file `reviews.json` contiene solo dati pubblici (visibili a chiunque su Google)
+- `place-photos.json` e' in `.gitignore` per cautela
+- I file JSON committati contengono solo dati pubblici (visibili a chiunque su Google)
+- **Impostare quote GCP**: 50 req/giorno + budget alert $5/mese
+- **Futuro**: quando si usa Google Maps JS lato client, aggiungere Firebase App Check
+  - Docs: https://developers.google.com/maps/documentation/javascript/places-app-check
