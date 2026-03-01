@@ -34,6 +34,9 @@ blob-report/
 # Build-time generated data (contains API keys in URLs)
 src/data/place-photos.json
 
+# Sanity Studio
+sanity/.sanity/
+
 # macOS-specific files
 .DS_Store
 
