@@ -44,14 +44,14 @@ export const services: Service[] = [
     slug: 'vetrine',
     name: 'Posa di vetrine',
     description:
-      "Installazione vetrine per negozi e attivita' commerciali.",
+      "Installazione vetrine per negozi e attività commerciali.",
     category: 'installazioni',
   },
   {
     slug: 'sostituzione-vetri',
     name: 'Sostituzione vetri finestre',
     description:
-      "Sostituzione vetri per finestre esistenti. Servizio su disponibilita'.",
+      "Sostituzione vetri per finestre esistenti. Servizio su disponibilità.",
     category: 'installazioni',
   },
   // Vetri
@@ -73,7 +73,7 @@ export const services: Service[] = [
     slug: 'stratificati',
     name: 'Vetri stratificati',
     description:
-      "Vetri stratificati trasparenti, satinati e colorati. Sicurezza e versatilita'.",
+      "Vetri stratificati trasparenti, satinati e colorati. Sicurezza e versatilità.",
     category: 'vetri',
   },
   {
@@ -128,8 +128,8 @@ export const services: Service[] = [
 ];
 
 export const categories = {
-  installazioni: 'Servizi e Installazioni',
-  vetri: 'Tipi di Vetro',
+  installazioni: 'Installazioni',
+  vetri: 'Vetri',
   lavorazioni: 'Lavorazioni',
 } as const;
 

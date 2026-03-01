@@ -37,7 +37,7 @@ const galleryItems = sanityGalleryItems && Array.isArray(sanityGalleryItems) && 
     <div class="mb-10 flex flex-wrap gap-2" role="group" aria-label="Filtra per categoria">
       <button
         type="button"
-        class="rounded-full px-5 py-2 text-sm font-medium transition-colors bg-primary text-white"
+        class="gallery-filter-active rounded-full px-5 py-2 text-sm font-medium transition-colors"
         data-filter="tutti"
         aria-pressed="true"
       >
@@ -45,7 +45,7 @@ const galleryItems = sanityGalleryItems && Array.isArray(sanityGalleryItems) && 
       </button>
       <button
         type="button"
-        class="rounded-full px-5 py-2 text-sm font-medium transition-colors bg-neutral-200 text-neutral-700 hover:bg-neutral-300"
+        class="gallery-filter-inactive rounded-full px-5 py-2 text-sm font-medium transition-colors"
         data-filter="installazioni"
         aria-pressed="false"
       >
@@ -53,7 +53,7 @@ const galleryItems = sanityGalleryItems && Array.isArray(sanityGalleryItems) && 
       </button>
       <button
         type="button"
-        class="rounded-full px-5 py-2 text-sm font-medium transition-colors bg-neutral-200 text-neutral-700 hover:bg-neutral-300"
+        class="gallery-filter-inactive rounded-full px-5 py-2 text-sm font-medium transition-colors"
         data-filter="vetri"
         aria-pressed="false"
       >
@@ -61,7 +61,7 @@ const galleryItems = sanityGalleryItems && Array.isArray(sanityGalleryItems) && 
       </button>
       <button
         type="button"
-        class="rounded-full px-5 py-2 text-sm font-medium transition-colors bg-neutral-200 text-neutral-700 hover:bg-neutral-300"
+        class="gallery-filter-inactive rounded-full px-5 py-2 text-sm font-medium transition-colors"
         data-filter="lavorazioni"
         aria-pressed="false"
       >
@@ -91,13 +91,8 @@ const galleryItems = sanityGalleryItems && Array.isArray(sanityGalleryItems) && 
         filterButtons.forEach((b) => {
           const isActive = b === btn;
           b.setAttribute('aria-pressed', String(isActive));
-          if (isActive) {
-            b.className =
-              'rounded-full px-5 py-2 text-sm font-medium transition-colors bg-primary text-white';
-          } else {
-            b.className =
-              'rounded-full px-5 py-2 text-sm font-medium transition-colors bg-neutral-200 text-neutral-700 hover:bg-neutral-300';
-          }
+          b.classList.toggle('gallery-filter-active', isActive);
+          b.classList.toggle('gallery-filter-inactive', !isActive);
         });
 
         // Show/hide items
@@ -149,10 +144,27 @@ const galleryItems = sanityGalleryItems && Array.isArray(sanityGalleryItems) && 
       }
     }
 
+    const lightboxImage = document.querySelector<HTMLElement>('[data-lightbox-image]');
+
     function updateLightboxContent() {
       const item = visibleItems[currentIndex];
       if (!item) return;
       lightboxTitle!.textContent = item.dataset.galleryTitle || '';
+
+      // Clone the gallery item's image into the lightbox when available
+      if (lightboxImage) {
+        const imgEl = item.querySelector('img');
+        if (imgEl) {
+          // Remove existing children safely
+          while (lightboxImage.firstChild) {
+            lightboxImage.removeChild(lightboxImage.firstChild);
+          }
+          const clone = imgEl.cloneNode(true) as HTMLImageElement;
+          clone.className = 'h-full w-full object-contain';
+          clone.removeAttribute('loading');
+          lightboxImage.appendChild(clone);
+        }
+      }
     }
 
     function showPrev() {

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ServiceCategory from '../components/ServiceCategory.astro';
+import ServiceCard from '../components/ServiceCard.astro';
 import { services as staticServices, categories, type CategoryKey } from '../data/services';
 import { fetchWithFallback, queries } from '../lib/sanity';
 export const prerender = true;
@@ -11,27 +11,143 @@ const servicesData = sanityServices && Array.isArray(sanityServices) && sanitySe
   ? sanityServices
   : staticServices;
 
-// Group services by category, preserving the same interface as getServicesByCategory
 function getServicesByCat(category: CategoryKey) {
   return servicesData.filter((s: { category: string }) => s.category === category);
 }
+
+// Category descriptions for the page
+const categoryDescriptions: Record<CategoryKey, string> = {
+  installazioni: 'Dalla consulenza alla posa in opera: soluzioni complete in vetro per la tua casa e il tuo business.',
+  vetri: "Selezioniamo vetri di prima qualità per ogni esigenza: sicurezza, isolamento, design.",
+  lavorazioni: 'Taglio, foratura e finitura: lavorazioni di precisione nel nostro laboratorio.',
+};
+
+// Build category entries with their data
+const categoryEntries = (Object.entries(categories) as [CategoryKey, string][]).map(
+  ([key, title], index) => ({
+    key,
+    title,
+    description: categoryDescriptions[key],
+    services: getServicesByCat(key),
+    alternate: index % 2 !== 0,
+  })
+);
 ---
 
 <BaseLayout
   title="Servizi"
   description="Tutti i servizi della Vetreria Monferrina: box doccia, parapetti, pensiline, vetri camera, specchi e lavorazioni su misura."
 >
-  <section class="mx-auto max-w-6xl px-4 py-16">
-    <h1 class="font-heading text-4xl text-primary mb-4">I nostri servizi</h1>
-    <p class="text-lg text-neutral-700 mb-12">
-      Oltre 40 anni di esperienza nella lavorazione del vetro.
-    </p>
+  <!-- Hero section -->
+  <section class="bg-primary py-16 sm:py-24">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">I nostri servizi</h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+        Oltre 40 anni di esperienza nella lavorazione del vetro. Offriamo soluzioni
+        su misura per privati, aziende e professionisti dell'edilizia.
+      </p>
+    </div>
+  </section>
 
-    {Object.entries(categories).map(([key, title]) => (
-      <ServiceCategory
-        title={title}
-        services={getServicesByCat(key as CategoryKey)}
-      />
+  <!-- Service categories (same flat structure as galleria) -->
+  <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
+    <!-- Category filters -->
+    <div class="mb-10 flex flex-wrap gap-2" role="group" aria-label="Filtra per categoria">
+      <button
+        type="button"
+        class="gallery-filter-active rounded-full px-5 py-2 text-sm font-medium transition-colors"
+        data-service-filter="tutti"
+        aria-pressed="true"
+      >
+        Tutti
+      </button>
+      {categoryEntries.map((cat) => (
+        <button
+          type="button"
+          class="gallery-filter-inactive rounded-full px-5 py-2 text-sm font-medium transition-colors"
+          data-service-filter={cat.key}
+          aria-pressed="false"
+        >
+          {cat.title}
+        </button>
+      ))}
+    </div>
+
+    <!-- Category sections (inline, no nested max-w-7xl) -->
+    {categoryEntries.map((cat) => (
+      <div id={cat.key} data-service-category={cat.key} class="mb-16 last:mb-0">
+        <h2 class="font-heading text-2xl text-primary sm:text-3xl">{cat.title}</h2>
+        {cat.description && (
+          <p class="mt-3 max-w-2xl text-lg text-neutral-700">{cat.description}</p>
+        )}
+        <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {cat.services.map((service: { name: string; description: string; slug: string }) => (
+            <ServiceCard
+              name={service.name}
+              description={service.description}
+              slug={service.slug}
+            />
+          ))}
+        </div>
+      </div>
     ))}
   </section>
+
+  <!-- CTA -->
+  <section class="bg-primary py-16">
+    <div class="mx-auto max-w-7xl px-4 text-center lg:px-8">
+      <h2 class="font-heading text-3xl text-neutral-50">Non trovi quello che cerchi?</h2>
+      <p class="mx-auto mt-4 max-w-xl text-lg text-neutral-200">
+        Realizziamo qualsiasi lavorazione in vetro su misura.
+        Contattaci per una consulenza gratuita.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="/preventivo"
+          class="inline-block rounded-full bg-surface px-8 py-3.5 text-base font-semibold text-primary transition-colors hover:bg-neutral-100"
+        >
+          Richiedi preventivo
+        </a>
+        <a
+          href="/contatti"
+          class="inline-block rounded-full border-2 border-neutral-50 px-8 py-3 text-base font-semibold text-neutral-50 transition-colors hover:bg-neutral-50/10"
+        >
+          Contattaci
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<script>
+  function initServiceFilters() {
+    const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-service-filter]');
+    const categorySections = document.querySelectorAll<HTMLElement>('[data-service-category]');
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.serviceFilter;
+
+        // Update button styles
+        filterButtons.forEach((b) => {
+          const isActive = b === btn;
+          b.setAttribute('aria-pressed', String(isActive));
+          b.classList.toggle('gallery-filter-active', isActive);
+          b.classList.toggle('gallery-filter-inactive', !isActive);
+        });
+
+        // Show/hide category sections
+        categorySections.forEach((section) => {
+          if (filter === 'tutti' || section.dataset.serviceCategory === filter) {
+            section.style.display = '';
+          } else {
+            section.style.display = 'none';
+          }
+        });
+      });
+    });
+  }
+
+  initServiceFilters();
+  document.addEventListener('astro:after-swap', initServiceFilters);
+</script>

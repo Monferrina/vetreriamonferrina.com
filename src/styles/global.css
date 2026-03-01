@@ -52,11 +52,29 @@
   --color-neutral-700: #9CA3AF;
   --color-neutral-800: #D1D5DB;
   --color-neutral-900: #F3F4F6;
-  --color-surface: #1A1D24;
+  --color-surface: #252830;
   --color-success: #22C55E;
   --color-error: #EF4444;
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.2);
-  --shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.06);
+  --shadow: 0 2px 8px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.06);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.08);
+}
+
+/* Gallery filter buttons — design-token aware for dark mode */
+.gallery-filter-active {
+  background-color: var(--color-primary);
+  color: var(--color-neutral-50);
+}
+[data-theme="dark"] .gallery-filter-active {
+  background-color: var(--color-primary-dark);
+  color: #F3F4F6;
+}
+.gallery-filter-inactive {
+  background-color: var(--color-neutral-200);
+  color: var(--color-neutral-700);
+}
+.gallery-filter-inactive:hover {
+  background-color: color-mix(in srgb, var(--color-neutral-200) 70%, var(--color-neutral-700));
 }
 
 /* Smooth transition between themes */

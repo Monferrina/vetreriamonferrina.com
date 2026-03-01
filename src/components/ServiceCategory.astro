@@ -4,22 +4,30 @@ import ServiceCard from './ServiceCard.astro';
 import type { Service } from '../data/services';
 
 export interface Props {
+  id: string;
   title: string;
+  description?: string;
   services: Service[];
+  alternate?: boolean;
 }
 
-const { title, services } = Astro.props;
+const { id, title, description, services, alternate = false } = Astro.props;
 ---
 
-<section class="mb-16 last:mb-0">
-  <h2 class="font-heading text-2xl text-primary sm:text-3xl">{title}</h2>
-  <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-    {services.map((service) => (
-      <ServiceCard
-        name={service.name}
-        description={service.description}
-        slug={service.slug}
-      />
-    ))}
+<section id={id} class={`py-16 sm:py-20 ${alternate ? 'bg-neutral-100' : ''}`}>
+  <div class="mx-auto max-w-7xl px-4 lg:px-8">
+    <h2 class="font-heading text-2xl text-primary sm:text-3xl">{title}</h2>
+    {description && (
+      <p class="mt-3 max-w-2xl text-lg text-neutral-700">{description}</p>
+    )}
+    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((service) => (
+        <ServiceCard
+          name={service.name}
+          description={service.description}
+          slug={service.slug}
+        />
+      ))}
+    </div>
   </div>
 </section>
