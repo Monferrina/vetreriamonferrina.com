@@ -31,6 +31,9 @@ blob-report/
 # TypeScript
 *.tsbuildinfo
 
+# Build-time generated data (contains API keys in URLs)
+src/data/place-photos.json
+
 # macOS-specific files
 .DS_Store
 

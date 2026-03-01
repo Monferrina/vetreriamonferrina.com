@@ -1,44 +1,26 @@
 {
-  "rating": 4.1,
-  "totalReviews": 18,
-  "placeId": "ChIJxxxxxxxxxxxxxx",
-  "lastUpdated": "2026-02-28",
+  "rating": 4.4,
+  "totalReviews": 34,
+  "placeId": "ChIJcx_Q1ESwh0cRqv3FdLTrU1w",
+  "lastUpdated": "2026-03-01",
   "reviews": [
     {
-      "author": "Marco R.",
+      "author": "Claudio B.",
       "rating": 5,
-      "date": "2025-11-15",
-      "text": "Professionalità e cortesia. Box doccia su misura perfetto, installazione rapida e pulita. Consigliatissimi!"
+      "date": "2024-11-13",
+      "text": "Ditta molto gentile seria affidabile e puntuale."
     },
     {
-      "author": "Elena B.",
+      "author": "Pietro R.",
       "rating": 5,
-      "date": "2025-09-22",
-      "text": "Abbiamo fatto sostituire tutti i vetri camera delle finestre. Lavoro impeccabile e prezzo onesto. Ottima vetreria."
+      "date": "2023-10-31",
+      "text": "Disponibilità,  professionalità e serietà,  cose che nn si trovano spesso tutte insieme in un azienda."
     },
     {
-      "author": "Giovanni T.",
+      "author": "Mario S.",
       "rating": 5,
-      "date": "2025-07-10",
-      "text": "Parapetti in vetro per il balcone: risultato elegante e sicuro. Il signor Fioravanti è molto competente e disponibile."
-    },
-    {
-      "author": "Lucia F.",
-      "rating": 4,
-      "date": "2025-05-03",
-      "text": "Specchio su misura per il bagno, taglio perfetto e molatura eccellente. Torneremo sicuramente."
-    },
-    {
-      "author": "Davide M.",
-      "rating": 5,
-      "date": "2025-03-18",
-      "text": "Pensilina in vetro per l'ingresso di casa. Lavoro fatto a regola d'arte, consegnato nei tempi promessi."
-    },
-    {
-      "author": "Sara C.",
-      "rating": 4,
-      "date": "2024-12-05",
-      "text": "Vetrina per il nostro negozio sostituita in mezza giornata. Veloci e professionali."
+      "date": "2022-11-01",
+      "text": "Molto professionali, disponibilità e gentili e soprattutto prezzi giusti"
     }
   ]
 }
