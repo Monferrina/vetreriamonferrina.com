@@ -41,12 +41,11 @@
 - Variabili d'ambiente separate per dev e prod
 - Branch `main` → production, branch/PR → preview automatico
 
-### 2. Configurare soglie Google Cloud (IMPORTANTE)
-- Impostare quota Places API (New): **50 richieste/giorno** max
-- Impostare quota Places API: **50 richieste/giorno** max
-- Creare budget alert in Fatturazione: **$5/mese** con notifica a 50% e 100%
-- Percorso: Google Cloud Console → IAM e amministrazione → Quote e limiti di sistema
-- Percorso: Google Cloud Console → Fatturazione → Budget e avvisi
+### 2. Soglie Google Cloud — FATTO (parziale)
+- [x] Alert SMS + email impostati per Places API e Places API (New)
+- [ ] ~~Quote (soglie richieste/giorno)~~ — non disponibili per Places API nella console GCP
+- **Protezioni attive**: chiavi limitate a 2 sole API, alert attivi, key solo server-side
+- **Se serve blocco duro**: disabilitare le API dalla console o impostare budget cap in Fatturazione
 - Dopo 90 giorni i $300 credito scadono, ma i $200/mese Maps Platform restano gratis per sempre
 
 ### 3. Firebase App Check (futuro, quando si usa Google Maps JS)
