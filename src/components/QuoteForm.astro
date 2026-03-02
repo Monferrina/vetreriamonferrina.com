@@ -3,7 +3,6 @@
 // Interactive quote request form with client-side validation,
 // honeypot anti-spam, and fetch-based submission.
 import { services, categories, type CategoryKey } from '../data/services';
-import { VALID_SERVICE_TYPES as _VALID_SERVICE_TYPES } from '../lib/validation';
 
 const categoryKeys = Object.keys(categories) as CategoryKey[];
 ---
@@ -17,7 +16,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
 
   <!-- Nome e cognome -->
   <div>
-    <label for="name" class="block text-sm font-medium text-neutral-700">
+    <label for="name" class="block text-sm font-medium text-neutral-800">
       Nome e cognome <span class="text-error">*</span>
     </label>
     <input
@@ -45,7 +44,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
 
   <!-- Telefono -->
   <div>
-    <label for="phone" class="block text-sm font-medium text-neutral-700">
+    <label for="phone" class="block text-sm font-medium text-neutral-800">
       Telefono <span class="text-error">*</span>
     </label>
     <input
@@ -71,7 +70,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
 
   <!-- Email -->
   <div>
-    <label for="email" class="block text-sm font-medium text-neutral-700">
+    <label for="email" class="block text-sm font-medium text-neutral-800">
       Email <span class="text-error">*</span>
     </label>
     <input
@@ -97,7 +96,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
 
   <!-- Tipo di lavoro -->
   <div>
-    <label for="serviceType" class="block text-sm font-medium text-neutral-700">
+    <label for="serviceType" class="block text-sm font-medium text-neutral-800">
       Tipo di lavoro <span class="text-error">*</span>
     </label>
     <select
@@ -134,7 +133,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
 
   <!-- Descrizione -->
   <div>
-    <label for="description" class="block text-sm font-medium text-neutral-700">
+    <label for="description" class="block text-sm font-medium text-neutral-800">
       Descrizione / note
     </label>
     <textarea
@@ -155,7 +154,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
 
   <!-- Misure -->
   <div>
-    <label for="measurements" class="block text-sm font-medium text-neutral-700">
+    <label for="measurements" class="block text-sm font-medium text-neutral-800">
       Misure approssimative
     </label>
     <input
@@ -184,7 +183,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
         name="privacy"
         class="mt-0.5 h-5 w-5 rounded border-neutral-200 text-primary focus:ring-primary/20"
       />
-      <span class="text-sm text-neutral-700">
+      <span class="text-sm text-neutral-800">
         Acconsento al trattamento dei dati personali come descritto nella
         <a href="/privacy" class="text-primary underline hover:text-primary-dark">Privacy Policy</a>
         <span class="text-error">*</span>

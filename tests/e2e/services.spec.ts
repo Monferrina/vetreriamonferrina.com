@@ -3,9 +3,10 @@ import { test, expect } from '@playwright/test';
 test('pagina servizi mostra tutte le categorie', async ({ page }) => {
   await page.goto('/servizi');
   await expect(page.locator('h1')).toContainText(/servizi/i);
-  await expect(page.getByText('Servizi e Installazioni')).toBeVisible();
-  await expect(page.getByText('Tipi di Vetro')).toBeVisible();
-  await expect(page.getByText('Lavorazioni')).toBeVisible();
+  // Category section headings (h2) — use exact match to avoid matching service card h3s like "Vetri blindati"
+  await expect(page.getByRole('heading', { name: 'Installazioni', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Vetri', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Lavorazioni', exact: true })).toBeVisible();
 });
 
 test('pagina servizi mostra i servizi specifici', async ({ page }) => {

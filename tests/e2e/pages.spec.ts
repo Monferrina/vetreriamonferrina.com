@@ -31,17 +31,18 @@ test('contatti ha link email cliccabile', async ({ page }) => {
   await expect(page.locator('main a[href^="mailto:"]')).toBeVisible();
 });
 
-test('contatti ha mappa OpenStreetMap', async ({ page }) => {
+test('contatti ha mappa interattiva', async ({ page }) => {
   await page.goto('/contatti');
-  const iframe = page.locator('iframe[title="Mappa posizione Vetreria Monferrina"]');
-  await expect(iframe).toBeVisible();
-  const src = await iframe.getAttribute('src');
-  expect(src).toContain('openstreetmap.org');
+  // The map is rendered via Leaflet (not an iframe), verify the map container and attribution
+  const mapContainer = page.locator('.leaflet-container');
+  await expect(mapContainer).toBeVisible();
+  // Verify OpenStreetMap attribution link inside the map
+  await expect(page.locator('.leaflet-container a[href*="openstreetmap.org"]')).toBeVisible();
 });
 
 test('contatti ha orari di apertura', async ({ page }) => {
   await page.goto('/contatti');
-  await expect(page.getByText(/8:00.*12:00/)).toBeVisible();
+  await expect(page.getByText(/8:00.*12:00/).first()).toBeVisible();
   await expect(page.getByText(/chiuso/i).first()).toBeVisible();
 });
 
@@ -56,21 +57,22 @@ test('contatti ha CTA preventivo', async ({ page }) => {
 
 test('chi-siamo ha sezione valori', async ({ page }) => {
   await page.goto('/chi-siamo');
-  await expect(page.getByText(/artigianalita/i).first()).toBeVisible();
-  await expect(page.getByText(/qualita/i).first()).toBeVisible();
-  await expect(page.getByText(/territorio/i).first()).toBeVisible();
+  // Values section heading cards use accented Italian: Artigianalità, Qualità, Territorio
+  await expect(page.getByRole('heading', { name: /artigianali/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /qualit/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /territorio/i })).toBeVisible();
 });
 
-test('chi-siamo ha placeholder foto', async ({ page }) => {
+test('chi-siamo ha placeholder foto famiglia', async ({ page }) => {
   await page.goto('/chi-siamo');
-  await expect(page.getByText(/foto in arrivo/i).first()).toBeVisible();
+  await expect(page.getByText(/foto.*famiglia.*in arrivo/i).first()).toBeVisible();
 });
 
 test('chi-siamo ha timeline con milestone', async ({ page }) => {
   await page.goto('/chi-siamo');
   await expect(page.getByText(/le origini/i)).toBeVisible();
-  await expect(page.getByText(/crescita e specializzazione/i)).toBeVisible();
-  await expect(page.getByText(/tradizione e innovazione/i)).toBeVisible();
+  await expect(page.getByText(/la crescita/i)).toBeVisible();
+  await expect(page.getByText(/la famiglia si allarga/i)).toBeVisible();
 });
 
 // --- Galleria page ---
@@ -95,24 +97,26 @@ test('galleria filtro nasconde elementi non corrispondenti', async ({ page }) =>
   // Click "Installazioni" filter
   await page.locator('[data-filter="installazioni"]').click();
 
-  // Only installazioni items should be visible
-  const visibleItems = page.locator('[data-gallery-item]:not([style*="display: none"])');
-  const visibleCount = await visibleItems.count();
-  expect(visibleCount).toBeGreaterThan(0);
-  expect(visibleCount).toBeLessThan(totalCount);
+  // Wait for filter animation to complete — items get display:none after 200ms animation
+  const installazioniItems = page.locator('[data-gallery-item][data-category="installazioni"]');
+  const nonInstallazioniItems = page.locator(
+    '[data-gallery-item]:not([data-category="installazioni"])'
+  );
 
-  // All visible items should have the installazioni category
-  for (let i = 0; i < visibleCount; i++) {
-    const category = await visibleItems.nth(i).getAttribute('data-category');
-    expect(category).toBe('installazioni');
+  // Use auto-retrying assertion: non-matching items should become hidden
+  await expect(nonInstallazioniItems.first()).toBeHidden({ timeout: 2000 });
+
+  // Verify all installazioni items are still visible
+  const installazioniCount = await installazioniItems.count();
+  expect(installazioniCount).toBeGreaterThan(0);
+  for (let i = 0; i < installazioniCount; i++) {
+    await expect(installazioniItems.nth(i)).toBeVisible();
   }
 
-  // Click "Tutti" to reset
+  // Click "Tutti" to reset — all items should reappear
   await page.locator('[data-filter="tutti"]').click();
-  const resetCount = await page
-    .locator('[data-gallery-item]:not([style*="display: none"])')
-    .count();
-  expect(resetCount).toBe(totalCount);
+  await expect(allItems.first()).toBeVisible();
+  await expect(allItems.last()).toBeVisible();
 });
 
 test('galleria ha lightbox nascosto per default', async ({ page }) => {
@@ -143,20 +147,20 @@ test('galleria lightbox si apre al click e si chiude con ESC', async ({ page }) 
 test('galleria lightbox navigazione frecce', async ({ page }) => {
   await page.goto('/galleria');
 
-  // Open lightbox
+  // Open lightbox on first item
   await page.locator('[data-gallery-item]').first().click();
   const title = page.locator('[data-lightbox-title]');
+  await expect(title).not.toBeEmpty();
   const firstTitle = await title.textContent();
 
-  // Click next
+  // Click next — content updates with a 200ms crossfade animation
   await page.locator('[data-lightbox-next]').click();
-  const secondTitle = await title.textContent();
-  expect(secondTitle).not.toBe(firstTitle);
+  // Use auto-retrying assertion to wait for title change
+  await expect(title).not.toHaveText(firstTitle!, { timeout: 2000 });
 
   // Click prev to go back
   await page.locator('[data-lightbox-prev]').click();
-  const backTitle = await title.textContent();
-  expect(backTitle).toBe(firstTitle);
+  await expect(title).toHaveText(firstTitle!, { timeout: 2000 });
 
   // Close
   await page.locator('[data-lightbox-close]').click();

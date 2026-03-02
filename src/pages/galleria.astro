@@ -220,6 +220,9 @@ const galleryItems =
       });
 
       document.body.style.overflow = 'hidden';
+      // Prevent sticky header (with backdrop-blur stacking context) from intercepting lightbox clicks
+      const header = document.querySelector('header');
+      if (header) (header as HTMLElement).style.pointerEvents = 'none';
       document.addEventListener('keydown', trapFocus);
       closeBtn!.focus();
     }
@@ -234,6 +237,9 @@ const galleryItems =
         lightbox!.classList.add('hidden');
         lightbox!.classList.remove('flex');
         document.body.style.overflow = '';
+        // Restore header interactivity
+        const header = document.querySelector('header');
+        if (header) (header as HTMLElement).style.pointerEvents = '';
         // Restore focus to the element that opened the lightbox
         if (lastFocusedElement) {
           lastFocusedElement.focus();

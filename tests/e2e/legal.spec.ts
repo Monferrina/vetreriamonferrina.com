@@ -67,15 +67,16 @@ test('cookie banner appare e si chiude', async ({ page }) => {
   await page.goto('/');
   const banner = page.locator('[data-cookie-banner]');
   await expect(banner).toBeVisible();
-  // Use force to bypass Astro dev toolbar overlay interception
-  await page.getByRole('button', { name: /capito/i }).click({ force: true });
-  await expect(banner).toBeHidden();
+  // Dismiss the cookie banner — use dispatchEvent to avoid interception by Astro dev toolbar
+  await page.locator('#cookie-banner-dismiss').dispatchEvent('click');
+  await expect(banner).toBeHidden({ timeout: 2000 });
 });
 
 test('cookie banner non riappare dopo chiusura', async ({ page }) => {
   await page.goto('/');
-  // Use force to bypass Astro dev toolbar overlay interception
-  await page.getByRole('button', { name: /capito/i }).click({ force: true });
+  // Dismiss the cookie banner
+  await page.locator('#cookie-banner-dismiss').dispatchEvent('click');
+  await expect(page.locator('[data-cookie-banner]')).toBeHidden({ timeout: 2000 });
   await page.reload();
   await expect(page.locator('[data-cookie-banner]')).toBeHidden();
 });

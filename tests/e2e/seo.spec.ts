@@ -72,6 +72,13 @@ test('lang="it" su tutte le pagine', async ({ page }) => {
 
 test('favicon e collegato', async ({ page }) => {
   await page.goto('/');
-  const favicon = page.locator('link[rel="icon"]');
-  await expect(favicon).toHaveAttribute('href', '/favicon.svg');
+  // Best practice: multiple favicon formats (SVG + PNG fallbacks)
+  const favicons = page.locator('link[rel="icon"]');
+  const count = await favicons.count();
+  expect(count, 'almeno un favicon deve essere presente').toBeGreaterThanOrEqual(1);
+  // Verify SVG favicon is present
+  await expect(page.locator('link[rel="icon"][type="image/svg+xml"]')).toHaveAttribute(
+    'href',
+    '/favicon.svg'
+  );
 });

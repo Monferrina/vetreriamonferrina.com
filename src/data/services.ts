@@ -2,7 +2,7 @@ export interface Service {
   slug: string;
   name: string;
   description: string;
-  category: 'installazioni' | 'vetri' | 'canaline' | 'lavorazioni' | 'componenti';
+  category: 'installazioni' | 'vetri' | 'lavorazioni';
   image?: string;
 }
 
@@ -55,6 +55,7 @@ export const services: Service[] = [
     name: 'Vetri blindati',
     description: 'Vetri blindati antieffrazione per massima sicurezza.',
     category: 'vetri',
+    image: '/images/services/blindati.webp',
   },
   {
     slug: 'madras',
@@ -68,12 +69,14 @@ export const services: Service[] = [
     name: 'Vetri stratificati',
     description: 'Vetri stratificati trasparenti, satinati e colorati. Sicurezza e versatilità.',
     category: 'vetri',
+    image: '/images/services/stratificati.webp',
   },
   {
     slug: 'monolitici',
     name: 'Vetri monolitici',
     description: 'Vetri monolitici trasparenti e satinati per ogni esigenza.',
     category: 'vetri',
+    image: '/images/services/monolitici.webp',
   },
   {
     slug: 'vetrocamera',
@@ -124,7 +127,3 @@ export const categories = {
 } as const;
 
 export type CategoryKey = keyof typeof categories;
-
-export function getServicesByCategory(category: CategoryKey): Service[] {
-  return services.filter((s) => s.category === category);
-}

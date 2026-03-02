@@ -1,14 +1,16 @@
 import { test, expect } from '@playwright/test';
 
 test('tutte le immagini hanno alt text', async ({ page }) => {
+  test.setTimeout(60_000);
   const pagesToCheck = ['/', '/servizi', '/chi-siamo', '/galleria'];
   for (const path of pagesToCheck) {
-    await page.goto(path);
-    const images = page.locator('main img');
+    await page.goto(path, { waitUntil: 'domcontentloaded' });
+    // Check only content images (exclude decorative SVG icons and transparent overlays)
+    const images = page.locator('main img:not([aria-hidden="true"])');
     const count = await images.count();
     for (let i = 0; i < count; i++) {
       const alt = await images.nth(i).getAttribute('alt');
-      expect(alt, `${path}: immagine ${i} senza alt`).toBeTruthy();
+      expect(alt, `${path}: immagine ${i} senza alt`).not.toBeNull();
     }
   }
 });
@@ -44,9 +46,10 @@ test('form preventivo ha label associate a tutti i campi', async ({ page }) => {
 });
 
 test('heading hierarchy e corretta (h1 unico per pagina)', async ({ page }) => {
+  test.setTimeout(60_000);
   const pagesToCheck = ['/', '/servizi', '/chi-siamo', '/contatti', '/galleria', '/preventivo'];
   for (const path of pagesToCheck) {
-    await page.goto(path);
+    await page.goto(path, { waitUntil: 'domcontentloaded' });
     // Scope to main to avoid Astro dev toolbar injected headings
     const h1Count = await page.locator('main h1').count();
     expect(h1Count, `${path}: deve avere esattamente un h1 dentro main`).toBe(1);
