@@ -11,7 +11,10 @@
   "servizi": {
     "message": "Lavoriamo il vetro da generazioni! Ecco cosa facciamo:",
     "options": [
-      { "label": "Installazioni (box doccia, parapetti, pensiline)", "next": "servizi_installazioni" },
+      {
+        "label": "Installazioni (box doccia, parapetti, pensiline)",
+        "next": "servizi_installazioni"
+      },
       { "label": "Tipi di vetro (blindati, stratificati, camera)", "next": "servizi_vetri" },
       { "label": "Lavorazioni (sagomature, fori, molature)", "next": "servizi_lavorazioni" },
       { "label": "\u2190 Torna indietro", "next": "welcome" }
@@ -182,7 +185,10 @@
   "welcome_servizi": {
     "message": "Cerchi informazioni su un servizio? Posso aiutarti!",
     "options": [
-      { "label": "Installazioni (box doccia, parapetti, pensiline)", "next": "servizi_installazioni" },
+      {
+        "label": "Installazioni (box doccia, parapetti, pensiline)",
+        "next": "servizi_installazioni"
+      },
       { "label": "Tipi di vetro (blindati, stratificati, camera)", "next": "servizi_vetri" },
       { "label": "Lavorazioni (sagomature, fori, molature)", "next": "servizi_lavorazioni" },
       { "label": "Voglio un preventivo", "action": "open_form" },

@@ -14,7 +14,7 @@ test.describe('Form preventivo', () => {
     await expect(select).toHaveValue('box-doccia');
   });
 
-  test('honeypot e\' nascosto e non accessibile', async ({ page }) => {
+  test("honeypot e' nascosto e non accessibile", async ({ page }) => {
     await page.goto('/preventivo');
     // Honeypot is offscreen (left:-9999px, opacity:0) — invisible to humans, visible to bots
     const honeypotWrapper = page.locator('input[name="website"]').locator('..');
@@ -24,7 +24,7 @@ test.describe('Form preventivo', () => {
     await expect(honeypot).toHaveAttribute('autocomplete', 'off');
   });
 
-  test('checkbox privacy non e\' pre-selezionata', async ({ page }) => {
+  test("checkbox privacy non e' pre-selezionata", async ({ page }) => {
     await page.goto('/preventivo');
     const checkbox = page.locator('input[name="privacy"]');
     await expect(checkbox).not.toBeChecked();
@@ -78,7 +78,7 @@ test.describe('Form preventivo', () => {
     await expect(page.locator('[data-error="privacy"]')).toBeVisible();
   });
 
-  test('campo misure e\' visibile ma opzionale', async ({ page }) => {
+  test("campo misure e' visibile ma opzionale", async ({ page }) => {
     await page.goto('/preventivo');
     await expect(page.locator('input[name="measurements"]')).toBeVisible();
   });

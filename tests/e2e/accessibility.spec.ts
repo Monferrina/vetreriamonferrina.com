@@ -13,7 +13,7 @@ test('tutte le immagini hanno alt text', async ({ page }) => {
   }
 });
 
-test('focus visibile su elementi interattivi', async ({ page, browserName }) => {
+test('focus visibile su elementi interattivi', async ({ page, browserName: _browserName }) => {
   // Skip on mobile-like viewports where keyboard Tab may not work
   const viewport = page.viewportSize();
   if (viewport && viewport.width < 768) {
@@ -28,7 +28,9 @@ test('focus visibile su elementi interattivi', async ({ page, browserName }) => 
 
 test('form preventivo ha label associate a tutti i campi', async ({ page }) => {
   await page.goto('/preventivo');
-  const inputs = page.locator('input[id]:not([type="hidden"]):not([id="website"]), select[id], textarea[id]');
+  const inputs = page.locator(
+    'input[id]:not([type="hidden"]):not([id="website"]), select[id], textarea[id]'
+  );
   const count = await inputs.count();
   expect(count).toBeGreaterThan(0);
   for (let i = 0; i < count; i++) {

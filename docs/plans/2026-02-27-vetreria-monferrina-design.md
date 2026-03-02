@@ -8,6 +8,7 @@ La concorrenza locale ha siti vecchi o inesistenti. Il sito deve essere un regal
 tecnicamente impeccabile, facile da usare per loro, e soprattutto utile.
 
 **Obiettivi:**
+
 - Dare alla vetreria una presenza online professionale
 - Ridurre le chiamate ripetitive alla segreteria (orari, servizi, "fate anche X?")
 - Offrire un canale di richiesta preventivo via email
@@ -15,6 +16,7 @@ tecnicamente impeccabile, facile da usare per loro, e soprattutto utile.
 - Zero costi di manutenzione tecnica, zero dipendenza dal developer
 
 **Vincoli:**
+
 - Nessun costo ricorrente per API o servizi AI (contabilita' aziendale)
 - Nessun backend da mantenere
 - GDPR e normativa italiana rispettati al 100%
@@ -59,18 +61,18 @@ tecnicamente impeccabile, facile da usare per loro, e soprattutto utile.
 
 ## Tech Stack
 
-| Componente | Tecnologia | Motivazione |
-|---|---|---|
-| Framework | **Astro 5** | SSG nativo, zero JS al client di default, islands architecture per componenti interattivi, Lighthouse 100 |
-| Styling | **Tailwind CSS 4** | Utility-first, design system con token CSS, dark mode automatica (orario + sistema) |
-| CMS | **Sanity v3** | Free tier (100K API calls/mese), editor intuitivo, schema tipizzato, preview live, immagini con CDN e resize automatico |
-| Form email | **Resend** | 100 email/giorno gratis, API moderna, deliverability ottima, zero config SMTP |
-| Serverless | **Vercel Edge Functions** | Una sola funzione per il form. Cold start <50ms, TypeScript, integrato nel progetto |
-| Hosting | **Vercel** | Free tier, CDN globale, HTTPS automatico, deploy da Git push, dominio custom |
-| Chatbot | **JSON statico + JS vanilla** | Albero decisionale, zero API, zero costi, animazioni CSS |
-| Dominio | **.it** via Aruba/Namecheap | ~12 EUR/anno, unico costo |
-| Recensioni | **Google Places API** | Fetch a build-time, filtro >= 4 stelle, $200/mese credito gratuito (costo effettivo $0) |
-| Analytics | **Nessuno** (oppure Plausible self-hosted) | Zero cookie di terze parti = GDPR semplificato |
+| Componente | Tecnologia                                 | Motivazione                                                                                                             |
+| ---------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| Framework  | **Astro 5**                                | SSG nativo, zero JS al client di default, islands architecture per componenti interattivi, Lighthouse 100               |
+| Styling    | **Tailwind CSS 4**                         | Utility-first, design system con token CSS, dark mode automatica (orario + sistema)                                     |
+| CMS        | **Sanity v3**                              | Free tier (100K API calls/mese), editor intuitivo, schema tipizzato, preview live, immagini con CDN e resize automatico |
+| Form email | **Resend**                                 | 100 email/giorno gratis, API moderna, deliverability ottima, zero config SMTP                                           |
+| Serverless | **Vercel Edge Functions**                  | Una sola funzione per il form. Cold start <50ms, TypeScript, integrato nel progetto                                     |
+| Hosting    | **Vercel**                                 | Free tier, CDN globale, HTTPS automatico, deploy da Git push, dominio custom                                            |
+| Chatbot    | **JSON statico + JS vanilla**              | Albero decisionale, zero API, zero costi, animazioni CSS                                                                |
+| Dominio    | **.it** via Aruba/Namecheap                | ~12 EUR/anno, unico costo                                                                                               |
+| Recensioni | **Google Places API**                      | Fetch a build-time, filtro >= 4 stelle, $200/mese credito gratuito (costo effettivo $0)                                 |
+| Analytics  | **Nessuno** (oppure Plausible self-hosted) | Zero cookie di terze parti = GDPR semplificato                                                                          |
 
 **Costo totale: ~12 EUR/anno** (solo dominio — Google Places API e' incluso nei $200/mese di credito gratuito)
 
@@ -104,6 +106,7 @@ tecnicamente impeccabile, facile da usare per loro, e soprattutto utile.
 #### Categorie reali (confermate dalla famiglia):
 
 **Servizi / Installazioni:**
+
 - Box doccia
 - Parapetti
 - Pensiline
@@ -112,6 +115,7 @@ tecnicamente impeccabile, facile da usare per loro, e soprattutto utile.
 - Sostituzione vetri finestre (servizio condizionale — dipende da disponibilita')
 
 **Prodotti — Tipi di vetro:**
+
 - Blindati
 - Madras (vetro decorativo)
 - Vetri stratificati (trasparenti, satinati, ecc.)
@@ -121,17 +125,20 @@ tecnicamente impeccabile, facile da usare per loro, e soprattutto utile.
 - Specchi
 
 **Canaline (distanziali per vetrocamera):**
+
 - Alluminio naturale
 - Alluminio colorato (nero, bianco, oro, bronzo)
 - Bordo caldo (grigio, bianco, nero, marrone)
 - Swisspacer (solo nera)
 
 **Lavorazioni:**
+
 - Sagomature
 - Fori
 - Molature
 
 **Componenti / Accessori:**
+
 - Ventolino
 - Valvole altimetriche
 - Valvole Swisspacer
@@ -217,7 +224,10 @@ ROOT
   "servizi": {
     "message": "Lavoriamo il vetro da oltre 40 anni! Ecco cosa facciamo:",
     "options": [
-      { "label": "Installazioni (box doccia, parapetti, pensiline...)", "next": "servizi_installazioni" },
+      {
+        "label": "Installazioni (box doccia, parapetti, pensiline...)",
+        "next": "servizi_installazioni"
+      },
       { "label": "Tipi di vetro (blindati, stratificati, camera...)", "next": "servizi_vetri" },
       { "label": "Lavorazioni (sagomature, fori, molature)", "next": "servizi_lavorazioni" },
       { "label": "← Torna indietro", "next": "welcome" }
@@ -304,6 +314,7 @@ Ispirazione: il vetro, la trasparenza, il Monferrato (colline, mattoni, tradizio
 - **Accento**: verde per successo (#16A34A), rosso per errori (#DC2626)
 
 **Dark mode** (palette notturna automatica):
+
 - Primario: #5BA3CC (blu piu' chiaro per leggibilita' su sfondo scuro)
 - Secondario: #D4955E (rame leggermente piu' chiaro)
 - Neutri invertiti: sfondi scuri (#111318), testi chiari (#D1D5DB)

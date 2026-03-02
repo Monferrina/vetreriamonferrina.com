@@ -9,6 +9,7 @@
 **Tech Stack:** Astro 5, Tailwind CSS 4, TypeScript, Sanity v3, Resend, Vercel, Vitest, Playwright, Docker
 
 **Requisiti critici:**
+
 - Test in Docker dal primo task
 - Sicurezza ultra-perfetta (CSP, sanitization, rate limiting, email injection prevention)
 - GDPR e normativa italiana al 100%
@@ -24,6 +25,7 @@
 **Contesto:** Fondamento del progetto. Docker per i test e' un requisito HARD — tutti i test devono girare in Docker dal giorno zero.
 
 **Files:**
+
 - Create: `package.json`
 - Create: `astro.config.mjs`
 - Create: `tsconfig.json`
@@ -76,25 +78,25 @@ export default defineConfig({
 **Step 4: Crea src/styles/global.css**
 
 ```css
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --color-primary: #1B4965;
-  --color-primary-light: #2A6F97;
-  --color-primary-dark: #0F2D40;
-  --color-secondary: #C67B40;
-  --color-secondary-light: #D4955E;
-  --color-secondary-dark: #A8622F;
-  --color-neutral-50: #FAFAFA;
-  --color-neutral-100: #F5F5F5;
-  --color-neutral-200: #E5E5E5;
+  --color-primary: #1b4965;
+  --color-primary-light: #2a6f97;
+  --color-primary-dark: #0f2d40;
+  --color-secondary: #c67b40;
+  --color-secondary-light: #d4955e;
+  --color-secondary-dark: #a8622f;
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
   --color-neutral-700: #404040;
   --color-neutral-800: #262626;
   --color-neutral-900: #171717;
-  --color-success: #16A34A;
-  --color-error: #DC2626;
-  --font-heading: "DM Serif Display", serif;
-  --font-body: "Inter", sans-serif;
+  --color-success: #16a34a;
+  --color-error: #dc2626;
+  --font-heading: 'DM Serif Display', serif;
+  --font-body: 'Inter', sans-serif;
 }
 ```
 
@@ -105,6 +107,7 @@ export default defineConfig({
 // src/pages/index.astro
 export const prerender = true;
 ---
+
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
@@ -191,7 +194,7 @@ test.describe('Smoke E2E', () => {
     await expect(page.locator('h1')).toContainText('Vetreria Monferrina');
   });
 
-  test('il tag lang e\' italiano', async ({ page }) => {
+  test("il tag lang e' italiano", async ({ page }) => {
     await page.goto('/');
     const lang = await page.locator('html').getAttribute('lang');
     expect(lang).toBe('it');
@@ -304,6 +307,7 @@ git commit -m "feat: scaffold Astro 5 + Docker test infrastructure"
 **Contesto:** Layout base con SEO meta, font self-hosted, e security headers ultra-stretti via vercel.json.
 
 **Files:**
+
 - Create: `src/layouts/BaseLayout.astro`
 - Create: `public/fonts/` (DM Serif Display + Inter, woff2)
 - Create: `vercel.json`
@@ -314,6 +318,7 @@ git commit -m "feat: scaffold Astro 5 + Docker test infrastructure"
 **Step 1: Scarica font e mettili in public/fonts/**
 
 Scarica da Google Fonts (file woff2):
+
 - `dm-serif-display-latin.woff2`
 - `inter-latin-variable.woff2`
 
@@ -321,16 +326,16 @@ Scarica da Google Fonts (file woff2):
 
 ```css
 @font-face {
-  font-family: "DM Serif Display";
-  src: url("/fonts/dm-serif-display-latin.woff2") format("woff2");
+  font-family: 'DM Serif Display';
+  src: url('/fonts/dm-serif-display-latin.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Inter";
-  src: url("/fonts/inter-latin-variable.woff2") format("woff2");
+  font-family: 'Inter';
+  src: url('/fonts/inter-latin-variable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -348,9 +353,14 @@ export interface Props {
   ogImage?: string;
 }
 
-const { title, description = 'Vetreria storica a Casale Monferrato. Box doccia, parapetti, pensiline, vetri camera, specchi e lavorazioni su misura.', ogImage } = Astro.props;
+const {
+  title,
+  description = 'Vetreria storica a Casale Monferrato. Box doccia, parapetti, pensiline, vetri camera, specchi e lavorazioni su misura.',
+  ogImage,
+} = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
+
 <!doctype html>
 <html lang="it">
   <head>
@@ -365,8 +375,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:locale" content="it_IT" />
     {ogImage && <meta property="og:image" content={ogImage} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preload" href="/fonts/inter-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/dm-serif-display-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link
+      rel="preload"
+      href="/fonts/inter-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/dm-serif-display-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
   </head>
   <body class="font-body text-neutral-800 bg-neutral-50 antialiased">
     <slot name="header" />
@@ -389,8 +411,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
         {
           "key": "Content-Security-Policy",
           "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn.sanity.io; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
@@ -432,6 +460,7 @@ test('BaseLayout contiene meta tag essenziali', async () => {
 import BaseLayout from '../layouts/BaseLayout.astro';
 export const prerender = true;
 ---
+
 <BaseLayout title="Home">
   <h1 class="text-4xl font-heading text-primary">Vetreria Monferrina</h1>
   <p class="text-lg font-body text-neutral-700">Sito in costruzione</p>
@@ -452,6 +481,7 @@ git add -A && git commit -m "feat: design system, BaseLayout, security headers"
 **Contesto:** Chrome del sito: header con nav responsive (hamburger mobile), footer con dati legali obbligatori per legge italiana.
 
 **Files:**
+
 - Create: `src/components/Header.astro`
 - Create: `src/components/Footer.astro`
 - Create: `src/components/MobileMenu.astro`
@@ -468,6 +498,7 @@ Nessun inline script — usa file JS separato o `<script>` tag Astro (che viene 
 **Step 2: Crea Footer.astro**
 
 Obbligatorio per legge italiana:
+
 - Ragione sociale: "Vetreria Monferrina di Fioravanti Giuseppe"
 - Sede legale (indirizzo completo)
 - Partita IVA
@@ -542,6 +573,7 @@ git add -A && git commit -m "feat: header, footer, navigazione responsive"
 **Contesto:** Prima pagina reale. Hero con CTA, servizi in evidenza (card), teaser chi siamo, numeri/statistiche, CTA finale. Contenuti placeholder (verranno da Sanity in Task 10).
 
 **Files:**
+
 - Create: `src/components/HeroSection.astro`
 - Create: `src/components/ServiceHighlight.astro`
 - Create: `src/components/StatsSection.astro`
@@ -576,6 +608,7 @@ import StatsSection from '../components/StatsSection.astro';
 import CtaSection from '../components/CtaSection.astro';
 export const prerender = true;
 ---
+
 <BaseLayout title="Home">
   <HeroSection />
   <ServiceHighlight />
@@ -599,7 +632,10 @@ test('home page ha tutte le sezioni', async ({ page }) => {
 
 test('CTA preventivo porta alla pagina corretta', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('link', { name: /richiedi preventivo/i }).first().click();
+  await page
+    .getByRole('link', { name: /richiedi preventivo/i })
+    .first()
+    .click();
   await expect(page).toHaveURL(/\/preventivo/);
 });
 ```
@@ -618,6 +654,7 @@ git add -A && git commit -m "feat: home page con hero, servizi, stats, CTA"
 **Contesto:** Pagina con tutte le categorie di servizi della vetreria, organizzate in sezioni. Ogni servizio ha CTA che pre-compila il form preventivo.
 
 **Files:**
+
 - Create: `src/components/ServiceCard.astro`
 - Create: `src/components/ServiceCategory.astro`
 - Create: `src/pages/servizi.astro`
@@ -636,22 +673,102 @@ export interface Service {
 }
 
 export const services: Service[] = [
-  { slug: 'box-doccia', name: 'Box doccia', description: 'Box doccia su misura in vetro temperato.', category: 'installazioni' },
-  { slug: 'parapetti', name: 'Parapetti', description: 'Parapetti in vetro per balconi e scale.', category: 'installazioni' },
-  { slug: 'pensiline', name: 'Pensiline', description: 'Pensiline in vetro per ingressi e terrazze.', category: 'installazioni' },
-  { slug: 'porte-interne', name: 'Porte interne', description: 'Porte interne in vetro, scorrevoli e a battente.', category: 'installazioni' },
-  { slug: 'vetrine', name: 'Posa di vetrine', description: 'Installazione vetrine per negozi e attivita\' commerciali.', category: 'installazioni' },
-  { slug: 'sostituzione-vetri', name: 'Sostituzione vetri finestre', description: 'Sostituzione vetri per finestre esistenti.', category: 'installazioni' },
-  { slug: 'blindati', name: 'Vetri blindati', description: 'Vetri blindati antieffrazione.', category: 'vetri' },
-  { slug: 'madras', name: 'Vetri Madras', description: 'Vetro decorativo Madras per privacy e design.', category: 'vetri' },
-  { slug: 'stratificati', name: 'Vetri stratificati', description: 'Vetri stratificati trasparenti, satinati e colorati.', category: 'vetri' },
-  { slug: 'monolitici', name: 'Vetri monolitici', description: 'Vetri monolitici trasparenti e satinati.', category: 'vetri' },
-  { slug: 'vetrocamera', name: 'Vetri camera', description: 'Vetrocamera doppi per isolamento termico e acustico.', category: 'vetri' },
-  { slug: 'vetrocamera-tripli', name: 'Vetri camera tripli', description: 'Triplo vetro per massimo isolamento.', category: 'vetri' },
-  { slug: 'specchi', name: 'Specchi', description: 'Specchi su misura per bagni, armadi e complementi.', category: 'vetri' },
-  { slug: 'sagomature', name: 'Sagomature', description: 'Taglio e sagomatura vetro su misura.', category: 'lavorazioni' },
-  { slug: 'fori', name: 'Fori', description: 'Foratura vetro per maniglie, cerniere e fissaggi.', category: 'lavorazioni' },
-  { slug: 'molature', name: 'Molature', description: 'Molatura bordi vetro a filo lucido e bisello.', category: 'lavorazioni' },
+  {
+    slug: 'box-doccia',
+    name: 'Box doccia',
+    description: 'Box doccia su misura in vetro temperato.',
+    category: 'installazioni',
+  },
+  {
+    slug: 'parapetti',
+    name: 'Parapetti',
+    description: 'Parapetti in vetro per balconi e scale.',
+    category: 'installazioni',
+  },
+  {
+    slug: 'pensiline',
+    name: 'Pensiline',
+    description: 'Pensiline in vetro per ingressi e terrazze.',
+    category: 'installazioni',
+  },
+  {
+    slug: 'porte-interne',
+    name: 'Porte interne',
+    description: 'Porte interne in vetro, scorrevoli e a battente.',
+    category: 'installazioni',
+  },
+  {
+    slug: 'vetrine',
+    name: 'Posa di vetrine',
+    description: "Installazione vetrine per negozi e attivita' commerciali.",
+    category: 'installazioni',
+  },
+  {
+    slug: 'sostituzione-vetri',
+    name: 'Sostituzione vetri finestre',
+    description: 'Sostituzione vetri per finestre esistenti.',
+    category: 'installazioni',
+  },
+  {
+    slug: 'blindati',
+    name: 'Vetri blindati',
+    description: 'Vetri blindati antieffrazione.',
+    category: 'vetri',
+  },
+  {
+    slug: 'madras',
+    name: 'Vetri Madras',
+    description: 'Vetro decorativo Madras per privacy e design.',
+    category: 'vetri',
+  },
+  {
+    slug: 'stratificati',
+    name: 'Vetri stratificati',
+    description: 'Vetri stratificati trasparenti, satinati e colorati.',
+    category: 'vetri',
+  },
+  {
+    slug: 'monolitici',
+    name: 'Vetri monolitici',
+    description: 'Vetri monolitici trasparenti e satinati.',
+    category: 'vetri',
+  },
+  {
+    slug: 'vetrocamera',
+    name: 'Vetri camera',
+    description: 'Vetrocamera doppi per isolamento termico e acustico.',
+    category: 'vetri',
+  },
+  {
+    slug: 'vetrocamera-tripli',
+    name: 'Vetri camera tripli',
+    description: 'Triplo vetro per massimo isolamento.',
+    category: 'vetri',
+  },
+  {
+    slug: 'specchi',
+    name: 'Specchi',
+    description: 'Specchi su misura per bagni, armadi e complementi.',
+    category: 'vetri',
+  },
+  {
+    slug: 'sagomature',
+    name: 'Sagomature',
+    description: 'Taglio e sagomatura vetro su misura.',
+    category: 'lavorazioni',
+  },
+  {
+    slug: 'fori',
+    name: 'Fori',
+    description: 'Foratura vetro per maniglie, cerniere e fissaggi.',
+    category: 'lavorazioni',
+  },
+  {
+    slug: 'molature',
+    name: 'Molature',
+    description: 'Molatura bordi vetro a filo lucido e bisello.',
+    category: 'lavorazioni',
+  },
 ];
 
 export const categories = {
@@ -706,6 +823,7 @@ git add -A && git commit -m "feat: pagina servizi con categorie e card"
 **Contesto:** Form strutturato con validazione client + server. Serverless Function con anti-spam, anti-injection, rate limiting. Invio email via Resend. Questa task e' critica per la sicurezza.
 
 **Files:**
+
 - Create: `src/pages/preventivo.astro`
 - Create: `src/components/QuoteForm.astro`
 - Create: `src/lib/validation.ts`
@@ -737,8 +855,15 @@ export interface ValidationError {
 }
 
 const VALID_SERVICE_TYPES = [
-  'box-doccia', 'parapetti', 'pensiline', 'porte-interne',
-  'vetrine', 'sostituzione-vetri', 'specchi', 'lavorazione-vetro', 'altro',
+  'box-doccia',
+  'parapetti',
+  'pensiline',
+  'porte-interne',
+  'vetrine',
+  'sostituzione-vetri',
+  'specchi',
+  'lavorazione-vetro',
+  'altro',
 ];
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -793,9 +918,9 @@ export function validateQuoteForm(data: QuoteFormData): ValidationError[] {
 // Previene email header injection e XSS
 export function sanitizeString(input: string): string {
   return input
-    .replace(/[\r\n]/g, ' ')        // rimuovi newline (email header injection)
-    .replace(/[<>]/g, '')            // rimuovi HTML tags
-    .replace(/javascript:/gi, '')     // rimuovi JS protocol
+    .replace(/[\r\n]/g, ' ') // rimuovi newline (email header injection)
+    .replace(/[<>]/g, '') // rimuovi HTML tags
+    .replace(/javascript:/gi, '') // rimuovi JS protocol
     .trim();
 }
 
@@ -831,7 +956,7 @@ const MAX_REQUESTS = 5;
 export function isRateLimited(ip: string): boolean {
   const now = Date.now();
   const timestamps = requests.get(ip) ?? [];
-  const recent = timestamps.filter(t => now - t < WINDOW_MS);
+  const recent = timestamps.filter((t) => now - t < WINDOW_MS);
 
   if (recent.length >= MAX_REQUESTS) return true;
 
@@ -861,7 +986,7 @@ export async function POST({ request, clientAddress }: APIContext) {
     'http://localhost:3000',
   ].filter(Boolean);
 
-  if (!origin || !allowedOrigins.some(o => origin.startsWith(o))) {
+  if (!origin || !allowedOrigins.some((o) => origin.startsWith(o))) {
     return new Response(JSON.stringify({ error: 'Origine non autorizzata' }), {
       status: 403,
       headers: { 'Content-Type': 'application/json' },
@@ -943,6 +1068,7 @@ export async function POST({ request, clientAddress }: APIContext) {
 **Step 5: Crea QuoteForm.astro**
 
 Form con:
+
 - Campo honeypot nascosto (`aria-hidden`, `tabindex="-1"`, `autocomplete="off"`, CSS `position: absolute; left: -9999px`)
 - Validazione client-side prima del submit
 - Feedback errori inline
@@ -958,7 +1084,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 export const prerender = true;
 ---
-<BaseLayout title="Richiedi Preventivo" description="Richiedi un preventivo gratuito alla Vetreria Monferrina.">
+
+<BaseLayout
+  title="Richiedi Preventivo"
+  description="Richiedi un preventivo gratuito alla Vetreria Monferrina."
+>
   <section class="max-w-2xl mx-auto px-4 py-16">
     <h1 class="text-3xl font-heading text-primary mb-4">Richiedi un preventivo</h1>
     <p class="text-neutral-700 mb-8">Compila il modulo e ti ricontatteremo al piu' presto.</p>
@@ -997,22 +1127,22 @@ describe('validateQuoteForm', () => {
 
   it('nome vuoto: errore', () => {
     const errors = validateQuoteForm({ ...validData, name: '' });
-    expect(errors.some(e => e.field === 'name')).toBe(true);
+    expect(errors.some((e) => e.field === 'name')).toBe(true);
   });
 
   it('email malformata: errore', () => {
     const errors = validateQuoteForm({ ...validData, email: 'not-an-email' });
-    expect(errors.some(e => e.field === 'email')).toBe(true);
+    expect(errors.some((e) => e.field === 'email')).toBe(true);
   });
 
   it('tipo servizio invalido: errore', () => {
     const errors = validateQuoteForm({ ...validData, serviceType: 'hacking' });
-    expect(errors.some(e => e.field === 'serviceType')).toBe(true);
+    expect(errors.some((e) => e.field === 'serviceType')).toBe(true);
   });
 
   it('privacy non accettata: errore', () => {
     const errors = validateQuoteForm({ ...validData, privacy: false });
-    expect(errors.some(e => e.field === 'privacy')).toBe(true);
+    expect(errors.some((e) => e.field === 'privacy')).toBe(true);
   });
 });
 ```
@@ -1066,7 +1196,7 @@ test.describe('Form preventivo', () => {
     await expect(select).toHaveValue('box-doccia');
   });
 
-  test('honeypot e\' nascosto e non accessibile', async ({ page }) => {
+  test("honeypot e' nascosto e non accessibile", async ({ page }) => {
     await page.goto('/preventivo');
     const honeypot = page.locator('[data-honeypot]');
     await expect(honeypot).toBeHidden();
@@ -1088,6 +1218,7 @@ git add -A && git commit -m "feat: form preventivo con validazione, sanitizzazio
 **Contesto:** Chatbot interattivo basato su albero decisionale JSON. Zero API esterne, zero costi. JS vanilla, animazioni CSS, persistenza sessione con sessionStorage.
 
 **Files:**
+
 - Create: `src/components/Chatbot.astro`
 - Create: `src/data/chatbot-flow.json`
 - Create: `src/lib/chatbot-engine.ts`
@@ -1157,6 +1288,7 @@ export class ChatbotEngine {
 Widget floating bottom-right. Si apre in pannello overlay. Animazione typing (300ms delay). Responsive: full-screen su mobile. Persiste lo stato in sessionStorage. Usa `client:idle` per hydration lazy.
 
 Markup:
+
 - Bottone toggle (icona messaggio SVG)
 - Pannello con header, area messaggi, area opzioni
 - Animazione slide-in CSS con `prefers-reduced-motion` rispettato
@@ -1233,7 +1365,7 @@ test.describe('Chatbot', () => {
     await expect(page.locator('[data-chatbot-message]')).toContainText(/vetro/i);
   });
 
-  test('e\' responsive su mobile', async ({ page }) => {
+  test("e' responsive su mobile", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/');
     await page.getByRole('button', { name: /chat/i }).click();
@@ -1258,6 +1390,7 @@ git add -A && git commit -m "feat: chatbot a flusso con engine, UI e test"
 **Contesto:** Le tre pagine di contenuto rimanenti. Contenuti placeholder per ora (verranno da Sanity).
 
 **Files:**
+
 - Create: `src/pages/chi-siamo.astro`
 - Create: `src/pages/contatti.astro`
 - Create: `src/pages/galleria.astro`
@@ -1334,6 +1467,7 @@ git add -A && git commit -m "feat: pagine chi siamo, contatti, galleria"
 **Contesto:** GDPR e normativa italiana. Privacy policy, cookie policy, cookie banner informativo. Critico per compliance legale.
 
 **Files:**
+
 - Create: `src/pages/privacy.astro`
 - Create: `src/pages/cookie.astro`
 - Create: `src/components/CookieBanner.astro`
@@ -1344,6 +1478,7 @@ git add -A && git commit -m "feat: pagine chi siamo, contatti, galleria"
 **Step 1: Crea privacy.astro**
 
 Privacy Policy conforme art. 13 GDPR:
+
 - Titolare: Vetreria Monferrina di Fioravanti Giuseppe
 - Dati raccolti: nome, telefono, email, descrizione (solo dal form)
 - Finalita': risposta a richiesta preventivo
@@ -1355,6 +1490,7 @@ Privacy Policy conforme art. 13 GDPR:
 **Step 2: Crea cookie.astro**
 
 Cookie Policy:
+
 - Nessun cookie di profilazione
 - Solo cookie tecnici (sessionStorage chatbot)
 - Non serve consenso per cookie tecnici (art. 122 Codice Privacy)
@@ -1362,6 +1498,7 @@ Cookie Policy:
 **Step 3: Crea CookieBanner.astro**
 
 Banner informativo (non di consenso — usiamo solo cookie tecnici):
+
 - Testo: "Questo sito utilizza solo cookie tecnici necessari al funzionamento."
 - Link alla cookie policy
 - Bottone "Ho capito" che chiude (salva in localStorage)
@@ -1377,7 +1514,7 @@ Inserisci prima della chiusura di `</body>`.
 // tests/e2e/legal.spec.ts
 import { test, expect } from '@playwright/test';
 
-test('privacy policy e\' accessibile e contiene GDPR', async ({ page }) => {
+test("privacy policy e' accessibile e contiene GDPR", async ({ page }) => {
   await page.goto('/privacy');
   await expect(page.locator('h1')).toContainText(/privacy/i);
   const text = await page.textContent('main');
@@ -1421,6 +1558,7 @@ git add -A && git commit -m "feat: privacy policy, cookie policy, cookie banner 
 **Contesto:** Collegare Sanity v3 per i contenuti dinamici. La famiglia potra' aggiornare testi, foto, servizi e orari in autonomia. I dati placeholder vengono sostituiti con query Sanity a build time.
 
 **Files:**
+
 - Create: `sanity/sanity.config.ts`
 - Create: `sanity/schema/service.ts`
 - Create: `sanity/schema/galleryItem.ts`
@@ -1453,8 +1591,12 @@ export default defineType({
   fields: [
     { name: 'name', title: 'Nome', type: 'string', validation: (r) => r.required() },
     { name: 'slug', title: 'Slug', type: 'slug', options: { source: 'name' } },
-    { name: 'category', title: 'Categoria', type: 'string',
-      options: { list: ['installazioni', 'vetri', 'lavorazioni'] } },
+    {
+      name: 'category',
+      title: 'Categoria',
+      type: 'string',
+      options: { list: ['installazioni', 'vetri', 'lavorazioni'] },
+    },
     { name: 'description', title: 'Descrizione', type: 'text' },
     { name: 'image', title: 'Immagine', type: 'image', options: { hotspot: true } },
     { name: 'order', title: 'Ordine', type: 'number' },
@@ -1531,6 +1673,7 @@ git add -A && git commit -m "feat: integrazione Sanity CMS con schema e client"
 **Contesto:** Task finale di polish. Lighthouse 100 target, WCAG 2.1 AA, sitemap, robots.txt, View Transitions, deploy su Vercel.
 
 **Files:**
+
 - Create: `public/robots.txt`
 - Create: `public/favicon.svg`
 - Modify: `astro.config.mjs` (sitemap integration)
@@ -1563,6 +1706,7 @@ SVG semplice con il colore primario.
 ---
 import { ViewTransitions } from 'astro:transitions';
 ---
+
 <head>
   <!-- ...existing meta... -->
   <ViewTransitions />
@@ -1573,19 +1717,19 @@ import { ViewTransitions } from 'astro:transitions';
 
 ```html
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Vetreria Monferrina",
-  "description": "Vetreria storica a Casale Monferrato",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Casale Monferrato",
-    "addressRegion": "AL",
-    "addressCountry": "IT"
-  },
-  "telephone": "+39 0142 XXXXXX"
-}
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Vetreria Monferrina",
+    "description": "Vetreria storica a Casale Monferrato",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Casale Monferrato",
+      "addressRegion": "AL",
+      "addressCountry": "IT"
+    },
+    "telephone": "+39 0142 XXXXXX"
+  }
 </script>
 ```
 
@@ -1605,7 +1749,7 @@ test('ogni pagina ha meta description', async ({ page }) => {
   }
 });
 
-test('robots.txt e\' accessibile', async ({ page }) => {
+test("robots.txt e' accessibile", async ({ page }) => {
   const response = await page.goto('/robots.txt');
   expect(response!.status()).toBe(200);
 });
@@ -1672,6 +1816,7 @@ vercel --prod
 ```
 
 Dopo il deploy:
+
 1. Configura dominio custom su Vercel dashboard
 2. Configura webhook Sanity → Vercel rebuild
 3. Verifica HTTPS attivo
@@ -1689,16 +1834,16 @@ git add -A && git commit -m "feat: SEO, accessibility, performance, deploy Verce
 
 ## Riepilogo Task
 
-| # | Task | Focus |
-|---|---|---|
-| 1 | Scaffold + Docker | Fondamento, infrastruttura test |
-| 2 | Design System + BaseLayout + Security | Tema, layout, headers sicurezza |
-| 3 | Header + Footer + Nav | Chrome del sito, responsive |
-| 4 | Home Page | Sezioni hero, servizi, stats, CTA |
-| 5 | Servizi | Categorie, card, dati reali |
-| 6 | Form + API | **SICUREZZA CRITICA**: validazione, sanitizzazione, rate limit |
-| 7 | Chatbot | Engine JSON, UI, animazioni |
-| 8 | Chi siamo + Contatti + Galleria | Pagine contenuto |
-| 9 | Legal + Cookie Banner | **GDPR**: privacy, cookie, banner |
-| 10 | Sanity CMS | Schema, client, contenuti dinamici |
-| 11 | SEO + Performance + Deploy | Lighthouse 100, a11y, Vercel |
+| #   | Task                                  | Focus                                                          |
+| --- | ------------------------------------- | -------------------------------------------------------------- |
+| 1   | Scaffold + Docker                     | Fondamento, infrastruttura test                                |
+| 2   | Design System + BaseLayout + Security | Tema, layout, headers sicurezza                                |
+| 3   | Header + Footer + Nav                 | Chrome del sito, responsive                                    |
+| 4   | Home Page                             | Sezioni hero, servizi, stats, CTA                              |
+| 5   | Servizi                               | Categorie, card, dati reali                                    |
+| 6   | Form + API                            | **SICUREZZA CRITICA**: validazione, sanitizzazione, rate limit |
+| 7   | Chatbot                               | Engine JSON, UI, animazioni                                    |
+| 8   | Chi siamo + Contatti + Galleria       | Pagine contenuto                                               |
+| 9   | Legal + Cookie Banner                 | **GDPR**: privacy, cookie, banner                              |
+| 10  | Sanity CMS                            | Schema, client, contenuti dinamici                             |
+| 11  | SEO + Performance + Deploy            | Lighthouse 100, a11y, Vercel                                   |

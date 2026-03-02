@@ -25,13 +25,10 @@ export async function POST({ request, clientAddress }: APIContext) {
   // 2. Rate limiting
   const ip = clientAddress || request.headers.get('x-forwarded-for') || 'unknown';
   if (isRateLimited(ip)) {
-    return new Response(
-      JSON.stringify({ error: 'Troppe richieste. Riprova tra un minuto.' }),
-      {
-        status: 429,
-        headers: { 'Content-Type': 'application/json' },
-      },
-    );
+    return new Response(JSON.stringify({ error: 'Troppe richieste. Riprova tra un minuto.' }), {
+      status: 429,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   // 3. Parse and sanitize
@@ -84,13 +81,10 @@ export async function POST({ request, clientAddress }: APIContext) {
       `,
     });
   } catch {
-    return new Response(
-      JSON.stringify({ error: 'Errore invio email. Riprova o chiamaci.' }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      },
-    );
+    return new Response(JSON.stringify({ error: 'Errore invio email. Riprova o chiamaci.' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   return new Response(JSON.stringify({ success: true }), {

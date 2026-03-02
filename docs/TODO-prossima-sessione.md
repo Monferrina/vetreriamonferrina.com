@@ -44,11 +44,13 @@
 ## Da fare — Prossimi step
 
 ### 1. Ambienti Dev/Staging e Production
+
 - Configurare Vercel con due ambienti (preview + production)
 - Variabili d'ambiente separate per dev e prod
 - Branch `main` → production, branch/PR → preview automatico
 
 ### 2. Soglie Google Cloud — FATTO (parziale)
+
 - [x] Alert SMS + email impostati per Places API e Places API (New)
 - [ ] ~~Quote (soglie richieste/giorno)~~ — non disponibili per Places API nella console GCP
 - **Protezioni attive**: chiavi limitate a 2 sole API, alert attivi, key solo server-side
@@ -56,28 +58,33 @@
 - Dopo 90 giorni i $300 credito scadono, ma i $200/mese Maps Platform restano gratis per sempre
 
 ### 3. Firebase App Check (futuro, quando si usa Google Maps JS)
+
 - Protezione chiamate API lato client con reCAPTCHA
 - Gratis fino a 10.000 richieste/mese
 - Non serve ora (API key usata solo server-side a build-time)
 - Docs: https://developers.google.com/maps/documentation/javascript/places-app-check
 
 ### 4. Foto e dati reali
+
 - Usare le 10 foto Google scaricate nella galleria (`public/images/google-photos/`)
 - Aggiungere foto proprie per la galleria (laboratorio, lavori, team)
 - Verificare tutti i dati aziendali (indirizzo, P.IVA, telefono)
 
 ### 5. CI/CD GitHub Actions
+
 - Lint + type check + unit test + E2E + build
 - Lighthouse CI (performance, a11y, SEO)
 - Pre-commit hooks (husky + lint-staged)
 - Workflow automatico aggiornamento recensioni (cron giornaliero)
 
 ### 6. Sentry
+
 - Installare `@sentry/astro`
 - Configurare DSN in variabili d'ambiente
 - Error tracking client-side e server-side + source maps
 
 ### 7. Sanity CMS — Studio verificato, da popolare
+
 - [x] Studio funzionante (`cd sanity && npx sanity dev --port 3334`)
 - [x] Project ID `7bqabdpn`, dataset `production`, CORS localhost:3333 attivo
 - [ ] Popolare Impostazioni Sito (dati aziendali — gia' corretti nei fallback)
@@ -87,18 +94,21 @@
 - [ ] Deploy studio su `vetreriamonferrina.sanity.studio` (quando pronto)
 
 ### 8. Mobile testing approfondito
+
 - iPhone SE, iPhone 15, Pixel 7, iPad, Samsung Galaxy Fold
 - Chatbot fullscreen su mobile
 - Form preventivo usabilità touch
 - Core Web Vitals sotto soglia
 
 ### 9. Cloudflare
+
 - DNS verso Vercel
 - SSL/TLS Full (Strict)
 - Cloudflare Web Analytics (zero cookie, GDPR compliant)
 - Cache rules
 
 ### 10. Vercel deploy (ultimo)
+
 - Deploy da branch `main`
 - Environment variables (RESEND_API_KEY, SANITY_PROJECT_ID, GOOGLE_PLACES_API_KEY)
 - Custom domain `vetreriamonferrina.com`

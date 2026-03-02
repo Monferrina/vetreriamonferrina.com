@@ -48,33 +48,31 @@ function isActive(href: string): boolean {
           stroke="currentColor"
           aria-hidden="true"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M6 18 18 6M6 6l12 12"
-          />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
         </svg>
       </button>
     </div>
 
     <nav aria-label="Navigazione mobile" class="px-4 py-6">
       <ul class="flex flex-col gap-1">
-        {navLinks.map(({ href, label }) => (
-          <li>
-            <a
-              href={href}
-              class:list={[
-                'block rounded-md px-3 py-3 text-base font-medium transition-colors',
-                isActive(href)
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-neutral-700 hover:bg-neutral-100 hover:text-primary',
-              ]}
-              aria-current={isActive(href) ? 'page' : undefined}
-            >
-              {label}
-            </a>
-          </li>
-        ))}
+        {
+          navLinks.map(({ href, label }) => (
+            <li>
+              <a
+                href={href}
+                class:list={[
+                  'block rounded-md px-3 py-3 text-base font-medium transition-colors',
+                  isActive(href)
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-neutral-700 hover:bg-neutral-100 hover:text-primary',
+                ]}
+                aria-current={isActive(href) ? 'page' : undefined}
+              >
+                {label}
+              </a>
+            </li>
+          ))
+        }
         <li class="mt-4">
           <a
             href="/preventivo"

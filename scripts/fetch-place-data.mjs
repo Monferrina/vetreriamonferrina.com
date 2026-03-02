@@ -133,7 +133,10 @@ async function fetchPlaceData() {
     })),
   };
 
-  writeFileSync(resolve(DATA_DIR, 'opening-hours.json'), JSON.stringify(hoursOutput, null, 2) + '\n');
+  writeFileSync(
+    resolve(DATA_DIR, 'opening-hours.json'),
+    JSON.stringify(hoursOutput, null, 2) + '\n'
+  );
   console.log(`  Hours: ${schedule.length} time slots`);
 
   // --- Photos (download locally — no API key in output files) ---
@@ -171,7 +174,10 @@ async function fetchPlaceData() {
     photos,
   };
 
-  writeFileSync(resolve(DATA_DIR, 'place-photos.json'), JSON.stringify(photosOutput, null, 2) + '\n');
+  writeFileSync(
+    resolve(DATA_DIR, 'place-photos.json'),
+    JSON.stringify(photosOutput, null, 2) + '\n'
+  );
   console.log(`  Photos: ${photos.length} downloaded to public/images/google-photos/`);
 
   console.log(`\nDone! Rating: ${place.rating}/5 (${place.userRatingCount} reviews)`);

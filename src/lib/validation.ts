@@ -16,10 +16,7 @@ export interface ValidationError {
   message: string;
 }
 
-export const VALID_SERVICE_TYPES = [
-  ...services.map((s) => s.slug),
-  'altro',
-];
+export const VALID_SERVICE_TYPES = [...services.map((s) => s.slug), 'altro'];
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PHONE_REGEX = /^[\d\s+\-().]{7,20}$/;

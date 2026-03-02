@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Navigazione', () => {
-  test('navigazione desktop funziona', async ({ page, browserName }) => {
+  test('navigazione desktop funziona', async ({ page, browserName: _browserName }) => {
     // Skip on mobile project — desktop nav is hidden at mobile viewport
     const viewport = page.viewportSize();
     if (viewport && viewport.width < 768) {

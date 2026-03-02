@@ -8,12 +8,12 @@
 **Gratis.** Google Cloud offre **$200/mese di credito gratuito** per Maps Platform (per sempre).
 I primi 90 giorni hanno anche $300 di credito aggiuntivo.
 
-| Endpoint | Costo per richiesta | Con $200/mese |
-|---|---|---|
-| Place Details (Basic) | $0.00 (gratis) | Illimitato |
-| Place Details (Contact) | $0.003 | ~66.600 richieste |
-| Place Details (Atmosphere — include reviews) | $0.005 | ~40.000 richieste |
-| Place Photos | $0.007 | ~28.500 richieste |
+| Endpoint                                     | Costo per richiesta | Con $200/mese     |
+| -------------------------------------------- | ------------------- | ----------------- |
+| Place Details (Basic)                        | $0.00 (gratis)      | Illimitato        |
+| Place Details (Contact)                      | $0.003              | ~66.600 richieste |
+| Place Details (Atmosphere — include reviews) | $0.005              | ~40.000 richieste |
+| Place Photos                                 | $0.007              | ~28.500 richieste |
 
 Noi facciamo **1 chiamata a build-time** che recupera tutto (recensioni, orari, foto).
 Con un fetch al giorno: **30 richieste/mese = ~$0.15/mese** — ampiamente coperto dal credito.
@@ -22,11 +22,11 @@ Con un fetch al giorno: **30 richieste/mese = ~$0.15/mese** — ampiamente coper
 
 ## Soglie consigliate (IMPORTANTE)
 
-| Azione | Dove in Google Cloud Console | Valore |
-|---|---|---|
-| Quota Places API (New) | IAM e amministrazione → Quote | 50 req/giorno |
-| Quota Places API | IAM e amministrazione → Quote | 50 req/giorno |
-| Budget alert | Fatturazione → Budget e avvisi | $5/mese (notifica a 50% e 100%) |
+| Azione                 | Dove in Google Cloud Console   | Valore                          |
+| ---------------------- | ------------------------------ | ------------------------------- |
+| Quota Places API (New) | IAM e amministrazione → Quote  | 50 req/giorno                   |
+| Quota Places API       | IAM e amministrazione → Quote  | 50 req/giorno                   |
+| Budget alert           | Fatturazione → Budget e avvisi | $5/mese (notifica a 50% e 100%) |
 
 Queste soglie proteggono da usi accidentali o abusi. Docs: https://docs.cloud.google.com/docs/quotas/view-manage
 
@@ -74,6 +74,7 @@ GOOGLE_PLACES_API_KEY=AIzaSy... node scripts/fetch-place-data.mjs
 ```
 
 Output atteso:
+
 ```
 Fetching place data from Places API (New)...
   Reviews: 3 positive (of 5 total)
@@ -84,6 +85,7 @@ Done! Rating: 4.4/5 (34 reviews)
 ```
 
 File generati:
+
 - `src/data/reviews.json` — recensioni filtrate
 - `src/data/opening-hours.json` — orari di apertura
 - `src/data/place-photos.json` — metadata foto (gitignored)
@@ -105,10 +107,12 @@ npm run build
 ### Con GitHub Actions (consigliato)
 
 Aggiungi i secrets nel repository GitHub:
+
 - `GOOGLE_PLACES_API_KEY` → la chiave API
 - `GOOGLE_PLACE_ID` → il Place ID
 
 Poi crea un workflow che ogni giorno:
+
 1. Esegue `scripts/fetch-reviews.mjs`
 2. Committa se ci sono cambiamenti
 3. Triggera il rebuild su Vercel
@@ -119,8 +123,8 @@ Esempio `.github/workflows/update-reviews.yml`:
 name: Aggiorna Recensioni Google
 on:
   schedule:
-    - cron: '0 6 * * *'  # Ogni giorno alle 6:00 UTC
-  workflow_dispatch: {}    # Permette esecuzione manuale
+    - cron: '0 6 * * *' # Ogni giorno alle 6:00 UTC
+  workflow_dispatch: {} # Permette esecuzione manuale
 
 jobs:
   update-reviews:
@@ -147,6 +151,7 @@ jobs:
 ### Manualmente
 
 Basta eseguire:
+
 ```bash
 GOOGLE_PLACES_API_KEY=xxx node scripts/fetch-place-data.mjs
 git add src/data/reviews.json src/data/opening-hours.json public/images/google-photos/
@@ -172,14 +177,14 @@ Vercel fara' il rebuild automatico dopo il push.
 
 ## Troubleshooting
 
-| Problema | Soluzione |
-|---|---|
-| `Error: GOOGLE_PLACES_API_KEY is required` | Imposta la variabile d'ambiente |
-| `Error: GOOGLE_PLACE_ID is required` | Trova il Place ID (vedi Step 4) |
-| `Google API error: REQUEST_DENIED` | La chiave API non ha Places API abilitata (vedi Step 2) |
-| `Google API error: INVALID_REQUEST` | Place ID non valido — verificalo su Place ID Finder |
-| `0 positive reviews` | Tutte le recensioni sono sotto 4 stelle, oppure il place non ha recensioni |
-| Il sito non si aggiorna | Dopo il push, Vercel fa il rebuild. Aspetta 1-2 minuti |
+| Problema                                   | Soluzione                                                                  |
+| ------------------------------------------ | -------------------------------------------------------------------------- |
+| `Error: GOOGLE_PLACES_API_KEY is required` | Imposta la variabile d'ambiente                                            |
+| `Error: GOOGLE_PLACE_ID is required`       | Trova il Place ID (vedi Step 4)                                            |
+| `Google API error: REQUEST_DENIED`         | La chiave API non ha Places API abilitata (vedi Step 2)                    |
+| `Google API error: INVALID_REQUEST`        | Place ID non valido — verificalo su Place ID Finder                        |
+| `0 positive reviews`                       | Tutte le recensioni sono sotto 4 stelle, oppure il place non ha recensioni |
+| Il sito non si aggiorna                    | Dopo il push, Vercel fa il rebuild. Aspetta 1-2 minuti                     |
 
 ## Sicurezza
 

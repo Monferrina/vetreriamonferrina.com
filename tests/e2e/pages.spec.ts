@@ -109,9 +109,9 @@ test('galleria filtro nasconde elementi non corrispondenti', async ({ page }) =>
 
   // Click "Tutti" to reset
   await page.locator('[data-filter="tutti"]').click();
-  const resetCount = await page.locator(
-    '[data-gallery-item]:not([style*="display: none"])'
-  ).count();
+  const resetCount = await page
+    .locator('[data-gallery-item]:not([style*="display: none"])')
+    .count();
   expect(resetCount).toBe(totalCount);
 });
 

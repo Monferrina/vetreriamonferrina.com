@@ -43,7 +43,7 @@ describe('sanitizeString', () => {
   });
 
   it('preserva caratteri speciali italiani', () => {
-    expect(sanitizeString('citta\', perche\', piu\'')).toBe('citta\', perche\', piu\'');
+    expect(sanitizeString("citta', perche', piu'")).toBe("citta', perche', piu'");
   });
 
   it('preserva numeri e simboli sicuri', () => {

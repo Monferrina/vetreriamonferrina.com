@@ -1,6 +1,15 @@
 import { test, expect } from '@playwright/test';
 
-const publicPages = ['/', '/servizi', '/chi-siamo', '/contatti', '/galleria', '/preventivo', '/privacy', '/cookie'];
+const publicPages = [
+  '/',
+  '/servizi',
+  '/chi-siamo',
+  '/contatti',
+  '/galleria',
+  '/preventivo',
+  '/privacy',
+  '/cookie',
+];
 
 test('ogni pagina ha meta description lunga almeno 50 caratteri', async ({ page }) => {
   for (const path of publicPages) {

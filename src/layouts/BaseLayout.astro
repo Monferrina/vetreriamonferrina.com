@@ -1,7 +1,7 @@
 ---
 // src/layouts/BaseLayout.astro
 import '../styles/global.css';
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieBanner from '../components/CookieBanner.astro';
@@ -24,43 +24,44 @@ const canonicalURL = Astro.site
 
 // JSON-LD structured data for LocalBusiness
 const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Vetreria Monferrina di Fioravanti Giuseppe",
-  "description": "Vetreria storica a Casale Monferrato. Box doccia, parapetti, pensiline, vetri camera, specchi e lavorazioni su misura.",
-  "@id": "https://vetreriamonferrina.com",
-  "url": "https://vetreriamonferrina.com",
-  "telephone": "+390142563728",
-  "email": "info@vetreriamonferrina.com",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Strada Statale 31, 98/C",
-    "addressLocality": "Casale Monferrato",
-    "postalCode": "15033",
-    "addressRegion": "AL",
-    "addressCountry": "IT",
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Vetreria Monferrina di Fioravanti Giuseppe',
+  description:
+    'Vetreria storica a Casale Monferrato. Box doccia, parapetti, pensiline, vetri camera, specchi e lavorazioni su misura.',
+  '@id': 'https://vetreriamonferrina.com',
+  url: 'https://vetreriamonferrina.com',
+  telephone: '+390142563728',
+  email: 'info@vetreriamonferrina.com',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Strada Statale 31, 98/C',
+    addressLocality: 'Casale Monferrato',
+    postalCode: '15033',
+    addressRegion: 'AL',
+    addressCountry: 'IT',
   },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 45.134,
-    "longitude": 8.449,
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 45.134,
+    longitude: 8.449,
   },
-  "openingHoursSpecification": [
+  openingHoursSpecification: [
     {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "08:00",
-      "closes": "12:00",
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '12:00',
     },
     {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "14:00",
-      "closes": "18:00",
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '14:00',
+      closes: '18:00',
     },
   ],
-  "priceRange": "$$",
-  "image": "https://vetreriamonferrina.com/images/og-image.jpg",
+  priceRange: '$$',
+  image: 'https://vetreriamonferrina.com/images/og-image.jpg',
 };
 ---
 
@@ -77,7 +78,10 @@ const jsonLd = {
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="it_IT" />
-    <meta property="og:image" content={ogImage || 'https://vetreriamonferrina.com/images/og-image.jpg'} />
+    <meta
+      property="og:image"
+      content={ogImage || 'https://vetreriamonferrina.com/images/og-image.jpg'}
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
@@ -96,13 +100,13 @@ const jsonLd = {
       type="font/woff2"
       crossorigin
     />
-    <ViewTransitions />
+    <ClientRouter />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <!-- Theme detection: system preference + time-based (inline to prevent FOUC) -->
     <script is:inline>
-      (function(){
-        var h = new Date().getHours();
-        var dark = window.matchMedia('(prefers-color-scheme: dark)').matches || h >= 20 || h < 7;
+      (function () {
+        const h = new Date().getHours();
+        const dark = window.matchMedia('(prefers-color-scheme: dark)').matches || h >= 20 || h < 7;
         if (dark) document.documentElement.setAttribute('data-theme', 'dark');
       })();
     </script>

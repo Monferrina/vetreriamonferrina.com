@@ -3,25 +3,16 @@
 // Interactive quote request form with client-side validation,
 // honeypot anti-spam, and fetch-based submission.
 import { services, categories, type CategoryKey } from '../data/services';
-import { VALID_SERVICE_TYPES } from '../lib/validation';
+import { VALID_SERVICE_TYPES as _VALID_SERVICE_TYPES } from '../lib/validation';
 
 const categoryKeys = Object.keys(categories) as CategoryKey[];
 ---
 
 <form id="quote-form" novalidate class="space-y-6">
   <!-- Honeypot: hidden from humans, traps bots -->
-  <div
-    style="position:absolute;left:-9999px;opacity:0"
-    aria-hidden="true"
-  >
+  <div style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">
     <label for="website">Non compilare questo campo</label>
-    <input
-      type="text"
-      id="website"
-      name="website"
-      tabindex="-1"
-      autocomplete="off"
-    />
+    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
   </div>
 
   <!-- Nome e cognome -->
@@ -89,15 +80,17 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
       class="mt-1 block w-full rounded-lg border border-neutral-200 bg-surface px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
     >
       <option value="">— Seleziona —</option>
-      {categoryKeys.map((cat) => (
-        <optgroup label={categories[cat]}>
-          {services
-            .filter((s) => s.category === cat)
-            .map((s) => (
-              <option value={s.slug}>{s.name}</option>
-            ))}
-        </optgroup>
-      ))}
+      {
+        categoryKeys.map((cat) => (
+          <optgroup label={categories[cat]}>
+            {services
+              .filter((s) => s.category === cat)
+              .map((s) => (
+                <option value={s.slug}>{s.name}</option>
+              ))}
+          </optgroup>
+        ))
+      }
       <option value="altro">Altro</option>
     </select>
     <p data-error="serviceType" class="mt-1 hidden text-sm text-error"></p>
@@ -114,8 +107,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
       rows="4"
       maxlength="2000"
       class="mt-1 block w-full rounded-lg border border-neutral-200 bg-surface px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-      placeholder="Descrivi il lavoro di cui hai bisogno..."
-    ></textarea>
+      placeholder="Descrivi il lavoro di cui hai bisogno..."></textarea>
     <p data-error="description" class="mt-1 hidden text-sm text-error"></p>
   </div>
 
@@ -169,18 +161,9 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
         viewBox="0 0 24 24"
         aria-hidden="true"
       >
-        <circle
-          class="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          stroke-width="4"
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
         ></circle>
-        <path
-          class="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
         ></path>
       </svg>
     </button>
@@ -211,7 +194,9 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
   // Derive valid service types from the DOM select options (single source of truth)
   const VALID_SERVICE_TYPES = Array.from(
     document.querySelectorAll<HTMLOptionElement>('#serviceType option[value]')
-  ).map((o) => o.value).filter(Boolean);
+  )
+    .map((o) => o.value)
+    .filter(Boolean);
 
   interface FieldError {
     field: string;
@@ -243,7 +228,10 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
       errors.push({ field: 'serviceType', message: 'Seleziona un tipo di lavoro' });
     }
     if (description && description.length > 2000) {
-      errors.push({ field: 'description', message: 'Descrizione troppo lunga (max 2000 caratteri)' });
+      errors.push({
+        field: 'description',
+        message: 'Descrizione troppo lunga (max 2000 caratteri)',
+      });
     }
     if (measurements && measurements.length > 500) {
       errors.push({ field: 'measurements', message: 'Misure troppo lunghe (max 500 caratteri)' });
@@ -255,7 +243,15 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     return errors;
   }
 
-  const KNOWN_FIELDS = ['name', 'phone', 'email', 'serviceType', 'description', 'measurements', 'privacy'];
+  const KNOWN_FIELDS = [
+    'name',
+    'phone',
+    'email',
+    'serviceType',
+    'description',
+    'measurements',
+    'privacy',
+  ];
 
   function showErrors(errors: FieldError[]) {
     // Clear all previous errors
@@ -278,7 +274,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
   function setLoading(loading: boolean) {
     const btn = document.getElementById('submit-btn') as HTMLButtonElement;
     const text = document.getElementById('submit-text') as HTMLSpanElement;
-    const spinner = document.getElementById('submit-spinner') as SVGElement;
+    const spinner = document.getElementById('submit-spinner') as unknown as SVGElement;
 
     btn.disabled = loading;
     if (loading) {
@@ -338,9 +334,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     showErrors(errors);
     if (errors.length > 0) {
       // Focus first error field
-      const firstErrorField = document.querySelector(
-        `[name="${errors[0].field}"]`
-      ) as HTMLElement;
+      const firstErrorField = document.querySelector(`[name="${errors[0].field}"]`) as HTMLElement;
       firstErrorField?.focus();
       return;
     }
@@ -380,7 +374,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
       }
 
       // Generic server error
-      showGlobalError(json.error || 'Errore durante l\'invio. Riprova.');
+      showGlobalError(json.error || "Errore durante l'invio. Riprova.");
     } catch {
       showGlobalError('Errore di rete. Controlla la connessione e riprova.');
     } finally {

@@ -32,7 +32,7 @@ test.describe('Chatbot', () => {
     await expect(page.locator('[data-chatbot-panel]')).toBeHidden();
   });
 
-  test('e\' responsive su mobile', async ({ page }) => {
+  test("e' responsive su mobile", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/');
     await page.getByRole('button', { name: /apri assistente/i }).click();

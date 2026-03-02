@@ -10,25 +10,15 @@ test('pagina servizi mostra tutte le categorie', async ({ page }) => {
 
 test('pagina servizi mostra i servizi specifici', async ({ page }) => {
   await page.goto('/servizi');
-  await expect(
-    page.getByRole('heading', { name: 'Box doccia' }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole('heading', { name: 'Parapetti' }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole('heading', { name: 'Specchi' }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole('heading', { name: 'Molature' }),
-  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Box doccia' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Parapetti' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Specchi' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Molature' })).toBeVisible();
 });
 
 test('CTA preventivo ha il parametro servizio', async ({ page }) => {
   await page.goto('/servizi');
-  const firstCta = page
-    .locator('a[href*="/preventivo?servizio="]')
-    .first();
+  const firstCta = page.locator('a[href*="/preventivo?servizio="]').first();
   await expect(firstCta).toBeVisible();
   const href = await firstCta.getAttribute('href');
   expect(href).toMatch(/\/preventivo\?servizio=[\w-]+/);

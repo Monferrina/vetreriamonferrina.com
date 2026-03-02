@@ -34,8 +34,7 @@ export const queries = {
   services:
     '*[_type == "service"] | order(order asc) { name, "slug": slug.current, category, description, image }',
   siteSettings: '*[_type == "siteSettings"][0]',
-  galleryItems:
-    '*[_type == "galleryItem"] | order(order asc) { title, category, image }',
+  galleryItems: '*[_type == "galleryItem"] | order(order asc) { title, category, image }',
   aboutPage: '*[_type == "aboutPage"][0]',
 };
 
@@ -46,10 +45,7 @@ export const queries = {
  *   - The query returns null/undefined
  *   - The fetch throws an error (network, auth, etc.)
  */
-export async function fetchWithFallback<T>(
-  query: string,
-  fallback: T,
-): Promise<T> {
+export async function fetchWithFallback<T>(query: string, fallback: T): Promise<T> {
   if (!sanityClient) return fallback;
   try {
     const result = await sanityClient.fetch<T>(query);

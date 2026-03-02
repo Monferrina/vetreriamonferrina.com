@@ -30,10 +30,7 @@ async function processLogo() {
 
   // Step 1: Remove white background → transparent PNG
   // Read raw pixel data, threshold white pixels to transparent
-  const { data, info } = await source
-    .ensureAlpha()
-    .raw()
-    .toBuffer({ resolveWithObject: true });
+  const { data, info } = await source.ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 
   // Replace near-white pixels (R>240, G>240, B>240) with transparent
   const WHITE_THRESHOLD = 235;
@@ -53,10 +50,7 @@ async function processLogo() {
     .png()
     .toBuffer();
 
-  const transparentBuffer = await sharp(transparentPng)
-    .trim()
-    .png()
-    .toBuffer();
+  const transparentBuffer = await sharp(transparentPng).trim().png().toBuffer();
 
   const trimmedMeta = await sharp(transparentBuffer).metadata();
   console.log(`Trimmed: ${trimmedMeta.width}x${trimmedMeta.height}`);
@@ -80,17 +74,16 @@ async function processLogo() {
   const fullWidth = trimmedMeta.width;
   const fullHeight = trimmedMeta.height;
   const monogramWidth = Math.round(fullWidth * 0.44);
-  console.log(`Extracting monogram: ${monogramWidth}x${fullHeight} from ${fullWidth}x${fullHeight}`);
+  console.log(
+    `Extracting monogram: ${monogramWidth}x${fullHeight} from ${fullWidth}x${fullHeight}`
+  );
 
   const extractedPng = await sharp(transparentBuffer)
     .extract({ left: 0, top: 0, width: monogramWidth, height: fullHeight })
     .png()
     .toBuffer();
 
-  const monogramBuffer = await sharp(extractedPng)
-    .trim()
-    .png()
-    .toBuffer();
+  const monogramBuffer = await sharp(extractedPng).trim().png().toBuffer();
 
   // Favicon 32x32 (ICO replacement as PNG)
   await sharp(monogramBuffer)

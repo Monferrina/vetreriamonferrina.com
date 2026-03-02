@@ -25,7 +25,7 @@
     stroke-linejoin="round"
     aria-hidden="true"
   >
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
   </svg>
   <!-- Close icon (hidden by default) -->
   <svg
@@ -42,8 +42,8 @@
     stroke-linejoin="round"
     aria-hidden="true"
   >
-    <line x1="18" y1="6" x2="6" y2="18" />
-    <line x1="6" y1="6" x2="18" y2="18" />
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
   </svg>
 </button>
 
@@ -53,15 +53,21 @@
   class="chatbot-tooltip fixed bottom-[5.5rem] right-6 z-50 hidden rounded-xl bg-primary px-4 py-3 text-sm text-white shadow-lg"
 >
   <p id="chatbot-tooltip-title" class="font-medium">Ciao! Posso aiutarti?</p>
-  <p id="chatbot-tooltip-text" class="mt-1 text-white/80">Clicca per parlare con il nostro assistente.</p>
+  <p id="chatbot-tooltip-text" class="mt-1 text-white/80">
+    Clicca per parlare con il nostro assistente.
+  </p>
   <button
     id="chatbot-tooltip-close"
     type="button"
     aria-label="Chiudi suggerimento"
     class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-surface text-primary shadow-md text-xs font-bold hover:bg-neutral-100"
-  >✕</button>
+    >✕</button
+  >
   <!-- Arrow pointing down -->
-  <div class="absolute -bottom-2 right-6 h-0 w-0 border-x-8 border-t-8 border-x-transparent border-t-primary"></div>
+  <div
+    class="absolute -bottom-2 right-6 h-0 w-0 border-x-8 border-t-8 border-x-transparent border-t-primary"
+  >
+  </div>
 </div>
 
 <!-- Chat panel -->
@@ -88,7 +94,7 @@
         stroke-linejoin="round"
         aria-hidden="true"
       >
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
       </svg>
       <span class="font-heading text-lg font-semibold">Assistente Vetreria</span>
     </div>
@@ -110,17 +116,14 @@
         stroke-linejoin="round"
         aria-hidden="true"
       >
-        <line x1="18" y1="6" x2="6" y2="18" />
-        <line x1="6" y1="6" x2="18" y2="18" />
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
     </button>
   </div>
 
   <!-- Messages area -->
-  <div
-    id="chatbot-messages"
-    class="chatbot-messages flex-1 overflow-y-auto px-4 py-5"
-  >
+  <div id="chatbot-messages" class="chatbot-messages flex-1 overflow-y-auto px-4 py-5">
     <!-- Messages are injected here by JS -->
   </div>
 
@@ -228,7 +231,9 @@
   }
 
   @keyframes chatbot-dot-bounce {
-    0%, 60%, 100% {
+    0%,
+    60%,
+    100% {
       transform: translateY(0);
       opacity: 0.4;
     }
@@ -286,7 +291,10 @@
     line-height: 1.4;
     cursor: pointer;
     box-shadow: var(--shadow-sm);
-    transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s,
+      box-shadow 0.15s;
   }
 
   .chatbot-option-btn:hover {
@@ -362,20 +370,37 @@
     const TYPING_DELAY = 300;
 
     // DOM elements — bail out if not in browser or elements missing (e.g. SSR tests)
-    const toggle = document.getElementById('chatbot-toggle');
-    const panel = document.getElementById('chatbot-panel');
-    const closeBtn = document.getElementById('chatbot-close');
-    const messagesArea = document.getElementById('chatbot-messages');
-    const optionsArea = document.getElementById('chatbot-options');
-    const iconOpen = document.getElementById('chatbot-icon-open');
-    const iconClose = document.getElementById('chatbot-icon-close');
+    const toggleEl = document.getElementById('chatbot-toggle');
+    const panelEl = document.getElementById('chatbot-panel');
+    const closeBtnEl = document.getElementById('chatbot-close');
+    const messagesEl = document.getElementById('chatbot-messages');
+    const optionsEl = document.getElementById('chatbot-options');
+    const iconOpenEl = document.getElementById('chatbot-icon-open');
+    const iconCloseEl = document.getElementById('chatbot-icon-close');
+
+    if (
+      !toggleEl ||
+      !panelEl ||
+      !closeBtnEl ||
+      !messagesEl ||
+      !optionsEl ||
+      !iconOpenEl ||
+      !iconCloseEl
+    ) {
+      return;
+    }
+
+    // After null guard, assign to non-nullable consts for use in closures
+    const toggle = toggleEl;
+    const panel = panelEl;
+    const closeBtn = closeBtnEl;
+    const messagesArea = messagesEl;
+    const optionsArea = optionsEl;
+    const iconOpen = iconOpenEl;
+    const iconClose = iconCloseEl;
 
     const tooltip = document.getElementById('chatbot-tooltip');
     const tooltipClose = document.getElementById('chatbot-tooltip-close');
-
-    if (!toggle || !panel || !closeBtn || !messagesArea || !optionsArea || !iconOpen || !iconClose) {
-      return;
-    }
 
     const flow = chatFlowData as ChatFlow;
     const engine = new ChatbotEngine(flow);
@@ -418,7 +443,11 @@
         }
       } catch {
         // Corrupted data — clear it
-        try { sessionStorage.removeItem(SESSION_KEY); } catch { /* ignore */ }
+        try {
+          sessionStorage.removeItem(SESSION_KEY);
+        } catch {
+          /* ignore */
+        }
       }
       return false;
     }
@@ -557,14 +586,18 @@
       }
       try {
         sessionStorage.setItem('chatbot_tooltip_seen', 'true');
-      } catch { /* ignore */ }
+      } catch {
+        /* ignore */
+      }
     }
 
     function showTooltipIfNeeded(): void {
       if (!tooltip) return;
       try {
         if (sessionStorage.getItem('chatbot_tooltip_seen') === 'true') return;
-      } catch { /* ignore */ }
+      } catch {
+        /* ignore */
+      }
       setTimeout(() => {
         if (!isOpen && tooltip) {
           tooltip.classList.remove('hidden');

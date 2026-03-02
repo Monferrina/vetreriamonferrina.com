@@ -18,9 +18,7 @@ function isActive(href: string): boolean {
 }
 ---
 
-<header
-  class="sticky top-0 z-50 border-b border-neutral-200 bg-neutral-50/80 backdrop-blur-md"
->
+<header class="sticky top-0 z-50 border-b border-neutral-200 bg-neutral-50/80 backdrop-blur-md">
   <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
     <!-- Logo -->
     <a href="/" class="flex items-center gap-2" aria-label="Torna alla home">
@@ -34,30 +32,30 @@ function isActive(href: string): boolean {
         decoding="async"
         aria-hidden="true"
       />
-      <span class="font-heading text-lg text-primary lg:text-xl">
-        Vetreria Monferrina
-      </span>
+      <span class="font-heading text-lg text-primary lg:text-xl"> Vetreria Monferrina </span>
     </a>
 
     <!-- Desktop nav -->
     <nav aria-label="Navigazione principale" class="hidden md:block">
       <ul class="flex items-center gap-1 lg:gap-2">
-        {navLinks.map(({ href, label }) => (
-          <li>
-            <a
-              href={href}
-              class:list={[
-                'rounded-md px-3 py-2 text-sm font-medium transition-colors',
-                isActive(href)
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-neutral-700 hover:bg-neutral-100 hover:text-primary',
-              ]}
-              aria-current={isActive(href) ? 'page' : undefined}
-            >
-              {label}
-            </a>
-          </li>
-        ))}
+        {
+          navLinks.map(({ href, label }) => (
+            <li>
+              <a
+                href={href}
+                class:list={[
+                  'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                  isActive(href)
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-neutral-700 hover:bg-neutral-100 hover:text-primary',
+                ]}
+                aria-current={isActive(href) ? 'page' : undefined}
+              >
+                {label}
+              </a>
+            </li>
+          ))
+        }
         <li>
           <a
             href="/preventivo"
@@ -88,8 +86,7 @@ function isActive(href: string): boolean {
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
-          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-        />
+          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
       </svg>
     </button>
   </div>

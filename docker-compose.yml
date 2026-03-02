@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
       target: dev
     ports:
-      - "4321:4321"
+      - '4321:4321'
     volumes:
       - .:/app
       - /app/node_modules
@@ -15,5 +15,5 @@ services:
     logging:
       driver: json-file
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: '10m'
+        max-file: '3'

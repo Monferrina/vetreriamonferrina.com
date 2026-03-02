@@ -1,63 +1,65 @@
 @font-face {
-  font-family: "DM Serif Display";
-  src: url("/fonts/dm-serif-display-latin.woff2") format("woff2");
+  font-family: 'DM Serif Display';
+  src: url('/fonts/dm-serif-display-latin.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Inter";
-  src: url("/fonts/inter-latin-variable.woff2") format("woff2");
+  font-family: 'Inter';
+  src: url('/fonts/inter-latin-variable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  --color-primary: #1B4965;
-  --color-primary-light: #2A6F97;
-  --color-primary-dark: #0F2D40;
-  --color-secondary: #C67B40;
-  --color-secondary-light: #D4955E;
-  --color-secondary-dark: #A8622F;
-  --color-neutral-50: #FAFAFA;
-  --color-neutral-100: #F5F5F5;
-  --color-neutral-200: #E5E5E5;
+  --color-primary: #1b4965;
+  --color-primary-light: #2a6f97;
+  --color-primary-dark: #0f2d40;
+  --color-secondary: #c67b40;
+  --color-secondary-light: #d4955e;
+  --color-secondary-dark: #a8622f;
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
   --color-neutral-700: #404040;
   --color-neutral-800: #262626;
   --color-neutral-900: #171717;
-  --color-surface: #FFFFFF;
-  --color-success: #16A34A;
-  --color-error: #DC2626;
-  --font-heading: "DM Serif Display", serif;
-  --font-body: "Inter", sans-serif;
+  --color-surface: #ffffff;
+  --color-success: #16a34a;
+  --color-error: #dc2626;
+  --font-heading: 'DM Serif Display', serif;
+  --font-body: 'Inter', sans-serif;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
   --shadow: 0 1px 3px rgb(0 0 0 / 0.1);
 }
 
 /* Dark mode — activated by inline script in BaseLayout */
-[data-theme="dark"] {
-  --color-primary: #5BA3CC;
-  --color-primary-light: #7BB8D9;
-  --color-primary-dark: #1B4965;
-  --color-secondary: #D4955E;
-  --color-secondary-light: #E0A875;
-  --color-secondary-dark: #B86E35;
+[data-theme='dark'] {
+  --color-primary: #5ba3cc;
+  --color-primary-light: #7bb8d9;
+  --color-primary-dark: #1b4965;
+  --color-secondary: #d4955e;
+  --color-secondary-light: #e0a875;
+  --color-secondary-dark: #b86e35;
   --color-neutral-50: #111318;
-  --color-neutral-100: #1A1D24;
-  --color-neutral-200: #2A2D34;
-  --color-neutral-700: #9CA3AF;
-  --color-neutral-800: #D1D5DB;
-  --color-neutral-900: #F3F4F6;
+  --color-neutral-100: #1a1d24;
+  --color-neutral-200: #2a2d34;
+  --color-neutral-700: #9ca3af;
+  --color-neutral-800: #d1d5db;
+  --color-neutral-900: #f3f4f6;
   --color-surface: #252830;
-  --color-success: #22C55E;
-  --color-error: #EF4444;
+  --color-success: #22c55e;
+  --color-error: #ef4444;
   --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.06);
   --shadow: 0 2px 8px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.06);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.08);
+  --shadow-md:
+    0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4),
+    0 0 0 1px rgb(255 255 255 / 0.08);
 }
 
 /* Gallery filter buttons — design-token aware for dark mode */
@@ -65,9 +67,9 @@
   background-color: var(--color-primary);
   color: var(--color-neutral-50);
 }
-[data-theme="dark"] .gallery-filter-active {
+[data-theme='dark'] .gallery-filter-active {
   background-color: var(--color-primary-dark);
-  color: #F3F4F6;
+  color: #f3f4f6;
 }
 .gallery-filter-inactive {
   background-color: var(--color-neutral-200);
@@ -79,7 +81,9 @@
 
 /* Smooth transition between themes */
 html {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* Respect users who prefer no transitions */

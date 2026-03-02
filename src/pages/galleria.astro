@@ -11,10 +11,14 @@ interface SanityGalleryItem {
   category: string;
   image?: unknown;
 }
-const sanityGalleryItems = await fetchWithFallback<SanityGalleryItem[] | null>(queries.galleryItems, null);
-const galleryItems = sanityGalleryItems && Array.isArray(sanityGalleryItems) && sanityGalleryItems.length > 0
-  ? sanityGalleryItems
-  : null;
+const sanityGalleryItems = await fetchWithFallback<SanityGalleryItem[] | null>(
+  queries.galleryItems,
+  null
+);
+const galleryItems =
+  sanityGalleryItems && Array.isArray(sanityGalleryItems) && sanityGalleryItems.length > 0
+    ? sanityGalleryItems
+    : null;
 ---
 
 <BaseLayout
@@ -26,8 +30,8 @@ const galleryItems = sanityGalleryItems && Array.isArray(sanityGalleryItems) && 
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Galleria</h1>
       <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
-        Una selezione dei nostri lavori: installazioni, vetri e lavorazioni
-        realizzati nel nostro laboratorio a Casale Monferrato.
+        Una selezione dei nostri lavori: installazioni, vetri e lavorazioni realizzati nel nostro
+        laboratorio a Casale Monferrato.
       </p>
     </div>
   </section>
@@ -119,9 +123,7 @@ const galleryItems = sanityGalleryItems && Array.isArray(sanityGalleryItems) && 
     let visibleItems: HTMLElement[] = [];
 
     function getVisibleItems(): HTMLElement[] {
-      return Array.from(galleryItems).filter(
-        (item) => item.style.display !== 'none'
-      );
+      return Array.from(galleryItems).filter((item) => item.style.display !== 'none');
     }
 
     function openLightbox(index: number) {

@@ -6,20 +6,22 @@ import { fetchWithFallback, queries } from '../lib/sanity';
 export const prerender = true;
 
 // Try Sanity, fall back to static data
-const sanityServices = await fetchWithFallback(queries.services, null);
-const servicesData = sanityServices && Array.isArray(sanityServices) && sanityServices.length > 0
-  ? sanityServices
-  : staticServices;
+type ServiceItem = { name: string; description: string; slug: string; category: string };
+const sanityServices = await fetchWithFallback<ServiceItem[] | null>(queries.services, null);
+const servicesData: ServiceItem[] =
+  sanityServices && sanityServices.length > 0 ? sanityServices : staticServices;
 
 function getServicesByCat(category: CategoryKey) {
-  return servicesData.filter((s: { category: string }) => s.category === category);
+  return servicesData.filter((s) => s.category === category);
 }
 
 // Category descriptions for the page
 const categoryDescriptions: Record<CategoryKey, string> = {
-  installazioni: 'Dalla consulenza alla posa in opera, seguiamo ogni progetto dal primo sopralluogo all\'installazione finale.',
-  vetri: "Scegliamo vetri di qualità per ogni esigenza: sicurezza, isolamento termico, design.",
-  lavorazioni: 'Tagli, forature e molature eseguiti nel nostro laboratorio con la precisione che solo l\'esperienza artigianale garantisce.',
+  installazioni:
+    "Dalla consulenza alla posa in opera, seguiamo ogni progetto dal primo sopralluogo all'installazione finale.",
+  vetri: 'Scegliamo vetri di qualità per ogni esigenza: sicurezza, isolamento termico, design.',
+  lavorazioni:
+    "Tagli, forature e molature eseguiti nel nostro laboratorio con la precisione che solo l'esperienza artigianale garantisce.",
 };
 
 // Build category entries with their data
@@ -43,8 +45,8 @@ const categoryEntries = (Object.entries(categories) as [CategoryKey, string][]).
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">I nostri servizi</h1>
       <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
-        Esperienza, precisione e cura artigianale nella lavorazione del vetro,
-        al servizio di privati, aziende e professionisti dell'edilizia.
+        Esperienza, precisione e cura artigianale nella lavorazione del vetro, al servizio di
+        privati, aziende e professionisti dell'edilizia.
       </p>
     </div>
   </section>
@@ -61,36 +63,40 @@ const categoryEntries = (Object.entries(categories) as [CategoryKey, string][]).
       >
         Tutti
       </button>
-      {categoryEntries.map((cat) => (
-        <button
-          type="button"
-          class="gallery-filter-inactive rounded-full px-5 py-2 text-sm font-medium transition-colors"
-          data-service-filter={cat.key}
-          aria-pressed="false"
-        >
-          {cat.title}
-        </button>
-      ))}
+      {
+        categoryEntries.map((cat) => (
+          <button
+            type="button"
+            class="gallery-filter-inactive rounded-full px-5 py-2 text-sm font-medium transition-colors"
+            data-service-filter={cat.key}
+            aria-pressed="false"
+          >
+            {cat.title}
+          </button>
+        ))
+      }
     </div>
 
     <!-- Category sections (inline, no nested max-w-7xl) -->
-    {categoryEntries.map((cat) => (
-      <div id={cat.key} data-service-category={cat.key} class="mb-16 last:mb-0">
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">{cat.title}</h2>
-        {cat.description && (
-          <p class="mt-3 max-w-2xl text-lg text-neutral-700">{cat.description}</p>
-        )}
-        <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {cat.services.map((service: { name: string; description: string; slug: string }) => (
-            <ServiceCard
-              name={service.name}
-              description={service.description}
-              slug={service.slug}
-            />
-          ))}
+    {
+      categoryEntries.map((cat) => (
+        <div id={cat.key} data-service-category={cat.key} class="mb-16 last:mb-0">
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">{cat.title}</h2>
+          {cat.description && (
+            <p class="mt-3 max-w-2xl text-lg text-neutral-700">{cat.description}</p>
+          )}
+          <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {cat.services.map((service) => (
+              <ServiceCard
+                name={service.name}
+                description={service.description}
+                slug={service.slug}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-    ))}
+      ))
+    }
   </section>
 
   <!-- CTA -->
@@ -98,8 +104,8 @@ const categoryEntries = (Object.entries(categories) as [CategoryKey, string][]).
     <div class="mx-auto max-w-7xl px-4 text-center lg:px-8">
       <h2 class="font-heading text-3xl text-neutral-50">Non trovi quello che cerchi?</h2>
       <p class="mx-auto mt-4 max-w-xl text-lg text-neutral-200">
-        Realizziamo qualsiasi lavorazione in vetro su misura.
-        Contattaci per una consulenza gratuita.
+        Realizziamo qualsiasi lavorazione in vetro su misura. Contattaci per una consulenza
+        gratuita.
       </p>
       <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
         <a

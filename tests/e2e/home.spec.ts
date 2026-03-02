@@ -11,13 +11,19 @@ test.describe('Home Page', () => {
 
   test('CTA preventivo porta alla pagina corretta', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('link', { name: /richiedi preventivo/i }).first().click();
+    await page
+      .getByRole('link', { name: /richiedi preventivo/i })
+      .first()
+      .click();
     await expect(page).toHaveURL(/\/preventivo/);
   });
 
   test('link servizi porta alla pagina corretta', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('link', { name: /scopri.*servizi/i }).first().click();
+    await page
+      .getByRole('link', { name: /scopri.*servizi/i })
+      .first()
+      .click();
     await expect(page).toHaveURL(/\/servizi/);
   });
 });

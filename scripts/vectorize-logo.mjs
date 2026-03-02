@@ -35,10 +35,7 @@ async function vectorizeLogo() {
   console.log(`Source: ${meta.width}x${meta.height}`);
 
   // Get raw pixel data
-  const { data, info } = await source
-    .ensureAlpha()
-    .raw()
-    .toBuffer({ resolveWithObject: true });
+  const { data, info } = await source.ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 
   const w = info.width;
   const h = info.height;
@@ -49,7 +46,7 @@ async function vectorizeLogo() {
     const r = data[i * 4];
     const g = data[i * 4 + 1];
     const b = data[i * 4 + 2];
-    redMask[i] = (r > 160 && g < 120 && b < 120) ? 0 : 255;
+    redMask[i] = r > 160 && g < 120 && b < 120 ? 0 : 255;
   }
 
   const redPng = await sharp(redMask, { raw: { width: w, height: h, channels: 1 } })
@@ -64,7 +61,7 @@ async function vectorizeLogo() {
     const r = data[i * 4];
     const g = data[i * 4 + 1];
     const b = data[i * 4 + 2];
-    darkMask[i] = (r < 100 && g < 100 && b < 100) ? 0 : 255;
+    darkMask[i] = r < 100 && g < 100 && b < 100 ? 0 : 255;
   }
 
   const darkPng = await sharp(darkMask, { raw: { width: w, height: h, channels: 1 } })
@@ -115,10 +112,10 @@ async function vectorizeLogo() {
     Rosso monogramma: #D4001A | Testo scuro: #333333
   -->
   <g id="dark-layer" fill="#333333">
-${darkPaths.map(d => `    <path d="${d}"/>`).join('\n')}
+${darkPaths.map((d) => `    <path d="${d}"/>`).join('\n')}
   </g>
   <g id="red-layer" fill="#D4001A">
-${redPaths.map(d => `    <path d="${d}"/>`).join('\n')}
+${redPaths.map((d) => `    <path d="${d}"/>`).join('\n')}
   </g>
 </svg>`;
 
@@ -126,7 +123,10 @@ ${redPaths.map(d => `    <path d="${d}"/>`).join('\n')}
   console.log('Created: logo-vetreria-monferrina.svg');
 
   // === Step 7: Monogram-only SVG ===
-  let minX = w, minY = h, maxX = 0, maxY = 0;
+  let minX = w,
+    minY = h,
+    maxX = 0,
+    maxY = 0;
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
       if (redMask[y * w + x] === 0) {
@@ -177,10 +177,10 @@ ${redPaths.map(d => `    <path d="${d}"/>`).join('\n')}
   const monoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${cropW} ${cropH}" fill="none">
   <!-- Monogramma VMF. — Vetreria Monferrina -->
   <g id="shadow" fill="#333333">
-${monoShadowPaths.map(d => `    <path d="${d}"/>`).join('\n')}
+${monoShadowPaths.map((d) => `    <path d="${d}"/>`).join('\n')}
   </g>
   <g id="vmf" fill="#D4001A">
-${monoPaths.map(d => `    <path d="${d}"/>`).join('\n')}
+${monoPaths.map((d) => `    <path d="${d}"/>`).join('\n')}
   </g>
 </svg>`;
 

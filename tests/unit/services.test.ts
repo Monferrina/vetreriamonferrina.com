@@ -1,9 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  services,
-  categories,
-  getServicesByCategory,
-} from '../../src/data/services';
+import { services, categories, getServicesByCategory } from '../../src/data/services';
 
 describe('Dati servizi', () => {
   it('ogni servizio ha slug, nome, descrizione e categoria valida', () => {
@@ -22,9 +18,7 @@ describe('Dati servizi', () => {
   it('getServicesByCategory filtra correttamente', () => {
     const installazioni = getServicesByCategory('installazioni');
     expect(installazioni.length).toBe(6);
-    expect(
-      installazioni.every((s) => s.category === 'installazioni'),
-    ).toBe(true);
+    expect(installazioni.every((s) => s.category === 'installazioni')).toBe(true);
 
     const vetri = getServicesByCategory('vetri');
     expect(vetri.length).toBe(7);
