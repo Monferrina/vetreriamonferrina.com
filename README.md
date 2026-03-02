@@ -13,25 +13,40 @@ Sito web della Vetreria Monferrina di Fioravanti Giuseppe — Casale Monferrato 
 - **Leaflet.js** (mappa interattiva contatti)
 - **ESLint** + **Prettier** (code quality)
 - **Husky** + **lint-staged** (pre-commit hooks)
+- **Lighthouse CI** (performance, accessibilita, SEO)
 - **Vitest** + **Playwright** (unit test + E2E)
 - **GitHub Actions** (CI pipeline)
 
-## Funzionalità
+## Funzionalita
 
-- Homepage con hero, servizi in evidenza, stats, recensioni Google, CTA
+- Homepage con hero parallax, servizi in evidenza, stats, recensioni Google, partner, CTA
 - Pagine servizi e galleria con **filtri a pill buttons** coerenti (categorie: Installazioni, Vetri, Lavorazioni)
-- Galleria con **lightbox** e navigazione tastiera
+- Galleria **masonry** con **lightbox** accessibile (focus trap, navigazione tastiera, swipe touch)
 - **Mappa interattiva Leaflet** con marker SVG rosso a spillo e popup indirizzo
 - **Widget meteo** con consigli intelligenti sul vetro (Open-Meteo, gratis)
-- **Orari di apertura da Google** con fallback chain (Sanity → Google → statico)
-- **Chatbot contestuale** a flusso — saluto diverso per pagina, JSON statico, zero API, sessione persistente
-- Form preventivo con validazione client + server + honeypot
+- **Orari di apertura da Google** con fallback chain (Sanity -> Google -> statico)
+- **Chatbot contestuale** a flusso — saluto diverso per pagina, JSON statico, zero API, sessione persistente, focus trap
+- Form preventivo con validazione client + server + honeypot + rate limiting (5/min/IP)
 - **Dark mode automatica** (orario notturno + preferenza di sistema) con design token CSS
-- **Client Router** per navigazione fluida (Astro transitions)
+- **View Transitions** — navigazione fluida tra pagine con slide + fade, header/footer persistenti
+- **Prefetch viewport** — precaricamento pagine per navigazione istantanea
 - Cookie banner informativo (solo cookie tecnici, GDPR)
-- SEO: JSON-LD, Open Graph, sitemap, canonical URLs
+- SEO: JSON-LD LocalBusiness, Open Graph, sitemap, canonical URLs
 - **Security headers** — CSP, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy
-- **Chi siamo** — storia familiare, timeline, sezione in ricordo di Manuela
+- **Chi siamo** — storia familiare, timeline compatta, sezione in ricordo di Manuela
+- **Accessibilita WCAG 2.1 AA** — focus trap (lightbox, chatbot), aria-live, reduced-motion, contrasto colori, target size 44px
+- **Immagini ottimizzate** — WebP, lazy loading, sizes responsive, fetchpriority LCP
+
+## Punteggi Lighthouse (v0.3)
+
+| Pagina     | Performance | Accessibilita | Best Practices | SEO |
+| ---------- | ----------- | ------------- | -------------- | --- |
+| Homepage   | 99          | 96            | 100            | 100 |
+| Servizi    | 99          | 96            | 100            | 100 |
+| Contatti   | 99          | 97            | 100            | 100 |
+| Chi siamo  | 98          | 96            | 100            | 100 |
+| Preventivo | 100         | 96            | 100            | 100 |
+| Galleria   | 81          | 96            | 100            | 100 |
 
 ## Screenshot
 
@@ -72,16 +87,19 @@ npm run format:check
 
 # Type check (Astro + TypeScript)
 npm run check
+
+# Lighthouse CI
+npm run lighthouse
 ```
 
 ## CI/CD
 
 Il progetto include una pipeline GitHub Actions (`.github/workflows/ci.yml`) che esegue automaticamente su push e PR:
 
-1. **Lint** — ESLint
+1. **Lint** — ESLint (TypeScript + Astro)
 2. **Format check** — Prettier
 3. **Type check** — `astro check`
-4. **Unit test** — Vitest (94 test)
+4. **Unit test** — Vitest (94 test, 9 file)
 5. **Build** — build di produzione
 
 I pre-commit hooks (Husky + lint-staged) eseguono lint e format automaticamente ad ogni commit.
@@ -95,20 +113,25 @@ MonferrinaProject/
 ├── docs/
 │   ├── plans/               # Design doc, architettura, guide
 │   └── screenshots/         # Screenshot pagine (dark/light mode)
-├── scripts/                 # Script build-time (logo, Google Places data)
+├── scripts/                 # Script build-time (logo, Google Places data, image optimization)
 ├── src/
-│   ├── components/          # Componenti Astro (mappa Leaflet, chatbot, lightbox, filtri)
+│   ├── components/          # 19 componenti Astro (mappa, chatbot, lightbox, carousel, filtri, meteo)
 │   ├── data/                # Dati statici (chatbot-flow, reviews, orari, servizi)
-│   ├── layouts/             # Layout base con dark mode + Client Router
-│   ├── lib/                 # Logica condivisa (sanity, chatbot-engine, validazione)
-│   ├── pages/               # Pagine + API routes
-│   │   └── api/             # Edge functions (form preventivo)
-│   └── styles/              # Design system (token colori, font, dark mode)
-├── public/                  # Asset statici (font, immagini, favicon)
+│   ├── layouts/             # Layout base con dark mode + Client Router + View Transitions
+│   ├── lib/                 # Logica condivisa (sanity, chatbot-engine, validazione, sanitize)
+│   ├── pages/               # 8 pagine + API routes
+│   │   └── api/             # Edge functions (form preventivo con rate limiting)
+│   └── styles/              # Design system (token colori, font, dark mode, view transitions)
+├── public/
+│   ├── fonts/               # Font self-hosted (DM Serif Display, DM Sans)
+│   ├── images/
+│   │   ├── gallery/         # 20 immagini WebP ottimizzate (~1.2 MB totale)
+│   │   └── google-photos/   # Foto Google Places scaricate localmente
+│   └── ...                  # Logo SVG, favicon, og-image
 ├── tests/
 │   ├── unit/                # 9 file, 94 test (Vitest)
 │   └── e2e/                 # 10 file (Playwright)
-├── astro.config.mjs
+├── astro.config.mjs         # SSG + SSR, prefetch viewport, trailing slash
 ├── eslint.config.js         # ESLint flat config (TS + Astro)
 ├── .prettierrc              # Prettier config
 ├── vercel.json              # Security headers + CSP
