@@ -36,6 +36,10 @@
 - [x] **Chatbot orari corretti** — aggiornati da Google (Lun-Ven 08:00-12:00/13:30-17:30, Sab 08:00-12:00)
 - [x] **Chatbot rendering multilinea** — split su `\n` per paragrafi separati nel bubble
 - [x] **Sanity Studio verificato** — funzionante su localhost:3334, 4 schemi, dati non ancora popolati
+- [x] **Testi Chi Siamo riscritti** — storia Giuseppe e Debora, tono personale e caldo
+- [x] **Sezione in ricordo di Manuela** — "Posso fare una stampa?", solo testo, sobria
+- [x] **Tono coerente tutto il sito** — eliminato marketing speak, allineato a Chi Siamo
+- [x] **Meta description aggiornate** — homepage, chi siamo, servizi
 
 ## Da fare — Prossimi step
 
