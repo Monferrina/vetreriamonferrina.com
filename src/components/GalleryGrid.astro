@@ -1,9 +1,10 @@
 ---
 // src/components/GalleryGrid.astro
-// Responsive gallery grid with placeholder items and category filtering.
+// Responsive gallery grid with real photos and category filtering.
 // Accepts optional Sanity items via props; falls back to static data.
 
 import { urlFor } from '../lib/sanity';
+import ProtectedImage from './ProtectedImage.astro';
 
 interface GalleryItem {
   id: number;
@@ -32,24 +33,163 @@ const categoryLabels: Record<string, string> = {
 };
 
 const staticItems: GalleryItem[] = [
+  // --- Installazioni ---
   {
     id: 1,
-    title: 'Box doccia su misura',
+    title: 'Posa vetrata ad arco in villa',
     category: 'installazioni',
     categoryLabel: 'Installazioni',
+    imageUrl: '/images/gallery/installazioni-arco-villa.webp',
   },
   {
     id: 2,
-    title: 'Parapetto in vetro temperato',
+    title: 'Installazione vetro in arco mattoni',
     category: 'installazioni',
     categoryLabel: 'Installazioni',
+    imageUrl: '/images/gallery/installazioni-arco-mattoni.webp',
   },
-  { id: 3, title: 'Pensilina ingresso', category: 'installazioni', categoryLabel: 'Installazioni' },
-  { id: 4, title: 'Vetro stratificato satinato', category: 'vetri', categoryLabel: 'Vetri' },
-  { id: 5, title: 'Vetrocamera doppio', category: 'vetri', categoryLabel: 'Vetri' },
-  { id: 6, title: 'Specchio su misura', category: 'vetri', categoryLabel: 'Vetri' },
-  { id: 7, title: 'Sagomatura su disegno', category: 'lavorazioni', categoryLabel: 'Lavorazioni' },
-  { id: 8, title: 'Molatura a filo lucido', category: 'lavorazioni', categoryLabel: 'Lavorazioni' },
+  {
+    id: 3,
+    title: 'Posa facciata vetrata commerciale',
+    category: 'installazioni',
+    categoryLabel: 'Installazioni',
+    imageUrl: '/images/gallery/installazioni-facciata.webp',
+  },
+  {
+    id: 4,
+    title: 'Posa vetri su casa in legno',
+    category: 'installazioni',
+    categoryLabel: 'Installazioni',
+    imageUrl: '/images/gallery/installazioni-casa-legno.webp',
+  },
+  {
+    id: 5,
+    title: 'Installazione pensilina in vetro',
+    category: 'installazioni',
+    categoryLabel: 'Installazioni',
+    imageUrl: '/images/gallery/installazioni-pensilina.webp',
+  },
+  {
+    id: 6,
+    title: 'Posa grandi vetrate',
+    category: 'installazioni',
+    categoryLabel: 'Installazioni',
+    imageUrl: '/images/gallery/installazioni-casa-legno-2.webp',
+  },
+  {
+    id: 7,
+    title: "Installazione dall'interno",
+    category: 'installazioni',
+    categoryLabel: 'Installazioni',
+    imageUrl: '/images/gallery/installazioni-interno.webp',
+  },
+  {
+    id: 8,
+    title: 'Consegna e posa in cantiere',
+    category: 'installazioni',
+    categoryLabel: 'Installazioni',
+    imageUrl: '/images/gallery/installazioni-consegna.webp',
+  },
+  // --- Vetri (parapetti, vetrate, porte) ---
+  {
+    id: 9,
+    title: 'Parapetto balcone in vetro moderno',
+    category: 'vetri',
+    categoryLabel: 'Vetri',
+    imageUrl: '/images/gallery/vetri-parapetto-moderno.webp',
+  },
+  {
+    id: 10,
+    title: 'Parapetto scala interna in vetro',
+    category: 'vetri',
+    categoryLabel: 'Vetri',
+    imageUrl: '/images/gallery/vetri-scala-interna.webp',
+  },
+  {
+    id: 11,
+    title: 'Parapetto terrazza',
+    category: 'vetri',
+    categoryLabel: 'Vetri',
+    imageUrl: '/images/gallery/vetri-parapetto-terrazza.webp',
+  },
+  {
+    id: 12,
+    title: 'Parapetto balcone residenziale',
+    category: 'vetri',
+    categoryLabel: 'Vetri',
+    imageUrl: '/images/gallery/vetri-balcone-residenziale.webp',
+  },
+  {
+    id: 13,
+    title: 'Grande vetrata con colonne in pietra',
+    category: 'vetri',
+    categoryLabel: 'Vetri',
+    imageUrl: '/images/gallery/vetri-grande-vetrata.webp',
+  },
+  {
+    id: 14,
+    title: 'Vetrata ad arco con profili bianchi',
+    category: 'vetri',
+    categoryLabel: 'Vetri',
+    imageUrl: '/images/gallery/vetri-arco-bianco.webp',
+  },
+  {
+    id: 15,
+    title: 'Facciata vetrata commerciale',
+    category: 'vetri',
+    categoryLabel: 'Vetri',
+    imageUrl: '/images/gallery/vetri-facciata-commerciale.webp',
+  },
+  {
+    id: 16,
+    title: 'Porta in vetro per ingresso',
+    category: 'vetri',
+    categoryLabel: 'Vetri',
+    imageUrl: '/images/gallery/vetri-porta-ingresso.webp',
+  },
+  {
+    id: 17,
+    title: 'Chiusura in vetro su struttura in granito',
+    category: 'vetri',
+    categoryLabel: 'Vetri',
+    imageUrl: '/images/gallery/vetri-chiusura-granito.webp',
+  },
+  // --- Lavorazioni su misura ---
+  {
+    id: 18,
+    title: 'Porta scorrevole con fiori dipinti',
+    category: 'lavorazioni',
+    categoryLabel: 'Lavorazioni',
+    imageUrl: '/images/gallery/lavorazioni-porta-fiori.webp',
+  },
+  {
+    id: 19,
+    title: 'Finestra ad arco con vetro sabbiato',
+    category: 'lavorazioni',
+    categoryLabel: 'Lavorazioni',
+    imageUrl: '/images/gallery/lavorazioni-arco-sabbiato.webp',
+  },
+  {
+    id: 20,
+    title: 'Porta in vetro decorato con airone',
+    category: 'lavorazioni',
+    categoryLabel: 'Lavorazioni',
+    imageUrl: '/images/gallery/lavorazioni-porta-airone.webp',
+  },
+  {
+    id: 21,
+    title: 'Pannello con incisione rose',
+    category: 'lavorazioni',
+    categoryLabel: 'Lavorazioni',
+    imageUrl: '/images/gallery/lavorazioni-pannello-rose.webp',
+  },
+  {
+    id: 22,
+    title: 'Vetro curvo per imbarcazione',
+    category: 'lavorazioni',
+    categoryLabel: 'Lavorazioni',
+    imageUrl: '/images/gallery/lavorazioni-vetro-barca.webp',
+  },
 ];
 
 // Use Sanity items if provided, otherwise fall back to static data
@@ -76,14 +216,13 @@ const items: GalleryItem[] = sanityItems
         data-gallery-title={item.title}
         aria-label={`Apri ${item.title}`}
       >
-        {/* Image: Sanity image or placeholder */}
         {item.imageUrl ? (
-          <div class="aspect-[4/3] overflow-hidden bg-neutral-200 transition-transform group-hover:scale-105">
-            <img
+          <div class="aspect-[4/3] overflow-hidden">
+            <ProtectedImage
               src={item.imageUrl}
               alt={item.title}
-              class="h-full w-full object-cover"
-              loading="lazy"
+              class="transition-transform duration-300 group-hover:scale-105"
+              wrapperClass="h-full w-full bg-neutral-200"
             />
           </div>
         ) : (
@@ -109,7 +248,7 @@ const items: GalleryItem[] = sanityItems
         )}
 
         {/* Info overlay */}
-        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 pt-8">
+        <div class="absolute inset-x-0 bottom-0 z-[2] bg-gradient-to-t from-black/70 to-transparent p-3 pt-8">
           <span class="mb-1 inline-block rounded-full bg-secondary px-2 py-0.5 text-xs font-semibold text-neutral-50">
             {item.categoryLabel}
           </span>

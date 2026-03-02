@@ -119,6 +119,24 @@ const jsonLd = {
     <Footer />
     <CookieBanner />
     <Chatbot />
+    <!-- Image protection: block save/download/drag on protected images -->
+    <script>
+      function initImageProtection(): void {
+        document.addEventListener('contextmenu', (e) => {
+          const t = e.target as HTMLElement;
+          if (t.closest('.protected-img-wrap') || t.closest('[data-lightbox]')) {
+            e.preventDefault();
+          }
+        });
+        document.addEventListener('dragstart', (e) => {
+          const t = e.target as HTMLElement;
+          if (t.tagName === 'IMG' && t.closest('.protected-img-wrap, [data-lightbox]')) {
+            e.preventDefault();
+          }
+        });
+      }
+      initImageProtection();
+    </script>
     <!-- Dynamic theme updates: recheck time every 15 min + listen for system changes -->
     <script>
       function applyTheme(): void {

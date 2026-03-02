@@ -1,7 +1,7 @@
 ---
 // src/components/Lightbox.astro
 // Full-screen lightbox for gallery images. Hidden by default.
-// Actual image display will work when real images come from Sanity CMS.
+// Includes image protection (no right-click / drag / save).
 ---
 
 <div
@@ -69,9 +69,8 @@
     </svg>
   </button>
 
-  <!-- Content area -->
-  <div class="mx-auto flex max-w-4xl flex-col items-center px-16">
-    <!-- Image placeholder (will be replaced with real images from Sanity) -->
+  <!-- Content area (protected) -->
+  <div class="protected-img-wrap mx-auto flex max-w-4xl flex-col items-center px-16">
     <div
       class="flex aspect-[4/3] w-full max-w-2xl items-center justify-center rounded-lg bg-neutral-800 text-neutral-400"
       data-lightbox-image

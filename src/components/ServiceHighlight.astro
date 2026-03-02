@@ -1,29 +1,35 @@
 ---
 // src/components/ServiceHighlight.astro
+import ProtectedImage from './ProtectedImage.astro';
+
 const services = [
   {
     name: 'Box doccia',
     description:
       'Box doccia in vetro temperato su misura, con profili minimali e finiture eleganti per il tuo bagno.',
     icon: 'shower',
+    image: null, // Foto in arrivo
   },
   {
     name: 'Parapetti',
     description:
       'Parapetti e balaustre in vetro per balconi, scale e terrazze. Sicurezza e trasparenza.',
     icon: 'railing',
+    image: '/images/services/parapetti.webp',
   },
   {
     name: 'Vetri camera',
     description:
       'Vetri isolanti a doppia e tripla camera per un comfort termico e acustico superiore.',
     icon: 'window',
+    image: '/images/services/vetri-camera.webp',
   },
   {
     name: 'Lavorazioni su misura',
     description:
       'Specchi, mensole, credenze, vetrine e qualsiasi lavorazione personalizzata in vetro.',
     icon: 'custom',
+    image: '/images/services/su-misura.webp',
   },
 ];
 ---
@@ -40,97 +46,64 @@ const services = [
     <div class="mt-12 grid gap-8 sm:grid-cols-2">
       {
         services.map((service) => (
-          <article class="group rounded-2xl border border-neutral-200 bg-surface p-8 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-            <div class="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              {service.icon === 'shower' && (
-                <svg
-                  class="h-7 w-7"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"
-                  />
-                </svg>
-              )}
-              {service.icon === 'railing' && (
-                <svg
-                  class="h-7 w-7"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15"
-                  />
-                </svg>
-              )}
-              {service.icon === 'window' && (
-                <svg
-                  class="h-7 w-7"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21"
-                  />
-                </svg>
-              )}
-              {service.icon === 'custom' && (
-                <svg
-                  class="h-7 w-7"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.049.58.025 1.193-.14 1.743"
-                  />
-                </svg>
-              )}
-            </div>
-
-            <h3 class="font-heading text-xl text-primary">{service.name}</h3>
-            <p class="mt-2 leading-relaxed text-neutral-700">{service.description}</p>
-
-            <a
-              href="/servizi"
-              class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-secondary-dark transition-colors hover:text-primary"
-            >
-              Scopri di più
-              <svg
-                class="h-4 w-4 transition-transform group-hover:translate-x-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+          <article class="group overflow-hidden rounded-2xl border border-neutral-200 bg-surface shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+            {/* Image or icon fallback */}
+            {service.image ? (
+              <div class="aspect-[4/3] overflow-hidden">
+                <ProtectedImage
+                  src={service.image}
+                  alt={service.name}
+                  class="transition-transform duration-300 group-hover:scale-105"
+                  wrapperClass="h-full w-full bg-neutral-200"
                 />
-              </svg>
-            </a>
+              </div>
+            ) : (
+              <div class="flex aspect-[4/3] items-center justify-center bg-neutral-200">
+                <div class="text-center text-neutral-400">
+                  <svg
+                    class="mx-auto h-10 w-10"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"
+                    />
+                  </svg>
+                  <p class="mt-1 text-xs">Foto in arrivo</p>
+                </div>
+              </div>
+            )}
+
+            <div class="p-8">
+              <h3 class="font-heading text-xl text-primary">{service.name}</h3>
+              <p class="mt-2 leading-relaxed text-neutral-700">{service.description}</p>
+
+              <a
+                href="/servizi"
+                class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-secondary-dark transition-colors hover:text-primary"
+              >
+                Scopri di più
+                <svg
+                  class="h-4 w-4 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                  />
+                </svg>
+              </a>
+            </div>
           </article>
         ))
       }
