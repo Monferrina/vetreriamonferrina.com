@@ -109,7 +109,9 @@ const hasHalfStar = rating - fullStars >= 0.3;
 
     <!-- Header with overall rating -->
     <div class="text-center">
-      <h2 class="font-heading text-3xl text-primary sm:text-4xl">Cosa dicono i nostri clienti</h2>
+      <h2 class="font-heading text-3xl text-primary sm:text-4xl" data-reveal>
+        Cosa dicono i nostri clienti
+      </h2>
       <div class="mt-4 flex items-center justify-center gap-2">
         <!-- Stars -->
         <div class="flex items-center gap-0.5" role="img" aria-label={`Valutazione ${rating} su 5`}>

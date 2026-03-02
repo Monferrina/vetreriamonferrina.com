@@ -9,8 +9,10 @@ interface Props {
   class?: string;
   wrapperClass?: string;
   loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
   width?: number;
   height?: number;
+  sizes?: string;
 }
 
 const {
@@ -19,8 +21,10 @@ const {
   class: imgClass = '',
   wrapperClass = '',
   loading = 'lazy',
+  fetchpriority,
   width,
   height,
+  sizes,
 } = Astro.props;
 ---
 
@@ -33,6 +37,8 @@ const {
     decoding="async"
     width={width}
     height={height}
+    fetchpriority={fetchpriority}
+    sizes={sizes}
   />
   <!-- Transparent shield blocks right-click / long-press on the actual image -->
   <div class="protected-img-shield" aria-hidden="true"></div>

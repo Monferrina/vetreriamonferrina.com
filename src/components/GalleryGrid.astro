@@ -1,6 +1,6 @@
 ---
 // src/components/GalleryGrid.astro
-// Responsive gallery grid with real photos and category filtering.
+// Professional masonry gallery with blur-up loading and category filtering.
 // Accepts optional Sanity items via props; falls back to static data.
 
 import { urlFor } from '../lib/sanity';
@@ -12,6 +12,7 @@ interface GalleryItem {
   category: string;
   categoryLabel: string;
   imageUrl?: string;
+  size?: 'featured' | 'tall';
 }
 
 interface SanityGalleryItem {
@@ -40,6 +41,7 @@ const staticItems: GalleryItem[] = [
     category: 'installazioni',
     categoryLabel: 'Installazioni',
     imageUrl: '/images/gallery/installazioni-arco-villa.webp',
+    size: 'featured',
   },
   {
     id: 2,
@@ -54,6 +56,7 @@ const staticItems: GalleryItem[] = [
     category: 'installazioni',
     categoryLabel: 'Installazioni',
     imageUrl: '/images/gallery/installazioni-facciata.webp',
+    size: 'featured',
   },
   {
     id: 4,
@@ -68,6 +71,7 @@ const staticItems: GalleryItem[] = [
     category: 'installazioni',
     categoryLabel: 'Installazioni',
     imageUrl: '/images/gallery/installazioni-pensilina.webp',
+    size: 'tall',
   },
   {
     id: 6,
@@ -104,6 +108,7 @@ const staticItems: GalleryItem[] = [
     category: 'vetri',
     categoryLabel: 'Vetri',
     imageUrl: '/images/gallery/vetri-scala-interna.webp',
+    size: 'tall',
   },
   {
     id: 11,
@@ -125,6 +130,7 @@ const staticItems: GalleryItem[] = [
     category: 'vetri',
     categoryLabel: 'Vetri',
     imageUrl: '/images/gallery/vetri-grande-vetrata.webp',
+    size: 'featured',
   },
   {
     id: 14,
@@ -161,6 +167,7 @@ const staticItems: GalleryItem[] = [
     category: 'lavorazioni',
     categoryLabel: 'Lavorazioni',
     imageUrl: '/images/gallery/lavorazioni-porta-fiori.webp',
+    size: 'tall',
   },
   {
     id: 19,
@@ -204,57 +211,74 @@ const items: GalleryItem[] = sanityItems
   : staticItems;
 ---
 
-<div class="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4" data-gallery-grid>
+<div class="gallery-masonry" data-gallery-grid>
   {
-    items.map((item) => (
-      <button
-        type="button"
-        class="group relative overflow-hidden rounded-xl text-left transition-shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-        data-category={item.category}
-        data-gallery-item
-        data-gallery-id={item.id}
-        data-gallery-title={item.title}
-        aria-label={`Apri ${item.title}`}
-      >
-        {item.imageUrl ? (
-          <div class="aspect-[4/3] overflow-hidden">
-            <ProtectedImage
-              src={item.imageUrl}
-              alt={item.title}
-              class="transition-transform duration-300 group-hover:scale-105"
-              wrapperClass="h-full w-full bg-neutral-200"
-            />
-          </div>
-        ) : (
-          <div class="flex aspect-[4/3] items-center justify-center bg-neutral-200 transition-transform group-hover:scale-105">
-            <div class="text-center text-neutral-400">
-              <svg
-                class="mx-auto h-10 w-10"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"
-                />
-              </svg>
-              <p class="mt-1 text-xs">Foto in arrivo</p>
-            </div>
-          </div>
-        )}
+    items.map((item) => {
+      const aspectClass =
+        item.size === 'featured'
+          ? 'aspect-[16/9]'
+          : item.size === 'tall'
+            ? 'aspect-[3/4]'
+            : 'aspect-[4/3]';
+      const sizeClass = item.size === 'featured' ? 'gallery-featured' : '';
 
-        {/* Info overlay */}
-        <div class="absolute inset-x-0 bottom-0 z-[2] bg-gradient-to-t from-black/70 to-transparent p-3 pt-8">
-          <span class="mb-1 inline-block rounded-full bg-secondary px-2 py-0.5 text-xs font-semibold text-neutral-50">
-            {item.categoryLabel}
-          </span>
-          <p class="text-sm font-medium text-neutral-50">{item.title}</p>
-        </div>
-      </button>
-    ))
+      return (
+        <button
+          type="button"
+          class:list={[
+            'gallery-blur-up group relative overflow-hidden rounded-xl text-left transition-shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
+            sizeClass,
+          ]}
+          data-category={item.category}
+          data-gallery-item
+          data-gallery-id={item.id}
+          data-gallery-title={item.title}
+          aria-label={`Apri ${item.title}`}
+        >
+          {item.imageUrl ? (
+            <div class={`${aspectClass} overflow-hidden`}>
+              <ProtectedImage
+                src={item.imageUrl}
+                alt={item.title}
+                class="transition-transform duration-300 group-hover:scale-105"
+                wrapperClass="h-full w-full bg-neutral-200"
+                width={item.size === 'featured' ? 1200 : 600}
+                height={item.size === 'featured' ? 675 : item.size === 'tall' ? 800 : 450}
+              />
+            </div>
+          ) : (
+            <div
+              class={`flex ${aspectClass} items-center justify-center bg-neutral-200 transition-transform group-hover:scale-105`}
+            >
+              <div class="text-center text-neutral-400">
+                <svg
+                  class="mx-auto h-10 w-10"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"
+                  />
+                </svg>
+                <p class="mt-1 text-xs">Foto in arrivo</p>
+              </div>
+            </div>
+          )}
+
+          {/* Info overlay */}
+          <div class="absolute inset-x-0 bottom-0 z-[2] bg-gradient-to-t from-black/70 to-transparent p-3 pt-8">
+            <span class="mb-1 inline-block rounded-full bg-secondary px-2 py-0.5 text-xs font-semibold text-neutral-50">
+              {item.categoryLabel}
+            </span>
+            <p class="text-sm font-medium text-neutral-50">{item.title}</p>
+          </div>
+        </button>
+      );
+    })
   }
 </div>

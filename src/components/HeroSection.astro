@@ -1,13 +1,14 @@
 ---
 // src/components/HeroSection.astro
+// Hero uses CSS-only animation (no data-reveal) to avoid delaying LCP.
 ---
 
 <section
   data-section="hero"
   class="relative overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-primary"
 >
-  <!-- Decorative glass pattern -->
-  <div class="absolute inset-0 opacity-10">
+  <!-- Decorative glass pattern (subtle parallax via JS) -->
+  <div class="absolute inset-0 opacity-10" data-hero-parallax>
     <div class="absolute top-10 right-10 h-64 w-64 rounded-full bg-secondary blur-3xl"></div>
     <div class="absolute bottom-10 left-10 h-48 w-48 rounded-full bg-secondary-light blur-3xl">
     </div>
@@ -15,20 +16,22 @@
 
   <div class="relative mx-auto max-w-7xl px-4 py-20 sm:py-28 lg:px-8 lg:py-36">
     <div class="max-w-3xl">
-      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl lg:text-6xl">
+      <h1 class="hero-fade-in font-heading text-4xl text-neutral-50 sm:text-5xl lg:text-6xl">
         Vetreria Monferrina
       </h1>
 
-      <p class="mt-4 font-heading text-xl text-secondary-light sm:text-2xl lg:text-3xl">
+      <p
+        class="hero-fade-in hero-delay-1 mt-4 font-heading text-xl text-secondary-light sm:text-2xl lg:text-3xl"
+      >
         Artigiani del vetro dal cuore del Monferrato
       </p>
 
-      <p class="mt-6 max-w-xl text-lg leading-relaxed text-neutral-200">
+      <p class="hero-fade-in hero-delay-2 mt-6 max-w-xl text-lg leading-relaxed text-neutral-200">
         Box doccia, parapetti, pensiline, vetri camera e lavorazioni su misura. Qualità artigianale
         e attenzione al dettaglio da oltre 40 anni.
       </p>
 
-      <div class="mt-10 flex flex-wrap items-center gap-4">
+      <div class="hero-fade-in hero-delay-3 mt-10 flex flex-wrap items-center gap-4">
         <a
           href="/preventivo"
           class="inline-block rounded-full bg-secondary px-8 py-3.5 text-base font-semibold text-neutral-50 shadow-lg transition-colors hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-secondary-light focus:ring-offset-2 focus:ring-offset-primary"
@@ -59,3 +62,56 @@
     </div>
   </div>
 </section>
+
+<style>
+  /* CSS-only hero animation — transform only, no opacity to preserve LCP timing */
+  @keyframes hero-enter {
+    from {
+      transform: translateY(0.75rem);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .hero-fade-in {
+    animation: hero-enter 0.6s ease-out both;
+  }
+  .hero-delay-1 {
+    animation-delay: 100ms;
+  }
+  .hero-delay-2 {
+    animation-delay: 200ms;
+  }
+  .hero-delay-3 {
+    animation-delay: 300ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-fade-in {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  function initHeroParallax(): void {
+    const parallaxEl = document.querySelector<HTMLElement>('[data-hero-parallax]');
+    if (!parallaxEl) return;
+
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY * 0.3;
+        parallaxEl!.style.transform = `translateY(${y}px)`;
+        ticking = false;
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  document.addEventListener('astro:page-load', initHeroParallax);
+</script>

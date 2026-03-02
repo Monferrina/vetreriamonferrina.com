@@ -1,12 +1,12 @@
 ---
 // src/components/Lightbox.astro
-// Full-screen lightbox for gallery images. Hidden by default.
+// Full-screen lightbox with smooth transitions, swipe support, and image counter.
 // Includes image protection (no right-click / drag / save).
 ---
 
 <div
   id="lightbox"
-  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-sm"
   role="dialog"
   aria-modal="true"
   aria-label="Visualizzatore immagini"
@@ -34,7 +34,7 @@
   <!-- Previous button -->
   <button
     type="button"
-    class="absolute left-4 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-neutral-50 transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+    class="absolute left-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-neutral-50 transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
     aria-label="Immagine precedente"
     data-lightbox-prev
   >
@@ -53,7 +53,7 @@
   <!-- Next button -->
   <button
     type="button"
-    class="absolute right-4 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-neutral-50 transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+    class="absolute right-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-neutral-50 transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
     aria-label="Immagine successiva"
     data-lightbox-next
   >
@@ -70,12 +70,13 @@
   </button>
 
   <!-- Content area (protected) -->
-  <div class="protected-img-wrap mx-auto flex max-w-4xl flex-col items-center px-16">
+  <div class="protected-img-wrap mx-auto flex max-w-5xl flex-col items-center px-16">
     <div
-      class="flex aspect-[4/3] w-full max-w-2xl items-center justify-center rounded-lg bg-neutral-800 text-neutral-400"
+      class="flex max-h-[80vh] w-full items-center justify-center"
       data-lightbox-image
+      style="opacity: 1;"
     >
-      <div class="text-center">
+      <div class="text-center text-neutral-400">
         <svg
           class="mx-auto h-16 w-16"
           fill="none"
@@ -94,7 +95,12 @@
       </div>
     </div>
 
-    <!-- Title -->
-    <p class="mt-4 text-center text-lg font-medium text-neutral-50" data-lightbox-title></p>
+    <!-- Title + counter -->
+    <div class="mt-4 flex items-center gap-4 text-center">
+      <p class="text-lg font-medium text-neutral-50" data-lightbox-title></p>
+      <span
+        class="whitespace-nowrap rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-neutral-300"
+        data-lightbox-counter></span>
+    </div>
   </div>
 </div>

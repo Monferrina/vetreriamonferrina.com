@@ -37,7 +37,9 @@ const heroIntro =
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
         <div>
-          <h2 class="font-heading text-3xl text-primary sm:text-4xl">La nostra storia</h2>
+          <h2 class="font-heading text-3xl text-primary sm:text-4xl" data-reveal>
+            La nostra storia
+          </h2>
           <p class="mt-4 text-lg leading-relaxed text-neutral-700">
             Chi ci conosce lo sa: la Vetreria Monferrina non è solo un'azienda, è casa.
           </p>
@@ -223,14 +225,16 @@ const heroIntro =
   <!-- Values section -->
   <section class="bg-white py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
-      <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-12">
+      <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-12" data-reveal>
         I nostri valori
       </h2>
 
       <div class="grid gap-8 sm:grid-cols-3">
         <!-- Artigianalità -->
         <div
-          class="rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+          data-reveal
+          data-delay="1"
+          class="glass-hover glass-reflect rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-1"
         >
           <div
             class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10"
@@ -259,7 +263,9 @@ const heroIntro =
 
         <!-- Qualità -->
         <div
-          class="rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+          data-reveal
+          data-delay="2"
+          class="glass-hover glass-reflect rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-1"
         >
           <div
             class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10"
@@ -288,7 +294,9 @@ const heroIntro =
 
         <!-- Territorio -->
         <div
-          class="rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+          data-reveal
+          data-delay="3"
+          class="glass-hover glass-reflect rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-1"
         >
           <div
             class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10"
@@ -429,21 +437,8 @@ const heroIntro =
     </div>
   </section>
 
-  <!-- Scroll-reveal animations -->
+  <!-- Chi-siamo specific animations (scroll reveal handled globally in BaseLayout) -->
   <style is:global>
-    /* Card reveal — progressive enhancement (no-JS: fully visible) */
-    [data-reveal].reveal-ready {
-      opacity: 0;
-      transform: translateY(2rem);
-      transition:
-        opacity 0.7s ease-out,
-        transform 0.7s ease-out;
-    }
-    [data-reveal].in-view {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
     /* Timeline dot pop-in (desktop only — dots hidden on mobile) */
     @media (min-width: 768px) {
       [data-reveal-dot].reveal-ready {
@@ -479,11 +474,6 @@ const heroIntro =
 
     /* Respect users who prefer reduced motion */
     @media (prefers-reduced-motion: reduce) {
-      [data-reveal].reveal-ready {
-        opacity: 1;
-        transform: none;
-        transition: none;
-      }
       [data-reveal-dot].reveal-ready {
         scale: 1;
         transition: none;
@@ -505,25 +495,22 @@ const heroIntro =
   <script>
     let cleanupFn: (() => void) | null = null;
 
-    function initScrollReveal(): void {
+    function initTimelineEffects(): void {
       // Cleanup previous instance (View Transitions navigation)
       if (cleanupFn) {
         cleanupFn();
         cleanupFn = null;
       }
 
-      const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');
       const dotEls = document.querySelectorAll<HTMLElement>('[data-reveal-dot]');
       const line = document.querySelector<HTMLElement>('[data-timeline-line]');
       const container = document.querySelector<HTMLElement>('[data-timeline]');
 
-      if (revealEls.length === 0 && dotEls.length === 0) return;
+      if (dotEls.length === 0 && !line) return;
 
-      // Progressive enhancement: hide only when JS is active
-      revealEls.forEach((el) => el.classList.add('reveal-ready'));
+      // Progressive enhancement for dots
       dotEls.forEach((el) => el.classList.add('reveal-ready'));
 
-      // Observe elements entering viewport
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -536,7 +523,6 @@ const heroIntro =
         { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
       );
 
-      revealEls.forEach((el) => observer.observe(el));
       dotEls.forEach((el) => observer.observe(el));
 
       // Timeline line grows with scroll progress
@@ -568,6 +554,6 @@ const heroIntro =
       };
     }
 
-    document.addEventListener('astro:page-load', initScrollReveal);
+    document.addEventListener('astro:page-load', initTimelineEffects);
   </script>
 </BaseLayout>

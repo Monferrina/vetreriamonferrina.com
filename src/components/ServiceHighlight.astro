@@ -37,16 +37,20 @@ const services = [
 <section data-section="services" class="bg-neutral-50 py-16 sm:py-20">
   <div class="mx-auto max-w-7xl px-4 lg:px-8">
     <div class="text-center">
-      <h2 class="font-heading text-3xl text-primary sm:text-4xl">I nostri servizi</h2>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-neutral-700">
+      <h2 class="font-heading text-3xl text-primary sm:text-4xl" data-reveal>I nostri servizi</h2>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-neutral-700" data-reveal data-delay="1">
         Al servizio di privati e professionisti del territorio.
       </p>
     </div>
 
     <div class="mt-12 grid gap-8 sm:grid-cols-2">
       {
-        services.map((service) => (
-          <article class="group overflow-hidden rounded-2xl border border-neutral-200 bg-surface shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+        services.map((service, i) => (
+          <article
+            data-reveal
+            data-delay={String(i + 1)}
+            class="glass-hover glass-reflect group overflow-hidden rounded-2xl border border-neutral-200 bg-surface shadow-sm transition-all duration-200 hover:-translate-y-1"
+          >
             {/* Image or icon fallback */}
             {service.image ? (
               <div class="aspect-[4/3] overflow-hidden">
@@ -55,6 +59,10 @@ const services = [
                   alt={service.name}
                   class="transition-transform duration-300 group-hover:scale-105"
                   wrapperClass="h-full w-full bg-neutral-200"
+                  width={800}
+                  height={600}
+                  loading={i < 2 ? 'eager' : 'lazy'}
+                  fetchpriority={i === 0 ? 'high' : undefined}
                 />
               </div>
             ) : (

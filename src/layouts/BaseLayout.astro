@@ -112,6 +112,9 @@ const jsonLd = {
     </script>
   </head>
   <body class="font-body text-neutral-800 bg-neutral-50 antialiased">
+    <!-- Scroll progress bar -->
+    <div class="scroll-progress" aria-hidden="true"></div>
+
     <Header />
     <main>
       <slot />
@@ -119,6 +122,20 @@ const jsonLd = {
     <Footer />
     <CookieBanner />
     <Chatbot />
+
+    <!-- Back to top button -->
+    <button type="button" class="back-to-top" aria-label="Torna in cima" data-back-to-top>
+      <svg
+        class="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2.5"
+        stroke="currentColor"
+        aria-hidden="true"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5"></path>
+      </svg>
+    </button>
     <!-- Image protection: block save/download/drag on protected images -->
     <script>
       function initImageProtection(): void {
@@ -137,6 +154,67 @@ const jsonLd = {
       }
       initImageProtection();
     </script>
+    <!-- Global scroll reveal + scroll progress + back-to-top -->
+    <script>
+      function initGlobalUI(): void {
+        // --- Scroll Reveal (IntersectionObserver) ---
+        const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');
+        revealEls.forEach((el) => el.classList.add('reveal-ready'));
+
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
+        );
+        revealEls.forEach((el) => revealObserver.observe(el));
+
+        // --- Scroll Progress Bar ---
+        const progressBar = document.querySelector<HTMLElement>('.scroll-progress');
+
+        // --- Back to Top ---
+        const backToTop = document.querySelector<HTMLElement>('[data-back-to-top]');
+
+        let ticking = false;
+        function onScroll() {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => {
+            const scrollY = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+            // Progress bar
+            if (progressBar && docHeight > 0) {
+              progressBar.style.setProperty('--scroll', String(scrollY / docHeight));
+            }
+
+            // Back-to-top visibility (show after 400px)
+            if (backToTop) {
+              backToTop.classList.toggle('visible', scrollY > 400);
+            }
+
+            ticking = false;
+          });
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        if (backToTop) {
+          backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        }
+      }
+
+      document.addEventListener('astro:page-load', initGlobalUI);
+    </script>
+
     <!-- Dynamic theme updates: recheck time every 15 min + listen for system changes -->
     <script>
       function applyTheme(): void {

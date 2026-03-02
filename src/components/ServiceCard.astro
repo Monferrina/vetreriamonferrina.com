@@ -13,7 +13,7 @@ const { name, description, slug, image } = Astro.props;
 ---
 
 <article
-  class="group flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-surface shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+  class="glass-hover glass-reflect group flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-surface shadow-sm transition-all duration-200 hover:-translate-y-1"
 >
   {/* Image or placeholder */}
   {
@@ -24,6 +24,8 @@ const { name, description, slug, image } = Astro.props;
           alt={name}
           class="transition-transform duration-300 group-hover:scale-105"
           wrapperClass="h-full w-full bg-neutral-200"
+          width={800}
+          height={600}
         />
       </div>
     ) : (

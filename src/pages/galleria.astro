@@ -38,7 +38,12 @@ const galleryItems =
 
   <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
     <!-- Category filters -->
-    <div class="mb-10 flex flex-wrap gap-2" role="group" aria-label="Filtra per categoria">
+    <div
+      class="mb-10 flex flex-wrap gap-2"
+      role="group"
+      aria-label="Filtra per categoria"
+      data-reveal
+    >
       <button
         type="button"
         class="gallery-filter-active rounded-full px-5 py-2 text-sm font-medium transition-colors"
@@ -83,7 +88,19 @@ const galleryItems =
 
 <script>
   function initGallery() {
-    // --- Filter logic ---
+    // --- Blur-up loading ---
+    const blurItems = document.querySelectorAll<HTMLElement>('.gallery-blur-up');
+    blurItems.forEach((item) => {
+      const img = item.querySelector('img');
+      if (!img) return;
+      if (img.complete) {
+        item.classList.add('loaded');
+      } else {
+        img.addEventListener('load', () => item.classList.add('loaded'), { once: true });
+      }
+    });
+
+    // --- Animated filter logic ---
     const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
     const galleryItems = document.querySelectorAll<HTMLElement>('[data-gallery-item]');
 
@@ -99,12 +116,32 @@ const galleryItems =
           b.classList.toggle('gallery-filter-inactive', !isActive);
         });
 
-        // Show/hide items
+        // Animated show/hide items
         galleryItems.forEach((item) => {
-          if (filter === 'tutti' || item.dataset.category === filter) {
+          const matches = filter === 'tutti' || item.dataset.category === filter;
+
+          if (matches) {
+            // Show with animation
             item.style.display = '';
+            item.animate(
+              [
+                { opacity: 0, transform: 'scale(0.92) translateY(8px)' },
+                { opacity: 1, transform: 'scale(1) translateY(0)' },
+              ],
+              { duration: 400, easing: 'ease-out', fill: 'forwards' }
+            );
           } else {
-            item.style.display = 'none';
+            // Hide with animation
+            const anim = item.animate(
+              [
+                { opacity: 1, transform: 'scale(1)' },
+                { opacity: 0, transform: 'scale(0.95)' },
+              ],
+              { duration: 200, easing: 'ease-in' }
+            );
+            anim.onfinish = () => {
+              item.style.display = 'none';
+            };
           }
         });
       });
@@ -113,11 +150,13 @@ const galleryItems =
     // --- Lightbox logic ---
     const lightbox = document.querySelector<HTMLElement>('[data-lightbox]');
     const lightboxTitle = document.querySelector<HTMLElement>('[data-lightbox-title]');
+    const lightboxCounter = document.querySelector<HTMLElement>('[data-lightbox-counter]');
+    const lightboxImage = document.querySelector<HTMLElement>('[data-lightbox-image]');
     const closeBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-close]');
     const prevBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-prev]');
     const nextBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-next]');
 
-    if (!lightbox || !lightboxTitle || !closeBtn || !prevBtn || !nextBtn) return;
+    if (!lightbox || !lightboxTitle || !lightboxImage || !closeBtn || !prevBtn || !nextBtn) return;
 
     let currentIndex = 0;
     let visibleItems: HTMLElement[] = [];
@@ -129,43 +168,73 @@ const galleryItems =
     function openLightbox(index: number) {
       visibleItems = getVisibleItems();
       currentIndex = index;
-      updateLightboxContent();
+      updateLightboxContent(false);
+
       lightbox!.classList.remove('hidden');
+      lightbox!.style.opacity = '0';
       lightbox!.classList.add('flex');
+
+      // Smooth fade in
+      requestAnimationFrame(() => {
+        lightbox!.animate([{ opacity: 0 }, { opacity: 1 }], {
+          duration: 250,
+          easing: 'ease-out',
+          fill: 'forwards',
+        });
+      });
+
       document.body.style.overflow = 'hidden';
       closeBtn!.focus();
     }
 
     function closeLightbox() {
-      lightbox!.classList.add('hidden');
-      lightbox!.classList.remove('flex');
-      document.body.style.overflow = '';
-      // Return focus to the gallery item that was clicked
-      if (visibleItems[currentIndex]) {
-        (visibleItems[currentIndex] as HTMLElement).focus();
-      }
+      const anim = lightbox!.animate([{ opacity: 1 }, { opacity: 0 }], {
+        duration: 200,
+        easing: 'ease-in',
+      });
+      anim.onfinish = () => {
+        lightbox!.classList.add('hidden');
+        lightbox!.classList.remove('flex');
+        document.body.style.overflow = '';
+        if (visibleItems[currentIndex]) {
+          (visibleItems[currentIndex] as HTMLElement).focus();
+        }
+      };
     }
 
-    const lightboxImage = document.querySelector<HTMLElement>('[data-lightbox-image]');
-
-    function updateLightboxContent() {
+    function updateLightboxContent(animate = true) {
       const item = visibleItems[currentIndex];
       if (!item) return;
-      lightboxTitle!.textContent = item.dataset.galleryTitle || '';
 
-      // Clone the gallery item's image into the lightbox when available
-      if (lightboxImage) {
+      const doUpdate = () => {
+        lightboxTitle!.textContent = item.dataset.galleryTitle || '';
+        if (lightboxCounter) {
+          lightboxCounter.textContent = `${currentIndex + 1} / ${visibleItems.length}`;
+        }
+
+        // Clone gallery image into lightbox
         const imgEl = item.querySelector('img');
-        if (imgEl) {
-          // Remove existing children safely
+        if (imgEl && lightboxImage) {
           while (lightboxImage.firstChild) {
             lightboxImage.removeChild(lightboxImage.firstChild);
           }
           const clone = imgEl.cloneNode(true) as HTMLImageElement;
-          clone.className = 'h-full w-full object-contain';
+          clone.className = 'max-h-[80vh] max-w-full rounded-lg object-contain';
           clone.removeAttribute('loading');
+          clone.style.pointerEvents = 'none';
           lightboxImage.appendChild(clone);
         }
+      };
+
+      if (animate) {
+        // Crossfade: fade out, update, fade in
+        lightboxImage!.style.opacity = '0';
+        setTimeout(() => {
+          doUpdate();
+          lightboxImage!.style.opacity = '1';
+        }, 200);
+      } else {
+        doUpdate();
       }
     }
 
@@ -204,6 +273,34 @@ const galleryItems =
       if (e.key === 'ArrowLeft') showPrev();
       if (e.key === 'ArrowRight') showNext();
     });
+
+    // --- Swipe support for touch devices ---
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    lightbox.addEventListener(
+      'touchstart',
+      (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      },
+      { passive: true }
+    );
+
+    lightbox.addEventListener(
+      'touchend',
+      (e) => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+
+        // Only trigger if horizontal swipe is dominant and > 50px
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+          if (dx > 0) showPrev();
+          else showNext();
+        }
+      },
+      { passive: true }
+    );
   }
 
   // Run on initial load and on Astro page transitions

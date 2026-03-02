@@ -79,6 +79,161 @@
   background-color: color-mix(in srgb, var(--color-neutral-200) 70%, var(--color-neutral-700));
 }
 
+/* ==================== Global Scroll Reveal ==================== */
+/* Progressive enhancement: elements visible by default, hidden only when JS is active */
+[data-reveal].reveal-ready {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s ease-out;
+}
+[data-reveal].in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays — e.g. data-delay="2" → 200ms delay */
+[data-delay='1'] {
+  transition-delay: 100ms;
+}
+[data-delay='2'] {
+  transition-delay: 200ms;
+}
+[data-delay='3'] {
+  transition-delay: 300ms;
+}
+[data-delay='4'] {
+  transition-delay: 400ms;
+}
+
+/* ==================== Scroll Progress Bar ==================== */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-secondary), var(--color-secondary-light));
+  z-index: 9999;
+  transform-origin: left;
+  transform: scaleX(var(--scroll, 0));
+  pointer-events: none;
+}
+
+/* ==================== Back to Top ==================== */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  background: var(--color-primary);
+  color: var(--color-neutral-50);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+  opacity: 0;
+  transform: translateY(1rem);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    background-color 0.2s ease;
+  pointer-events: none;
+  cursor: pointer;
+}
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.back-to-top:hover {
+  background: var(--color-primary-dark);
+}
+
+/* ==================== Glass Card Effect ==================== */
+.glass-hover {
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.2s ease;
+}
+.glass-hover:hover {
+  box-shadow:
+    0 8px 32px rgb(27 73 101 / 0.1),
+    inset 0 0 0 1px rgb(255 255 255 / 0.08);
+}
+
+/* Subtle glass reflection sweep on hover */
+.glass-reflect {
+  position: relative;
+  overflow: hidden;
+}
+.glass-reflect::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgb(255 255 255 / 0.04) 45%,
+    rgb(255 255 255 / 0.1) 50%,
+    rgb(255 255 255 / 0.04) 55%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.glass-reflect:hover::after {
+  transform: translateX(100%);
+}
+
+/* ==================== Gallery Masonry Grid ==================== */
+.gallery-masonry {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-flow: dense;
+  gap: 1rem;
+}
+@media (min-width: 640px) {
+  .gallery-masonry {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+}
+@media (min-width: 1024px) {
+  .gallery-masonry {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+}
+.gallery-featured {
+  grid-column: span 2;
+}
+
+/* Gallery blur-up loading effect */
+.gallery-blur-up img {
+  filter: blur(20px);
+  transform: scale(1.05);
+  transition:
+    filter 0.5s ease-out,
+    transform 0.5s ease-out;
+}
+.gallery-blur-up.loaded img {
+  filter: blur(0);
+  transform: scale(1);
+}
+
+/* ==================== Lightbox Transitions ==================== */
+[data-lightbox-image] {
+  transition: opacity 0.25s ease;
+}
+
 /* Smooth transition between themes */
 html {
   transition:
@@ -86,9 +241,33 @@ html {
     color 0.3s ease;
 }
 
-/* Respect users who prefer no transitions */
+/* ==================== Reduced Motion ==================== */
 @media (prefers-reduced-motion: reduce) {
   html {
+    transition: none;
+  }
+  [data-reveal].reveal-ready {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .scroll-progress {
+    display: none;
+  }
+  .back-to-top {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .glass-reflect::after {
+    display: none;
+  }
+  .gallery-blur-up img {
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+  [data-lightbox-image] {
     transition: none;
   }
 }
