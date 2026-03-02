@@ -6,7 +6,13 @@ import { fetchWithFallback, queries } from '../lib/sanity';
 export const prerender = true;
 
 // Try Sanity, fall back to static data
-type ServiceItem = { name: string; description: string; slug: string; category: string };
+type ServiceItem = {
+  name: string;
+  description: string;
+  slug: string;
+  category: string;
+  image?: string;
+};
 const sanityServices = await fetchWithFallback<ServiceItem[] | null>(queries.services, null);
 const servicesData: ServiceItem[] =
   sanityServices && sanityServices.length > 0 ? sanityServices : staticServices;
@@ -77,6 +83,9 @@ const categoryEntries = (Object.entries(categories) as [CategoryKey, string][]).
       }
     </div>
 
+    <!-- Live region for screen readers (filter result count) -->
+    <div id="services-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
     <!-- Category sections (inline, no nested max-w-7xl) -->
     {
       categoryEntries.map((cat) => (
@@ -146,13 +155,22 @@ const categoryEntries = (Object.entries(categories) as [CategoryKey, string][]).
         });
 
         // Show/hide category sections
+        let visibleSections = 0;
         categorySections.forEach((section) => {
           if (filter === 'tutti' || section.dataset.serviceCategory === filter) {
             section.style.display = '';
+            visibleSections++;
           } else {
             section.style.display = 'none';
           }
         });
+
+        // Announce to screen readers
+        const liveRegion = document.getElementById('services-live');
+        if (liveRegion) {
+          const label = btn.textContent?.trim() || filter;
+          liveRegion.textContent = `${label}: ${visibleSections} ${visibleSections === 1 ? 'categoria' : 'categorie'}`;
+        }
       });
     });
   }

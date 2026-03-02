@@ -175,7 +175,7 @@
     ]
   },
   "altra": {
-    "message": "Per qualsiasi altra domanda, chiamaci al +39 0142 563728 o scrivi a info@vetreriamonferrina.com. Saremo felici di aiutarti!",
+    "message": "Per qualsiasi altra domanda, chiamaci al +39 0142 563728 o scrivi a vetreriamonferrina@gmail.com. Saremo felici di aiutarti!",
     "options": [
       { "label": "Chiamaci ora", "action": "call_phone" },
       { "label": "Apri contatti", "action": "open_contacts" },

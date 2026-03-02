@@ -12,6 +12,11 @@
   aria-label="Visualizzatore immagini"
   data-lightbox
 >
+  <!-- Screen reader instructions -->
+  <p class="sr-only">
+    Usa le frecce sinistra e destra per navigare tra le immagini. Premi Escape per chiudere.
+  </p>
+
   <!-- Close button -->
   <button
     type="button"
@@ -96,7 +101,7 @@
     </div>
 
     <!-- Title + counter -->
-    <div class="mt-4 flex items-center gap-4 text-center">
+    <div class="mt-4 flex items-center gap-4 text-center" aria-live="polite" aria-atomic="true">
       <p class="text-lg font-medium text-neutral-50" data-lightbox-title></p>
       <span
         class="whitespace-nowrap rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-neutral-300"

@@ -78,6 +78,9 @@ const galleryItems =
       </button>
     </div>
 
+    <!-- Live region for screen readers (filter result count) -->
+    <div id="gallery-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
     <!-- Gallery grid -->
     <GalleryGrid items={galleryItems} />
   </section>
@@ -103,6 +106,7 @@ const galleryItems =
     // --- Animated filter logic ---
     const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
     const galleryItems = document.querySelectorAll<HTMLElement>('[data-gallery-item]');
+    const liveRegion = document.getElementById('gallery-live');
 
     filterButtons.forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -117,10 +121,12 @@ const galleryItems =
         });
 
         // Animated show/hide items
+        let visibleCount = 0;
         galleryItems.forEach((item) => {
           const matches = filter === 'tutti' || item.dataset.category === filter;
 
           if (matches) {
+            visibleCount++;
             // Show with animation
             item.style.display = '';
             item.animate(
@@ -144,6 +150,12 @@ const galleryItems =
             };
           }
         });
+
+        // Announce result count to screen readers
+        if (liveRegion) {
+          const label = btn.textContent?.trim() || filter;
+          liveRegion.textContent = `${label}: ${visibleCount} ${visibleCount === 1 ? 'elemento' : 'elementi'}`;
+        }
       });
     });
 
@@ -158,6 +170,27 @@ const galleryItems =
 
     if (!lightbox || !lightboxTitle || !lightboxImage || !closeBtn || !prevBtn || !nextBtn) return;
 
+    // Focus trap: keep Tab cycling within the lightbox while open
+    const focusableSelector = 'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])';
+    function trapFocus(e: KeyboardEvent) {
+      if (e.key !== 'Tab') return;
+      const focusable = Array.from(lightbox!.querySelectorAll<HTMLElement>(focusableSelector));
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
     let currentIndex = 0;
     let visibleItems: HTMLElement[] = [];
 
@@ -165,9 +198,12 @@ const galleryItems =
       return Array.from(galleryItems).filter((item) => item.style.display !== 'none');
     }
 
+    let lastFocusedElement: HTMLElement | null = null;
+
     function openLightbox(index: number) {
       visibleItems = getVisibleItems();
       currentIndex = index;
+      lastFocusedElement = document.activeElement as HTMLElement;
       updateLightboxContent(false);
 
       lightbox!.classList.remove('hidden');
@@ -184,10 +220,12 @@ const galleryItems =
       });
 
       document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', trapFocus);
       closeBtn!.focus();
     }
 
     function closeLightbox() {
+      document.removeEventListener('keydown', trapFocus);
       const anim = lightbox!.animate([{ opacity: 1 }, { opacity: 0 }], {
         duration: 200,
         easing: 'ease-in',
@@ -196,7 +234,10 @@ const galleryItems =
         lightbox!.classList.add('hidden');
         lightbox!.classList.remove('flex');
         document.body.style.overflow = '';
-        if (visibleItems[currentIndex]) {
+        // Restore focus to the element that opened the lightbox
+        if (lastFocusedElement) {
+          lastFocusedElement.focus();
+        } else if (visibleItems[currentIndex]) {
           (visibleItems[currentIndex] as HTMLElement).focus();
         }
       };

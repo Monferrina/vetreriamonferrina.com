@@ -63,7 +63,8 @@ const heroIntro =
 
         <!-- Photo placeholder (waiting for family photo) -->
         <div
-          class="flex aspect-video items-center justify-center rounded-2xl bg-neutral-200 text-neutral-500"
+          class="flex aspect-video items-center justify-center rounded-2xl bg-neutral-200 text-neutral-700"
+          role="img"
           aria-label="Foto della famiglia Fioravanti in arrivo"
         >
           <div class="text-center">
@@ -209,7 +210,7 @@ const heroIntro =
       <div
         class="mx-auto mt-12 max-w-2xl rounded-2xl border border-neutral-200 bg-surface px-6 py-6 shadow-sm text-center"
       >
-        <p class="text-xs font-semibold uppercase tracking-wider text-primary/70">
+        <p class="text-xs font-semibold uppercase tracking-wider text-primary">
           In ricordo di <span class="font-heading text-lg normal-case tracking-normal text-primary"
             >Manuela</span
           >
@@ -341,7 +342,35 @@ const heroIntro =
         class="lab-carousel mt-8 overflow-hidden"
         role="region"
         aria-label="Foto del laboratorio"
+        aria-roledescription="carousel"
+        style="position: relative;"
       >
+        <button
+          type="button"
+          class="lab-pause-btn absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-white"
+          aria-label="Metti in pausa il carosello"
+          data-lab-pause
+        >
+          <svg
+            class="h-4 w-4"
+            data-pause-icon
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <rect x="6" y="4" width="4" height="16"></rect>
+            <rect x="14" y="4" width="4" height="16"></rect>
+          </svg>
+          <svg
+            class="hidden h-4 w-4"
+            data-play-icon
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <polygon points="5,3 19,12 5,21"></polygon>
+          </svg>
+        </button>
         <div class="lab-track flex gap-6">
           {
             [
@@ -456,19 +485,20 @@ const heroIntro =
       transform-origin: top;
     }
 
-    /* Lab photo carousel — infinite auto-scroll (CSS only, zero JS) */
+    /* Lab photo carousel — JS sets --scroll-width for pixel-perfect loop */
     .lab-track {
-      animation: lab-scroll 30s linear infinite;
+      animation: lab-scroll var(--scroll-duration, 30s) linear infinite;
+      will-change: transform;
     }
     .lab-carousel:hover .lab-track {
       animation-play-state: paused;
     }
     @keyframes lab-scroll {
       0% {
-        transform: translateX(0);
+        transform: translate3d(0, 0, 0);
       }
       100% {
-        transform: translateX(-50%);
+        transform: translate3d(var(--scroll-width, -50%), 0, 0);
       }
     }
 
@@ -555,5 +585,44 @@ const heroIntro =
     }
 
     document.addEventListener('astro:page-load', initTimelineEffects);
+
+    // Lab carousel: measure exact scroll width for seamless loop
+    function initLabCarousel(): void {
+      const track = document.querySelector<HTMLElement>('.lab-track');
+      if (!track) return;
+      const children = Array.from(track.children) as HTMLElement[];
+      const halfCount = children.length / 2;
+      if (halfCount < 1) return;
+
+      const gap = parseFloat(getComputedStyle(track).gap) || 0;
+      let setWidth = 0;
+      for (let i = 0; i < halfCount; i++) {
+        setWidth += children[i].offsetWidth + gap;
+      }
+
+      track.style.setProperty('--scroll-width', `-${setWidth}px`);
+      const speed = setWidth / 50;
+      track.style.setProperty('--scroll-duration', `${speed}s`);
+
+      // Pause/play button
+      const pauseBtn = document.querySelector<HTMLButtonElement>('[data-lab-pause]');
+      if (!pauseBtn) return;
+
+      const pauseIcon = pauseBtn.querySelector('[data-pause-icon]') as SVGElement;
+      const playIcon = pauseBtn.querySelector('[data-play-icon]') as SVGElement;
+      let isPaused = false;
+
+      pauseBtn.addEventListener('click', () => {
+        isPaused = !isPaused;
+        track.style.animationPlayState = isPaused ? 'paused' : 'running';
+        pauseIcon.classList.toggle('hidden', isPaused);
+        playIcon.classList.toggle('hidden', !isPaused);
+        pauseBtn.setAttribute(
+          'aria-label',
+          isPaused ? 'Riprendi il carosello' : 'Metti in pausa il carosello'
+        );
+      });
+    }
+    document.addEventListener('astro:page-load', initLabCarousel);
   </script>
 </BaseLayout>

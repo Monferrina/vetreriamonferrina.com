@@ -8,9 +8,18 @@ export default defineConfig({
   output: 'server',
   adapter: vercel(),
   site: 'https://vetreriamonferrina.com',
+  trailingSlash: 'never',
+
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'viewport',
+  },
 
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      allowedHosts: ['central-ideally-hagfish.ngrok-free.app'],
+    },
   },
 
   integrations: [sitemap()],

@@ -96,6 +96,9 @@
 
 <script>
   function initHeroParallax(): void {
+    // Respect user preference for reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const parallaxEl = document.querySelector<HTMLElement>('[data-hero-parallax]');
     if (!parallaxEl) return;
 

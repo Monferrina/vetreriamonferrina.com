@@ -32,7 +32,7 @@ const jsonLd = {
   '@id': 'https://vetreriamonferrina.com',
   url: 'https://vetreriamonferrina.com',
   telephone: '+390142563728',
-  email: 'info@vetreriamonferrina.com',
+  email: 'vetreriamonferrina@gmail.com',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Strada Statale 31, 98/C',
@@ -101,7 +101,7 @@ const jsonLd = {
       crossorigin
     />
     <ClientRouter />
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <!-- Theme detection: system preference + time-based (inline to prevent FOUC) -->
     <script is:inline>
       (function () {
@@ -112,11 +112,19 @@ const jsonLd = {
     </script>
   </head>
   <body class="font-body text-neutral-800 bg-neutral-50 antialiased">
+    <!-- Skip to main content (accessibility) -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[9999] focus:rounded-lg focus:bg-primary focus:px-6 focus:py-3 focus:text-neutral-50 focus:shadow-lg"
+    >
+      Vai al contenuto principale
+    </a>
+
     <!-- Scroll progress bar -->
     <div class="scroll-progress" aria-hidden="true"></div>
 
     <Header />
-    <main>
+    <main id="main-content" style="view-transition-name: main-content;">
       <slot />
     </main>
     <Footer />

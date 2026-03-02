@@ -32,7 +32,7 @@ try {
 const address = settings?.address || 'Strada Statale 31, 98/C';
 const city = settings?.city || '15033 Casale Monferrato (AL)';
 const phone = settings?.phone || '+39 0142 563728';
-const email = settings?.email || 'info@vetreriamonferrina.com';
+const email = settings?.email || 'vetreriamonferrina@gmail.com';
 const openingHours: OpeningHour[] =
   settings?.openingHours && settings.openingHours.length > 0
     ? settings.openingHours
@@ -179,12 +179,20 @@ const openingHours: OpeningHour[] =
             </div>
             <div>
               <h3 class="font-semibold text-neutral-800">Orari di apertura</h3>
-              <table class="mt-2 text-sm text-neutral-700">
+              <table class="mt-2 text-sm text-neutral-700" aria-label="Orari di apertura">
+                <thead class="sr-only">
+                  <tr>
+                    <th scope="col">Giorni</th>
+                    <th scope="col">Orario</th>
+                  </tr>
+                </thead>
                 <tbody>
                   {
                     openingHours.map((oh) => (
                       <tr>
-                        <td class="pr-4 py-0.5 font-medium">{oh.days}</td>
+                        <th scope="row" class="pr-4 py-0.5 font-medium text-left">
+                          {oh.days}
+                        </th>
                         <td class="py-0.5">{oh.hours}</td>
                       </tr>
                     ))

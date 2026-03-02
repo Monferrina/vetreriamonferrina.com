@@ -199,9 +199,10 @@ const hasHalfStar = rating - fullStars >= 0.3;
 </section>
 
 <style>
-  /* Infinite auto-scroll — CSS only, zero JS */
+  /* Infinite auto-scroll — JS sets --scroll-width for pixel-perfect loop */
   .reviews-track {
-    animation: reviews-scroll 30s linear infinite;
+    animation: reviews-scroll var(--scroll-duration, 30s) linear infinite;
+    will-change: transform;
   }
 
   /* Pause on hover so users can read */
@@ -211,10 +212,10 @@ const hasHalfStar = rating - fullStars >= 0.3;
 
   @keyframes reviews-scroll {
     0% {
-      transform: translateX(0);
+      transform: translate3d(0, 0, 0);
     }
     100% {
-      transform: translateX(-50%);
+      transform: translate3d(var(--scroll-width, -50%), 0, 0);
     }
   }
 
@@ -230,3 +231,27 @@ const hasHalfStar = rating - fullStars >= 0.3;
     }
   }
 </style>
+
+<script>
+  function initReviewsCarousel(): void {
+    const track = document.querySelector<HTMLElement>('.reviews-track');
+    if (!track) return;
+    const children = Array.from(track.children) as HTMLElement[];
+    const halfCount = children.length / 2;
+    if (halfCount < 1) return;
+
+    // Measure the exact width of the first set of items + gap
+    const gap = parseFloat(getComputedStyle(track).gap) || 0;
+    let setWidth = 0;
+    for (let i = 0; i < halfCount; i++) {
+      setWidth += children[i].offsetWidth + gap;
+    }
+
+    track.style.setProperty('--scroll-width', `-${setWidth}px`);
+    // Scale duration proportionally to content width for consistent speed
+    const speed = setWidth / 50; // ~50px/sec
+    track.style.setProperty('--scroll-duration', `${speed}s`);
+  }
+
+  document.addEventListener('astro:page-load', initReviewsCarousel);
+</script>

@@ -123,7 +123,12 @@
   </div>
 
   <!-- Messages area -->
-  <div id="chatbot-messages" class="chatbot-messages flex-1 overflow-y-auto px-4 py-5">
+  <div
+    id="chatbot-messages"
+    class="chatbot-messages flex-1 overflow-y-auto px-4 py-5"
+    aria-live="polite"
+    aria-relevant="additions"
+  >
     <!-- Messages are injected here by JS -->
   </div>
 
@@ -615,6 +620,28 @@
       });
     }
 
+    // --- Focus trap for chatbot panel ---
+    const chatFocusableSelector =
+      'button:not([disabled]), [href], input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    function chatTrapFocus(e: KeyboardEvent) {
+      if (e.key !== 'Tab') return;
+      const focusable = Array.from(panel.querySelectorAll<HTMLElement>(chatFocusableSelector));
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
     // --- Panel open/close ---
     function openPanel(): void {
       if (isAnimating) return;
@@ -646,13 +673,15 @@
         }
       }
 
-      // Focus close button for a11y
+      // Focus trap + focus close button for a11y
+      document.addEventListener('keydown', chatTrapFocus);
       closeBtn.focus();
     }
 
     function closePanel(): void {
       if (isAnimating) return;
       isOpen = false;
+      document.removeEventListener('keydown', chatTrapFocus);
       iconOpen.classList.remove('hidden');
       iconClose.classList.add('hidden');
       toggle.setAttribute('aria-label', 'Apri assistente');

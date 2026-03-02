@@ -29,7 +29,7 @@ const LON = 8.4525;
   </p>
 </div>
 
-<script define:vars={{ LAT, LON }}>
+<script is:inline define:vars={{ LAT, LON }}>
   async function initWeather() {
     const widget = document.getElementById('weather-widget');
     if (!widget || widget.dataset.loaded) return;

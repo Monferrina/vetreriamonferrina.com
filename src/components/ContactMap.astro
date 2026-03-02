@@ -33,7 +33,7 @@ const ZOOM = 17;
   </p>
 </div>
 
-<script define:vars={{ LAT, LON, ZOOM }}>
+<script is:inline define:vars={{ LAT, LON, ZOOM }}>
   function initContactMap() {
     const container = document.getElementById('contact-map');
     if (!container || container.dataset.leafletReady) return;
@@ -79,7 +79,11 @@ const ZOOM = 17;
         popupAnchor: [0, -40],
       });
 
-      window.L.marker([LAT, LON], { icon: pinIcon })
+      window.L.marker([LAT, LON], {
+        icon: pinIcon,
+        alt: 'Vetreria Monferrina',
+        title: 'Vetreria Monferrina',
+      })
         .addTo(map)
         .bindPopup(
           '<strong>Vetreria Monferrina</strong><br>Strada Statale 31, 98/C<br>15033 Casale Monferrato (AL)'
