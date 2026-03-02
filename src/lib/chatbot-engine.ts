@@ -28,8 +28,14 @@ export class ChatbotEngine {
   }
 
   navigate(nodeId: string): ChatNode | undefined {
+    const node = this.getNode(nodeId);
+    if (!node) return undefined;
     this.history.push(nodeId);
-    return this.getNode(nodeId);
+    // Cap history to prevent unbounded growth in sessionStorage
+    if (this.history.length > 100) {
+      this.history = this.history.slice(-50);
+    }
+    return node;
   }
 
   getHistory(): string[] {
@@ -37,7 +43,8 @@ export class ChatbotEngine {
   }
 
   restoreHistory(history: string[]): void {
-    this.history = [...history];
+    // Only restore valid node IDs that exist in the flow
+    this.history = history.filter((id) => typeof id === 'string' && id in this.flow);
   }
 
   reset(): void {

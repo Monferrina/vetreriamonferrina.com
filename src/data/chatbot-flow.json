@@ -178,5 +178,51 @@
       { "label": "Apri contatti", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "welcome" }
     ]
+  },
+  "welcome_servizi": {
+    "message": "Cerchi informazioni su un servizio? Posso aiutarti!",
+    "options": [
+      { "label": "Installazioni (box doccia, parapetti, pensiline)", "next": "servizi_installazioni" },
+      { "label": "Tipi di vetro (blindati, stratificati, camera)", "next": "servizi_vetri" },
+      { "label": "Lavorazioni (sagomature, fori, molature)", "next": "servizi_lavorazioni" },
+      { "label": "Voglio un preventivo", "action": "open_form" },
+      { "label": "Altra domanda", "next": "altra" }
+    ]
+  },
+  "welcome_galleria": {
+    "message": "Ti piace un nostro lavoro? Possiamo realizzarne uno simile per te.",
+    "options": [
+      { "label": "Voglio un preventivo", "action": "open_form" },
+      { "label": "Che lavori fate?", "next": "servizi" },
+      { "label": "Orari e dove trovarci", "next": "orari" },
+      { "label": "Altra domanda", "next": "altra" }
+    ]
+  },
+  "welcome_contatti": {
+    "message": "Hai bisogno di raggiungerci o vuoi altre informazioni?",
+    "options": [
+      { "label": "Orari di apertura", "next": "orari" },
+      { "label": "Chiamaci ora", "action": "call_phone" },
+      { "label": "Voglio un preventivo", "action": "open_form" },
+      { "label": "Altra domanda", "next": "altra" }
+    ]
+  },
+  "welcome_preventivo": {
+    "message": "Stai compilando il preventivo? Se hai dubbi, posso aiutarti.",
+    "options": [
+      { "label": "Che lavori fate?", "next": "servizi" },
+      { "label": "Chiamaci ora", "action": "call_phone" },
+      { "label": "Orari e dove trovarci", "next": "orari" },
+      { "label": "Altra domanda", "next": "altra" }
+    ]
+  },
+  "welcome_chi_siamo": {
+    "message": "Vuoi saperne di pi\u00f9 su di noi o hai bisogno di qualcosa?",
+    "options": [
+      { "label": "Che lavori fate?", "next": "servizi" },
+      { "label": "Voglio un preventivo", "action": "open_form" },
+      { "label": "Orari e dove trovarci", "next": "orari" },
+      { "label": "Altra domanda", "next": "altra" }
+    ]
   }
 }

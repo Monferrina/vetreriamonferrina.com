@@ -52,8 +52,8 @@
   id="chatbot-tooltip"
   class="chatbot-tooltip fixed bottom-[5.5rem] right-6 z-50 hidden rounded-xl bg-primary px-4 py-3 text-sm text-white shadow-lg"
 >
-  <p class="font-medium">Ciao! Posso aiutarti?</p>
-  <p class="mt-1 text-white/80">Clicca per parlare con il nostro assistente.</p>
+  <p id="chatbot-tooltip-title" class="font-medium">Ciao! Posso aiutarti?</p>
+  <p id="chatbot-tooltip-text" class="mt-1 text-white/80">Clicca per parlare con il nostro assistente.</p>
   <button
     id="chatbot-tooltip-close"
     type="button"
@@ -380,6 +380,16 @@
     const flow = chatFlowData as ChatFlow;
     const engine = new ChatbotEngine(flow);
 
+    function getStartNode(): string {
+      const path = window.location.pathname.replace(/\/$/, '') || '/';
+      if (path === '/servizi') return 'welcome_servizi';
+      if (path === '/galleria') return 'welcome_galleria';
+      if (path === '/contatti') return 'welcome_contatti';
+      if (path === '/preventivo') return 'welcome_preventivo';
+      if (path === '/chi-siamo') return 'welcome_chi_siamo';
+      return 'welcome';
+    }
+
     let isOpen = false;
     let isAnimating = false;
 
@@ -399,14 +409,16 @@
       try {
         const saved = sessionStorage.getItem(SESSION_KEY);
         if (saved) {
-          const history: string[] = JSON.parse(saved);
-          if (history.length > 0) {
-            engine.restoreHistory(history);
-            return true;
+          const parsed: unknown = JSON.parse(saved);
+          // Validate: must be an array of strings
+          if (Array.isArray(parsed) && parsed.every((item) => typeof item === 'string')) {
+            engine.restoreHistory(parsed as string[]);
+            return engine.getHistory().length > 0;
           }
         }
       } catch {
-        // Ignore parse errors
+        // Corrupted data — clear it
+        try { sessionStorage.removeItem(SESSION_KEY); } catch { /* ignore */ }
       }
       return false;
     }
@@ -597,7 +609,7 @@
             }
           }
         } else {
-          showNode('welcome');
+          showNode(getStartNode());
         }
       }
 
@@ -651,6 +663,28 @@
         closePanel();
       }
     });
+
+    // Contextual tooltip text
+    function updateTooltipText(): void {
+      const titleEl = document.getElementById('chatbot-tooltip-title');
+      const textEl = document.getElementById('chatbot-tooltip-text');
+      if (!titleEl || !textEl) return;
+      const path = window.location.pathname.replace(/\/$/, '') || '/';
+      if (path === '/servizi') {
+        titleEl.textContent = 'Cerchi un servizio?';
+        textEl.textContent = 'Posso aiutarti a trovare quello giusto.';
+      } else if (path === '/galleria') {
+        titleEl.textContent = 'Ti piace un lavoro?';
+        textEl.textContent = 'Chiedi un preventivo simile!';
+      } else if (path === '/preventivo') {
+        titleEl.textContent = 'Hai dubbi sul preventivo?';
+        textEl.textContent = 'Posso darti una mano.';
+      } else if (path === '/contatti') {
+        titleEl.textContent = 'Vuoi raggiungerci?';
+        textEl.textContent = 'Orari, indirizzo e telefono qui.';
+      }
+    }
+    updateTooltipText();
 
     // Show tooltip after 3 seconds if user hasn't interacted
     showTooltipIfNeeded();

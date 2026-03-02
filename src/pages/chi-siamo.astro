@@ -85,9 +85,9 @@ const heroIntro = aboutData?.intro ||
   </section>
 
   <!-- Timeline section -->
-  <section class="bg-neutral-100 py-16">
+  <section class="bg-neutral-100 py-10 sm:py-14">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
-      <h2 class="font-heading text-3xl text-primary text-center mb-12">
+      <h2 class="font-heading text-3xl text-primary text-center mb-8">
         Il nostro percorso
       </h2>
 
@@ -99,15 +99,14 @@ const heroIntro = aboutData?.intro ||
           aria-hidden="true"
         ></div>
 
-        <div class="space-y-12">
+        <div class="space-y-6">
           <!-- Milestone 1 -->
           <div class="relative md:flex md:items-center">
-            <div class="md:w-1/2 md:pr-12 md:text-right">
-              <div data-reveal class="rounded-xl bg-surface p-6 shadow-sm">
+            <div class="md:w-1/2 md:pr-10 md:text-right">
+              <div data-reveal class="rounded-xl bg-surface px-5 py-4 shadow-sm">
                 <span class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50">
                   Le origini
                 </span>
-                <h3 class="mt-3 font-heading text-xl text-primary">Come tutto è iniziato</h3>
                 <p class="mt-2 text-neutral-700">
                   Giuseppe inizia a lavorare il vetro come artigiano,
                   imparando il mestiere sul campo. Insieme a Debora
@@ -131,12 +130,11 @@ const heroIntro = aboutData?.intro ||
               class="absolute left-2.5 top-6 hidden h-3 w-3 rounded-full border-2 border-primary bg-surface md:left-1/2 md:-translate-x-1/2 md:block"
               aria-hidden="true"
             ></div>
-            <div class="md:w-1/2 md:pl-12">
-              <div data-reveal class="rounded-xl bg-surface p-6 shadow-sm">
+            <div class="md:w-1/2 md:pl-10">
+              <div data-reveal class="rounded-xl bg-surface px-5 py-4 shadow-sm">
                 <span class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50">
                   La crescita
                 </span>
-                <h3 class="mt-3 font-heading text-xl text-primary">Da bottega ad azienda</h3>
                 <p class="mt-2 text-neutral-700">
                   Il laboratorio cresce e con esso la gamma di servizi:
                   box doccia su misura, parapetti, pensiline e vetri camera.
@@ -148,16 +146,15 @@ const heroIntro = aboutData?.intro ||
 
           <!-- Milestone 3 -->
           <div class="relative md:flex md:items-center">
-            <div class="md:w-1/2 md:pr-12 md:text-right">
-              <div data-reveal class="rounded-xl bg-surface p-6 shadow-sm">
+            <div class="md:w-1/2 md:pr-10 md:text-right">
+              <div data-reveal class="rounded-xl bg-surface px-5 py-4 shadow-sm">
                 <span class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50">
-                  Oggi
+                  La famiglia si allarga
                 </span>
-                <h3 class="mt-3 font-heading text-xl text-primary">Un punto di riferimento</h3>
                 <p class="mt-2 text-neutral-700">
-                  Oltre 40 anni di esperienza, la stessa dedizione del primo giorno.
-                  Privati, aziende e professionisti dell'edilizia continuano
-                  a sceglierci per qualità, affidabilità e cura del dettaglio.
+                  Mirco, Fabiana e Martina crescono tra vetri e clienti.
+                  Uno dopo l'altro entrano in azienda e la Vetreria
+                  Monferrina diventa davvero un affare di famiglia.
                 </p>
               </div>
             </div>
@@ -168,7 +165,40 @@ const heroIntro = aboutData?.intro ||
             ></div>
             <div class="hidden md:block md:w-1/2"></div>
           </div>
+
+          <!-- Milestone 4 -->
+          <div class="relative md:flex md:items-center">
+            <div class="hidden md:block md:w-1/2"></div>
+            <div
+              data-reveal-dot
+              class="absolute left-2.5 top-6 hidden h-3 w-3 rounded-full border-2 border-primary bg-surface md:left-1/2 md:-translate-x-1/2 md:block"
+              aria-hidden="true"
+            ></div>
+            <div class="md:w-1/2 md:pl-10">
+              <div data-reveal class="rounded-xl bg-surface px-5 py-4 shadow-sm">
+                <span class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50">
+                  Oggi
+                </span>
+                <p class="mt-2 text-neutral-700">
+                  La stessa dedizione del primo giorno, la stessa cura.
+                  Privati, aziende e professionisti dell'edilizia continuano
+                  a sceglierci per qualità, affidabilità e attenzione al dettaglio.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- In ricordo di Manuela -->
+      <div class="mx-auto mt-12 max-w-2xl rounded-2xl border border-neutral-200 bg-surface px-6 py-6 shadow-sm text-center">
+        <p class="text-xs font-semibold uppercase tracking-wider text-primary/70">
+          In ricordo di <span class="font-heading text-lg normal-case tracking-normal text-primary">Manuela</span>
+        </p>
+        <p class="mt-3 italic text-neutral-500">&ldquo;Posso fare una stampa?&rdquo;</p>
+        <p class="mt-2 text-sm leading-relaxed text-neutral-700">
+          Per oltre vent'anni, molto più di una collaboratrice: un'amica e parte della famiglia.
+        </p>
       </div>
     </div>
   </section>
@@ -291,19 +321,6 @@ const heroIntro = aboutData?.intro ||
           ))}
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- In ricordo di Manuela -->
-  <section class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
-    <div class="mx-auto max-w-2xl rounded-2xl border border-neutral-200 bg-surface px-8 py-10 text-center shadow-sm">
-      <p class="text-sm font-semibold uppercase tracking-wider text-primary/70">In ricordo di</p>
-      <h3 class="mt-2 font-heading text-2xl text-primary">Manuela</h3>
-      <p class="mt-4 italic text-neutral-500">&ldquo;Posso fare una stampa?&rdquo;</p>
-      <p class="mt-4 text-neutral-700 leading-relaxed">
-        Per oltre vent'anni, molto più di una collaboratrice:
-        un'amica e parte della famiglia.
-      </p>
     </div>
   </section>
 
