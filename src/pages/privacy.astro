@@ -19,226 +19,238 @@ export const prerender = true;
   </section>
 
   <!-- Content -->
-  <section class="mx-auto max-w-4xl px-4 py-16 lg:px-8">
-    <div class="prose-legal space-y-10 text-neutral-700 leading-relaxed">
-      <!-- 1. Titolare del trattamento -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">1. Titolare del trattamento</h2>
-        <p class="mt-3">Il titolare del trattamento dei dati personali è:</p>
-        <p class="mt-2 font-semibold">Vetreria Monferrina di Fioravanti Giuseppe</p>
-        <ul class="mt-2 list-disc pl-6 space-y-1">
-          <li>Sede legale: Strada Statale 31, 98/C — 15033 Casale Monferrato (AL)</li>
-          <li>
-            Email: <a href="mailto:info@vetreriamonferrina.com" class="text-primary hover:underline"
+  <section class="bg-white py-16 sm:py-20">
+    <div class="mx-auto max-w-4xl px-4 lg:px-8">
+      <div class="prose-legal space-y-10 text-justify text-neutral-700 leading-relaxed">
+        <!-- 1. Titolare del trattamento -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">
+            1. Titolare del trattamento
+          </h2>
+          <p class="mt-3">Il titolare del trattamento dei dati personali è:</p>
+          <p class="mt-3 font-semibold">Vetreria Monferrina di Fioravanti Giuseppe</p>
+          <ul class="mt-3 list-disc pl-6 space-y-1">
+            <li>Sede legale: Strada Statale 31, 98/C — 15033 Casale Monferrato (AL)</li>
+            <li>
+              Email: <a
+                href="mailto:info@vetreriamonferrina.com"
+                class="text-primary hover:underline">info@vetreriamonferrina.com</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <!-- 2. Dati raccolti -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">2. Dati personali raccolti</h2>
+          <p class="mt-3">
+            I dati personali vengono raccolti esclusivamente attraverso il modulo di richiesta
+            preventivo presente sul sito. I dati raccolti sono:
+          </p>
+          <ul class="mt-3 list-disc pl-6 space-y-1">
+            <li>Nome e cognome</li>
+            <li>Numero di telefono</li>
+            <li>Indirizzo email</li>
+            <li>Descrizione del lavoro richiesto</li>
+            <li>Misure (quando applicabile)</li>
+          </ul>
+          <p class="mt-3">
+            Non vengono raccolti dati personali con altre modalità. La navigazione sul sito non
+            comporta la raccolta di dati personali dell'utente.
+          </p>
+        </div>
+
+        <!-- 3. Finalità del trattamento -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">
+            3. Finalità del trattamento
+          </h2>
+          <p class="mt-3">
+            I dati personali forniti tramite il modulo di preventivo sono trattati esclusivamente
+            per le seguenti finalità:
+          </p>
+          <ul class="mt-3 list-disc pl-6 space-y-1">
+            <li>Rispondere alla richiesta di preventivo inviata dall'utente</li>
+            <li>Contattare l'utente per fornire informazioni relative al preventivo richiesto</li>
+          </ul>
+          <p class="mt-3">
+            I dati non vengono utilizzati per finalità di marketing, profilazione o comunicazione
+            commerciale.
+          </p>
+        </div>
+
+        <!-- 4. Base giuridica -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">
+            4. Base giuridica del trattamento
+          </h2>
+          <p class="mt-3">
+            Il trattamento dei dati personali si fonda sul <strong
+              >consenso esplicito dell'interessato</strong
+            > ai sensi dell'art. 6, paragrafo 1, lettera a) del GDPR.
+          </p>
+          <p class="mt-3">
+            Il consenso viene espresso dall'utente tramite l'apposita checkbox presente nel modulo
+            di richiesta preventivo, prima dell'invio dei dati. L'utente può revocare il consenso in
+            qualsiasi momento contattando il titolare del trattamento.
+          </p>
+        </div>
+
+        <!-- 5. Conservazione dei dati -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">5. Conservazione dei dati</h2>
+          <p class="mt-3">
+            I dati personali transitano esclusivamente come email. <strong
+              >Non viene utilizzato alcun database</strong
+            > per la memorizzazione dei dati.
+          </p>
+          <p class="mt-3">
+            I dati restano nella casella email aziendale per il tempo strettamente necessario alla
+            gestione della richiesta di preventivo, dopodiché vengono eliminati.
+          </p>
+        </div>
+
+        <!-- 6. Trasferimento dati -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">
+            6. Trasferimento dei dati a terzi
+          </h2>
+          <p class="mt-3">
+            I dati forniti tramite il modulo di preventivo vengono trasmessi via email utilizzando
+            il servizio <strong>Resend</strong> (Resend Inc., con sede negli Stati Uniti d'America) per
+            l'invio dell'email contenente la richiesta di preventivo.
+          </p>
+          <p class="mt-3">
+            Resend opera in conformità al Regolamento UE 2016/679 (GDPR) e adotta adeguate garanzie
+            per il trasferimento dei dati verso gli USA, tra cui le Clausole Contrattuali Standard
+            (SCC) e il Data Privacy Framework (DPF).
+          </p>
+          <p class="mt-3">
+            I dati personali non vengono ceduti, venduti o comunicati ad altri soggetti terzi.
+          </p>
+        </div>
+
+        <!-- 7. Diritti dell'interessato -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">
+            7. Diritti dell'interessato
+          </h2>
+          <p class="mt-3">
+            Ai sensi degli articoli 15-21 del GDPR, l'interessato ha il diritto di:
+          </p>
+          <ul class="mt-3 list-disc pl-6 space-y-1">
+            <li>
+              <strong>Accesso</strong> (art. 15): ottenere conferma dell'esistenza di un trattamento e
+              accedere ai propri dati personali
+            </li>
+            <li>
+              <strong>Rettifica</strong> (art. 16): ottenere la correzione dei dati inesatti o l'integrazione
+              dei dati incompleti
+            </li>
+            <li>
+              <strong>Cancellazione</strong> (art. 17): ottenere la cancellazione dei propri dati personali
+              ("diritto all'oblio")
+            </li>
+            <li>
+              <strong>Limitazione del trattamento</strong> (art. 18): ottenere la limitazione del trattamento
+              dei propri dati
+            </li>
+            <li>
+              <strong>Portabilità</strong> (art. 20): ricevere i propri dati in formato strutturato e
+              trasferirli ad altro titolare
+            </li>
+            <li>
+              <strong>Opposizione</strong> (art. 21): opporsi al trattamento dei propri dati personali
+            </li>
+          </ul>
+          <p class="mt-3">
+            Per esercitare i propri diritti, l'interessato può contattare il titolare del
+            trattamento all'indirizzo email:
+            <a href="mailto:info@vetreriamonferrina.com" class="text-primary hover:underline"
               >info@vetreriamonferrina.com</a
             >
-          </li>
-        </ul>
-      </div>
+          </p>
+        </div>
 
-      <!-- 2. Dati raccolti -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">2. Dati personali raccolti</h2>
-        <p class="mt-3">
-          I dati personali vengono raccolti esclusivamente attraverso il modulo di richiesta
-          preventivo presente sul sito. I dati raccolti sono:
-        </p>
-        <ul class="mt-2 list-disc pl-6 space-y-1">
-          <li>Nome e cognome</li>
-          <li>Numero di telefono</li>
-          <li>Indirizzo email</li>
-          <li>Descrizione del lavoro richiesto</li>
-          <li>Misure (quando applicabile)</li>
-        </ul>
-        <p class="mt-3">
-          Non vengono raccolti dati personali con altre modalità. La navigazione sul sito non
-          comporta la raccolta di dati personali dell'utente.
-        </p>
-      </div>
+        <!-- 8. Cookie -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">8. Cookie</h2>
+          <p class="mt-3">
+            Questo sito utilizza esclusivamente <strong>cookie tecnici</strong>
+            necessari al funzionamento del sito:
+          </p>
+          <ul class="mt-3 list-disc pl-6 space-y-1">
+            <li>
+              <strong>sessionStorage</strong> (chatbot): memorizza lo stato della conversazione con l'assistente
+              durante la sessione di navigazione
+            </li>
+            <li>
+              <strong>localStorage</strong> (cookie banner): memorizza la presa visione del banner informativo
+              sui cookie
+            </li>
+          </ul>
+          <p class="mt-3">
+            <strong>Non vengono utilizzati cookie di profilazione</strong> né cookie di terze parti per
+            finalità di tracciamento.
+          </p>
+          <p class="mt-3">
+            Per maggiori informazioni sui cookie, consulta la nostra
+            <a href="/cookie" class="text-primary hover:underline">Cookie Policy</a>.
+          </p>
+        </div>
 
-      <!-- 3. Finalità del trattamento -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">3. Finalità del trattamento</h2>
-        <p class="mt-3">
-          I dati personali forniti tramite il modulo di preventivo sono trattati esclusivamente per
-          le seguenti finalità:
-        </p>
-        <ul class="mt-2 list-disc pl-6 space-y-1">
-          <li>Rispondere alla richiesta di preventivo inviata dall'utente</li>
-          <li>Contattare l'utente per fornire informazioni relative al preventivo richiesto</li>
-        </ul>
-        <p class="mt-3">
-          I dati non vengono utilizzati per finalità di marketing, profilazione o comunicazione
-          commerciale.
-        </p>
-      </div>
+        <!-- 9. Analytics -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">9. Analytics</h2>
+          <p class="mt-3">
+            Questo sito utilizza <strong>Cloudflare Web Analytics</strong>, un servizio di analisi
+            del traffico web che <strong>non utilizza cookie</strong> e
+            <strong>non raccoglie dati personali</strong> degli utenti.
+          </p>
+          <p class="mt-3">
+            Cloudflare Web Analytics fornisce statistiche aggregate e anonime sul traffico del sito,
+            nel pieno rispetto della privacy degli utenti.
+          </p>
+        </div>
 
-      <!-- 4. Base giuridica -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">
-          4. Base giuridica del trattamento
-        </h2>
-        <p class="mt-3">
-          Il trattamento dei dati personali si fonda sul <strong
-            >consenso esplicito dell'interessato</strong
-          > ai sensi dell'art. 6, paragrafo 1, lettera a) del GDPR.
-        </p>
-        <p class="mt-2">
-          Il consenso viene espresso dall'utente tramite l'apposita checkbox presente nel modulo di
-          richiesta preventivo, prima dell'invio dei dati. L'utente può revocare il consenso in
-          qualsiasi momento contattando il titolare del trattamento.
-        </p>
-      </div>
+        <!-- 10. DPO -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">
+            10. Responsabile della Protezione dei Dati (DPO)
+          </h2>
+          <p class="mt-3">
+            Non è stato nominato un Responsabile della Protezione dei Dati (DPO) in quanto
+            l'attività del titolare non comporta trattamenti su larga scala di categorie particolari
+            di dati né monitoraggio regolare e sistematico degli interessati (art. 37 GDPR). Il
+            titolare è una piccola-media impresa (PMI) con trattamento occasionale e non su larga
+            scala.
+          </p>
+        </div>
 
-      <!-- 5. Conservazione dei dati -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">5. Conservazione dei dati</h2>
-        <p class="mt-3">
-          I dati personali transitano esclusivamente come email. <strong
-            >Non viene utilizzato alcun database</strong
-          > per la memorizzazione dei dati.
-        </p>
-        <p class="mt-2">
-          I dati restano nella casella email aziendale per il tempo strettamente necessario alla
-          gestione della richiesta di preventivo, dopodiché vengono eliminati.
-        </p>
-      </div>
+        <!-- 11. Reclamo -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">11. Diritto di reclamo</h2>
+          <p class="mt-3">
+            L'interessato che ritenga che il trattamento dei propri dati personali avvenga in
+            violazione del GDPR ha il diritto di proporre reclamo al
+            <strong>Garante per la Protezione dei Dati Personali</strong>.
+          </p>
+          <p class="mt-3">
+            Garante per la Protezione dei Dati Personali<br />
+            Piazza Venezia 11 - 00187 Roma<br />
+            Sito web: <a
+              href="https://www.garanteprivacy.it"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-primary hover:underline">www.garanteprivacy.it</a
+            >
+          </p>
+        </div>
 
-      <!-- 6. Trasferimento dati -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">
-          6. Trasferimento dei dati a terzi
-        </h2>
-        <p class="mt-3">
-          I dati forniti tramite il modulo di preventivo vengono trasmessi via email utilizzando il
-          servizio <strong>Resend</strong> (Resend Inc., con sede negli Stati Uniti d'America) per l'invio
-          dell'email contenente la richiesta di preventivo.
-        </p>
-        <p class="mt-2">
-          Resend opera in conformità al Regolamento UE 2016/679 (GDPR) e adotta adeguate garanzie
-          per il trasferimento dei dati verso gli USA, tra cui le Clausole Contrattuali Standard
-          (SCC) e il Data Privacy Framework (DPF).
-        </p>
-        <p class="mt-2">
-          I dati personali non vengono ceduti, venduti o comunicati ad altri soggetti terzi.
-        </p>
-      </div>
-
-      <!-- 7. Diritti dell'interessato -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">7. Diritti dell'interessato</h2>
-        <p class="mt-3">Ai sensi degli articoli 15-21 del GDPR, l'interessato ha il diritto di:</p>
-        <ul class="mt-2 list-disc pl-6 space-y-1">
-          <li>
-            <strong>Accesso</strong> (art. 15): ottenere conferma dell'esistenza di un trattamento e accedere
-            ai propri dati personali
-          </li>
-          <li>
-            <strong>Rettifica</strong> (art. 16): ottenere la correzione dei dati inesatti o l'integrazione
-            dei dati incompleti
-          </li>
-          <li>
-            <strong>Cancellazione</strong> (art. 17): ottenere la cancellazione dei propri dati personali
-            ("diritto all'oblio")
-          </li>
-          <li>
-            <strong>Limitazione del trattamento</strong> (art. 18): ottenere la limitazione del trattamento
-            dei propri dati
-          </li>
-          <li>
-            <strong>Portabilità</strong> (art. 20): ricevere i propri dati in formato strutturato e trasferirli
-            ad altro titolare
-          </li>
-          <li>
-            <strong>Opposizione</strong> (art. 21): opporsi al trattamento dei propri dati personali
-          </li>
-        </ul>
-        <p class="mt-3">
-          Per esercitare i propri diritti, l'interessato può contattare il titolare del trattamento
-          all'indirizzo email:
-          <a href="mailto:info@vetreriamonferrina.com" class="text-primary hover:underline"
-            >info@vetreriamonferrina.com</a
-          >
-        </p>
-      </div>
-
-      <!-- 8. Cookie -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">8. Cookie</h2>
-        <p class="mt-3">
-          Questo sito utilizza esclusivamente <strong>cookie tecnici</strong>
-          necessari al funzionamento del sito:
-        </p>
-        <ul class="mt-2 list-disc pl-6 space-y-1">
-          <li>
-            <strong>sessionStorage</strong> (chatbot): memorizza lo stato della conversazione con l'assistente
-            durante la sessione di navigazione
-          </li>
-          <li>
-            <strong>localStorage</strong> (cookie banner): memorizza la presa visione del banner informativo
-            sui cookie
-          </li>
-        </ul>
-        <p class="mt-3">
-          <strong>Non vengono utilizzati cookie di profilazione</strong> né cookie di terze parti per
-          finalità di tracciamento.
-        </p>
-        <p class="mt-2">
-          Per maggiori informazioni sui cookie, consulta la nostra
-          <a href="/cookie" class="text-primary hover:underline">Cookie Policy</a>.
-        </p>
-      </div>
-
-      <!-- 9. Analytics -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">9. Analytics</h2>
-        <p class="mt-3">
-          Questo sito utilizza <strong>Cloudflare Web Analytics</strong>, un servizio di analisi del
-          traffico web che <strong>non utilizza cookie</strong> e
-          <strong>non raccoglie dati personali</strong> degli utenti.
-        </p>
-        <p class="mt-2">
-          Cloudflare Web Analytics fornisce statistiche aggregate e anonime sul traffico del sito,
-          nel pieno rispetto della privacy degli utenti.
-        </p>
-      </div>
-
-      <!-- 10. DPO -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">
-          10. Responsabile della Protezione dei Dati (DPO)
-        </h2>
-        <p class="mt-3">
-          Non è stato nominato un Responsabile della Protezione dei Dati (DPO) in quanto l'attività
-          del titolare non comporta trattamenti su larga scala di categorie particolari di dati né
-          monitoraggio regolare e sistematico degli interessati (art. 37 GDPR). Il titolare è una
-          piccola-media impresa (PMI) con trattamento occasionale e non su larga scala.
-        </p>
-      </div>
-
-      <!-- 11. Reclamo -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">11. Diritto di reclamo</h2>
-        <p class="mt-3">
-          L'interessato che ritenga che il trattamento dei propri dati personali avvenga in
-          violazione del GDPR ha il diritto di proporre reclamo al
-          <strong>Garante per la Protezione dei Dati Personali</strong>.
-        </p>
-        <p class="mt-2">
-          Garante per la Protezione dei Dati Personali<br />
-          Piazza Venezia 11 - 00187 Roma<br />
-          Sito web: <a
-            href="https://www.garanteprivacy.it"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-primary hover:underline">www.garanteprivacy.it</a
-          >
-        </p>
-      </div>
-
-      <!-- Last updated -->
-      <div class="border-t border-neutral-200 pt-8 text-sm text-neutral-500">
-        <p>Ultimo aggiornamento: febbraio 2026</p>
+        <!-- Last updated -->
+        <div class="border-t border-neutral-200 pt-8 text-sm text-neutral-500">
+          <p>Ultimo aggiornamento: febbraio 2026</p>
+        </div>
       </div>
     </div>
   </section>

@@ -19,177 +19,181 @@ export const prerender = true;
   </section>
 
   <!-- Content -->
-  <section class="mx-auto max-w-4xl px-4 py-16 lg:px-8">
-    <div class="prose-legal space-y-10 text-neutral-700 leading-relaxed">
-      <!-- 1. Cosa sono i cookie -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">1. Cosa sono i cookie</h2>
-        <p class="mt-3">
-          I cookie sono piccoli file di testo che i siti web memorizzano nel browser dell'utente
-          durante la navigazione. Vengono utilizzati per diverse finalità, come memorizzare
-          preferenze, migliorare l'esperienza di navigazione o raccogliere informazioni statistiche.
-        </p>
-        <p class="mt-2">
-          Esistono anche altre tecnologie di memorizzazione locale, come
-          <strong>sessionStorage</strong> e <strong>localStorage</strong>, che funzionano in modo
-          simile ai cookie ma con caratteristiche tecniche differenti.
-        </p>
-      </div>
-
-      <!-- 2. Cookie utilizzati -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">
-          2. Cookie e tecnologie utilizzati da questo sito
-        </h2>
-        <p class="mt-3">
-          Questo sito utilizza esclusivamente <strong>cookie tecnici</strong>
-          (e tecnologie equivalenti) strettamente necessari al funzionamento del sito.
-        </p>
-
-        <!-- Table -->
-        <div class="mt-6 overflow-x-auto">
-          <table class="w-full border-collapse text-sm">
-            <thead>
-              <tr class="border-b-2 border-primary/20">
-                <th class="py-3 pr-4 text-left font-semibold text-primary">Tecnologia</th>
-                <th class="py-3 pr-4 text-left font-semibold text-primary">Tipo</th>
-                <th class="py-3 pr-4 text-left font-semibold text-primary">Durata</th>
-                <th class="py-3 text-left font-semibold text-primary">Finalità</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="border-b border-neutral-200">
-                <td class="py-3 pr-4 font-medium"
-                  >sessionStorage<br /><span class="text-xs text-neutral-500"
-                    >(chatbot_history)</span
-                  ></td
-                >
-                <td class="py-3 pr-4">Tecnico</td>
-                <td class="py-3 pr-4">Sessione</td>
-                <td class="py-3">
-                  Memorizza lo stato della conversazione con l'assistente (chatbot). Non contiene
-                  dati personali. Si cancella automaticamente alla chiusura del browser.
-                </td>
-              </tr>
-              <tr class="border-b border-neutral-200">
-                <td class="py-3 pr-4 font-medium"
-                  >localStorage<br /><span class="text-xs text-neutral-500"
-                    >(cookie_notice_seen)</span
-                  ></td
-                >
-                <td class="py-3 pr-4">Tecnico</td>
-                <td class="py-3 pr-4">Persistente</td>
-                <td class="py-3">
-                  Memorizza la presa visione del banner informativo sui cookie. Non contiene dati
-                  personali. Può essere eliminato dalle impostazioni del browser.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="mt-6 rounded-lg border border-primary/20 bg-primary/5 p-4">
-          <p class="font-semibold text-primary">Nessun cookie di profilazione</p>
-          <p class="mt-1">
-            Questo sito <strong>non utilizza cookie di profilazione</strong> né cookie di terze parti
-            per finalità di tracciamento o marketing.
+  <section class="bg-white py-16 sm:py-20">
+    <div class="mx-auto max-w-4xl px-4 lg:px-8">
+      <div class="prose-legal space-y-10 text-justify text-neutral-700 leading-relaxed">
+        <!-- 1. Cosa sono i cookie -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">1. Cosa sono i cookie</h2>
+          <p class="mt-3">
+            I cookie sono piccoli file di testo che i siti web memorizzano nel browser dell'utente
+            durante la navigazione. Vengono utilizzati per diverse finalità, come memorizzare
+            preferenze, migliorare l'esperienza di navigazione o raccogliere informazioni
+            statistiche.
+          </p>
+          <p class="mt-3">
+            Esistono anche altre tecnologie di memorizzazione locale, come
+            <strong>sessionStorage</strong> e <strong>localStorage</strong>, che funzionano in modo
+            simile ai cookie ma con caratteristiche tecniche differenti.
           </p>
         </div>
 
-        <div class="mt-4 rounded-lg border border-primary/20 bg-primary/5 p-4">
-          <p class="font-semibold text-primary">Nessun cookie per analytics</p>
-          <p class="mt-1">
-            Il sito utilizza Cloudflare Web Analytics per le statistiche di traffico. Questo
-            servizio <strong>non utilizza cookie</strong> e non raccoglie dati personali degli utenti.
+        <!-- 2. Cookie utilizzati -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">
+            2. Cookie e tecnologie utilizzati da questo sito
+          </h2>
+          <p class="mt-3">
+            Questo sito utilizza esclusivamente <strong>cookie tecnici</strong>
+            (e tecnologie equivalenti) strettamente necessari al funzionamento del sito.
+          </p>
+
+          <!-- Table -->
+          <div class="mt-6 overflow-x-auto">
+            <table class="w-full border-collapse text-sm">
+              <thead>
+                <tr class="border-b-2 border-primary/20">
+                  <th class="py-3 pr-4 text-left font-semibold text-primary">Tecnologia</th>
+                  <th class="py-3 pr-4 text-left font-semibold text-primary">Tipo</th>
+                  <th class="py-3 pr-4 text-left font-semibold text-primary">Durata</th>
+                  <th class="py-3 text-left font-semibold text-primary">Finalità</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-neutral-200">
+                  <td class="py-3 pr-4 font-medium"
+                    >sessionStorage<br /><span class="text-xs text-neutral-500"
+                      >(chatbot_history)</span
+                    ></td
+                  >
+                  <td class="py-3 pr-4">Tecnico</td>
+                  <td class="py-3 pr-4">Sessione</td>
+                  <td class="py-3">
+                    Memorizza lo stato della conversazione con l'assistente (chatbot). Non contiene
+                    dati personali. Si cancella automaticamente alla chiusura del browser.
+                  </td>
+                </tr>
+                <tr class="border-b border-neutral-200">
+                  <td class="py-3 pr-4 font-medium"
+                    >localStorage<br /><span class="text-xs text-neutral-500"
+                      >(cookie_notice_seen)</span
+                    ></td
+                  >
+                  <td class="py-3 pr-4">Tecnico</td>
+                  <td class="py-3 pr-4">Persistente</td>
+                  <td class="py-3">
+                    Memorizza la presa visione del banner informativo sui cookie. Non contiene dati
+                    personali. Può essere eliminato dalle impostazioni del browser.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-6 rounded-lg border border-primary/20 bg-primary/5 p-4">
+            <p class="font-semibold text-primary">Nessun cookie di profilazione</p>
+            <p class="mt-1">
+              Questo sito <strong>non utilizza cookie di profilazione</strong> né cookie di terze parti
+              per finalità di tracciamento o marketing.
+            </p>
+          </div>
+
+          <div class="mt-4 rounded-lg border border-primary/20 bg-primary/5 p-4">
+            <p class="font-semibold text-primary">Nessun cookie per analytics</p>
+            <p class="mt-1">
+              Il sito utilizza Cloudflare Web Analytics per le statistiche di traffico. Questo
+              servizio <strong>non utilizza cookie</strong> e non raccoglie dati personali degli utenti.
+            </p>
+          </div>
+        </div>
+
+        <!-- 3. Gestione dei cookie -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">3. Gestione dei cookie</h2>
+          <p class="mt-3">
+            L'utente può gestire i cookie e le tecnologie di memorizzazione locale direttamente
+            dalle impostazioni del proprio browser. Di seguito i link alle guide dei principali
+            browser:
+          </p>
+          <ul class="mt-3 list-disc pl-6 space-y-1">
+            <li>
+              <a
+                href="https://support.google.com/chrome/answer/95647"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-primary hover:underline">Google Chrome</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://support.mozilla.org/it/kb/protezione-antitracciamento-avanzata-firefox-desktop"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-primary hover:underline">Mozilla Firefox</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://support.apple.com/it-it/guide/safari/sfri11471/mac"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-primary hover:underline">Apple Safari</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://support.microsoft.com/it-it/microsoft-edge/eliminare-i-cookie-in-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-primary hover:underline">Microsoft Edge</a
+              >
+            </li>
+          </ul>
+          <p class="mt-3">
+            La disabilitazione dei cookie tecnici potrebbe compromettere il corretto funzionamento
+            di alcune funzionalità del sito (ad esempio, l'assistente virtuale).
           </p>
         </div>
-      </div>
 
-      <!-- 3. Gestione dei cookie -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">3. Gestione dei cookie</h2>
-        <p class="mt-3">
-          L'utente può gestire i cookie e le tecnologie di memorizzazione locale direttamente dalle
-          impostazioni del proprio browser. Di seguito i link alle guide dei principali browser:
-        </p>
-        <ul class="mt-2 list-disc pl-6 space-y-1">
-          <li>
-            <a
-              href="https://support.google.com/chrome/answer/95647"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-primary hover:underline">Google Chrome</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://support.mozilla.org/it/kb/protezione-antitracciamento-avanzata-firefox-desktop"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-primary hover:underline">Mozilla Firefox</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://support.apple.com/it-it/guide/safari/sfri11471/mac"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-primary hover:underline">Apple Safari</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://support.microsoft.com/it-it/microsoft-edge/eliminare-i-cookie-in-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-primary hover:underline">Microsoft Edge</a
-            >
-          </li>
-        </ul>
-        <p class="mt-3">
-          La disabilitazione dei cookie tecnici potrebbe compromettere il corretto funzionamento di
-          alcune funzionalità del sito (ad esempio, l'assistente virtuale).
-        </p>
-      </div>
+        <!-- 4. Base normativa -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">4. Base normativa</h2>
+          <p class="mt-3">
+            Ai sensi dell'<strong
+              >art. 122 del Codice in materia di protezione dei dati personali (D.Lgs. 196/2003)</strong
+            >, come modificato dal D.Lgs. 101/2018, per i cookie tecnici strettamente necessari al
+            funzionamento del sito <strong>non è richiesto il consenso dell'utente</strong>, ma
+            esclusivamente l'informativa.
+          </p>
+          <p class="mt-3">
+            Il presente sito utilizza esclusivamente cookie tecnici, pertanto non viene richiesto
+            alcun consenso per il loro utilizzo. Il banner informativo presente sul sito ha la sola
+            funzione di informare l'utente della presenza di cookie tecnici.
+          </p>
+        </div>
 
-      <!-- 4. Base normativa -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">4. Base normativa</h2>
-        <p class="mt-3">
-          Ai sensi dell'<strong
-            >art. 122 del Codice in materia di protezione dei dati personali (D.Lgs. 196/2003)</strong
-          >, come modificato dal D.Lgs. 101/2018, per i cookie tecnici strettamente necessari al
-          funzionamento del sito <strong>non è richiesto il consenso dell'utente</strong>, ma
-          esclusivamente l'informativa.
-        </p>
-        <p class="mt-2">
-          Il presente sito utilizza esclusivamente cookie tecnici, pertanto non viene richiesto
-          alcun consenso per il loro utilizzo. Il banner informativo presente sul sito ha la sola
-          funzione di informare l'utente della presenza di cookie tecnici.
-        </p>
-      </div>
+        <!-- 5. Contatti -->
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">5. Contatti</h2>
+          <p class="mt-3">
+            Per qualsiasi domanda relativa alla presente Cookie Policy, è possibile contattare il
+            titolare del trattamento all'indirizzo email:
+            <a href="mailto:info@vetreriamonferrina.com" class="text-primary hover:underline"
+              >info@vetreriamonferrina.com</a
+            >
+          </p>
+          <p class="mt-3">
+            Per informazioni complete sul trattamento dei dati personali, consulta la nostra <a
+              href="/privacy"
+              class="text-primary hover:underline">Privacy Policy</a
+            >.
+          </p>
+        </div>
 
-      <!-- 5. Contatti -->
-      <div>
-        <h2 class="font-heading text-2xl text-primary sm:text-3xl">5. Contatti</h2>
-        <p class="mt-3">
-          Per qualsiasi domanda relativa alla presente Cookie Policy, è possibile contattare il
-          titolare del trattamento all'indirizzo email:
-          <a href="mailto:info@vetreriamonferrina.com" class="text-primary hover:underline"
-            >info@vetreriamonferrina.com</a
-          >
-        </p>
-        <p class="mt-2">
-          Per informazioni complete sul trattamento dei dati personali, consulta la nostra <a
-            href="/privacy"
-            class="text-primary hover:underline">Privacy Policy</a
-          >.
-        </p>
-      </div>
-
-      <!-- Last updated -->
-      <div class="border-t border-neutral-200 pt-8 text-sm text-neutral-500">
-        <p>Ultimo aggiornamento: febbraio 2026</p>
+        <!-- Last updated -->
+        <div class="border-t border-neutral-200 pt-8 text-sm text-neutral-500">
+          <p>Ultimo aggiornamento: febbraio 2026</p>
+        </div>
       </div>
     </div>
   </section>
