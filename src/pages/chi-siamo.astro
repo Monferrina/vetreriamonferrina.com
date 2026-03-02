@@ -13,12 +13,12 @@ const aboutData = await fetchWithFallback<SanityAboutPage | null>(queries.aboutP
 // Use Sanity data if available, otherwise keep static defaults
 const heroTitle = aboutData?.title || 'Chi siamo';
 const heroIntro = aboutData?.intro ||
-  'Vetreria Monferrina di Fioravanti Giuseppe: artigiani del vetro a Casale Monferrato dal cuore del Monferrato.';
+  'Giuseppe, Debora e il loro laboratorio: dal cuore di Casale Monferrato, artigiani del vetro da oltre 40 anni.';
 ---
 
 <BaseLayout
   title="Chi siamo"
-  description="Vetreria Monferrina di Fioravanti Giuseppe: oltre 40 anni di esperienza nella lavorazione del vetro a Casale Monferrato."
+  description="Giuseppe e Debora Fioravanti: oltre 40 anni di esperienza nella lavorazione del vetro a Casale Monferrato. La nostra storia, i nostri valori."
 >
   <!-- Hero section -->
   <section class="bg-primary py-16 sm:py-24">
@@ -36,16 +36,25 @@ const heroIntro = aboutData?.intro ||
       <div>
         <h2 class="font-heading text-3xl text-primary">La nostra storia</h2>
         <p class="mt-4 text-lg leading-relaxed text-neutral-700">
-          La Vetreria Monferrina nasce dalla passione di Giuseppe Fioravanti per
-          la lavorazione del vetro. Da oltre 40 anni, il nostro laboratorio
-          a Casale Monferrato è un punto di riferimento per privati, aziende
-          e professionisti dell'edilizia in tutto il Monferrato e nelle province
-          limitrofe.
+          Chi ci conosce lo sa: la Vetreria Monferrina non è solo un'azienda, è casa.
         </p>
         <p class="mt-4 text-lg leading-relaxed text-neutral-700">
-          Ogni progetto viene seguito con cura artigianale, dalla consulenza
-          iniziale alla posa in opera, garantendo qualità e precisione in
-          ogni dettaglio.
+          Giuseppe e Debora hanno costruito questa realtà partendo da zero
+          e l'hanno fatta crescere insieme, giorno dopo giorno.
+          Da bottega artigiana a punto di riferimento per Casale Monferrato
+          e tutto il Monferrato, con la stessa passione, la stessa attenzione
+          e lo stesso modo di lavorare di sempre.
+        </p>
+        <p class="mt-4 text-lg leading-relaxed text-neutral-700">
+          Dalla consulenza iniziale alla posa in opera, seguiamo ogni progetto
+          con competenza e cura artigianale. Vetri camera, box doccia, parapetti,
+          pensiline, vetrine, specchi e lavorazioni su misura: al servizio
+          di privati, aziende e professionisti dell'edilizia.
+        </p>
+        <p class="mt-4 text-lg leading-relaxed text-neutral-700">
+          Qui ogni cliente ha un nome, non un numero. Ogni lavorazione è pensata
+          insieme a chi la riceverà. Non lavoriamo in serie, lavoriamo con le persone.
+          E chi viene una volta, torna.
         </p>
       </div>
 
@@ -96,12 +105,13 @@ const heroIntro = aboutData?.intro ||
             <div class="md:w-1/2 md:pr-12 md:text-right">
               <div data-reveal class="rounded-xl bg-surface p-6 shadow-sm">
                 <span class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50">
-                  Anni '80
+                  Le origini
                 </span>
-                <h3 class="mt-3 font-heading text-xl text-primary">Le origini</h3>
+                <h3 class="mt-3 font-heading text-xl text-primary">Come tutto è iniziato</h3>
                 <p class="mt-2 text-neutral-700">
-                  Giuseppe Fioravanti avvia la sua attività artigianale a Casale
-                  Monferrato, specializzandosi nella lavorazione e posa del vetro.
+                  Giuseppe inizia a lavorare il vetro come artigiano,
+                  imparando il mestiere sul campo. Insieme a Debora
+                  nasce l'idea di costruire qualcosa di proprio.
                 </p>
               </div>
             </div>
@@ -124,13 +134,13 @@ const heroIntro = aboutData?.intro ||
             <div class="md:w-1/2 md:pl-12">
               <div data-reveal class="rounded-xl bg-surface p-6 shadow-sm">
                 <span class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50">
-                  Anni '90 - 2000
+                  La crescita
                 </span>
-                <h3 class="mt-3 font-heading text-xl text-primary">Crescita e specializzazione</h3>
+                <h3 class="mt-3 font-heading text-xl text-primary">Da bottega ad azienda</h3>
                 <p class="mt-2 text-neutral-700">
-                  L'azienda amplia la gamma di servizi: box doccia su misura,
-                  parapetti in vetro, pensiline e vetri camera diventano il
-                  cuore dell'offerta.
+                  Il laboratorio cresce e con esso la gamma di servizi:
+                  box doccia su misura, parapetti, pensiline e vetri camera.
+                  La voce si sparge, e i clienti arrivano da tutto il Monferrato.
                 </p>
               </div>
             </div>
@@ -143,11 +153,11 @@ const heroIntro = aboutData?.intro ||
                 <span class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50">
                   Oggi
                 </span>
-                <h3 class="mt-3 font-heading text-xl text-primary">Tradizione e innovazione</h3>
+                <h3 class="mt-3 font-heading text-xl text-primary">Un punto di riferimento</h3>
                 <p class="mt-2 text-neutral-700">
-                  Oltre 40 anni di esperienza al servizio del territorio.
-                  Continuiamo a coniugare la cura artigianale con le tecnologie
-                  più avanzate nella lavorazione del vetro.
+                  Oltre 40 anni di esperienza, la stessa dedizione del primo giorno.
+                  Privati, aziende e professionisti dell'edilizia continuano
+                  a sceglierci per qualità, affidabilità e cura del dettaglio.
                 </p>
               </div>
             </div>
@@ -281,6 +291,19 @@ const heroIntro = aboutData?.intro ||
           ))}
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- In ricordo di Manuela -->
+  <section class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-2xl rounded-2xl border border-neutral-200 bg-surface px-8 py-10 text-center shadow-sm">
+      <p class="text-sm font-semibold uppercase tracking-wider text-primary/70">In ricordo di</p>
+      <h3 class="mt-2 font-heading text-2xl text-primary">Manuela</h3>
+      <p class="mt-4 italic text-neutral-500">&ldquo;Posso fare una stampa?&rdquo;</p>
+      <p class="mt-4 text-neutral-700 leading-relaxed">
+        Per oltre vent'anni, molto più di una collaboratrice:
+        un'amica e parte della famiglia.
+      </p>
     </div>
   </section>
 

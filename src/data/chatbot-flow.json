@@ -1,6 +1,6 @@
 {
   "welcome": {
-    "message": "Ciao! Sono l'assistente virtuale della Vetreria Monferrina. Come posso aiutarti?",
+    "message": "Ciao! Sono l'assistente della Vetreria Monferrina. Come posso aiutarti?",
     "options": [
       { "label": "Che lavori fate?", "next": "servizi" },
       { "label": "Orari e dove trovarci", "next": "orari" },
@@ -59,7 +59,7 @@
     ]
   },
   "dettaglio_parapetti": {
-    "message": "Parapetti in vetro per balconi, scale e terrazze. Soluzioni trasparenti che garantiscono sicurezza senza rinunciare alla vista e alla luminosit\u00e0.",
+    "message": "Parapetti in vetro per balconi, scale e terrazze. Sicurezza garantita senza rinunciare alla vista e alla luminosit\u00e0.",
     "options": [
       { "label": "Richiedi preventivo", "action": "open_form", "param": "parapetti" },
       { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
