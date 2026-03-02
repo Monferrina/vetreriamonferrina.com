@@ -112,7 +112,7 @@ const hasHalfStar = rating - fullStars >= 0.3;
       <h2 class="font-heading text-3xl text-primary sm:text-4xl">Cosa dicono i nostri clienti</h2>
       <div class="mt-4 flex items-center justify-center gap-2">
         <!-- Stars -->
-        <div class="flex items-center gap-0.5" aria-label={`Valutazione ${rating} su 5`}>
+        <div class="flex items-center gap-0.5" role="img" aria-label={`Valutazione ${rating} su 5`}>
           {
             Array.from({ length: 5 }).map((_, i) => (
               <svg
