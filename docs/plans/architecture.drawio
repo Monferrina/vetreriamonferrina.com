@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2026-02-28" agent="Claude" version="24.0.0" type="device">
+<mxfile host="app.diagrams.net" modified="2026-03-02" agent="Claude" version="24.0.0" type="device">
   <diagram id="architecture" name="Architettura">
-    <mxGraphModel dx="1422" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1422" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="1300" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -22,7 +22,7 @@
         <mxCell id="build_group" value="Build (SSG)" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
           <mxGeometry x="420" y="90" width="300" height="220" as="geometry" />
         </mxCell>
-        <mxCell id="astro" value="Astro 5&#xa;(Static Site Generator)&#xa;&#xa;• Fetch da Sanity a build time&#xa;• Fetch recensioni Google&#xa;• Genera HTML statico&#xa;• Tailwind CSS 4 + Dark Mode&#xa;• View Transitions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="build_group">
+        <mxCell id="astro" value="Astro 5&#xa;(Static Site Generator)&#xa;&#xa;• Fetch da Sanity a build time&#xa;• Fetch recensioni Google&#xa;• Genera HTML statico&#xa;• Tailwind CSS 4 + Dark Mode&#xa;• Client Router (transitions)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="build_group">
           <mxGeometry x="20" y="40" width="260" height="160" as="geometry" />
         </mxCell>
 
@@ -32,6 +32,14 @@
         </mxCell>
         <mxCell id="vercel" value="Vercel&#xa;(CDN globale)&#xa;&#xa;• HTML statico all'edge&#xa;• HTTPS automatico&#xa;• Deploy da Git push&#xa;• Preview per ogni branch&#xa;• Dominio .it custom" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="host_group">
           <mxGeometry x="20" y="40" width="260" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- CI/CD PIPELINE -->
+        <mxCell id="cicd_group" value="CI/CD Pipeline" style="swimlane;startSize=30;fillColor=#d0cee2;strokeColor=#56517e;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="90" width="300" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="cicd" value="GitHub Actions&#xa;&#xa;• ESLint (TS + Astro)&#xa;• Prettier format check&#xa;• astro check (type check)&#xa;• Vitest (94 unit test)&#xa;• Build di produzione&#xa;&#xa;Pre-commit: Husky + lint-staged" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=#56517e;fontSize=11;" vertex="1" parent="cicd_group">
+          <mxGeometry x="20" y="35" width="260" height="170" as="geometry" />
         </mxCell>
 
         <!-- GOOGLE PLACES API (New) -->
@@ -61,6 +69,10 @@
         <mxCell id="arrow_google" value="reviews.json + hours.json&#xa;+ photos (build-time)" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#d6b656;" edge="1" parent="1" source="google_group" target="build_group">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <!-- CI/CD -> Build -->
+        <mxCell id="arrow_cicd" value="lint → check → test → build" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#56517e;" edge="1" parent="1" source="cicd_group" target="host_group">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <!-- Weather -> Browser (client-side) -->
         <mxCell id="arrow_weather" value="fetch client-side&#xa;(no API key)" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#82b366;dashed=1;" edge="1" parent="1" source="weather_group" target="browser">
           <mxGeometry relative="1" as="geometry" />
@@ -74,6 +86,14 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
+        <!-- SECURITY HEADERS -->
+        <mxCell id="security_box" value="Security Headers (vercel.json)&#xa;&#xa;• CSP: self + unsafe-inline + unpkg + OSM + Open-Meteo&#xa;• HSTS: max-age=63M, includeSubDomains, preload&#xa;• X-Frame-Options: DENY&#xa;• X-Content-Type-Options: nosniff&#xa;• Referrer-Policy: strict-origin-when-cross-origin&#xa;• Permissions-Policy: camera=(), microphone=(), geolocation=()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="380" width="340" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow_security" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#b85450;dashed=1;" edge="1" parent="1" source="security_box" target="host_group">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
         <!-- DARK MODE -->
         <mxCell id="darkmode_box" value="Dark Mode automatica&#xa;&#xa;• prefers-color-scheme: dark → dark&#xa;• Ore 20-7 → dark&#xa;• Script inline anti-FOUC&#xa;• Listener ogni 15min" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A1D24;strokeColor=#5BA3CC;fontSize=10;fontColor=#D1D5DB;align=left;spacingLeft=10;" vertex="1" parent="1">
           <mxGeometry x="850" y="540" width="200" height="90" as="geometry" />
@@ -84,7 +104,7 @@
 
         <!-- PAGES -->
         <mxCell id="pages_group" value="Pagine" style="swimlane;startSize=30;fillColor=#f5f5f5;strokeColor=#666;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="40" y="660" width="350" height="420" as="geometry" />
+          <mxGeometry x="40" y="660" width="350" height="470" as="geometry" />
         </mxCell>
         <mxCell id="page_home" value="Home" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="pages_group">
           <mxGeometry x="20" y="40" width="95" height="35" as="geometry" />
@@ -117,23 +137,28 @@
         </mxCell>
 
         <!-- LEAFLET MAP -->
-        <mxCell id="leaflet_box" value="Mappa Leaflet.js (Contatti)&#xa;Marker SVG rosso | Popup indirizzo | Caricamento dinamico" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="pages_group">
+        <mxCell id="leaflet_box" value="Mappa Leaflet.js (Contatti)&#xa;Marker SVG rosso | Popup indirizzo | Caricamento dinamico | SRI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="pages_group">
           <mxGeometry x="20" y="235" width="305" height="35" as="geometry" />
         </mxCell>
 
         <!-- CHATBOT -->
-        <mxCell id="chatbot_box" value="Chatbot a flusso&#xa;JSON statico | Albero decisionale | Zero API | Guida → form / telefono" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6d0de;strokeColor=#996185;fontSize=11;" vertex="1" parent="pages_group">
-          <mxGeometry x="20" y="280" width="305" height="40" as="geometry" />
+        <mxCell id="chatbot_box" value="Chatbot contestuale a flusso&#xa;JSON statico | Saluto per pagina | Sessione sicura (cap 100, validazione)&#xa;Zero API | Guida → form / telefono" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6d0de;strokeColor=#996185;fontSize=10;" vertex="1" parent="pages_group">
+          <mxGeometry x="20" y="280" width="305" height="50" as="geometry" />
         </mxCell>
 
         <!-- REVIEWS on Home -->
         <mxCell id="reviews_box" value="Recensioni Google (build-time) | Stelle | Filtro >= 4★ | Carousel" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="pages_group">
-          <mxGeometry x="20" y="330" width="305" height="35" as="geometry" />
+          <mxGeometry x="20" y="340" width="305" height="35" as="geometry" />
         </mxCell>
 
         <!-- WEATHER WIDGET -->
         <mxCell id="weather_box" value="Widget Meteo Open-Meteo (Contatti) | Consigli vetro | No API key" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="pages_group">
-          <mxGeometry x="20" y="375" width="305" height="35" as="geometry" />
+          <mxGeometry x="20" y="385" width="305" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- TIMELINE CHI SIAMO -->
+        <mxCell id="timeline_box" value="Timeline Chi Siamo | 4 milestones compatti | Ricordo Manuela a fine timeline" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="pages_group">
+          <mxGeometry x="20" y="425" width="305" height="30" as="geometry" />
         </mxCell>
 
         <!-- FORM FLOW -->
@@ -167,12 +192,23 @@
           <mxGeometry x="20" y="200" width="300" height="70" as="geometry" />
         </mxCell>
 
+        <!-- TEST SUITE -->
+        <mxCell id="test_group" value="Test Suite" style="swimlane;startSize=25;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="440" y="820" width="340" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="test_unit" value="Vitest — 9 file, 94 test&#xa;Layout, Footer, Header, Chatbot,&#xa;Validation, Sanitize, Services, Sanity, Smoke" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="test_group">
+          <mxGeometry x="10" y="30" width="155" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="test_e2e" value="Playwright — 10 file&#xa;Home, Pages, Navigation,&#xa;A11y, SEO, Services, Chatbot,&#xa;Quote Form" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="test_group">
+          <mxGeometry x="175" y="30" width="155" height="70" as="geometry" />
+        </mxCell>
+
         <!-- LEGEND -->
         <mxCell id="legend_title" value="Costi" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#333;" vertex="1" parent="1">
           <mxGeometry x="850" y="660" width="100" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="legend" value="Dominio .it: ~12 EUR/anno&#xa;Vercel hosting: gratis&#xa;Sanity CMS: gratis&#xa;Resend email: gratis&#xa;Google Places API (New): gratis ($200/mese credito)&#xa;Open-Meteo meteo: gratis (no API key)&#xa;HTTPS/SSL: gratis (Vercel)&#xa;─────────────&#xa;Totale: ~12 EUR/anno&#xa;&#xa;⚠ Soglie consigliate GCP:&#xa;• Quote: 50 req/giorno&#xa;• Budget alert: $5/mese" style="text;html=1;align=left;verticalAlign=top;fontSize=11;fontColor=#666;spacingLeft=5;" vertex="1" parent="1">
-          <mxGeometry x="850" y="690" width="260" height="190" as="geometry" />
+        <mxCell id="legend" value="Dominio .it: ~12 EUR/anno&#xa;Vercel hosting: gratis&#xa;Sanity CMS: gratis&#xa;Resend email: gratis&#xa;Google Places API (New): gratis ($200/mese credito)&#xa;Open-Meteo meteo: gratis (no API key)&#xa;GitHub Actions CI: gratis&#xa;HTTPS/SSL: gratis (Vercel)&#xa;─────────────&#xa;Totale: ~12 EUR/anno&#xa;&#xa;⚠ Soglie consigliate GCP:&#xa;• Quote: 50 req/giorno&#xa;• Budget alert: $5/mese" style="text;html=1;align=left;verticalAlign=top;fontSize=11;fontColor=#666;spacingLeft=5;" vertex="1" parent="1">
+          <mxGeometry x="850" y="690" width="260" height="210" as="geometry" />
         </mxCell>
 
       </root>

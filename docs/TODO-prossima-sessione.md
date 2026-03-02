@@ -1,7 +1,7 @@
 # Vetreria Monferrina — Stato Lavori
 
 > Branch: `feat/initial-build`
-> Ultimo aggiornamento: 2026-03-01
+> Ultimo aggiornamento: 2026-03-02
 
 ## Completato
 
@@ -11,7 +11,7 @@
 - [x] Chatbot a flusso (JSON statico, sessione persistente, animazioni)
 - [x] SEO: JSON-LD LocalBusiness, Open Graph, sitemap, canonical URLs, meta tags
 - [x] Accessibilità: aria-labels, focus management, prefers-reduced-motion
-- [x] View Transitions (navigazione fluida tra pagine)
+- [x] Client Router (navigazione fluida tra pagine, migrato da ViewTransitions deprecato)
 - [x] Logo aziendale SVG (potrace da raster originale) + favicon SVG/PNG
 - [x] Cookie banner informativo (solo cookie tecnici, GDPR)
 - [x] Footer con dati legali, social (Facebook + Instagram), navigazione
@@ -41,6 +41,25 @@
 - [x] **Tono coerente tutto il sito** — eliminato marketing speak, allineato a Chi Siamo
 - [x] **Meta description aggiornate** — homepage, chi siamo, servizi
 
+### Sessione 2026-03-02
+
+- [x] **Timeline chi siamo compattata** — rimossi h3, solo badge + testo, spacing ridotto
+- [x] **Manuela a fine timeline** — layout orizzontale "In ricordo di Manuela" + contenuto sotto
+- [x] **Ruoli famiglia rimossi** — nessuna specifica su chi lavora dove
+- [x] **Ripetizione "40 anni" eliminata** — mantenuta solo in 2 hero, riformulate le altre 3
+- [x] **Nota orari uffici** — laboratorio fino 17:30, uffici fino 19:00 (in pagina contatti)
+- [x] **Chatbot contestuale** — saluto diverso per pagina (servizi, galleria, contatti, preventivo, chi siamo)
+- [x] **Chatbot sicurezza** — validazione sessione, cap history 100, filtro nodi inesistenti, JSON.parse sicuro
+- [x] **CSP headers aggiornati** — `unsafe-inline` per Astro, `unpkg.com` per Leaflet, OpenStreetMap tiles, Open-Meteo API
+- [x] **ESLint configurato** — `eslint.config.js` flat config con `typescript-eslint` + `eslint-plugin-astro`, zero errori
+- [x] **Prettier configurato** — `.prettierrc` con `prettier-plugin-astro`, tutti i file formattati
+- [x] **Husky + lint-staged** — pre-commit hook automatico (lint + format su ogni commit)
+- [x] **GitHub Actions CI** — `.github/workflows/ci.yml`: lint → format check → type check → unit test → build
+- [x] **`astro check` a zero errori** — installato `@astrojs/check` + `typescript`, corretti 28 errori di tipo
+- [x] **ViewTransitions → ClientRouter** — migrato al componente non deprecato di Astro 5
+- [x] **4 unit test corretti** — chatbot goBack, footer indirizzo/P.IVA, layout og:image fallback
+- [x] **94 test unitari verdi** — 9 file test, tutti passano
+
 ## Da fare — Prossimi step
 
 ### 1. Ambienti Dev/Staging e Production
@@ -69,13 +88,16 @@
 - Usare le 10 foto Google scaricate nella galleria (`public/images/google-photos/`)
 - Aggiungere foto proprie per la galleria (laboratorio, lavori, team)
 - Verificare tutti i dati aziendali (indirizzo, P.IVA, telefono)
+- Sostituire immagini placeholder con foto reali
 
-### 5. CI/CD GitHub Actions
+### 5. CI/CD — Completamenti futuri
 
-- Lint + type check + unit test + E2E + build
-- Lighthouse CI (performance, a11y, SEO)
-- Pre-commit hooks (husky + lint-staged)
-- Workflow automatico aggiornamento recensioni (cron giornaliero)
+- [x] ~~ESLint + Prettier~~ — FATTO
+- [x] ~~Husky + lint-staged~~ — FATTO
+- [x] ~~GitHub Actions CI (lint, format, type check, test, build)~~ — FATTO
+- [ ] Lighthouse CI (performance, a11y, SEO)
+- [ ] Workflow automatico aggiornamento recensioni (cron giornaliero con GitHub Actions)
+- [ ] E2E test nel CI (richiede Playwright browsers su GitHub Actions)
 
 ### 6. Sentry
 
@@ -87,7 +109,7 @@
 
 - [x] Studio funzionante (`cd sanity && npx sanity dev --port 3334`)
 - [x] Project ID `7bqabdpn`, dataset `production`, CORS localhost:3333 attivo
-- [ ] Popolare Impostazioni Sito (dati aziendali — gia' corretti nei fallback)
+- [ ] Popolare Impostazioni Sito (dati aziendali — già corretti nei fallback)
 - [ ] Popolare servizi con foto reali
 - [ ] Popolare galleria con foto reali
 - [ ] Testare `fetchWithFallback` con dati reali dal CMS
@@ -120,7 +142,7 @@
 - Dark mode: CSS custom properties in `[data-theme="dark"]`, script inline anti-FOUC
 - Token `--color-surface` per superfici (sostituisce `bg-white`)
 - Recensioni: validazione schema a build-time, troncamento 500 char, max 50 recensioni
-- ViewTransitions: usare `astro:after-swap` per re-inizializzare script (filtri, mappa, lightbox, meteo)
+- ClientRouter (ex ViewTransitions): usare `astro:after-swap` per re-inizializzare script (filtri, mappa, lightbox, meteo)
 - Tailwind CSS 4: `space-y-*` non affidabile con elementi JS-injected, usare `flex` + `gap`
 - Mappa: Leaflet.js caricato dinamicamente, scrollWheelZoom disabilitato, marker SVG inline
 - Filtri: CSS classes `.gallery-filter-active`/`.gallery-filter-inactive` leggono design token per dark mode
@@ -131,3 +153,10 @@
 - Sicurezza: API key MAI nel frontend, solo variabili d'ambiente, impostare quote GCP (50 req/day + budget $5/mese)
 - Sanity Studio: `cd sanity && npx sanity dev --port 3334`, richiede `npm install` nella cartella sanity
 - Chatbot: messaggi con `\n` vengono renderizzati come paragrafi separati (split su newline + ". ")
+- Chatbot contestuale: `getStartNode()` legge `pathname` per scegliere il nodo di benvenuto
+- Chatbot sicurezza: history cap 100 nodi, `restoreHistory()` filtra ID inesistenti, `restoreSession()` valida JSON
+- ESLint: flat config con `typescript-eslint` + `eslint-plugin-astro`, script Node con globals espliciti
+- Prettier: `prettier-plugin-astro`, 100 char width, single quotes, trailing comma
+- Husky: pre-commit esegue `lint-staged` (ESLint fix + Prettier write su file staged)
+- CSP: `unsafe-inline` per Astro scripts, `unpkg.com` per Leaflet, `*.tile.openstreetmap.org`, `api.open-meteo.com`
+- Security headers: X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy, HSTS (63M, preload)
