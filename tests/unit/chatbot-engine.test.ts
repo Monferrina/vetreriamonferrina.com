@@ -11,13 +11,12 @@ describe('ChatbotEngine', () => {
     expect(node!.options!.length).toBeGreaterThan(0);
   });
 
-  it('naviga ai servizi e torna indietro', () => {
+  it('naviga ai servizi e mantiene la history', () => {
     const engine = new ChatbotEngine(flow as ChatFlow);
     engine.navigate('welcome');
     engine.navigate('servizi');
-    const back = engine.goBack();
-    expect(back).toBeDefined();
-    expect(back!.message).toContain('Ciao');
+    const history = engine.getHistory();
+    expect(history).toEqual(['welcome', 'servizi']);
   });
 
   it('tutti i nodi referenziati esistono', () => {
@@ -44,12 +43,11 @@ describe('ChatbotEngine', () => {
     expect(engine2.getHistory()).toEqual(saved);
   });
 
-  it('goBack torna a welcome se la history e vuota', () => {
+  it('navigate ignora nodi inesistenti', () => {
     const engine = new ChatbotEngine(flow as ChatFlow);
-    engine.navigate('servizi');
-    const back = engine.goBack();
-    expect(back).toBeDefined();
-    expect(back!.message).toContain('Ciao');
+    const result = engine.navigate('nodo_che_non_esiste');
+    expect(result).toBeUndefined();
+    expect(engine.getHistory()).toEqual([]);
   });
 
   it('reset azzera la history', () => {

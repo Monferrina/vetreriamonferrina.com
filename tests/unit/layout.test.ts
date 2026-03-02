@@ -43,7 +43,7 @@ describe('BaseLayout', () => {
     expect(html).toContain('as="font"');
   });
 
-  test('non include og:image se non specificato', async () => {
+  test('include og:image fallback se non specificato', async () => {
     const container = await AstroContainer.create({
       astroConfig: {
         site: 'https://vetreriamonferrina.com',
@@ -55,7 +55,8 @@ describe('BaseLayout', () => {
       request: new Request('https://vetreriamonferrina.com/'),
     });
 
-    expect(html).not.toContain('og:image');
+    expect(html).toContain('og:image');
+    expect(html).toContain('/images/og-image.jpg');
   });
 
   test('include og:image quando specificato', async () => {
@@ -119,7 +120,7 @@ describe('vercel.json security headers', () => {
     expect(headerKeys).toContain('Content-Security-Policy');
   });
 
-  test('CSP blocca risorse esterne eccetto Sanity CDN per immagini', () => {
+  test('CSP consente solo risorse necessarie', () => {
     const vercelPath = resolve(__dirname, '../../vercel.json');
     const vercelConfig = JSON.parse(readFileSync(vercelPath, 'utf-8'));
     const headers = vercelConfig.headers[0].headers;
@@ -129,6 +130,7 @@ describe('vercel.json security headers', () => {
     expect(csp.value).toContain("script-src 'self'");
     expect(csp.value).toContain("font-src 'self'");
     expect(csp.value).toContain("img-src 'self' data: https://cdn.sanity.io");
+    expect(csp.value).toContain("connect-src 'self' https://api.open-meteo.com");
     expect(csp.value).toContain("frame-ancestors 'none'");
     expect(csp.value).toContain("form-action 'self'");
   });

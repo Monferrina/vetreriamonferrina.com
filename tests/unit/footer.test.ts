@@ -14,8 +14,9 @@ describe('Footer', () => {
     const container = await AstroContainer.create();
     const html = await container.renderToString(Footer);
 
-    expect(html).toContain('Via Lanza 27, 15033 Casale Monferrato (AL)');
-    expect(html).toContain('P.IVA: 01234567890');
+    expect(html).toContain('Strada Statale 31, 98/C');
+    expect(html).toContain('15033 Casale Monferrato (AL)');
+    expect(html).toContain('P.IVA: 01574530067');
   });
 
   test('contiene link privacy e cookie policy', async () => {
