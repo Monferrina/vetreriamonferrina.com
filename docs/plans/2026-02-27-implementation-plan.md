@@ -1,6 +1,6 @@
 # Vetreria Monferrina — Piano di Implementazione
 
-> **Stato:** Piano completato fino a v0.3 (2026-03-02). Vedi `docs/TODO-prossima-sessione.md` per i prossimi step.
+> **Stato:** Piano completato fino a v0.4 (2026-03-03). Vedi `docs/TODO-prossima-sessione.md` per i prossimi step.
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 

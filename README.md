@@ -20,8 +20,8 @@ Sito web della Vetreria Monferrina di Fioravanti Giuseppe — Casale Monferrato 
 ## Funzionalita
 
 - Homepage con hero parallax, servizi in evidenza, stats, recensioni Google, partner, CTA
-- Pagine servizi e galleria con **filtri a pill buttons** coerenti (categorie: Installazioni, Vetri, Lavorazioni)
-- Galleria **masonry** con **lightbox** accessibile (focus trap, navigazione tastiera, swipe touch)
+- Pagine servizi e galleria con **filtri a pill buttons** coerenti (3 categorie: Installazioni, Vetri, Lavorazioni)
+- Galleria **masonry** 24 foto con **lightbox** accessibile (focus trap, navigazione tastiera, swipe touch, z-[9990])
 - **Mappa interattiva Leaflet** con marker SVG rosso a spillo e popup indirizzo
 - **Widget meteo** con consigli intelligenti sul vetro (Open-Meteo, gratis)
 - **Orari di apertura da Google** con fallback chain (Sanity -> Google -> statico)
@@ -37,7 +37,7 @@ Sito web della Vetreria Monferrina di Fioravanti Giuseppe — Casale Monferrato 
 - **Accessibilita WCAG 2.1 AA** — focus trap (lightbox, chatbot), aria-live, reduced-motion, contrasto colori, target size 44px
 - **Immagini ottimizzate** — WebP, lazy loading, sizes responsive, fetchpriority LCP
 
-## Punteggi Lighthouse (v0.3)
+## Punteggi Lighthouse (v0.4)
 
 | Pagina     | Performance | Accessibilita | Best Practices | SEO |
 | ---------- | ----------- | ------------- | -------------- | --- |
@@ -47,6 +47,13 @@ Sito web della Vetreria Monferrina di Fioravanti Giuseppe — Casale Monferrato 
 | Chi siamo  | 98          | 96            | 100            | 100 |
 | Preventivo | 100         | 96            | 100            | 100 |
 | Galleria   | 81          | 96            | 100            | 100 |
+
+## Test Suite (v0.4)
+
+- **Unit test**: 94 test, 9 file (Vitest)
+- **E2E test**: 142 test, 10 file (Playwright — chromium + mobile iPhone 13)
+- **Astro check**: 0 errori, 0 warning
+- **Lighthouse CI**: tutte le 5 pagine sopra soglia
 
 ## Screenshot
 
@@ -101,6 +108,7 @@ Il progetto include una pipeline GitHub Actions (`.github/workflows/ci.yml`) che
 3. **Type check** — `astro check`
 4. **Unit test** — Vitest (94 test, 9 file)
 5. **Build** — build di produzione
+6. **Lighthouse CI** — performance >= 0.85, accessibility >= 0.9, SEO >= 0.9 (5 pagine)
 
 I pre-commit hooks (Husky + lint-staged) eseguono lint e format automaticamente ad ogni commit.
 
@@ -115,7 +123,7 @@ MonferrinaProject/
 │   └── screenshots/         # Screenshot pagine (dark/light mode)
 ├── scripts/                 # Script build-time (logo, Google Places data, image optimization)
 ├── src/
-│   ├── components/          # 19 componenti Astro (mappa, chatbot, lightbox, carousel, filtri, meteo)
+│   ├── components/          # 18 componenti Astro (mappa, chatbot, lightbox, carousel, filtri, meteo)
 │   ├── data/                # Dati statici (chatbot-flow, reviews, orari, servizi)
 │   ├── layouts/             # Layout base con dark mode + Client Router + View Transitions
 │   ├── lib/                 # Logica condivisa (sanity, chatbot-engine, validazione, sanitize)
@@ -125,12 +133,12 @@ MonferrinaProject/
 ├── public/
 │   ├── fonts/               # Font self-hosted (DM Serif Display, DM Sans)
 │   ├── images/
-│   │   ├── gallery/         # 20 immagini WebP ottimizzate (~1.2 MB totale)
+│   │   ├── gallery/         # 24 immagini WebP ottimizzate
 │   │   └── google-photos/   # Foto Google Places scaricate localmente
 │   └── ...                  # Logo SVG, favicon, og-image
 ├── tests/
 │   ├── unit/                # 9 file, 94 test (Vitest)
-│   └── e2e/                 # 10 file (Playwright)
+│   └── e2e/                 # 10 file, 142 test (Playwright — chromium + mobile)
 ├── astro.config.mjs         # SSG + SSR, prefetch viewport, trailing slash
 ├── eslint.config.js         # ESLint flat config (TS + Astro)
 ├── .prettierrc              # Prettier config

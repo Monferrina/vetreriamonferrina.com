@@ -1,6 +1,6 @@
 # Vetreria Monferrina — Design Document
 
-> **Stato:** Implementazione v0.3 completata (2026-03-02). Vedi `docs/TODO-prossima-sessione.md` per lo stato aggiornato.
+> **Stato:** Implementazione v0.4 completata (2026-03-03). Vedi `docs/TODO-prossima-sessione.md` per lo stato aggiornato.
 
 ## Contesto
 
@@ -421,7 +421,8 @@ MonferrinaProject/
 - [ ] Form testato end-to-end (invio -> email ricevuta) — richiede RESEND_API_KEY in produzione
 - [x] Chatbot testato su mobile e desktop
 - [x] Lighthouse 96-100 su tutte le pagine (a11y, BP, SEO) — Performance 81-100
-- [x] WCAG 2.1 AA validato (v0.3: focus trap, aria-live, contrast, target-size, reduced-motion)
+- [x] WCAG 2.1 AA validato (v0.3-v0.4: focus trap, aria-live, contrast, target-size, reduced-motion)
+- [x] 142 test E2E verdi + 94 unit test (v0.4)
 - [ ] Test su Chrome, Safari, Firefox, mobile iOS/Android
 - [x] Contenuti reali — foto galleria, testi chi siamo, servizi
 - [x] Immagini ottimizzate (WebP, sharp quality 80, lazy/eager, sizes responsive)

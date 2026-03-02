@@ -1,7 +1,7 @@
 # Vetreria Monferrina — Stato Lavori
 
 > Branch: `feat/initial-build`
-> Ultimo aggiornamento: 2026-03-02
+> Ultimo aggiornamento: 2026-03-03
 
 ## Completato
 
@@ -69,12 +69,28 @@
 - [x] **Lazy loading intelligente** — primi 6 eager, resto lazy, fetchpriority="high" su LCP
 - [x] **Sizes responsive** — attributo sizes per immagini galleria
 - [x] **Email aggiornata** — vetreriamonferrina@gmail.com in contatti, footer, JSON-LD, chatbot, cookie, privacy
-- [x] **Galleria 20 elementi** — cifra pari, rimossi pannello rose e vetro barca
+- [x] **Galleria 20 elementi** — cifra pari, rimossi pannello rose e vetro barca (poi espansa a 24 in v0.4)
 - [x] **Hint Astro risolti** — `is:inline` su define:vars e JSON-LD (3 di 4, 1 falso positivo)
 - [x] **Lighthouse CI** — configurazione LHCI per test performance/a11y/SEO
 - [x] **trailingSlash: 'never'** — URL puliti senza slash finale
 
-## Punteggi Lighthouse (v0.3)
+### v0.4 — Audit, gallery refresh, lightbox fix, E2E hardening (2026-03-03)
+
+- [x] **Galleria 24 foto reali** — 6 installazioni, 9 vetri, 9 lavorazioni (era 20)
+- [x] **Bug fix lightbox** — z-index da z-50 a z-[9990], pulsante chiudi bloccato da header backdrop-blur
+- [x] **Header pointer-events** — `pointer-events: none` quando lightbox aperto, ripristinato alla chiusura
+- [x] **Dark mode contrasto** — bordi neutral-200 da `#2a2d34` a `#3a3d46`, testo neutral-700 → neutral-800
+- [x] **Dead code rimosso** — `ServiceCategory.astro`, import `_VALID_SERVICE_TYPES` inutilizzato
+- [x] **Categorie servizi semplificate** — da 5 a 3 tipi (`installazioni | vetri | lavorazioni`)
+- [x] **Immagini servizi** — aggiunte per blindati, stratificati, monolitici
+- [x] **E2E test hardening** — auto-retrying assertions, timeout corretti, selettori Leaflet/cookie banner
+- [x] **142 test E2E verdi** — 0 fallimenti, 2 skipped (chromium + mobile iPhone 13)
+- [x] **Lighthouse CI verde** — tutte le 5 pagine sopra soglia in CI
+- [x] **Consistenza visuale** — verificata su tutte le 8 pagine (dark + light mode)
+- [x] **bg-white → bg-surface** — token corretto per ReviewsSection e StatsSection (dark mode)
+- [x] **Gallery overlay** — badge categoria da `bg-white/90` a `bg-surface/90`
+
+## Punteggi Lighthouse (v0.4)
 
 | Pagina     | Perf | A11y | BP  | SEO |
 | ---------- | ---- | ---- | --- | --- |
@@ -119,7 +135,7 @@
 - [x] Husky + lint-staged
 - [x] GitHub Actions CI (lint, format, type check, test, build)
 - [x] Lighthouse CI (configurato localmente)
-- [ ] Lighthouse CI nel workflow GitHub Actions
+- [x] Lighthouse CI nel workflow GitHub Actions (v0.4)
 - [ ] Workflow automatico aggiornamento recensioni (cron giornaliero con GitHub Actions)
 - [ ] E2E test nel CI (richiede Playwright browsers su GitHub Actions)
 
@@ -188,3 +204,10 @@
 - Carousel: JS misura `--scroll-width` e `--scroll-duration` per loop fluido, `translate3d` GPU-accelerated
 - Immagini galleria: WebP quality 80, standard 800px, featured 1200px, sizes responsive, lazy/eager intelligente
 - Email aziendale: vetreriamonferrina@gmail.com (aggiornata in contatti, footer, JSON-LD, chatbot, cookie, privacy)
+- Lightbox: z-[9990] per evitare che backdrop-blur dell'header crei stacking context che blocca i click
+- Header pointer-events: disabilitati quando lightbox aperto, ripristinati alla chiusura
+- Dark mode neutral-200: `#3a3d46` (era `#2a2d34`) per bordi piu visibili
+- Testo neutral-800 preferito a neutral-700 per miglior contrasto WCAG in dark mode
+- Categorie servizi: semplificate a 3 (`installazioni | vetri | lavorazioni`) — rimossi `canaline` e `componenti`
+- E2E: auto-retrying assertions Playwright (`toBeHidden`, `not.toHaveText`) per animazioni CSS/Web Animations API
+- E2E cookie banner: `dispatchEvent('click')` per evitare intercettazione da Astro dev toolbar
