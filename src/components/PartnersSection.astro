@@ -1,0 +1,41 @@
+---
+// src/components/PartnersSection.astro
+// Trust bar with partner/supplier logos — grayscale with color on hover.
+
+const partners = [
+  { name: 'Saint-Gobain', logo: '/images/partners/saint-gobain.svg' },
+  { name: 'AGC', logo: '/images/partners/agc.svg' },
+  { name: 'Pilkington', logo: '/images/partners/pilkington.svg' },
+  { name: 'Cilvea', logo: '/images/partners/cilvea.png' },
+];
+---
+
+<section class="border-t border-neutral-100 bg-neutral-50 py-12 sm:py-16">
+  <div class="mx-auto max-w-5xl px-4">
+    <p class="mb-8 text-center text-sm font-medium uppercase tracking-widest text-neutral-400">
+      Lavoriamo con
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-10 sm:gap-14">
+      {
+        partners.map((partner) => (
+          <img
+            src={partner.logo}
+            alt={partner.name}
+            loading="lazy"
+            class="partner-logo h-10 w-auto max-w-[140px] object-contain sm:h-12"
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .partner-logo {
+    filter: grayscale(100%) opacity(0.5);
+    transition: filter 0.3s ease;
+  }
+  .partner-logo:hover {
+    filter: grayscale(0%) opacity(1);
+  }
+</style>
