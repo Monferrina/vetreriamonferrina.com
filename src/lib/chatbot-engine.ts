@@ -1,7 +1,7 @@
 // Chatbot engine: manages navigation through a decision-tree flow.
 // No external dependencies — pure TypeScript.
 
-export interface ChatNode {
+interface ChatNode {
   message: string;
   options?: ChatOption[];
 }

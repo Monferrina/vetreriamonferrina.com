@@ -8,7 +8,7 @@ const projectId = import.meta.env.SANITY_PROJECT_ID;
 const dataset = import.meta.env.SANITY_DATASET || 'production';
 
 // Only create client if Sanity is configured
-export const sanityClient: SanityClient | null = projectId
+const sanityClient: SanityClient | null = projectId
   ? createClient({
       projectId,
       dataset,

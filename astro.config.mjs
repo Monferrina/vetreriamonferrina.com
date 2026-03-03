@@ -17,9 +17,6 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
-    server: {
-      allowedHosts: ['central-ideally-hagfish.ngrok-free.app'],
-    },
   },
 
   integrations: [sitemap()],

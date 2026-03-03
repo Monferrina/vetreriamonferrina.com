@@ -11,8 +11,11 @@ const sharp = require('sharp');
 import { mkdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 
-const DOWNLOADS = '/Users/marcobellingeri/Downloads';
-const OUTPUT = '/Users/marcobellingeri/Documents/GitHub/MonferrinaProject/public/images';
+import { dirname as _dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = _dirname(fileURLToPath(import.meta.url));
+const DOWNLOADS = join(__dirname, '..', 'source-photos');
+const OUTPUT = join(__dirname, '..', 'public/images');
 
 /** @param {string} name WhatsApp filename timestamp portion */
 const src = (name) => join(DOWNLOADS, `WhatsApp Image ${name}.jpeg`);

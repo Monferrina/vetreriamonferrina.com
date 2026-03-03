@@ -11,8 +11,7 @@ export async function POST({ request, clientAddress }: APIContext) {
   const origin = request.headers.get('origin');
   const allowedOrigins = [
     import.meta.env.SITE_URL,
-    'http://localhost:4321',
-    'http://localhost:3000',
+    ...(import.meta.env.DEV ? ['http://localhost:4321', 'http://localhost:3000'] : []),
   ].filter(Boolean);
 
   if (!origin || !allowedOrigins.some((o) => origin.startsWith(o))) {
