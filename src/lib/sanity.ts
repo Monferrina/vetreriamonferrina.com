@@ -29,7 +29,10 @@ const builder = projectId && dataset ? createImageUrlBuilder({ projectId, datase
  * When Sanity is not configured, .url() returns an empty string.
  */
 export function urlFor(source: unknown) {
-  if (!builder) return { url: () => '' };
+  if (!builder) {
+    const stub = { url: () => '', width: () => stub, height: () => stub, format: () => stub };
+    return stub;
+  }
   return builder.image(source as Parameters<typeof builder.image>[0]);
 }
 
