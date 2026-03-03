@@ -29,7 +29,10 @@ const builder = projectId && dataset ? createImageUrlBuilder({ projectId, datase
  * When Sanity is not configured, .url() returns an empty string.
  */
 export function urlFor(source: unknown) {
-  if (!builder) return { url: () => '' };
+  if (!builder) {
+    const stub = { url: () => '', width: () => stub, height: () => stub, format: () => stub };
+    return stub;
+  }
   return builder.image(source as Parameters<typeof builder.image>[0]);
 }
 
@@ -39,7 +42,7 @@ export const queries = {
     '*[_type == "service"] | order(order asc) { name, "slug": slug.current, category, description, image }',
   siteSettings: '*[_type == "siteSettings"][0]',
   galleryItems: '*[_type == "galleryItem"] | order(order asc) { title, category, image }',
-  aboutPage: '*[_type == "aboutPage"][0]',
+  aboutPage: '*[_type == "aboutPage"][0]{ title, intro, teamPhotos }',
 };
 
 /**
