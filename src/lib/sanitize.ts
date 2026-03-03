@@ -2,7 +2,7 @@ export function sanitizeString(input: string): string {
   return input
     .replace(/[\r\n]/g, ' ') // remove newlines (email header injection prevention)
     .replace(/[<>]/g, '') // remove HTML angle brackets
-    .replace(/javascript:/gi, '') // remove JS protocol
+    .replace(/javascript:|data:|vbscript:/gi, '') // remove dangerous URL schemes
     .trim();
 }
 
