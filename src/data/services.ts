@@ -13,6 +13,7 @@ export const services: Service[] = [
     name: 'Box doccia',
     description: 'Box doccia su misura in vetro temperato. Design moderno, sicurezza garantita.',
     category: 'installazioni',
+    image: '/images/services/box-doccia.webp',
   },
   {
     slug: 'parapetti',
@@ -90,12 +91,14 @@ export const services: Service[] = [
     name: 'Vetri camera tripli',
     description: 'Triplo vetro per massimo isolamento termico e acustico.',
     category: 'vetri',
+    image: '/images/services/vetrocamera-tripli.webp',
   },
   {
     slug: 'specchi',
     name: 'Specchi',
     description: "Specchi su misura per bagni, armadi e complementi d'arredo.",
     category: 'vetri',
+    image: '/images/services/specchi.webp',
   },
   // Lavorazioni
   {
@@ -110,13 +113,14 @@ export const services: Service[] = [
     name: 'Fori',
     description: 'Foratura vetro per maniglie, cerniere e fissaggi.',
     category: 'lavorazioni',
+    image: '/images/services/fori.webp',
   },
   {
     slug: 'molature',
     name: 'Molature',
     description: 'Molatura bordi vetro a filo lucido, filo opaco e bisello.',
     category: 'lavorazioni',
-    image: '/images/lab/macchina-taglio.webp',
+    image: '/images/services/molature.webp',
   },
 ];
 
