@@ -7,6 +7,7 @@ Sito web della Vetreria Monferrina di Fioravanti Giuseppe — Casale Monferrato 
 - **Astro 5** (SSG + SSR ibrido) + **Tailwind CSS 4**
 - **Sanity v3** (CMS headless)
 - **Resend** (email transazionali)
+- **Cloudflare** (DNS, CDN proxy, WAF, Web Analytics, cache)
 - **Vercel** (hosting + serverless)
 - **Google Places API (New)** (recensioni, orari, foto a build-time)
 - **Open-Meteo** (widget meteo gratis, no API key)
@@ -33,6 +34,7 @@ Sito web della Vetreria Monferrina di Fioravanti Giuseppe — Casale Monferrato 
 - Cookie banner informativo (solo cookie tecnici, GDPR)
 - SEO: JSON-LD LocalBusiness, Open Graph, sitemap, canonical URLs
 - **Security headers** — CSP, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy
+- **Cloudflare** — WAF, Bot Fight Mode, AI bot blocking, hotlink protection, email obfuscation, HSTS preload
 - **Chi siamo** — storia familiare, timeline compatta, sezione in ricordo di Manuela
 - **Accessibilita WCAG 2.1 AA** — focus trap (lightbox, chatbot), aria-live, reduced-motion, contrasto colori, target size 44px
 - **Immagini ottimizzate** — WebP, lazy loading, sizes responsive, fetchpriority LCP
@@ -162,6 +164,26 @@ Vedi `docs/plans/google-reviews-setup.md` per la guida completa.
 - Chiavi limitate a Places API e Places API (New) nella Google Cloud Console
 - `place-photos.json` in `.gitignore` (contiene solo path locali, ma per cautela)
 - Impostare quote GCP: 50 req/giorno + budget alert $5/mese
+
+## Cloudflare
+
+Dominio `vetreriamonferrina.com` registrato e gestito su Cloudflare (piano Free).
+
+| Configurazione                                      | Stato                        |
+| --------------------------------------------------- | ---------------------------- |
+| DNS CNAME → `cname.vercel-dns.com`                  | Proxied                      |
+| SSL/TLS Full (Strict)                               | Attivo                       |
+| HSTS 12 mesi + preload + includeSubDomains          | Attivo                       |
+| TLS 1.2 minimo + TLS 1.3                            | Attivo                       |
+| WAF + Bot Fight Mode + AI Bot Blocking              | Attivo                       |
+| Page Shield + Leaked Credentials                    | Attivo                       |
+| Email Obfuscation + Hotlink Protection              | Attivo                       |
+| Cache asset statici `/_astro/`, `.webp`, `.woff2`   | 1 year                       |
+| HTTP/2 + HTTP/3 + 0-RTT + Early Hints + Speed Brain | Attivo                       |
+| Redirect www → root (301)                           | Attivo                       |
+| AI Crawl managed robots.txt                         | Attivo                       |
+| Web Analytics (RUM, zero cookie)                    | Attivo                       |
+| Rocket Loader                                       | OFF (interferisce con Astro) |
 
 ## Documentazione
 

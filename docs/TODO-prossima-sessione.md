@@ -162,12 +162,23 @@
 - Form preventivo usabilita touch
 - Core Web Vitals sotto soglia
 
-### 9. Cloudflare
+### 9. Cloudflare — FATTO (2026-03-03)
 
-- DNS verso Vercel
-- SSL/TLS Full (Strict)
-- Cloudflare Web Analytics (zero cookie, GDPR compliant)
-- Cache rules
+- [x] Dominio `vetreriamonferrina.com` registrato su Cloudflare ($10/anno)
+- [x] DNS: 2 CNAME proxied (`@` e `www`) → `cname.vercel-dns.com`
+- [x] SSL/TLS Full (Strict) + HSTS 12 mesi + preload + includeSubDomains
+- [x] TLS 1.2 minimo + TLS 1.3 + Always Use HTTPS + Automatic HTTPS Rewrites
+- [x] WAF managed rules + Bot Fight Mode + Page Shield + Leaked Credentials
+- [x] Block AI training bots + managed robots.txt
+- [x] Email Obfuscation + Hotlink Protection + Replace insecure JS libraries
+- [x] Continuous script monitoring
+- [x] HTTP/2 + HTTP/3 + HTTP/2 to Origin + 0-RTT + Early Hints + Speed Brain
+- [x] Rocket Loader OFF (interferisce con script inline Astro)
+- [x] Browser Cache TTL 1 year + Crawler Hints + Always Online
+- [x] Cache rule: `/_astro/*`, `*.webp`, `*.woff2`, `/fonts/*` → Edge + Browser TTL 1 year
+- [x] Redirect www → root (301)
+- [x] Web Analytics RUM (zero cookie, GDPR compliant)
+- [x] Brotli compression ON
 
 ### 10. Vercel deploy (ultimo)
 
