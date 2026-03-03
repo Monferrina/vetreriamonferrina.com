@@ -4,10 +4,12 @@
 import { createClient, type SanityClient } from '@sanity/client';
 import { createImageUrlBuilder } from '@sanity/image-url';
 
-const projectId = import.meta.env.SANITY_PROJECT_ID;
+const rawProjectId = import.meta.env.SANITY_PROJECT_ID;
+const projectId =
+  rawProjectId && /^[a-z0-9][-a-z0-9]*$/.test(rawProjectId.trim()) ? rawProjectId.trim() : '';
 const dataset = import.meta.env.SANITY_DATASET || 'production';
 
-// Only create client if Sanity is configured
+// Only create client if Sanity is configured with a valid project ID
 const sanityClient: SanityClient | null = projectId
   ? createClient({
       projectId,
