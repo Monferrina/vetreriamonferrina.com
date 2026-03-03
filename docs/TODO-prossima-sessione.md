@@ -101,6 +101,17 @@
 | Preventivo | 100  | 96   | 100 | 100 |
 | Galleria   | 81   | 96   | 100 | 100 |
 
+### v0.5 — Mobile fix, error pages, maintenance mode (2026-03-03)
+
+- [x] **Pagine errore** — 404 e 500 custom con design coerente, prerendered
+- [x] **Maintenance mode** — middleware + pagina manutenzione, attivabile con `MAINTENANCE_MODE=true`
+- [x] **Menu mobile fix** — MobileMenu spostato fuori da header (backdrop-blur rompeva position fixed)
+- [x] **Hamburger toggle** — il bottone ora apre E chiude il menu (prima solo apriva)
+- [x] **Logo partner responsive** — grid 2-col mobile / 4-col desktop, altezza uniforme (era 4-col sempre con overflow)
+- [x] **Cookie banner vs chatbot** — banner z-[51] sopra chatbot z-50, chatbot spostato in alto quando banner visibile
+- [x] **View Transitions morbide** — da 200/300ms a 350/450ms con cubic-bezier Material Design
+- [x] **Dark mode flash fix** — `html` background con design token + `astro:before-swap` preserva `data-theme`
+
 ## Da fare — Prossimi step
 
 ### 1. Ambienti Dev/Staging e Production
@@ -222,3 +233,10 @@
 - Categorie servizi: semplificate a 3 (`installazioni | vetri | lavorazioni`) — rimossi `canaline` e `componenti`
 - E2E: auto-retrying assertions Playwright (`toBeHidden`, `not.toHaveText`) per animazioni CSS/Web Animations API
 - E2E cookie banner: `dispatchEvent('click')` per evitare intercettazione da Astro dev toolbar
+- MobileMenu: DEVE stare fuori dal `<header>` perche `backdrop-blur` crea containing block che rompe `position: fixed`
+- Cookie banner z-[51] > chatbot z-50: JS sposta chatbot toggle/tooltip in alto quando banner visibile
+- View Transitions: 350/450ms con `cubic-bezier(0.4, 0, 0.2, 1)`, delay 100ms per crossfade pulito
+- Dark mode + View Transitions: `astro:before-swap` copia `data-theme` sul nuovo documento per evitare flash bianco
+- `html { background-color: var(--color-neutral-50) }` necessario per evitare sfondo bianco durante transizioni
+- Pagine errore (404, 500) e manutenzione: `prerender = true` per generazione statica
+- Middleware manutenzione: `context.rewrite('/maintenance')` con status 503, bypass per asset statici

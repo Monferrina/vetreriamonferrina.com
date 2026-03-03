@@ -38,6 +38,8 @@ Sito web della Vetreria Monferrina di Fioravanti Giuseppe — Casale Monferrato 
 - **Chi siamo** — storia familiare, timeline compatta, sezione in ricordo di Manuela
 - **Accessibilita WCAG 2.1 AA** — focus trap (lightbox, chatbot), aria-live, reduced-motion, contrasto colori, target size 44px
 - **Immagini ottimizzate** — WebP, lazy loading, sizes responsive, fetchpriority LCP
+- **Pagine errore** — 404 e 500 custom con design coerente
+- **Maintenance mode** — middleware + env var `MAINTENANCE_MODE`, pagina 503 con contatti
 
 ## Punteggi Lighthouse (v0.4)
 
@@ -129,7 +131,7 @@ MonferrinaProject/
 │   ├── data/                # Dati statici (chatbot-flow, reviews, orari, servizi)
 │   ├── layouts/             # Layout base con dark mode + Client Router + View Transitions
 │   ├── lib/                 # Logica condivisa (sanity, chatbot-engine, validazione, sanitize)
-│   ├── pages/               # 8 pagine + API routes
+│   ├── pages/               # 11 pagine + API routes (include 404, 500, maintenance)
 │   │   └── api/             # Edge functions (form preventivo con rate limiting)
 │   └── styles/              # Design system (token colori, font, dark mode, view transitions)
 ├── public/
