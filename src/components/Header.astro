@@ -93,9 +93,9 @@ function isActive(href: string): boolean {
       </svg>
     </button>
   </div>
-
-  <MobileMenu navLinks={navLinks} pathname={pathname} />
 </header>
+
+<MobileMenu navLinks={navLinks} pathname={pathname} />
 
 <script>
   function initMobileMenu() {
@@ -132,7 +132,13 @@ function isActive(href: string): boolean {
       }, 300);
     }
 
-    toggleBtn.addEventListener('click', openMenu);
+    toggleBtn.addEventListener('click', () => {
+      if (toggleBtn.getAttribute('aria-expanded') === 'true') {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
     closeBtn.addEventListener('click', closeMenu);
     overlay.addEventListener('click', closeMenu);
 

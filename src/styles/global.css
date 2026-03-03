@@ -242,6 +242,7 @@
 
 /* Smooth transition between themes */
 html {
+  background-color: var(--color-neutral-50);
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
@@ -285,42 +286,38 @@ html {
 /* ==================== View Transitions ==================== */
 /* Smooth crossfade between pages (Astro ClientRouter) */
 ::view-transition-old(root) {
-  animation: vt-fade-out 200ms ease-in forwards;
+  animation: vt-fade-out 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 ::view-transition-new(root) {
-  animation: vt-fade-in 300ms ease-out 50ms backwards;
+  animation: vt-fade-in 450ms cubic-bezier(0, 0, 0.2, 1) 100ms backwards;
 }
 
 @keyframes vt-fade-out {
   from {
     opacity: 1;
-    transform: scale(1);
   }
   to {
     opacity: 0;
-    transform: scale(0.99);
   }
 }
 
 @keyframes vt-fade-in {
   from {
     opacity: 0;
-    transform: scale(1.01);
   }
   to {
     opacity: 1;
-    transform: scale(1);
   }
 }
 
 /* Main content: gentle slide + fade */
 ::view-transition-old(main-content) {
-  animation: vt-slide-out 200ms ease-in forwards;
+  animation: vt-slide-out 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 ::view-transition-new(main-content) {
-  animation: vt-slide-in 300ms ease-out 50ms backwards;
+  animation: vt-slide-in 450ms cubic-bezier(0, 0, 0.2, 1) 100ms backwards;
 }
 
 @keyframes vt-slide-out {
@@ -330,14 +327,14 @@ html {
   }
   to {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-16px);
   }
 }
 
 @keyframes vt-slide-in {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
