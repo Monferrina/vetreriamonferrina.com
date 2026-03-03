@@ -1,0 +1,26 @@
+{
+  "rating": 4.4,
+  "totalReviews": 34,
+  "placeId": "ChIJcx_Q1ESwh0cRqv3FdLTrU1w",
+  "lastUpdated": "2026-03-01",
+  "reviews": [
+    {
+      "author": "Claudio B.",
+      "rating": 5,
+      "date": "2024-11-13",
+      "text": "Ditta molto gentile seria affidabile e puntuale."
+    },
+    {
+      "author": "Pietro R.",
+      "rating": 5,
+      "date": "2023-10-31",
+      "text": "Disponibilità,  professionalità e serietà,  cose che nn si trovano spesso tutte insieme in un azienda."
+    },
+    {
+      "author": "Mario S.",
+      "rating": 5,
+      "date": "2022-11-01",
+      "text": "Molto professionali, disponibilità e gentili e soprattutto prezzi giusti"
+    }
+  ]
+}

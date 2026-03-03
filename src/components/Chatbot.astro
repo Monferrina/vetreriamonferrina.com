@@ -1,0 +1,757 @@
+---
+// src/components/Chatbot.astro
+// Floating chatbot widget with decision-tree navigation.
+// Pure Astro + vanilla JS — no framework hydration needed.
+---
+
+<!-- Toggle button -->
+<button
+  id="chatbot-toggle"
+  type="button"
+  aria-label="Apri assistente"
+  class="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-transform hover:scale-105 hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+>
+  <!-- Chat icon -->
+  <svg
+    id="chatbot-icon-open"
+    xmlns="http://www.w3.org/2000/svg"
+    width="28"
+    height="28"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+  </svg>
+  <!-- Close icon (hidden by default) -->
+  <svg
+    id="chatbot-icon-close"
+    class="hidden"
+    xmlns="http://www.w3.org/2000/svg"
+    width="28"
+    height="28"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+</button>
+
+<!-- Welcome tooltip -->
+<div
+  id="chatbot-tooltip"
+  class="chatbot-tooltip fixed bottom-[5.5rem] right-6 z-50 hidden rounded-xl bg-primary px-4 py-3 text-sm text-white shadow-lg"
+>
+  <p id="chatbot-tooltip-title" class="font-medium">Ciao! Posso aiutarti?</p>
+  <p id="chatbot-tooltip-text" class="mt-1 text-white/80">
+    Clicca per parlare con il nostro assistente.
+  </p>
+  <button
+    id="chatbot-tooltip-close"
+    type="button"
+    aria-label="Chiudi suggerimento"
+    class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-surface text-primary shadow-md text-xs font-bold hover:bg-neutral-100"
+    >✕</button
+  >
+  <!-- Arrow pointing down -->
+  <div
+    class="absolute -bottom-2 right-6 h-0 w-0 border-x-8 border-t-8 border-x-transparent border-t-primary"
+  >
+  </div>
+</div>
+
+<!-- Chat panel -->
+<div
+  id="chatbot-panel"
+  data-chatbot-panel
+  role="dialog"
+  aria-modal="true"
+  aria-label="Assistente virtuale"
+  class="chatbot-panel fixed z-50 hidden flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-surface shadow-2xl"
+>
+  <!-- Header -->
+  <div class="flex items-center justify-between bg-primary px-4 py-3 text-white">
+    <div class="flex items-center gap-2">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span class="font-heading text-lg font-semibold">Assistente Vetreria</span>
+    </div>
+    <button
+      id="chatbot-close"
+      type="button"
+      aria-label="Chiudi assistente"
+      class="rounded-lg p-1 transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Messages area -->
+  <div
+    id="chatbot-messages"
+    class="chatbot-messages flex-1 overflow-y-auto px-4 py-5"
+    aria-live="polite"
+    aria-relevant="additions"
+  >
+    <!-- Messages are injected here by JS -->
+  </div>
+
+  <!-- Options area -->
+  <div
+    id="chatbot-options"
+    class="chatbot-options border-t border-neutral-200 bg-neutral-50 px-3 py-3"
+  >
+    <!-- Option buttons are injected here by JS -->
+  </div>
+</div>
+
+<style is:global>
+  /* Panel positioning: bottom-right on desktop, full-screen on mobile */
+  .chatbot-panel {
+    bottom: 5.5rem;
+    right: 1.5rem;
+    width: 380px;
+    height: 520px;
+  }
+
+  @media (max-width: 480px) {
+    .chatbot-panel {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+      bottom: 0;
+      right: 0;
+    }
+  }
+
+  /* Slide-in animation */
+  .chatbot-panel.chatbot-open {
+    display: flex;
+    animation: chatbot-slide-in 0.25s ease-out;
+  }
+
+  .chatbot-panel.chatbot-closing {
+    animation: chatbot-slide-out 0.2s ease-in forwards;
+  }
+
+  @keyframes chatbot-slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes chatbot-slide-out {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(16px) scale(0.95);
+    }
+  }
+
+  /* Respect prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .chatbot-panel.chatbot-open {
+      animation: none;
+    }
+    .chatbot-panel.chatbot-closing {
+      animation: none;
+    }
+    .chatbot-typing span {
+      animation: none !important;
+      opacity: 1 !important;
+    }
+  }
+
+  /* Typing indicator dots */
+  .chatbot-typing {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--color-neutral-100);
+    border-radius: 1rem;
+  }
+
+  .chatbot-typing span {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--color-neutral-700);
+    opacity: 0.5;
+    animation: chatbot-dot-bounce 1.2s infinite;
+  }
+
+  .chatbot-typing span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .chatbot-typing span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes chatbot-dot-bounce {
+    0%,
+    60%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.4;
+    }
+    30% {
+      transform: translateY(-4px);
+      opacity: 1;
+    }
+  }
+
+  /* Flex containers with gap for JS-injected children */
+  .chatbot-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .chatbot-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  /* Message bubble */
+  .chatbot-bubble {
+    max-width: 90%;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+  }
+
+  .chatbot-bubble-bot {
+    background-color: var(--color-neutral-100);
+    color: var(--color-neutral-800);
+    border-bottom-left-radius: 0.25rem;
+  }
+
+  .chatbot-bubble-bot p + p {
+    margin-top: 0.5rem;
+  }
+
+  /* Option button */
+  .chatbot-option-btn {
+    display: block;
+    width: 100%;
+    text-align: left !important;
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-neutral-200);
+    background-color: var(--color-neutral-50);
+    color: var(--color-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition:
+      background-color 0.15s,
+      border-color 0.15s,
+      box-shadow 0.15s;
+  }
+
+  .chatbot-option-btn:hover {
+    background-color: var(--color-neutral-100);
+    border-color: var(--color-primary-light);
+    box-shadow: var(--shadow);
+  }
+
+  .chatbot-option-btn:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .chatbot-option-cta {
+    background-color: var(--color-secondary);
+    color: var(--color-neutral-50);
+    border-color: var(--color-secondary);
+    text-align: center !important;
+  }
+
+  .chatbot-option-cta:hover {
+    background-color: var(--color-secondary-dark);
+    border-color: var(--color-secondary-dark);
+  }
+
+  .chatbot-option-exit {
+    color: var(--color-neutral-700);
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+    font-size: 0.8125rem;
+    text-align: center !important;
+    padding: 0.375rem;
+  }
+
+  .chatbot-option-exit:hover {
+    color: var(--color-primary);
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  /* Welcome tooltip */
+  .chatbot-tooltip.chatbot-tooltip-visible {
+    display: block;
+    animation: chatbot-tooltip-in 0.4s ease-out;
+  }
+
+  @keyframes chatbot-tooltip-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chatbot-tooltip.chatbot-tooltip-visible {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import type { ChatFlow, ChatOption } from '../lib/chatbot-engine';
+  import { ChatbotEngine } from '../lib/chatbot-engine';
+  import chatFlowData from '../data/chatbot-flow.json';
+
+  function initChatbot(): void {
+    const SESSION_KEY = 'chatbot_history';
+    const TYPING_DELAY = 300;
+
+    // DOM elements — bail out if not in browser or elements missing (e.g. SSR tests)
+    const toggleEl = document.getElementById('chatbot-toggle');
+    const panelEl = document.getElementById('chatbot-panel');
+    const closeBtnEl = document.getElementById('chatbot-close');
+    const messagesEl = document.getElementById('chatbot-messages');
+    const optionsEl = document.getElementById('chatbot-options');
+    const iconOpenEl = document.getElementById('chatbot-icon-open');
+    const iconCloseEl = document.getElementById('chatbot-icon-close');
+
+    if (
+      !toggleEl ||
+      !panelEl ||
+      !closeBtnEl ||
+      !messagesEl ||
+      !optionsEl ||
+      !iconOpenEl ||
+      !iconCloseEl
+    ) {
+      return;
+    }
+
+    // After null guard, assign to non-nullable consts for use in closures
+    const toggle = toggleEl;
+    const panel = panelEl;
+    const closeBtn = closeBtnEl;
+    const messagesArea = messagesEl;
+    const optionsArea = optionsEl;
+    const iconOpen = iconOpenEl;
+    const iconClose = iconCloseEl;
+
+    const tooltip = document.getElementById('chatbot-tooltip');
+    const tooltipClose = document.getElementById('chatbot-tooltip-close');
+
+    const flow = chatFlowData as ChatFlow;
+    const engine = new ChatbotEngine(flow);
+
+    function getStartNode(): string {
+      const path = window.location.pathname.replace(/\/$/, '') || '/';
+      if (path === '/servizi') return 'welcome_servizi';
+      if (path === '/galleria') return 'welcome_galleria';
+      if (path === '/contatti') return 'welcome_contatti';
+      if (path === '/preventivo') return 'welcome_preventivo';
+      if (path === '/chi-siamo') return 'welcome_chi_siamo';
+      return 'welcome';
+    }
+
+    let isOpen = false;
+    let isAnimating = false;
+
+    // Check if user prefers reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // --- Session persistence ---
+    function saveSession(): void {
+      try {
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(engine.getHistory()));
+      } catch {
+        // sessionStorage might be unavailable (private mode, quota)
+      }
+    }
+
+    function restoreSession(): boolean {
+      try {
+        const saved = sessionStorage.getItem(SESSION_KEY);
+        if (saved) {
+          const parsed: unknown = JSON.parse(saved);
+          // Validate: must be an array of strings
+          if (Array.isArray(parsed) && parsed.every((item) => typeof item === 'string')) {
+            engine.restoreHistory(parsed as string[]);
+            return engine.getHistory().length > 0;
+          }
+        }
+      } catch {
+        // Corrupted data — clear it
+        try {
+          sessionStorage.removeItem(SESSION_KEY);
+        } catch {
+          /* ignore */
+        }
+      }
+      return false;
+    }
+
+    // --- DOM helpers (safe — no innerHTML) ---
+    function removeAllChildren(el: HTMLElement): void {
+      while (el.firstChild) {
+        el.removeChild(el.firstChild);
+      }
+    }
+
+    // --- Rendering ---
+    function addBotMessage(text: string): void {
+      const bubble = document.createElement('div');
+      bubble.className = 'chatbot-bubble chatbot-bubble-bot';
+      bubble.setAttribute('data-chatbot-message', '');
+      // Split on newlines or ". " to create separate paragraphs for readability
+      const sentences = text.split(/\n+|(?<=\.)\s+/).filter(Boolean);
+      if (sentences.length > 1) {
+        for (const sentence of sentences) {
+          const p = document.createElement('p');
+          p.textContent = sentence;
+          bubble.appendChild(p);
+        }
+      } else {
+        bubble.textContent = text;
+      }
+      messagesArea.appendChild(bubble);
+      scrollToBottom();
+    }
+
+    function showTypingIndicator(): HTMLDivElement {
+      const typing = document.createElement('div');
+      typing.className = 'chatbot-typing';
+      typing.setAttribute('aria-label', 'Sto scrivendo...');
+      // Build dots with DOM methods (no innerHTML)
+      for (let i = 0; i < 3; i++) {
+        typing.appendChild(document.createElement('span'));
+      }
+      messagesArea.appendChild(typing);
+      scrollToBottom();
+      return typing;
+    }
+
+    function renderOptions(options: ChatOption[]): void {
+      removeAllChildren(optionsArea);
+      for (const opt of options) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'chatbot-option-btn';
+
+        // CTA styling for "Richiedi preventivo" and action buttons
+        if (opt.action === 'open_form') {
+          btn.classList.add('chatbot-option-cta');
+        }
+
+        btn.textContent = opt.label;
+        btn.addEventListener('click', () => handleOption(opt));
+        optionsArea.appendChild(btn);
+      }
+
+      // Always add an exit button at the bottom
+      const exitBtn = document.createElement('button');
+      exitBtn.type = 'button';
+      exitBtn.className = 'chatbot-option-btn chatbot-option-exit';
+      exitBtn.textContent = '✕ Chiudi assistente';
+      exitBtn.addEventListener('click', () => closePanel());
+      optionsArea.appendChild(exitBtn);
+    }
+
+    function scrollToBottom(): void {
+      messagesArea.scrollTop = messagesArea.scrollHeight;
+    }
+
+    // --- Navigation ---
+    async function showNode(nodeId: string, skipTyping = false): Promise<void> {
+      const node = engine.navigate(nodeId);
+      if (!node) return;
+
+      saveSession();
+
+      // Clear previous options while typing
+      removeAllChildren(optionsArea);
+
+      if (skipTyping || prefersReducedMotion) {
+        addBotMessage(node.message);
+        if (node.options) renderOptions(node.options);
+        scrollToBottom();
+      } else {
+        const typing = showTypingIndicator();
+        await delay(TYPING_DELAY);
+        typing.remove();
+        addBotMessage(node.message);
+        if (node.options) renderOptions(node.options);
+        scrollToBottom();
+      }
+    }
+
+    function handleOption(opt: ChatOption): void {
+      if (opt.action) {
+        handleAction(opt.action, opt.param);
+        return;
+      }
+      if (opt.next) {
+        showNode(opt.next);
+      }
+    }
+
+    function handleAction(action: string, param?: string): void {
+      switch (action) {
+        case 'open_form':
+          if (param) {
+            window.location.href = '/preventivo?servizio=' + encodeURIComponent(param);
+          } else {
+            window.location.href = '/preventivo';
+          }
+          break;
+        case 'open_contacts':
+          window.location.href = '/contatti';
+          break;
+        case 'call_phone':
+          window.location.href = 'tel:+390142563728';
+          break;
+      }
+    }
+
+    function delay(ms: number): Promise<void> {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    // --- Tooltip ---
+    function hideTooltip(): void {
+      if (tooltip) {
+        tooltip.classList.remove('chatbot-tooltip-visible');
+        tooltip.classList.add('hidden');
+      }
+      try {
+        sessionStorage.setItem('chatbot_tooltip_seen', 'true');
+      } catch {
+        /* ignore */
+      }
+    }
+
+    function showTooltipIfNeeded(): void {
+      if (!tooltip) return;
+      try {
+        if (sessionStorage.getItem('chatbot_tooltip_seen') === 'true') return;
+      } catch {
+        /* ignore */
+      }
+      setTimeout(() => {
+        if (!isOpen && tooltip) {
+          tooltip.classList.remove('hidden');
+          tooltip.classList.add('chatbot-tooltip-visible');
+          // Auto-hide after 8 seconds
+          setTimeout(() => hideTooltip(), 8000);
+        }
+      }, 2000);
+    }
+
+    if (tooltipClose) {
+      tooltipClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        hideTooltip();
+      });
+    }
+
+    // --- Focus trap for chatbot panel ---
+    const chatFocusableSelector =
+      'button:not([disabled]), [href], input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    function chatTrapFocus(e: KeyboardEvent) {
+      if (e.key !== 'Tab') return;
+      const focusable = Array.from(panel.querySelectorAll<HTMLElement>(chatFocusableSelector));
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    // --- Panel open/close ---
+    function openPanel(): void {
+      if (isAnimating) return;
+      isOpen = true;
+      hideTooltip();
+      panel.classList.remove('hidden', 'chatbot-closing');
+      panel.classList.add('chatbot-open');
+      iconOpen.classList.add('hidden');
+      iconClose.classList.remove('hidden');
+      toggle.setAttribute('aria-label', 'Chiudi assistente');
+
+      // Initialize chat if empty
+      if (messagesArea.children.length === 0) {
+        const restored = restoreSession();
+        if (restored) {
+          // Replay last node from history
+          const history = engine.getHistory();
+          const lastNodeId = history[history.length - 1];
+          if (lastNodeId) {
+            // Re-render without re-navigating (it is already in history)
+            const node = engine.getNode(lastNodeId);
+            if (node) {
+              addBotMessage(node.message);
+              if (node.options) renderOptions(node.options);
+            }
+          }
+        } else {
+          showNode(getStartNode());
+        }
+      }
+
+      // Focus trap + focus close button for a11y
+      document.addEventListener('keydown', chatTrapFocus);
+      closeBtn.focus();
+    }
+
+    function closePanel(): void {
+      if (isAnimating) return;
+      isOpen = false;
+      document.removeEventListener('keydown', chatTrapFocus);
+      iconOpen.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+      toggle.setAttribute('aria-label', 'Apri assistente');
+
+      if (prefersReducedMotion) {
+        panel.classList.remove('chatbot-open');
+        panel.classList.add('hidden');
+      } else {
+        isAnimating = true;
+        panel.classList.add('chatbot-closing');
+        panel.addEventListener(
+          'animationend',
+          () => {
+            panel.classList.remove('chatbot-open', 'chatbot-closing');
+            panel.classList.add('hidden');
+            isAnimating = false;
+          },
+          { once: true }
+        );
+      }
+
+      toggle.focus();
+    }
+
+    // --- Event listeners ---
+    toggle.addEventListener('click', () => {
+      if (isOpen) {
+        closePanel();
+      } else {
+        openPanel();
+      }
+    });
+
+    closeBtn.addEventListener('click', () => {
+      closePanel();
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        closePanel();
+      }
+    });
+
+    // Contextual tooltip text
+    function updateTooltipText(): void {
+      const titleEl = document.getElementById('chatbot-tooltip-title');
+      const textEl = document.getElementById('chatbot-tooltip-text');
+      if (!titleEl || !textEl) return;
+      const path = window.location.pathname.replace(/\/$/, '') || '/';
+      if (path === '/servizi') {
+        titleEl.textContent = 'Cerchi un servizio?';
+        textEl.textContent = 'Posso aiutarti a trovare quello giusto.';
+      } else if (path === '/galleria') {
+        titleEl.textContent = 'Ti piace un lavoro?';
+        textEl.textContent = 'Chiedi un preventivo simile!';
+      } else if (path === '/preventivo') {
+        titleEl.textContent = 'Hai dubbi sul preventivo?';
+        textEl.textContent = 'Posso darti una mano.';
+      } else if (path === '/contatti') {
+        titleEl.textContent = 'Vuoi raggiungerci?';
+        textEl.textContent = 'Orari, indirizzo e telefono qui.';
+      }
+    }
+    updateTooltipText();
+
+    // Show tooltip after 3 seconds if user hasn't interacted
+    showTooltipIfNeeded();
+  }
+
+  // Initialize on first load and re-initialize after View Transitions navigation
+  document.addEventListener('astro:page-load', () => initChatbot());
+</script>

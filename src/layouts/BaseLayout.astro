@@ -1,0 +1,254 @@
+---
+// src/layouts/BaseLayout.astro
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import Chatbot from '../components/Chatbot.astro';
+
+export interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = 'Vetreria storica a Casale Monferrato. Box doccia, parapetti, pensiline, vetri camera, specchi e lavorazioni su misura.',
+  ogImage,
+} = Astro.props;
+const canonicalURL = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site)
+  : new URL(Astro.url.pathname, Astro.url.origin);
+
+// JSON-LD structured data for LocalBusiness
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Vetreria Monferrina di Fioravanti Giuseppe',
+  description:
+    'Vetreria storica a Casale Monferrato. Box doccia, parapetti, pensiline, vetri camera, specchi e lavorazioni su misura.',
+  '@id': 'https://vetreriamonferrina.com',
+  url: 'https://vetreriamonferrina.com',
+  telephone: '+390142563728',
+  email: 'vetreriamonferrina@gmail.com',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Strada Statale 31, 98/C',
+    addressLocality: 'Casale Monferrato',
+    postalCode: '15033',
+    addressRegion: 'AL',
+    addressCountry: 'IT',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 45.134,
+    longitude: 8.449,
+  },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '12:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '14:00',
+      closes: '18:00',
+    },
+  ],
+  priceRange: '$$',
+  image: 'https://vetreriamonferrina.com/images/og-image.jpg',
+};
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | Vetreria Monferrina</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="it_IT" />
+    <meta
+      property="og:image"
+      content={ogImage || 'https://vetreriamonferrina.com/images/og-image.jpg'}
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="/fonts/inter-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/dm-serif-display-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <ClientRouter />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <!-- Theme detection: system preference + time-based (inline to prevent FOUC) -->
+    <script is:inline>
+      (function () {
+        const h = new Date().getHours();
+        const dark = window.matchMedia('(prefers-color-scheme: dark)').matches || h >= 20 || h < 7;
+        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+      })();
+    </script>
+  </head>
+  <body class="font-body text-neutral-800 bg-neutral-50 antialiased">
+    <!-- Skip to main content (accessibility) -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[9999] focus:rounded-lg focus:bg-primary focus:px-6 focus:py-3 focus:text-neutral-50 focus:shadow-lg"
+    >
+      Vai al contenuto principale
+    </a>
+
+    <!-- Scroll progress bar -->
+    <div class="scroll-progress" aria-hidden="true"></div>
+
+    <Header />
+    <main id="main-content" style="view-transition-name: main-content;">
+      <slot />
+    </main>
+    <Footer />
+    <CookieBanner />
+    <Chatbot />
+
+    <!-- Back to top button -->
+    <button type="button" class="back-to-top" aria-label="Torna in cima" data-back-to-top>
+      <svg
+        class="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2.5"
+        stroke="currentColor"
+        aria-hidden="true"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5"></path>
+      </svg>
+    </button>
+    <!-- Image protection: block save/download/drag on protected images -->
+    <script>
+      function initImageProtection(): void {
+        document.addEventListener('contextmenu', (e) => {
+          const t = e.target as HTMLElement;
+          if (t.closest('.protected-img-wrap') || t.closest('[data-lightbox]')) {
+            e.preventDefault();
+          }
+        });
+        document.addEventListener('dragstart', (e) => {
+          const t = e.target as HTMLElement;
+          if (t.tagName === 'IMG' && t.closest('.protected-img-wrap, [data-lightbox]')) {
+            e.preventDefault();
+          }
+        });
+      }
+      initImageProtection();
+    </script>
+    <!-- Global scroll reveal + scroll progress + back-to-top -->
+    <script>
+      function initGlobalUI(): void {
+        // --- Scroll Reveal (IntersectionObserver) ---
+        const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');
+        revealEls.forEach((el) => el.classList.add('reveal-ready'));
+
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
+        );
+        revealEls.forEach((el) => revealObserver.observe(el));
+
+        // --- Scroll Progress Bar ---
+        const progressBar = document.querySelector<HTMLElement>('.scroll-progress');
+
+        // --- Back to Top ---
+        const backToTop = document.querySelector<HTMLElement>('[data-back-to-top]');
+
+        let ticking = false;
+        function onScroll() {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => {
+            const scrollY = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+            // Progress bar
+            if (progressBar && docHeight > 0) {
+              progressBar.style.setProperty('--scroll', String(scrollY / docHeight));
+            }
+
+            // Back-to-top visibility (show after 400px)
+            if (backToTop) {
+              backToTop.classList.toggle('visible', scrollY > 400);
+            }
+
+            ticking = false;
+          });
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        if (backToTop) {
+          backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        }
+      }
+
+      document.addEventListener('astro:page-load', initGlobalUI);
+    </script>
+
+    <!-- Dynamic theme updates: recheck time every 15 min + listen for system changes -->
+    <script>
+      function applyTheme(): void {
+        const h = new Date().getHours();
+        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const nightTime = h >= 20 || h < 7;
+        const dark = systemDark || nightTime;
+        if (dark) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+        }
+      }
+      // Listen for system theme changes (e.g. macOS Auto switching)
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+      // Recheck time-based theme every 15 minutes
+      setInterval(applyTheme, 15 * 60 * 1000);
+      // Preserve dark mode during View Transitions — copy data-theme to new document before swap
+      document.addEventListener('astro:before-swap', (e: any) => {
+        const theme = document.documentElement.getAttribute('data-theme');
+        if (theme) {
+          e.newDocument.documentElement.setAttribute('data-theme', theme);
+        }
+      });
+      // Re-apply on Astro page transitions
+      document.addEventListener('astro:page-load', applyTheme);
+    </script>
+  </body>
+</html>

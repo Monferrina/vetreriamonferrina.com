@@ -1,0 +1,120 @@
+---
+// src/components/ServiceHighlight.astro
+import ProtectedImage from './ProtectedImage.astro';
+
+const services = [
+  {
+    name: 'Box doccia',
+    description:
+      'Box doccia in vetro temperato su misura, con profili minimali e finiture eleganti per il tuo bagno.',
+    icon: 'shower',
+    image: '/images/services/box-doccia.webp',
+  },
+  {
+    name: 'Parapetti',
+    description:
+      'Parapetti e balaustre in vetro per balconi, scale e terrazze. Sicurezza e trasparenza.',
+    icon: 'railing',
+    image: '/images/services/parapetti.webp',
+  },
+  {
+    name: 'Vetri camera',
+    description:
+      'Vetri isolanti a doppia e tripla camera per un comfort termico e acustico superiore.',
+    icon: 'window',
+    image: '/images/services/vetri-camera.webp',
+  },
+  {
+    name: 'Lavorazioni su misura',
+    description:
+      'Specchi, mensole, credenze, vetrine e qualsiasi lavorazione personalizzata in vetro.',
+    icon: 'custom',
+    image: '/images/services/su-misura-scala.webp',
+  },
+];
+---
+
+<section data-section="services" class="bg-neutral-50 py-16 sm:py-20">
+  <div class="mx-auto max-w-7xl px-4 lg:px-8">
+    <div class="text-center">
+      <h2 class="font-heading text-3xl text-primary sm:text-4xl" data-reveal>I nostri servizi</h2>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-neutral-800" data-reveal data-delay="1">
+        Al servizio di privati e professionisti del territorio.
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-8 sm:grid-cols-2">
+      {
+        services.map((service, i) => (
+          <article
+            data-reveal
+            data-delay={String(i + 1)}
+            class="glass-hover glass-reflect group overflow-hidden rounded-2xl border border-neutral-200 bg-surface shadow-sm transition-all duration-200 hover:-translate-y-1"
+          >
+            {/* Image or icon fallback */}
+            {service.image ? (
+              <div class="aspect-[4/3] overflow-hidden">
+                <ProtectedImage
+                  src={service.image}
+                  alt={service.name}
+                  class="transition-transform duration-300 group-hover:scale-105"
+                  wrapperClass="h-full w-full bg-neutral-200"
+                  width={800}
+                  height={600}
+                  loading={i < 2 ? 'eager' : 'lazy'}
+                  fetchpriority={i === 0 ? 'high' : undefined}
+                />
+              </div>
+            ) : (
+              <div class="flex aspect-[4/3] items-center justify-center bg-neutral-200">
+                <div class="text-center text-neutral-400">
+                  <svg
+                    class="mx-auto h-10 w-10"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"
+                    />
+                  </svg>
+                  <p class="mt-1 text-xs">Foto in arrivo</p>
+                </div>
+              </div>
+            )}
+
+            <div class="p-8">
+              <h3 class="font-heading text-xl text-primary">{service.name}</h3>
+              <p class="mt-2 leading-relaxed text-neutral-800">{service.description}</p>
+
+              <a
+                href="/servizi"
+                class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-secondary-dark transition-colors hover:text-primary"
+              >
+                Scopri di più
+                <svg
+                  class="h-4 w-4 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                  />
+                </svg>
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

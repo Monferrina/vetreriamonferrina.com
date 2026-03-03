@@ -1,5 +1,7 @@
 # Vetreria Monferrina — Design Document
 
+> **Stato:** Implementazione v0.4 completata (2026-03-03). Vedi `docs/TODO-prossima-sessione.md` per lo stato aggiornato.
+
 ## Contesto
 
 La Vetreria Monferrina (di Fioravanti Giuseppe) e' una vetreria storica a Casale Monferrato (AL).
@@ -8,6 +10,7 @@ La concorrenza locale ha siti vecchi o inesistenti. Il sito deve essere un regal
 tecnicamente impeccabile, facile da usare per loro, e soprattutto utile.
 
 **Obiettivi:**
+
 - Dare alla vetreria una presenza online professionale
 - Ridurre le chiamate ripetitive alla segreteria (orari, servizi, "fate anche X?")
 - Offrire un canale di richiesta preventivo via email
@@ -15,6 +18,7 @@ tecnicamente impeccabile, facile da usare per loro, e soprattutto utile.
 - Zero costi di manutenzione tecnica, zero dipendenza dal developer
 
 **Vincoli:**
+
 - Nessun costo ricorrente per API o servizi AI (contabilita' aziendale)
 - Nessun backend da mantenere
 - GDPR e normativa italiana rispettati al 100%
@@ -59,19 +63,20 @@ tecnicamente impeccabile, facile da usare per loro, e soprattutto utile.
 
 ## Tech Stack
 
-| Componente | Tecnologia | Motivazione |
-|---|---|---|
-| Framework | **Astro 5** | SSG nativo, zero JS al client di default, islands architecture per componenti interattivi, Lighthouse 100 |
-| Styling | **Tailwind CSS 4** | Utility-first, design system consistente, purge automatico, dark mode gratis |
-| CMS | **Sanity v3** | Free tier (100K API calls/mese), editor intuitivo, schema tipizzato, preview live, immagini con CDN e resize automatico |
-| Form email | **Resend** | 100 email/giorno gratis, API moderna, deliverability ottima, zero config SMTP |
-| Serverless | **Vercel Edge Functions** | Una sola funzione per il form. Cold start <50ms, TypeScript, integrato nel progetto |
-| Hosting | **Vercel** | Free tier, CDN globale, HTTPS automatico, deploy da Git push, dominio custom |
-| Chatbot | **JSON statico + JS vanilla** | Albero decisionale, zero API, zero costi, animazioni CSS |
-| Dominio | **.it** via Aruba/Namecheap | ~12 EUR/anno, unico costo |
-| Analytics | **Nessuno** (oppure Plausible self-hosted) | Zero cookie di terze parti = GDPR semplificato |
+| Componente | Tecnologia                                 | Motivazione                                                                                                             |
+| ---------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| Framework  | **Astro 5**                                | SSG nativo, zero JS al client di default, islands architecture per componenti interattivi, Lighthouse 100               |
+| Styling    | **Tailwind CSS 4**                         | Utility-first, design system con token CSS, dark mode automatica (orario + sistema)                                     |
+| CMS        | **Sanity v3**                              | Free tier (100K API calls/mese), editor intuitivo, schema tipizzato, preview live, immagini con CDN e resize automatico |
+| Form email | **Resend**                                 | 100 email/giorno gratis, API moderna, deliverability ottima, zero config SMTP                                           |
+| Serverless | **Vercel Edge Functions**                  | Una sola funzione per il form. Cold start <50ms, TypeScript, integrato nel progetto                                     |
+| Hosting    | **Vercel**                                 | Free tier, CDN globale, HTTPS automatico, deploy da Git push, dominio custom                                            |
+| Chatbot    | **JSON statico + JS vanilla**              | Albero decisionale, zero API, zero costi, animazioni CSS                                                                |
+| Dominio    | **.it** via Aruba/Namecheap                | ~12 EUR/anno, unico costo                                                                                               |
+| Recensioni | **Google Places API**                      | Fetch a build-time, filtro >= 4 stelle, $200/mese credito gratuito (costo effettivo $0)                                 |
+| Analytics  | **Nessuno** (oppure Plausible self-hosted) | Zero cookie di terze parti = GDPR semplificato                                                                          |
 
-**Costo totale: ~12 EUR/anno** (solo dominio)
+**Costo totale: ~12 EUR/anno** (solo dominio — Google Places API e' incluso nei $200/mese di credito gratuito)
 
 ---
 
@@ -79,11 +84,11 @@ tecnicamente impeccabile, facile da usare per loro, e soprattutto utile.
 
 ### 1. Home
 
-- **Hero**: immagine full-width di un lavoro della vetreria, headline, CTA "Richiedi preventivo"
-- **Servizi in evidenza**: 3-4 card con icona + titolo + descrizione breve, link a pagina servizi
-- **Chi siamo (teaser)**: 2 righe + foto, link alla pagina completa
-- **Testimonianze/numeri**: "Dal [anno] a Casale Monferrato", "X clienti serviti", etc.
-- **CTA finale**: "Hai un progetto? Parliamone" → link a form preventivo
+- **Hero**: gradient primario, headline, sottotitolo, CTA "Richiedi preventivo" + "Scopri servizi"
+- **Servizi in evidenza**: 4 card (doccia, parapetti, vetri camera, su misura) con icone SVG
+- **Stats**: 40+ anni, Casale Monferrato, Su misura
+- **Recensioni Google**: rating medio + card recensioni >= 4 stelle (dati da build-time Google Places API)
+- **CTA finale**: "Hai un progetto? Parliamone" → link a form preventivo + telefono
 
 ### 2. Chi siamo
 
@@ -103,6 +108,7 @@ tecnicamente impeccabile, facile da usare per loro, e soprattutto utile.
 #### Categorie reali (confermate dalla famiglia):
 
 **Servizi / Installazioni:**
+
 - Box doccia
 - Parapetti
 - Pensiline
@@ -111,6 +117,7 @@ tecnicamente impeccabile, facile da usare per loro, e soprattutto utile.
 - Sostituzione vetri finestre (servizio condizionale — dipende da disponibilita')
 
 **Prodotti — Tipi di vetro:**
+
 - Blindati
 - Madras (vetro decorativo)
 - Vetri stratificati (trasparenti, satinati, ecc.)
@@ -120,17 +127,20 @@ tecnicamente impeccabile, facile da usare per loro, e soprattutto utile.
 - Specchi
 
 **Canaline (distanziali per vetrocamera):**
+
 - Alluminio naturale
 - Alluminio colorato (nero, bianco, oro, bronzo)
 - Bordo caldo (grigio, bianco, nero, marrone)
 - Swisspacer (solo nera)
 
 **Lavorazioni:**
+
 - Sagomature
 - Fori
 - Molature
 
 **Componenti / Accessori:**
+
 - Ventolino
 - Valvole altimetriche
 - Valvole Swisspacer
@@ -216,7 +226,10 @@ ROOT
   "servizi": {
     "message": "Lavoriamo il vetro da oltre 40 anni! Ecco cosa facciamo:",
     "options": [
-      { "label": "Installazioni (box doccia, parapetti, pensiline...)", "next": "servizi_installazioni" },
+      {
+        "label": "Installazioni (box doccia, parapetti, pensiline...)",
+        "next": "servizi_installazioni"
+      },
       { "label": "Tipi di vetro (blindati, stratificati, camera...)", "next": "servizi_vetri" },
       { "label": "Lavorazioni (sagomature, fori, molature)", "next": "servizi_lavorazioni" },
       { "label": "← Torna indietro", "next": "welcome" }
@@ -297,12 +310,21 @@ Il form manda una email e basta. Se il Garante bussa, la risposta e':
 
 Ispirazione: il vetro, la trasparenza, il Monferrato (colline, mattoni, tradizione).
 
-- **Primario**: blu vetro (#1B4965 o simile) — professionale, richiama il vetro
+- **Primario**: blu vetro (#1B4965) — professionale, richiama il vetro
 - **Secondario**: ambra/terracotta (#C67B40) — calore, artigianalita', Monferrato
-- **Neutro**: grigio chiaro per sfondi, bianco per card
-- **Accento**: verde per CTA e conferme
+- **Neutro**: scala grigi (#FAFAFA → #171717), bianco per superfici (token `--color-surface`)
+- **Accento**: verde per successo (#16A34A), rosso per errori (#DC2626)
 
-Da definire con la famiglia — magari hanno gia' colori nel logo o nella comunicazione esistente.
+**Dark mode** (palette notturna automatica):
+
+- Primario: #5BA3CC (blu piu' chiaro per leggibilita' su sfondo scuro)
+- Secondario: #D4955E (rame leggermente piu' chiaro)
+- Neutri invertiti: sfondi scuri (#111318), testi chiari (#D1D5DB)
+- Superfici: #1A1D24 (card, form, pannelli)
+
+**Attivazione**: automatica senza toggle manuale.
+Priorita': `prefers-color-scheme: dark` OR ore 20:00-7:00 → dark mode.
+Script inline nel `<head>` previene flash (FOUC). Listener dinamico ogni 15min + su cambio sistema.
 
 ### Tipografia
 
@@ -392,19 +414,20 @@ MonferrinaProject/
 ### Checklist pre-lancio
 
 - [ ] Dominio registrato e DNS configurato
-- [ ] HTTPS attivo (automatico Vercel)
-- [ ] Privacy policy compilata con dati reali
-- [ ] Cookie banner funzionante
-- [ ] Footer con dati legali completi (P.IVA, ragione sociale, sede)
-- [ ] Form testato end-to-end (invio → email ricevuta)
-- [ ] Chatbot testato su mobile e desktop
-- [ ] Lighthouse 100 su tutte le pagine
-- [ ] WCAG 2.1 AA validato
+- [x] HTTPS attivo (automatico Vercel)
+- [x] Privacy policy compilata con dati reali
+- [x] Cookie banner funzionante
+- [x] Footer con dati legali completi (P.IVA, ragione sociale, sede)
+- [ ] Form testato end-to-end (invio -> email ricevuta) — richiede RESEND_API_KEY in produzione
+- [x] Chatbot testato su mobile e desktop
+- [x] Lighthouse 96-100 su tutte le pagine (a11y, BP, SEO) — Performance 81-100
+- [x] WCAG 2.1 AA validato (v0.3-v0.4: focus trap, aria-live, contrast, target-size, reduced-motion)
+- [x] 142 test E2E verdi + 94 unit test (v0.4)
 - [ ] Test su Chrome, Safari, Firefox, mobile iOS/Android
-- [ ] Contenuti reali (non placeholder) nelle pagine principali
-- [ ] Immagini ottimizzate (WebP via Sanity CDN)
-- [ ] Meta tags SEO + Open Graph per condivisione social
-- [ ] robots.txt e sitemap.xml generati
+- [x] Contenuti reali — foto galleria, testi chi siamo, servizi
+- [x] Immagini ottimizzate (WebP, sharp quality 80, lazy/eager, sizes responsive)
+- [x] Meta tags SEO + Open Graph per condivisione social
+- [x] robots.txt e sitemap.xml generati
 - [ ] Google Search Console configurato
 
 ---

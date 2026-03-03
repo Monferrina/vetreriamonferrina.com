@@ -1,0 +1,111 @@
+---
+// src/components/Lightbox.astro
+// Full-screen lightbox with smooth transitions, swipe support, and image counter.
+// Includes image protection (no right-click / drag / save).
+---
+
+<div
+  id="lightbox"
+  class="fixed inset-0 z-[9990] hidden items-center justify-center bg-black/85 backdrop-blur-sm"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Visualizzatore immagini"
+  data-lightbox
+>
+  <!-- Screen reader instructions -->
+  <p class="sr-only">
+    Usa le frecce sinistra e destra per navigare tra le immagini. Premi Escape per chiudere.
+  </p>
+
+  <!-- Close button -->
+  <button
+    type="button"
+    class="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-neutral-50 transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+    aria-label="Chiudi"
+    data-lightbox-close
+  >
+    <svg
+      class="h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="2"
+      stroke="currentColor"
+      aria-hidden="true"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+    </svg>
+  </button>
+
+  <!-- Previous button -->
+  <button
+    type="button"
+    class="absolute left-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-neutral-50 transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+    aria-label="Immagine precedente"
+    data-lightbox-prev
+  >
+    <svg
+      class="h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="2"
+      stroke="currentColor"
+      aria-hidden="true"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"></path>
+    </svg>
+  </button>
+
+  <!-- Next button -->
+  <button
+    type="button"
+    class="absolute right-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-neutral-50 transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+    aria-label="Immagine successiva"
+    data-lightbox-next
+  >
+    <svg
+      class="h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="2"
+      stroke="currentColor"
+      aria-hidden="true"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+    </svg>
+  </button>
+
+  <!-- Content area (protected) -->
+  <div class="protected-img-wrap mx-auto flex max-w-5xl flex-col items-center px-16">
+    <div
+      class="flex max-h-[80vh] w-full items-center justify-center"
+      data-lightbox-image
+      style="opacity: 1;"
+    >
+      <div class="text-center text-neutral-400">
+        <svg
+          class="mx-auto h-16 w-16"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"
+          ></path>
+        </svg>
+        <p class="mt-2 text-sm">Foto in arrivo</p>
+      </div>
+    </div>
+
+    <!-- Title + counter -->
+    <div class="mt-4 flex items-center gap-4 text-center" aria-live="polite" aria-atomic="true">
+      <p class="text-lg font-medium text-neutral-50" data-lightbox-title></p>
+      <span
+        class="whitespace-nowrap rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-neutral-300"
+        data-lightbox-counter></span>
+    </div>
+  </div>
+</div>

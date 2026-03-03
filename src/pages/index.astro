@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import ServiceHighlight from '../components/ServiceHighlight.astro';
+import StatsSection from '../components/StatsSection.astro';
+import ReviewsSection from '../components/ReviewsSection.astro';
+import CtaSection from '../components/CtaSection.astro';
+import PartnersSection from '../components/PartnersSection.astro';
+export const prerender = true;
+---
+
+<BaseLayout
+  title="Home"
+  description="Vetreria Monferrina: artigiani del vetro a Casale Monferrato da oltre 40 anni. Box doccia, parapetti, pensiline, vetri camera e lavorazioni su misura."
+>
+  <HeroSection />
+  <ServiceHighlight />
+  <StatsSection />
+  <PartnersSection />
+  <ReviewsSection />
+  <CtaSection />
+</BaseLayout>

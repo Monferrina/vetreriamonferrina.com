@@ -1,0 +1,628 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProtectedImage from '../components/ProtectedImage.astro';
+import { fetchWithFallback, queries } from '../lib/sanity';
+export const prerender = true;
+
+// Fetch about page content from Sanity; null means use hardcoded fallback below
+interface SanityAboutPage {
+  title?: string;
+  intro?: string;
+}
+const aboutData = await fetchWithFallback<SanityAboutPage | null>(queries.aboutPage, null);
+
+// Use Sanity data if available, otherwise keep static defaults
+const heroTitle = aboutData?.title || 'Chi siamo';
+const heroIntro =
+  aboutData?.intro ||
+  'Giuseppe, Debora e il loro laboratorio: dal cuore di Casale Monferrato, artigiani del vetro da oltre 40 anni.';
+---
+
+<BaseLayout
+  title="Chi siamo"
+  description="Giuseppe e Debora Fioravanti: oltre 40 anni di esperienza nella lavorazione del vetro a Casale Monferrato. La nostra storia, i nostri valori."
+>
+  <!-- Hero section -->
+  <section class="bg-primary py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">{heroTitle}</h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+        {heroIntro}
+      </p>
+    </div>
+  </section>
+
+  <!-- Story section -->
+  <section class="bg-surface py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
+        <div>
+          <h2 class="font-heading text-3xl text-primary sm:text-4xl" data-reveal>
+            La nostra storia
+          </h2>
+          <p class="mt-4 text-lg leading-relaxed text-neutral-800">
+            Chi ci conosce lo sa: la Vetreria Monferrina non è solo un'azienda, è casa.
+          </p>
+          <p class="mt-4 text-lg leading-relaxed text-neutral-800">
+            Giuseppe e Debora hanno costruito questa realtà partendo da zero e l'hanno fatta
+            crescere insieme, giorno dopo giorno. Da bottega artigiana a punto di riferimento per
+            Casale Monferrato e tutto il Monferrato, con la stessa passione, la stessa attenzione e
+            lo stesso modo di lavorare di sempre.
+          </p>
+          <p class="mt-4 text-lg leading-relaxed text-neutral-800">
+            Dalla consulenza iniziale alla posa in opera, seguiamo ogni progetto con competenza e
+            cura artigianale. Vetri camera, box doccia, parapetti, pensiline, vetrine, specchi e
+            lavorazioni su misura: al servizio di privati, aziende e professionisti dell'edilizia.
+          </p>
+          <p class="mt-4 text-lg leading-relaxed text-neutral-800">
+            Qui ogni cliente ha un nome, non un numero. Ogni lavorazione è pensata insieme a chi la
+            riceverà. Non lavoriamo in serie, lavoriamo con le persone. E chi viene una volta,
+            torna.
+          </p>
+        </div>
+
+        <!-- Photo placeholder (waiting for family photo) -->
+        <div
+          class="flex aspect-video items-center justify-center rounded-2xl bg-neutral-200 text-neutral-800"
+          role="img"
+          aria-label="Foto della famiglia Fioravanti in arrivo"
+        >
+          <div class="text-center">
+            <svg
+              class="mx-auto h-16 w-16 text-neutral-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"
+              ></path>
+            </svg>
+            <p class="mt-2 text-sm font-medium">Foto di famiglia in arrivo</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline section -->
+  <section class="bg-neutral-50 py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-8">
+        Il nostro percorso
+      </h2>
+
+      <div class="relative" data-timeline>
+        <!-- Vertical line (grows on scroll) -->
+        <div
+          data-timeline-line
+          class="absolute left-4 top-0 hidden h-full w-0.5 bg-primary/40 md:left-1/2 md:block"
+          aria-hidden="true"
+        >
+        </div>
+
+        <div class="space-y-6">
+          <!-- Milestone 1 -->
+          <div class="relative md:flex md:items-center">
+            <div class="md:w-1/2 md:pr-10 md:text-right">
+              <div data-reveal class="rounded-xl bg-surface px-5 py-4 shadow-sm">
+                <span
+                  class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50"
+                >
+                  Le origini
+                </span>
+                <p class="mt-2 text-neutral-800">
+                  Giuseppe inizia a lavorare il vetro come artigiano, imparando il mestiere sul
+                  campo. Insieme a Debora nasce l'idea di costruire qualcosa di proprio.
+                </p>
+              </div>
+            </div>
+            <div
+              data-reveal-dot
+              class="absolute left-2.5 top-6 hidden h-3 w-3 rounded-full border-2 border-primary bg-surface md:left-1/2 md:-translate-x-1/2 md:block"
+              aria-hidden="true"
+            >
+            </div>
+            <div class="hidden md:block md:w-1/2"></div>
+          </div>
+
+          <!-- Milestone 2 -->
+          <div class="relative md:flex md:items-center">
+            <div class="hidden md:block md:w-1/2"></div>
+            <div
+              data-reveal-dot
+              class="absolute left-2.5 top-6 hidden h-3 w-3 rounded-full border-2 border-primary bg-surface md:left-1/2 md:-translate-x-1/2 md:block"
+              aria-hidden="true"
+            >
+            </div>
+            <div class="md:w-1/2 md:pl-10">
+              <div data-reveal class="rounded-xl bg-surface px-5 py-4 shadow-sm">
+                <span
+                  class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50"
+                >
+                  La crescita
+                </span>
+                <p class="mt-2 text-neutral-800">
+                  Il laboratorio cresce e con esso la gamma di servizi: box doccia su misura,
+                  parapetti, pensiline e vetri camera. La voce si sparge, e i clienti arrivano da
+                  tutto il Monferrato.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Milestone 3 -->
+          <div class="relative md:flex md:items-center">
+            <div class="md:w-1/2 md:pr-10 md:text-right">
+              <div data-reveal class="rounded-xl bg-surface px-5 py-4 shadow-sm">
+                <span
+                  class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50"
+                >
+                  La famiglia si allarga
+                </span>
+                <p class="mt-2 text-neutral-800">
+                  Mirco, Fabiana e Martina crescono tra vetri e clienti. Uno dopo l'altro entrano in
+                  azienda e la Vetreria Monferrina diventa davvero un affare di famiglia.
+                </p>
+              </div>
+            </div>
+            <div
+              data-reveal-dot
+              class="absolute left-2.5 top-6 hidden h-3 w-3 rounded-full border-2 border-primary bg-surface md:left-1/2 md:-translate-x-1/2 md:block"
+              aria-hidden="true"
+            >
+            </div>
+            <div class="hidden md:block md:w-1/2"></div>
+          </div>
+
+          <!-- Milestone 4 -->
+          <div class="relative md:flex md:items-center">
+            <div class="hidden md:block md:w-1/2"></div>
+            <div
+              data-reveal-dot
+              class="absolute left-2.5 top-6 hidden h-3 w-3 rounded-full border-2 border-primary bg-surface md:left-1/2 md:-translate-x-1/2 md:block"
+              aria-hidden="true"
+            >
+            </div>
+            <div class="md:w-1/2 md:pl-10">
+              <div data-reveal class="rounded-xl bg-surface px-5 py-4 shadow-sm">
+                <span
+                  class="inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50"
+                >
+                  Oggi
+                </span>
+                <p class="mt-2 text-neutral-800">
+                  La stessa dedizione del primo giorno, la stessa cura. Privati, aziende e
+                  professionisti dell'edilizia continuano a sceglierci per qualità, affidabilità e
+                  attenzione al dettaglio.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- In ricordo di Manuela -->
+      <div
+        class="mx-auto mt-12 max-w-2xl rounded-2xl border border-neutral-200 bg-surface px-6 py-6 shadow-sm text-center"
+      >
+        <p class="text-xs font-semibold uppercase tracking-wider text-primary">
+          In ricordo di <span class="font-heading text-lg normal-case tracking-normal text-primary"
+            >Manuela</span
+          >
+        </p>
+        <p class="mt-3 italic text-neutral-500">&ldquo;Posso fare una stampa?&rdquo;</p>
+        <p class="mt-2 text-sm leading-relaxed text-neutral-800">
+          Per oltre vent'anni, molto più di una collaboratrice: un'amica e parte della famiglia.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values section -->
+  <section class="bg-surface py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-12" data-reveal>
+        I nostri valori
+      </h2>
+
+      <div class="grid gap-8 sm:grid-cols-3">
+        <!-- Artigianalità -->
+        <div
+          data-reveal
+          data-delay="1"
+          class="glass-hover glass-reflect rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-1"
+        >
+          <div
+            class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10"
+          >
+            <svg
+              class="h-8 w-8 text-primary"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="mt-4 font-heading text-xl text-primary">Artigianalità</h3>
+          <p class="mt-2 text-neutral-800">
+            Ogni lavorazione è eseguita a mano con la precisione e la cura che solo l'esperienza
+            artigianale può garantire.
+          </p>
+        </div>
+
+        <!-- Qualità -->
+        <div
+          data-reveal
+          data-delay="2"
+          class="glass-hover glass-reflect rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-1"
+        >
+          <div
+            class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10"
+          >
+            <svg
+              class="h-8 w-8 text-primary"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="mt-4 font-heading text-xl text-primary">Qualità</h3>
+          <p class="mt-2 text-neutral-800">
+            Selezioniamo solo materiali di prima scelta e lavoriamo con attrezzature professionali
+            per risultati eccellenti.
+          </p>
+        </div>
+
+        <!-- Territorio -->
+        <div
+          data-reveal
+          data-delay="3"
+          class="glass-hover glass-reflect rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 hover:-translate-y-1"
+        >
+          <div
+            class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10"
+          >
+            <svg
+              class="h-8 w-8 text-primary"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="mt-4 font-heading text-xl text-primary">Territorio</h3>
+          <p class="mt-2 text-neutral-800">
+            Radicati a Casale Monferrato, serviamo con orgoglio il Monferrato e tutto il Piemonte.
+            Il legame con il territorio è la nostra forza.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lab photo carousel (identical structure to ReviewsSection) -->
+  <section class="bg-neutral-50 py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-8">
+        Il nostro laboratorio
+      </h2>
+
+      <div
+        class="lab-carousel mt-8 overflow-hidden"
+        role="region"
+        aria-label="Foto del laboratorio"
+        aria-roledescription="carousel"
+        style="position: relative;"
+      >
+        <button
+          type="button"
+          class="lab-pause-btn absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-white"
+          aria-label="Metti in pausa il carosello"
+          data-lab-pause
+        >
+          <svg
+            class="h-4 w-4"
+            data-pause-icon
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <rect x="6" y="4" width="4" height="16"></rect>
+            <rect x="14" y="4" width="4" height="16"></rect>
+          </svg>
+          <svg
+            class="hidden h-4 w-4"
+            data-play-icon
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <polygon points="5,3 19,12 5,21"></polygon>
+          </svg>
+        </button>
+        <div class="lab-track flex gap-6">
+          {
+            [
+              {
+                src: '/images/lab/operaio-lastra.webp',
+                alt: 'Operaio che movimenta una grande lastra in laboratorio',
+              },
+              {
+                src: '/images/lab/macchina-taglio.webp',
+                alt: 'Macchina da taglio automatica per lastre',
+              },
+              {
+                src: '/images/lab/lavorazione-blindato.webp',
+                alt: 'Mastro vetraio al lavoro su lastra blindata',
+              },
+              {
+                src: '/images/lab/lavorazione-stratificato.webp',
+                alt: 'Lavorazione vetro stratificato su macchinario',
+              },
+              {
+                src: '/images/lab/magazzino-lastre.webp',
+                alt: 'Magazzino lastre con rack di stoccaggio',
+              },
+              {
+                src: '/images/lab/banco-grandi-lastre-2.webp',
+                alt: 'Banco delle grandi lastre con carroponte',
+              },
+              {
+                src: '/images/lab/tavolo-taglio.webp',
+                alt: 'Tavolo di taglio nel laboratorio',
+              },
+              {
+                src: '/images/lab/operaio-lastra.webp',
+                alt: 'Operaio che movimenta una grande lastra in laboratorio',
+              },
+              {
+                src: '/images/lab/macchina-taglio.webp',
+                alt: 'Macchina da taglio automatica per lastre',
+              },
+              {
+                src: '/images/lab/lavorazione-blindato.webp',
+                alt: 'Mastro vetraio al lavoro su lastra blindata',
+              },
+              {
+                src: '/images/lab/lavorazione-stratificato.webp',
+                alt: 'Lavorazione vetro stratificato su macchinario',
+              },
+              {
+                src: '/images/lab/magazzino-lastre.webp',
+                alt: 'Magazzino lastre con rack di stoccaggio',
+              },
+              {
+                src: '/images/lab/banco-grandi-lastre-2.webp',
+                alt: 'Banco delle grandi lastre con carroponte',
+              },
+              {
+                src: '/images/lab/tavolo-taglio.webp',
+                alt: 'Tavolo di taglio nel laboratorio',
+              },
+            ].map((photo) => (
+              <div class="w-80 shrink-0 overflow-hidden rounded-2xl border border-neutral-200 bg-surface shadow-sm sm:w-96">
+                <ProtectedImage src={photo.src} alt={photo.alt} wrapperClass="aspect-[4/3]" />
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-surface py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center lg:px-8">
+      <h2 class="font-heading text-3xl text-primary sm:text-4xl">Vuoi saperne di più?</h2>
+      <p class="mx-auto mt-4 max-w-xl text-lg text-neutral-800">
+        Contattaci per un preventivo gratuito o passa a trovarci nel nostro laboratorio a Casale
+        Monferrato.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="/contatti"
+          class="inline-block rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-neutral-50 transition-colors hover:bg-primary-dark"
+        >
+          Contattaci
+        </a>
+        <a
+          href="/preventivo"
+          class="inline-block rounded-full border-2 border-primary px-8 py-3 text-base font-semibold text-primary transition-colors hover:bg-primary hover:text-neutral-50"
+        >
+          Richiedi preventivo
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chi-siamo specific animations (scroll reveal handled globally in BaseLayout) -->
+  <style is:global>
+    /* Timeline dot pop-in (desktop only — dots hidden on mobile) */
+    @media (min-width: 768px) {
+      [data-reveal-dot].reveal-ready {
+        scale: 0;
+        transition: scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      [data-reveal-dot].in-view {
+        scale: 1;
+      }
+    }
+
+    /* Timeline line — scroll-driven growth */
+    [data-timeline-line] {
+      transform: scaleY(var(--progress, 1));
+      transform-origin: top;
+    }
+
+    /* Lab photo carousel — JS sets --scroll-width for pixel-perfect loop */
+    .lab-track {
+      animation: lab-scroll var(--scroll-duration, 30s) linear infinite;
+      will-change: transform;
+    }
+    .lab-carousel:hover .lab-track {
+      animation-play-state: paused;
+    }
+    @keyframes lab-scroll {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        transform: translate3d(var(--scroll-width, -50%), 0, 0);
+      }
+    }
+
+    /* Respect users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      [data-reveal-dot].reveal-ready {
+        scale: 1;
+        transition: none;
+      }
+      [data-timeline-line] {
+        transform: scaleY(1);
+      }
+      .lab-track {
+        animation: none;
+      }
+      .lab-carousel {
+        overflow-x: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-neutral-200) transparent;
+      }
+    }
+  </style>
+
+  <script>
+    let cleanupFn: (() => void) | null = null;
+
+    function initTimelineEffects(): void {
+      // Cleanup previous instance (View Transitions navigation)
+      if (cleanupFn) {
+        cleanupFn();
+        cleanupFn = null;
+      }
+
+      const dotEls = document.querySelectorAll<HTMLElement>('[data-reveal-dot]');
+      const line = document.querySelector<HTMLElement>('[data-timeline-line]');
+      const container = document.querySelector<HTMLElement>('[data-timeline]');
+
+      if (dotEls.length === 0 && !line) return;
+
+      // Progressive enhancement for dots
+      dotEls.forEach((el) => el.classList.add('reveal-ready'));
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
+      );
+
+      dotEls.forEach((el) => observer.observe(el));
+
+      // Timeline line grows with scroll progress
+      let scrollHandler: (() => void) | null = null;
+      if (line && container) {
+        line.style.setProperty('--progress', '0');
+        let ticking = false;
+        scrollHandler = () => {
+          if (!ticking) {
+            requestAnimationFrame(() => {
+              const rect = container.getBoundingClientRect();
+              const vh = window.innerHeight;
+              const progress = Math.max(0, Math.min(1, (vh - rect.top) / rect.height));
+              line.style.setProperty('--progress', String(progress));
+              ticking = false;
+            });
+            ticking = true;
+          }
+        };
+        window.addEventListener('scroll', scrollHandler, { passive: true });
+        scrollHandler();
+      }
+
+      cleanupFn = () => {
+        observer.disconnect();
+        if (scrollHandler) {
+          window.removeEventListener('scroll', scrollHandler);
+        }
+      };
+    }
+
+    document.addEventListener('astro:page-load', initTimelineEffects);
+
+    // Lab carousel: measure exact scroll width for seamless loop
+    function initLabCarousel(): void {
+      const track = document.querySelector<HTMLElement>('.lab-track');
+      if (!track) return;
+      const children = Array.from(track.children) as HTMLElement[];
+      const halfCount = children.length / 2;
+      if (halfCount < 1) return;
+
+      const gap = parseFloat(getComputedStyle(track).gap) || 0;
+      let setWidth = 0;
+      for (let i = 0; i < halfCount; i++) {
+        setWidth += children[i].offsetWidth + gap;
+      }
+
+      track.style.setProperty('--scroll-width', `-${setWidth}px`);
+      const speed = setWidth / 50;
+      track.style.setProperty('--scroll-duration', `${speed}s`);
+
+      // Pause/play button
+      const pauseBtn = document.querySelector<HTMLButtonElement>('[data-lab-pause]');
+      if (!pauseBtn) return;
+
+      const pauseIcon = pauseBtn.querySelector('[data-pause-icon]') as SVGElement;
+      const playIcon = pauseBtn.querySelector('[data-play-icon]') as SVGElement;
+      let isPaused = false;
+
+      pauseBtn.addEventListener('click', () => {
+        isPaused = !isPaused;
+        track.style.animationPlayState = isPaused ? 'paused' : 'running';
+        pauseIcon.classList.toggle('hidden', isPaused);
+        playIcon.classList.toggle('hidden', !isPaused);
+        pauseBtn.setAttribute(
+          'aria-label',
+          isPaused ? 'Riprendi il carosello' : 'Metti in pausa il carosello'
+        );
+      });
+    }
+    document.addEventListener('astro:page-load', initLabCarousel);
+  </script>
+</BaseLayout>

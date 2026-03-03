@@ -1,0 +1,114 @@
+---
+// src/components/CookieBanner.astro
+// Informative cookie banner (NOT a consent banner).
+// Only technical cookies are used — GDPR requires only notice, not consent.
+---
+
+<div
+  id="cookie-banner"
+  data-cookie-banner
+  role="alert"
+  aria-live="polite"
+  class="cookie-banner fixed bottom-0 left-0 right-0 z-[51] hidden border-t border-primary-light/30 bg-primary-dark text-white"
+>
+  <div class="mx-auto flex max-w-3xl items-center gap-4 px-5 py-4">
+    <p class="flex-1 text-sm leading-relaxed">
+      Questo sito usa solo cookie tecnici. Nessun tracciamento.
+      <a
+        href="/cookie"
+        class="ml-1 whitespace-nowrap underline underline-offset-2 transition-colors hover:text-secondary-light"
+        >Maggiori informazioni</a
+      >
+    </p>
+    <button
+      id="cookie-banner-dismiss"
+      type="button"
+      class="shrink-0 rounded-full bg-white px-6 py-3 text-sm font-semibold text-primary-dark transition-colors hover:bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-dark min-h-[44px] min-w-[44px]"
+    >
+      OK
+    </button>
+  </div>
+</div>
+
+<style>
+  /* Slide-up animation */
+  .cookie-banner.cookie-banner-visible {
+    display: block;
+    animation: cookie-slide-up 0.3s ease-out;
+  }
+
+  @keyframes cookie-slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Respect prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .cookie-banner.cookie-banner-visible {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  function initCookieBanner(): void {
+    const STORAGE_KEY = 'cookie_notice_seen';
+    const banner = document.getElementById('cookie-banner');
+    const dismissBtn = document.getElementById('cookie-banner-dismiss');
+
+    if (!banner || !dismissBtn) return;
+
+    // Check if user has already seen the banner
+    let alreadySeen = false;
+    try {
+      alreadySeen = localStorage.getItem(STORAGE_KEY) === 'true';
+    } catch {
+      // localStorage might be unavailable (private mode, quota)
+    }
+
+    if (alreadySeen) {
+      // Keep banner hidden
+      return;
+    }
+
+    // Show the banner and push chatbot button up
+    banner.classList.remove('hidden');
+    banner.classList.add('cookie-banner-visible');
+
+    // Push chatbot toggle and tooltip above the banner
+    const chatToggle = document.getElementById('chatbot-toggle');
+    const chatTooltip = document.getElementById('chatbot-tooltip');
+    const bannerHeight = banner.offsetHeight;
+    if (chatToggle) chatToggle.style.bottom = `${bannerHeight + 24}px`;
+    if (chatTooltip) chatTooltip.style.bottom = `${bannerHeight + 88}px`;
+
+    // Guard against duplicate handlers on re-init
+    if (dismissBtn.dataset.initialized) return;
+    dismissBtn.dataset.initialized = 'true';
+
+    // Dismiss handler
+    dismissBtn.addEventListener('click', () => {
+      try {
+        localStorage.setItem(STORAGE_KEY, 'true');
+      } catch {
+        // localStorage might be unavailable
+      }
+      banner.classList.remove('cookie-banner-visible');
+      banner.classList.add('hidden');
+
+      // Restore chatbot position
+      const chatToggle = document.getElementById('chatbot-toggle');
+      const chatTooltip = document.getElementById('chatbot-tooltip');
+      if (chatToggle) chatToggle.style.bottom = '';
+      if (chatTooltip) chatTooltip.style.bottom = '';
+    });
+  }
+
+  document.addEventListener('astro:page-load', initCookieBanner);
+</script>

@@ -1,0 +1,352 @@
+@font-face {
+  font-family: 'DM Serif Display';
+  src: url('/fonts/dm-serif-display-latin.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-latin-variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@import 'tailwindcss';
+
+@theme {
+  --color-primary: #1b4965;
+  --color-primary-light: #2a6f97;
+  --color-primary-dark: #0f2d40;
+  --color-secondary: #b56c33;
+  --color-secondary-light: #d4955e;
+  --color-secondary-dark: #964f1e;
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+  --color-surface: #ffffff;
+  --color-success: #16a34a;
+  --color-error: #dc2626;
+  --font-heading: 'DM Serif Display', serif;
+  --font-body: 'Inter', sans-serif;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+}
+
+/* Dark mode — activated by inline script in BaseLayout */
+[data-theme='dark'] {
+  --color-primary: #5ba3cc;
+  --color-primary-light: #7bb8d9;
+  --color-primary-dark: #1b4965;
+  --color-secondary: #d4955e;
+  --color-secondary-light: #e0a875;
+  --color-secondary-dark: #b86e35;
+  --color-neutral-50: #111318;
+  --color-neutral-100: #1a1d24;
+  --color-neutral-200: #3a3d46;
+  --color-neutral-400: #6b7280;
+  --color-neutral-500: #808891;
+  --color-neutral-600: #959da8;
+  --color-neutral-700: #b0b7c2;
+  --color-neutral-800: #d1d5db;
+  --color-neutral-900: #f3f4f6;
+  --color-surface: #252830;
+  --color-success: #22c55e;
+  --color-error: #ef4444;
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.06);
+  --shadow: 0 2px 8px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.06);
+  --shadow-md:
+    0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4),
+    0 0 0 1px rgb(255 255 255 / 0.08);
+}
+
+/* Gallery filter buttons — design-token aware for dark mode */
+.gallery-filter-active {
+  background-color: var(--color-primary);
+  color: var(--color-neutral-50);
+}
+[data-theme='dark'] .gallery-filter-active {
+  background-color: var(--color-primary-dark);
+  color: #f3f4f6;
+}
+.gallery-filter-inactive {
+  background-color: var(--color-neutral-200);
+  color: var(--color-neutral-700);
+}
+.gallery-filter-inactive:hover {
+  background-color: color-mix(in srgb, var(--color-neutral-200) 70%, var(--color-neutral-700));
+}
+
+/* ==================== Global Scroll Reveal ==================== */
+/* Progressive enhancement: elements visible by default, hidden only when JS is active */
+[data-reveal].reveal-ready {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s ease-out;
+}
+[data-reveal].in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays — e.g. data-delay="2" → 200ms delay */
+[data-delay='1'] {
+  transition-delay: 100ms;
+}
+[data-delay='2'] {
+  transition-delay: 200ms;
+}
+[data-delay='3'] {
+  transition-delay: 300ms;
+}
+[data-delay='4'] {
+  transition-delay: 400ms;
+}
+
+/* ==================== Scroll Progress Bar ==================== */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-secondary), var(--color-secondary-light));
+  z-index: 9999;
+  transform-origin: left;
+  transform: scaleX(var(--scroll, 0));
+  pointer-events: none;
+}
+
+/* ==================== Back to Top ==================== */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  background: var(--color-primary);
+  color: var(--color-neutral-50);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+  opacity: 0;
+  transform: translateY(1rem);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    background-color 0.2s ease;
+  pointer-events: none;
+  cursor: pointer;
+}
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.back-to-top:hover {
+  background: var(--color-primary-dark);
+}
+
+/* ==================== Glass Card Effect ==================== */
+.glass-hover {
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.2s ease;
+}
+.glass-hover:hover {
+  box-shadow:
+    0 8px 32px rgb(27 73 101 / 0.1),
+    inset 0 0 0 1px rgb(255 255 255 / 0.08);
+}
+
+/* Subtle glass reflection sweep on hover */
+.glass-reflect {
+  position: relative;
+  overflow: hidden;
+}
+.glass-reflect::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgb(255 255 255 / 0.04) 45%,
+    rgb(255 255 255 / 0.1) 50%,
+    rgb(255 255 255 / 0.04) 55%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.glass-reflect:hover::after {
+  transform: translateX(100%);
+}
+
+/* ==================== Gallery Masonry Grid ==================== */
+.gallery-masonry {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-flow: dense;
+  gap: 1rem;
+}
+@media (min-width: 640px) {
+  .gallery-masonry {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+}
+@media (min-width: 1024px) {
+  .gallery-masonry {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+}
+.gallery-featured {
+  grid-column: span 2;
+}
+
+/* Gallery blur-up loading effect */
+.gallery-blur-up img {
+  filter: blur(20px);
+  transform: scale(1.05);
+  transition:
+    filter 0.5s ease-out,
+    transform 0.5s ease-out;
+}
+.gallery-blur-up.loaded img {
+  filter: blur(0);
+  transform: scale(1);
+}
+
+/* ==================== Lightbox Transitions ==================== */
+[data-lightbox-image] {
+  transition: opacity 0.25s ease;
+}
+
+/* Smooth transition between themes */
+html {
+  background-color: var(--color-neutral-50);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* ==================== Reduced Motion ==================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    transition: none;
+  }
+  [data-reveal].reveal-ready {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .scroll-progress {
+    display: none;
+  }
+  .back-to-top {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .glass-reflect::after {
+    display: none;
+  }
+  .gallery-blur-up img {
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+  [data-lightbox-image] {
+    transition: none;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/* ==================== View Transitions ==================== */
+/* Smooth crossfade between pages (Astro ClientRouter) */
+::view-transition-old(root) {
+  animation: vt-fade-out 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in 450ms cubic-bezier(0, 0, 0.2, 1) 100ms backwards;
+}
+
+@keyframes vt-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Main content: gentle slide + fade */
+::view-transition-old(main-content) {
+  animation: vt-slide-out 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+::view-transition-new(main-content) {
+  animation: vt-slide-in 450ms cubic-bezier(0, 0, 0.2, 1) 100ms backwards;
+}
+
+@keyframes vt-slide-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+}
+
+@keyframes vt-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header & footer persist across navigations — no animation */
+::view-transition-old(site-header),
+::view-transition-new(site-header),
+::view-transition-old(site-footer),
+::view-transition-new(site-footer) {
+  animation: none;
+  mix-blend-mode: normal;
+}

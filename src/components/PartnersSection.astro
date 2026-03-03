@@ -1,0 +1,55 @@
+---
+// src/components/PartnersSection.astro
+// Partner logos section — communicates quality and trust through brand association.
+
+const partners = [
+  { name: 'Saint-Gobain', logo: '/images/partners/saint-gobain.svg' },
+  { name: 'AGC', logo: '/images/partners/agc.svg' },
+  { name: 'Pilkington', logo: '/images/partners/pilkington.svg' },
+  { name: 'Cilvea', logo: '/images/partners/cilvea.png' },
+];
+---
+
+<section class="bg-neutral-50 py-16 sm:py-20">
+  <div class="mx-auto max-w-7xl px-4 text-center lg:px-8">
+    <h2 class="font-heading text-3xl text-primary sm:text-4xl">I nostri partner</h2>
+    <p class="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-neutral-600">
+      Scegliamo solo i migliori produttori europei di vetro. Partner affidabili, per garantirti
+      materiali di prima qualità.
+    </p>
+
+    <div class="mt-12 grid grid-cols-2 items-center gap-8 sm:grid-cols-4 sm:gap-10 lg:gap-16">
+      {
+        partners.map((partner) => (
+          <div class="partner-item flex flex-col items-center gap-3">
+            <div class="flex h-16 items-center justify-center sm:h-20">
+              <img
+                src={partner.logo}
+                alt={partner.name}
+                loading="lazy"
+                class="partner-logo h-full w-auto object-contain"
+              />
+            </div>
+            <span class="text-sm font-medium text-neutral-500">{partner.name}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .partner-logo {
+    filter: grayscale(100%) opacity(0.45);
+    transition: filter 0.3s ease;
+  }
+  .partner-item:hover .partner-logo {
+    filter: grayscale(0%) opacity(1);
+  }
+  .partner-item:hover span {
+    color: var(--color-neutral-700);
+  }
+  .partner-item span {
+    transition: color 0.3s ease;
+  }
+</style>

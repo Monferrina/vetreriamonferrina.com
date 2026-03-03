@@ -1,0 +1,356 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GalleryGrid from '../components/GalleryGrid.astro';
+import Lightbox from '../components/Lightbox.astro';
+import { fetchWithFallback, queries } from '../lib/sanity';
+export const prerender = true;
+
+// Fetch gallery items from Sanity; null means GalleryGrid uses its own static data
+interface SanityGalleryItem {
+  title: string;
+  category: string;
+  image?: unknown;
+}
+const sanityGalleryItems = await fetchWithFallback<SanityGalleryItem[] | null>(
+  queries.galleryItems,
+  null
+);
+const galleryItems =
+  sanityGalleryItems && Array.isArray(sanityGalleryItems) && sanityGalleryItems.length > 0
+    ? sanityGalleryItems
+    : null;
+---
+
+<BaseLayout
+  title="Galleria"
+  description="Galleria lavori della Vetreria Monferrina: box doccia, parapetti, pensiline, vetri e lavorazioni su misura."
+>
+  <!-- Hero section -->
+  <section class="bg-primary py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Galleria</h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+        Una selezione dei nostri lavori: installazioni, vetri e lavorazioni realizzati nel nostro
+        laboratorio a Casale Monferrato.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
+    <!-- Category filters -->
+    <div
+      class="mb-10 flex flex-wrap gap-2"
+      role="group"
+      aria-label="Filtra per categoria"
+      data-reveal
+    >
+      <button
+        type="button"
+        class="gallery-filter-active rounded-full px-5 py-2 text-sm font-medium transition-colors"
+        data-filter="tutti"
+        aria-pressed="true"
+      >
+        Tutti
+      </button>
+      <button
+        type="button"
+        class="gallery-filter-inactive rounded-full px-5 py-2 text-sm font-medium transition-colors"
+        data-filter="installazioni"
+        aria-pressed="false"
+      >
+        Installazioni
+      </button>
+      <button
+        type="button"
+        class="gallery-filter-inactive rounded-full px-5 py-2 text-sm font-medium transition-colors"
+        data-filter="vetri"
+        aria-pressed="false"
+      >
+        Vetri
+      </button>
+      <button
+        type="button"
+        class="gallery-filter-inactive rounded-full px-5 py-2 text-sm font-medium transition-colors"
+        data-filter="lavorazioni"
+        aria-pressed="false"
+      >
+        Lavorazioni
+      </button>
+    </div>
+
+    <!-- Live region for screen readers (filter result count) -->
+    <div id="gallery-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Gallery grid -->
+    <GalleryGrid items={galleryItems} />
+  </section>
+
+  <!-- Lightbox overlay -->
+  <Lightbox />
+</BaseLayout>
+
+<script>
+  function initGallery() {
+    // --- Blur-up loading ---
+    const blurItems = document.querySelectorAll<HTMLElement>('.gallery-blur-up');
+    blurItems.forEach((item) => {
+      const img = item.querySelector('img');
+      if (!img) return;
+      if (img.complete) {
+        item.classList.add('loaded');
+      } else {
+        img.addEventListener('load', () => item.classList.add('loaded'), { once: true });
+      }
+    });
+
+    // --- Animated filter logic ---
+    const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const galleryItems = document.querySelectorAll<HTMLElement>('[data-gallery-item]');
+    const liveRegion = document.getElementById('gallery-live');
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
+
+        // Update button styles
+        filterButtons.forEach((b) => {
+          const isActive = b === btn;
+          b.setAttribute('aria-pressed', String(isActive));
+          b.classList.toggle('gallery-filter-active', isActive);
+          b.classList.toggle('gallery-filter-inactive', !isActive);
+        });
+
+        // Animated show/hide items
+        let visibleCount = 0;
+        galleryItems.forEach((item) => {
+          const matches = filter === 'tutti' || item.dataset.category === filter;
+
+          if (matches) {
+            visibleCount++;
+            // Show with animation
+            item.style.display = '';
+            item.animate(
+              [
+                { opacity: 0, transform: 'scale(0.92) translateY(8px)' },
+                { opacity: 1, transform: 'scale(1) translateY(0)' },
+              ],
+              { duration: 400, easing: 'ease-out', fill: 'forwards' }
+            );
+          } else {
+            // Hide with animation
+            const anim = item.animate(
+              [
+                { opacity: 1, transform: 'scale(1)' },
+                { opacity: 0, transform: 'scale(0.95)' },
+              ],
+              { duration: 200, easing: 'ease-in' }
+            );
+            anim.onfinish = () => {
+              item.style.display = 'none';
+            };
+          }
+        });
+
+        // Announce result count to screen readers
+        if (liveRegion) {
+          const label = btn.textContent?.trim() || filter;
+          liveRegion.textContent = `${label}: ${visibleCount} ${visibleCount === 1 ? 'elemento' : 'elementi'}`;
+        }
+      });
+    });
+
+    // --- Lightbox logic ---
+    const lightbox = document.querySelector<HTMLElement>('[data-lightbox]');
+    const lightboxTitle = document.querySelector<HTMLElement>('[data-lightbox-title]');
+    const lightboxCounter = document.querySelector<HTMLElement>('[data-lightbox-counter]');
+    const lightboxImage = document.querySelector<HTMLElement>('[data-lightbox-image]');
+    const closeBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-close]');
+    const prevBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-prev]');
+    const nextBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-next]');
+
+    if (!lightbox || !lightboxTitle || !lightboxImage || !closeBtn || !prevBtn || !nextBtn) return;
+
+    // Focus trap: keep Tab cycling within the lightbox while open
+    const focusableSelector = 'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])';
+    function trapFocus(e: KeyboardEvent) {
+      if (e.key !== 'Tab') return;
+      const focusable = Array.from(lightbox!.querySelectorAll<HTMLElement>(focusableSelector));
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    let currentIndex = 0;
+    let visibleItems: HTMLElement[] = [];
+
+    function getVisibleItems(): HTMLElement[] {
+      return Array.from(galleryItems).filter((item) => item.style.display !== 'none');
+    }
+
+    let lastFocusedElement: HTMLElement | null = null;
+
+    function openLightbox(index: number) {
+      visibleItems = getVisibleItems();
+      currentIndex = index;
+      lastFocusedElement = document.activeElement as HTMLElement;
+      updateLightboxContent(false);
+
+      lightbox!.classList.remove('hidden');
+      lightbox!.style.opacity = '0';
+      lightbox!.classList.add('flex');
+
+      // Smooth fade in
+      requestAnimationFrame(() => {
+        lightbox!.animate([{ opacity: 0 }, { opacity: 1 }], {
+          duration: 250,
+          easing: 'ease-out',
+          fill: 'forwards',
+        });
+      });
+
+      document.body.style.overflow = 'hidden';
+      // Prevent sticky header (with backdrop-blur stacking context) from intercepting lightbox clicks
+      const header = document.querySelector('header');
+      if (header) (header as HTMLElement).style.pointerEvents = 'none';
+      document.addEventListener('keydown', trapFocus);
+      closeBtn!.focus();
+    }
+
+    function closeLightbox() {
+      document.removeEventListener('keydown', trapFocus);
+      const anim = lightbox!.animate([{ opacity: 1 }, { opacity: 0 }], {
+        duration: 200,
+        easing: 'ease-in',
+      });
+      anim.onfinish = () => {
+        lightbox!.classList.add('hidden');
+        lightbox!.classList.remove('flex');
+        document.body.style.overflow = '';
+        // Restore header interactivity
+        const header = document.querySelector('header');
+        if (header) (header as HTMLElement).style.pointerEvents = '';
+        // Restore focus to the element that opened the lightbox
+        if (lastFocusedElement) {
+          lastFocusedElement.focus();
+        } else if (visibleItems[currentIndex]) {
+          (visibleItems[currentIndex] as HTMLElement).focus();
+        }
+      };
+    }
+
+    function updateLightboxContent(animate = true) {
+      const item = visibleItems[currentIndex];
+      if (!item) return;
+
+      const doUpdate = () => {
+        lightboxTitle!.textContent = item.dataset.galleryTitle || '';
+        if (lightboxCounter) {
+          lightboxCounter.textContent = `${currentIndex + 1} / ${visibleItems.length}`;
+        }
+
+        // Clone gallery image into lightbox
+        const imgEl = item.querySelector('img');
+        if (imgEl && lightboxImage) {
+          while (lightboxImage.firstChild) {
+            lightboxImage.removeChild(lightboxImage.firstChild);
+          }
+          const clone = imgEl.cloneNode(true) as HTMLImageElement;
+          clone.className = 'max-h-[80vh] max-w-full rounded-lg object-contain';
+          clone.removeAttribute('loading');
+          clone.style.pointerEvents = 'none';
+          lightboxImage.appendChild(clone);
+        }
+      };
+
+      if (animate) {
+        // Crossfade: fade out, update, fade in
+        lightboxImage!.style.opacity = '0';
+        setTimeout(() => {
+          doUpdate();
+          lightboxImage!.style.opacity = '1';
+        }, 200);
+      } else {
+        doUpdate();
+      }
+    }
+
+    function showPrev() {
+      currentIndex = (currentIndex - 1 + visibleItems.length) % visibleItems.length;
+      updateLightboxContent();
+    }
+
+    function showNext() {
+      currentIndex = (currentIndex + 1) % visibleItems.length;
+      updateLightboxContent();
+    }
+
+    // Click gallery items to open lightbox
+    galleryItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        const visible = getVisibleItems();
+        const index = visible.indexOf(item);
+        if (index !== -1) openLightbox(index);
+      });
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    prevBtn.addEventListener('click', showPrev);
+    nextBtn.addEventListener('click', showNext);
+
+    // Close on backdrop click
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') showPrev();
+      if (e.key === 'ArrowRight') showNext();
+    });
+
+    // --- Swipe support for touch devices ---
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    lightbox.addEventListener(
+      'touchstart',
+      (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      },
+      { passive: true }
+    );
+
+    lightbox.addEventListener(
+      'touchend',
+      (e) => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+
+        // Only trigger if horizontal swipe is dominant and > 50px
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+          if (dx > 0) showPrev();
+          else showNext();
+        }
+      },
+      { passive: true }
+    );
+  }
+
+  // Run on initial load and on Astro page transitions
+  initGallery();
+  document.addEventListener('astro:after-swap', initGallery);
+</script>
