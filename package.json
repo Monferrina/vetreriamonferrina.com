@@ -36,7 +36,7 @@
     "@sanity/image-url": "^2.0.3",
     "@tailwindcss/vite": "^4.2.1",
     "astro": "^5.17.1",
-    "resend": "^6.9.2",
+    "resend": "^6.9.3",
     "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
