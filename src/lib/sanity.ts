@@ -39,7 +39,7 @@ export const queries = {
     '*[_type == "service"] | order(order asc) { name, "slug": slug.current, category, description, image }',
   siteSettings: '*[_type == "siteSettings"][0]',
   galleryItems: '*[_type == "galleryItem"] | order(order asc) { title, category, image }',
-  aboutPage: '*[_type == "aboutPage"][0]',
+  aboutPage: '*[_type == "aboutPage"][0]{ title, intro, teamPhotos }',
 };
 
 /**
