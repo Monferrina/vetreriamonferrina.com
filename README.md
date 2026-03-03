@@ -10,7 +10,7 @@ Sito vetrina con form preventivi, galleria lavori, chatbot informativo e integra
 | --------------- | ----------------------------------------------------- |
 | Framework       | Astro 5 (SSG + SSR ibrido)                            |
 | Stile           | Tailwind CSS 4                                        |
-| CMS             | Sanity v3                                             |
+| CMS             | Sanity v5                                             |
 | Email           | Resend                                                |
 | Hosting         | Vercel (serverless)                                   |
 | CDN / DNS / WAF | Cloudflare                                            |
@@ -109,8 +109,7 @@ I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 ```
 ├── .github/workflows/       # CI pipeline
 ├── docs/
-│   ├── plans/               # Design doc, architettura, guide tecniche
-│   └── screenshots/         # Screenshot pagine
+│   └── plans/               # Design doc, architettura, guide tecniche
 ├── sanity/                  # Sanity CMS (schemi, config)
 ├── scripts/                 # Script build-time (Google Places, immagini, logo)
 ├── src/
@@ -162,15 +161,15 @@ Il sito e deployato su Vercel con adapter `@astrojs/vercel`. Le pagine statiche 
 
 Il dominio `vetreriamonferrina.com` e gestito su Cloudflare (piano Free).
 
-| Configurazione | Dettaglio                                            |
-| -------------- | ---------------------------------------------------- |
-| DNS            | CNAME → `cname.vercel-dns.com` (Proxied)             |
-| SSL/TLS        | Full (Strict)                                        |
-| HSTS           | 12 mesi, preload, includeSubDomains                  |
-| WAF            | Bot Fight Mode + AI Bot Blocking                     |
-| Cache          | Asset statici 1 anno (`/_astro/`, `.webp`, `.woff2`) |
-| Analytics      | Web Analytics (RUM, zero cookie)                     |
-| Rocket Loader  | **OFF** (interferisce con Astro)                     |
+| Configurazione | Dettaglio                                                         |
+| -------------- | ----------------------------------------------------------------- |
+| DNS            | A → `76.76.21.21` + CNAME www → `cname.vercel-dns.com` (DNS Only) |
+| SSL/TLS        | Full (Strict)                                                     |
+| HSTS           | 12 mesi, preload, includeSubDomains                               |
+| WAF            | Bot Fight Mode + AI Bot Blocking                                  |
+| Cache          | Asset statici 1 anno (`/_astro/`, `.webp`, `.woff2`)              |
+| Analytics      | Web Analytics (RUM, zero cookie)                                  |
+| Rocket Loader  | **OFF** (interferisce con Astro)                                  |
 
 ### Resend
 
@@ -180,7 +179,10 @@ Per l'invio email dal form preventivo. Il dominio mittente (`vetreriamonferrina.
 
 CMS headless per contenuti dinamici (foto famiglia, orari, testi pagina Chi Siamo). Lo studio Sanity e in `sanity/`.
 
+**Studio in produzione:** [vetreriamonferrina.sanity.studio](https://vetreriamonferrina.sanity.studio/)
+
 ```bash
+# Dev locale (opzionale)
 cd sanity && npm install && npm run dev
 # → http://localhost:3333
 ```
@@ -206,7 +208,6 @@ Per mettere il sito in manutenzione, impostare la variabile `MAINTENANCE_MODE=tr
 ## Documentazione tecnica
 
 - `docs/plans/2026-02-27-vetreria-monferrina-design.md` — Design document
-- `docs/plans/2026-02-27-implementation-plan.md` — Piano implementazione
 - `docs/plans/google-reviews-setup.md` — Guida Google Places API
 - `docs/plans/architecture.drawio` — Diagramma architettura (draw.io)
 

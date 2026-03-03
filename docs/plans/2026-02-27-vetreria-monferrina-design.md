@@ -1,6 +1,6 @@
 # Vetreria Monferrina — Design Document
 
-> **Stato:** Implementazione v0.4 completata (2026-03-03). Vedi `docs/TODO-prossima-sessione.md` per lo stato aggiornato.
+> **Stato:** v1.0 LIVE (2026-03-03) — vetreriamonferrina.com
 
 ## Contesto
 
@@ -67,16 +67,16 @@ tecnicamente impeccabile, facile da usare per loro, e soprattutto utile.
 | ---------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
 | Framework  | **Astro 5**                                | SSG nativo, zero JS al client di default, islands architecture per componenti interattivi, Lighthouse 100               |
 | Styling    | **Tailwind CSS 4**                         | Utility-first, design system con token CSS, dark mode automatica (orario + sistema)                                     |
-| CMS        | **Sanity v3**                              | Free tier (100K API calls/mese), editor intuitivo, schema tipizzato, preview live, immagini con CDN e resize automatico |
+| CMS        | **Sanity v5**                              | Free tier (100K API calls/mese), editor intuitivo, schema tipizzato, preview live, immagini con CDN e resize automatico |
 | Form email | **Resend**                                 | 100 email/giorno gratis, API moderna, deliverability ottima, zero config SMTP                                           |
 | Serverless | **Vercel Edge Functions**                  | Una sola funzione per il form. Cold start <50ms, TypeScript, integrato nel progetto                                     |
 | Hosting    | **Vercel**                                 | Free tier, CDN globale, HTTPS automatico, deploy da Git push, dominio custom                                            |
 | Chatbot    | **JSON statico + JS vanilla**              | Albero decisionale, zero API, zero costi, animazioni CSS                                                                |
-| Dominio    | **.it** via Aruba/Namecheap                | ~12 EUR/anno, unico costo                                                                                               |
+| Dominio    | **vetreriamonferrina.com** via Cloudflare  | ~$10/anno, unico costo                                                                                                  |
 | Recensioni | **Google Places API**                      | Fetch a build-time, filtro >= 4 stelle, $200/mese credito gratuito (costo effettivo $0)                                 |
 | Analytics  | **Nessuno** (oppure Plausible self-hosted) | Zero cookie di terze parti = GDPR semplificato                                                                          |
 
-**Costo totale: ~12 EUR/anno** (solo dominio — Google Places API e' incluso nei $200/mese di credito gratuito)
+**Costo totale: ~$10/anno** (solo dominio — Google Places API e' incluso nei $200/mese di credito gratuito)
 
 ---
 
@@ -398,11 +398,10 @@ MonferrinaProject/
 
 ### Dominio
 
-- Opzione 1: `vetreriamOnferrina.it`
-- Opzione 2: `vetreria-monferrina.it`
-- Opzione 3: `monferrinavetri.it`
-- Registrare su Aruba (registrar .it accreditato) — ~12 EUR/anno
-- DNS puntato a Vercel
+- **Dominio:** `vetreriamonferrina.com` registrato su Cloudflare (~$10/anno)
+- **DNS:** Cloudflare (A record → 76.76.21.21, CNAME www → cname.vercel-dns.com, DNS Only)
+- **SSL/TLS:** Full (Strict) + HSTS preload
+- **CDN/WAF:** Cloudflare Free (Bot Fight, AI Bot Blocking, Page Shield)
 
 ### Deploy
 
@@ -413,21 +412,23 @@ MonferrinaProject/
 
 ### Checklist pre-lancio
 
-- [ ] Dominio registrato e DNS configurato
-- [x] HTTPS attivo (automatico Vercel)
+- [x] Dominio registrato e DNS configurato (vetreriamonferrina.com su Cloudflare, DNS Only)
+- [x] HTTPS attivo (automatico Vercel + Cloudflare Full Strict)
 - [x] Privacy policy compilata con dati reali
 - [x] Cookie banner funzionante
 - [x] Footer con dati legali completi (P.IVA, ragione sociale, sede)
-- [ ] Form testato end-to-end (invio -> email ricevuta) — richiede RESEND_API_KEY in produzione
+- [ ] Form testato end-to-end (invio → email ricevuta) — Resend configurato, da testare
 - [x] Chatbot testato su mobile e desktop
 - [x] Lighthouse 96-100 su tutte le pagine (a11y, BP, SEO) — Performance 81-100
 - [x] WCAG 2.1 AA validato (v0.3-v0.4: focus trap, aria-live, contrast, target-size, reduced-motion)
 - [x] 142 test E2E verdi + 94 unit test (v0.4)
 - [ ] Test su Chrome, Safari, Firefox, mobile iOS/Android
-- [x] Contenuti reali — foto galleria, testi chi siamo, servizi
+- [x] Contenuti reali — foto galleria, testi chi siamo, servizi + foto famiglia da Sanity
 - [x] Immagini ottimizzate (WebP, sharp quality 80, lazy/eager, sizes responsive)
 - [x] Meta tags SEO + Open Graph per condivisione social
 - [x] robots.txt e sitemap.xml generati
+- [x] Sanity Studio deployato (vetreriamonferrina.sanity.studio)
+- [x] Google Business Profile: sito web aggiunto
 - [ ] Google Search Console configurato
 
 ---

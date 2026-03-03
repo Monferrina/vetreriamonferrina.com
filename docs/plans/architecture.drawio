@@ -6,7 +6,7 @@
         <mxCell id="1" parent="0" />
 
         <!-- Title -->
-        <mxCell id="title" value="Vetreria Monferrina — Architettura (v0.4)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;fontColor=#1B4965;" vertex="1" parent="1">
+        <mxCell id="title" value="Vetreria Monferrina — Architettura (v1.0)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;fontColor=#1B4965;" vertex="1" parent="1">
           <mxGeometry x="420" y="20" width="450" height="40" as="geometry" />
         </mxCell>
 
@@ -14,7 +14,7 @@
         <mxCell id="cms_group" value="Content Management" style="swimlane;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
           <mxGeometry x="40" y="90" width="300" height="220" as="geometry" />
         </mxCell>
-        <mxCell id="sanity" value="Sanity CMS v3&#xa;(contenuti dinamici)&#xa;&#xa;• Servizi + Galleria foto&#xa;• Impostazioni sito&#xa;• Chi siamo&#xa;• Studio: localhost:3334&#xa;• Project: 7bqabdpn" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="cms_group">
+        <mxCell id="sanity" value="Sanity CMS v5&#xa;(contenuti dinamici)&#xa;&#xa;• Servizi + Galleria foto&#xa;• Impostazioni sito&#xa;• Chi siamo + foto famiglia&#xa;• Studio: vetreriamonferrina.sanity.studio&#xa;• Project: 7bqabdpn" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="cms_group">
           <mxGeometry x="20" y="40" width="260" height="160" as="geometry" />
         </mxCell>
 
@@ -30,7 +30,7 @@
         <mxCell id="host_group" value="Hosting &amp; Delivery" style="swimlane;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
           <mxGeometry x="800" y="90" width="300" height="220" as="geometry" />
         </mxCell>
-        <mxCell id="vercel" value="Vercel&#xa;(CDN globale)&#xa;&#xa;• HTML statico all'edge&#xa;• HTTPS automatico&#xa;• Deploy da Git push&#xa;• Preview per ogni branch&#xa;• Dominio .it custom" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="host_group">
+        <mxCell id="vercel" value="Vercel&#xa;(CDN globale)&#xa;&#xa;• HTML statico all'edge&#xa;• HTTPS automatico&#xa;• Deploy da Git push&#xa;• Preview per ogni branch&#xa;• Dominio .com custom&#xa;• Region: Frankfurt (fra1)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="host_group">
           <mxGeometry x="20" y="40" width="260" height="160" as="geometry" />
         </mxCell>
 
@@ -82,7 +82,7 @@
         <mxCell id="cloudflare_group" value="Cloudflare (DNS + CDN + Security)" style="swimlane;startSize=30;fillColor=#F4A460;strokeColor=#D2691E;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
           <mxGeometry x="670" y="340" width="340" height="200" as="geometry" />
         </mxCell>
-        <mxCell id="cloudflare" value="vetreriamonferrina.com ($10/anno)&#xa;&#xa;• DNS proxied → cname.vercel-dns.com&#xa;• SSL/TLS Full (Strict) + HSTS preload&#xa;• WAF + Bot Fight + AI Bot Blocking&#xa;• Page Shield + Leaked Credentials&#xa;• Email Obfuscation + Hotlink Protection&#xa;• Cache: /_astro/*, .webp, .woff2 (1y)&#xa;• HTTP/2+3, 0-RTT, Early Hints, Brotli&#xa;• Web Analytics RUM (zero cookie)&#xa;• Redirect www → root (301)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8DC;strokeColor=#D2691E;fontSize=10;align=left;spacingLeft=10;" vertex="1" parent="cloudflare_group">
+        <mxCell id="cloudflare" value="vetreriamonferrina.com ($10/anno)&#xa;&#xa;• DNS only → A 76.76.21.21 + CNAME www&#xa;• SSL/TLS Full (Strict) + HSTS preload&#xa;• WAF + Bot Fight + AI Bot Blocking&#xa;• Page Shield + Leaked Credentials&#xa;• Email Obfuscation + Hotlink Protection&#xa;• Cache: /_astro/*, .webp, .woff2 (1y)&#xa;• HTTP/2+3, 0-RTT, Early Hints, Brotli&#xa;• Web Analytics RUM (zero cookie)&#xa;• Redirect www → root (301)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8DC;strokeColor=#D2691E;fontSize=10;align=left;spacingLeft=10;" vertex="1" parent="cloudflare_group">
           <mxGeometry x="10" y="35" width="320" height="155" as="geometry" />
         </mxCell>
 
@@ -243,7 +243,7 @@
         </mxCell>
 
         <!-- LIGHTHOUSE SCORES (v0.3) -->
-        <mxCell id="lighthouse_group" value="Lighthouse CI (v0.4)" style="swimlane;startSize=25;fillColor=#E8F5E9;strokeColor=#4CAF50;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" vertex="1" parent="1">
+        <mxCell id="lighthouse_group" value="Lighthouse CI (v1.0)" style="swimlane;startSize=25;fillColor=#E8F5E9;strokeColor=#4CAF50;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" vertex="1" parent="1">
           <mxGeometry x="440" y="960" width="340" height="120" as="geometry" />
         </mxCell>
         <mxCell id="lighthouse_scores" value="Homepage: P99 A96 | Servizi: P99 A96&#xa;Contatti: P99 A97 | Chi siamo: P98 A96&#xa;Preventivo: P100 A96 | Galleria: P81 A96&#xa;&#xa;Best Practices: 100 | SEO: 100 (tutte)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#4CAF50;fontSize=10;" vertex="1" parent="lighthouse_group">
@@ -259,12 +259,12 @@
         <mxCell id="legend_title" value="Costi" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#333;" vertex="1" parent="1">
           <mxGeometry x="850" y="660" width="100" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="legend" value="Dominio .com: $10/anno (Cloudflare)&#xa;Cloudflare CDN+WAF: gratis (Free plan)&#xa;Vercel hosting: gratis&#xa;Sanity CMS: gratis&#xa;Resend email: gratis&#xa;Google Places API (New): gratis ($200/mese credito)&#xa;Open-Meteo meteo: gratis (no API key)&#xa;GitHub Actions CI: gratis&#xa;HTTPS/SSL: gratis (Cloudflare + Vercel)&#xa;─────────────&#xa;Totale: ~$10/anno&#xa;&#xa;⚠ Soglie consigliate GCP:&#xa;• Quote: 50 req/giorno&#xa;• Budget alert: $5/mese" style="text;html=1;align=left;verticalAlign=top;fontSize=11;fontColor=#666;spacingLeft=5;" vertex="1" parent="1">
+        <mxCell id="legend" value="Dominio vetreriamonferrina.com: $10/anno (Cloudflare)&#xa;Cloudflare CDN+WAF: gratis (Free plan)&#xa;Vercel hosting: gratis&#xa;Sanity CMS: gratis&#xa;Resend email: gratis&#xa;Google Places API (New): gratis ($200/mese credito)&#xa;Open-Meteo meteo: gratis (no API key)&#xa;GitHub Actions CI: gratis&#xa;HTTPS/SSL: gratis (Cloudflare + Vercel)&#xa;─────────────&#xa;Totale: ~$10/anno&#xa;&#xa;⚠ Soglie consigliate GCP:&#xa;• Quote: 50 req/giorno&#xa;• Budget alert: $5/mese" style="text;html=1;align=left;verticalAlign=top;fontSize=11;fontColor=#666;spacingLeft=5;" vertex="1" parent="1">
           <mxGeometry x="850" y="690" width="260" height="210" as="geometry" />
         </mxCell>
 
         <!-- VERSION HISTORY -->
-        <mxCell id="version_box" value="Versioni&#xa;&#xa;v0.1 — Scaffold, pagine base, chatbot, form, SEO, dark mode&#xa;v0.2 — Masonry gallery, scroll animations, CI/CD, partner, 94 test&#xa;v0.3 — WCAG 2.1 AA, view transitions, image optimization, email update, Lighthouse CI&#xa;v0.4 — Site audit: gallery 24 foto, lightbox fix, dark mode polish, E2E hardening (142 test)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999;fontSize=10;align=left;spacingLeft=10;" vertex="1" parent="1">
+        <mxCell id="version_box" value="Versioni&#xa;&#xa;v0.1 — Scaffold, pagine base, chatbot, form, SEO, dark mode&#xa;v0.2 — Masonry gallery, scroll animations, CI/CD, partner, 94 test&#xa;v0.3 — WCAG 2.1 AA, view transitions, image optimization, email update, Lighthouse CI&#xa;v0.4 — Site audit: gallery 24 foto, lightbox fix, dark mode polish, E2E hardening (142 test)&#xa;v1.0 — LIVE: dominio .com, Cloudflare DNS, Sanity Studio, Resend email, foto famiglia CMS, Google Business" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999;fontSize=10;align=left;spacingLeft=10;" vertex="1" parent="1">
           <mxGeometry x="850" y="930" width="380" height="90" as="geometry" />
         </mxCell>
 
