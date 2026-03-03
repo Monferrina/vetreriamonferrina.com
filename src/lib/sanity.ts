@@ -7,19 +7,21 @@ import { createImageUrlBuilder } from '@sanity/image-url';
 const rawProjectId = import.meta.env.SANITY_PROJECT_ID;
 const projectId =
   rawProjectId && /^[a-z0-9][-a-z0-9]*$/.test(rawProjectId.trim()) ? rawProjectId.trim() : '';
-const dataset = import.meta.env.SANITY_DATASET || 'production';
+const rawDataset = import.meta.env.SANITY_DATASET || 'production';
+const dataset = /^[~a-z0-9][a-z0-9_-]{0,63}$/.test(rawDataset.trim()) ? rawDataset.trim() : '';
 
-// Only create client if Sanity is configured with a valid project ID
-const sanityClient: SanityClient | null = projectId
-  ? createClient({
-      projectId,
-      dataset,
-      apiVersion: '2024-01-01',
-      useCdn: true,
-    })
-  : null;
+// Only create client if Sanity is configured with valid project ID and dataset
+const sanityClient: SanityClient | null =
+  projectId && dataset
+    ? createClient({
+        projectId,
+        dataset,
+        apiVersion: '2024-01-01',
+        useCdn: true,
+      })
+    : null;
 
-const builder = projectId ? createImageUrlBuilder({ projectId, dataset }) : null;
+const builder = projectId && dataset ? createImageUrlBuilder({ projectId, dataset }) : null;
 
 /**
  * Build an image URL from a Sanity image reference.
