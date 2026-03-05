@@ -104,6 +104,21 @@ I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 
 **Deploy:** Vercel deploya automaticamente ad ogni push su `main` (production) e su branch/PR (preview).
 
+### Flusso di lavoro (dev → production)
+
+```
+1. Crea un branch        →  git checkout -b fix/qualcosa
+2. Fai le modifiche      →  edit, commit
+3. Pusha                 →  git push -u origin fix/qualcosa
+4. Vercel fa preview     →  URL temporaneo per verificare le modifiche
+5. Apri PR su main       →  CI gira (lint, test, build, Lighthouse)
+6. Mergia la PR          →  Vercel deploya in produzione su vetreriamonferrina.com
+```
+
+- **`main` = produzione (live)** — branch protetto, non si pusha direttamente
+- **Qualsiasi altro branch = dev** — Vercel genera un preview URL per ogni push/PR
+- Le environment variables possono essere diverse tra Production e Preview (Vercel > Settings > Environment Variables)
+
 ## Struttura progetto
 
 ```
