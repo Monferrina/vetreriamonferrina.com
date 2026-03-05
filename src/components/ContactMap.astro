@@ -89,6 +89,11 @@ const ZOOM = 17;
           '<strong>Vetreria Monferrina</strong><br>Strada Statale 31, 98/C<br>15033 Casale Monferrato (AL)'
         )
         .openPopup();
+
+      // Force tile recalculation after CSS grid layout settles (fixes mobile rendering)
+      setTimeout(function () {
+        map.invalidateSize();
+      }, 300);
     }
   }
 

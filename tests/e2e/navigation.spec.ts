@@ -52,11 +52,12 @@ test.describe('Navigazione', () => {
     const mobileMenu = page.locator('[data-mobile-menu]');
     await expect(mobileMenu).toBeVisible();
 
-    // Close menu
+    // Wait for slide-in transition (300ms) to stabilize before clicking close
+    await page.waitForTimeout(350);
     const closeBtn = page.getByRole('button', { name: /chiudi menu/i });
     await closeBtn.click();
 
-    // Wait for transition
+    // Wait for close transition
     await page.waitForTimeout(400);
     await expect(mobileMenu).toBeHidden();
   });
@@ -70,6 +71,9 @@ test.describe('Navigazione', () => {
 
     const mobileMenu = page.locator('[data-mobile-menu]');
     await expect(mobileMenu).toBeVisible();
+
+    // Wait for slide-in transition (300ms) to stabilize
+    await page.waitForTimeout(350);
 
     // Click overlay to close
     const overlay = page.locator('[data-menu-overlay]');

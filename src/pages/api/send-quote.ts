@@ -9,8 +9,9 @@ export const prerender = false;
 export async function POST({ request, clientAddress }: APIContext) {
   // 1. Verify Origin (anti-CSRF)
   const origin = request.headers.get('origin');
+  const siteUrl = (import.meta.env.SITE_URL || '').trim();
   const allowedOrigins = [
-    import.meta.env.SITE_URL,
+    siteUrl,
     ...(import.meta.env.DEV ? ['http://localhost:4321', 'http://localhost:3000'] : []),
   ].filter(Boolean);
 

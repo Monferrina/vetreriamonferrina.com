@@ -17,29 +17,7 @@ const sanityServices = await fetchWithFallback<ServiceItem[] | null>(queries.ser
 const servicesData: ServiceItem[] =
   sanityServices && sanityServices.length > 0 ? sanityServices : staticServices;
 
-function getServicesByCat(category: CategoryKey) {
-  return servicesData.filter((s) => s.category === category);
-}
-
-// Category descriptions for the page
-const categoryDescriptions: Record<CategoryKey, string> = {
-  installazioni:
-    "Dalla consulenza alla posa in opera, seguiamo ogni progetto dal primo sopralluogo all'installazione finale.",
-  vetri: 'Scegliamo vetri di qualità per ogni esigenza: sicurezza, isolamento termico, design.',
-  lavorazioni:
-    "Tagli, forature e molature eseguiti nel nostro laboratorio con la precisione che solo l'esperienza artigianale garantisce.",
-};
-
-// Build category entries with their data
-const categoryEntries = (Object.entries(categories) as [CategoryKey, string][]).map(
-  ([key, title], index) => ({
-    key,
-    title,
-    description: categoryDescriptions[key],
-    services: getServicesByCat(key),
-    alternate: index % 2 !== 0,
-  })
-);
+const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
 ---
 
 <BaseLayout
@@ -57,56 +35,53 @@ const categoryEntries = (Object.entries(categories) as [CategoryKey, string][]).
     </div>
   </section>
 
-  <!-- Service categories (same flat structure as galleria) -->
+  <!-- Services grid with filters -->
   <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
     <!-- Category filters -->
-    <div class="mb-10 flex flex-wrap gap-2" role="group" aria-label="Filtra per categoria">
+    <div
+      class="scrollbar-hide mb-10 flex gap-2 overflow-x-auto pb-2 sm:flex-wrap sm:justify-center sm:overflow-visible sm:pb-0"
+      role="group"
+      aria-label="Filtra per categoria"
+    >
       <button
         type="button"
-        class="gallery-filter-active rounded-full px-5 py-2 text-sm font-medium transition-colors"
+        class="gallery-filter-active shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors"
         data-service-filter="tutti"
         aria-pressed="true"
       >
         Tutti
       </button>
       {
-        categoryEntries.map((cat) => (
+        categoryButtons.map(([key, title]) => (
           <button
             type="button"
-            class="gallery-filter-inactive rounded-full px-5 py-2 text-sm font-medium transition-colors"
-            data-service-filter={cat.key}
+            class="gallery-filter-inactive shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors"
+            data-service-filter={key}
             aria-pressed="false"
           >
-            {cat.title}
+            {title}
           </button>
         ))
       }
     </div>
 
-    <!-- Live region for screen readers (filter result count) -->
+    <!-- Live region for screen readers -->
     <div id="services-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-    <!-- Category sections (inline, no nested max-w-7xl) -->
-    {
-      categoryEntries.map((cat) => (
-        <div id={cat.key} data-service-category={cat.key} class="mb-16 last:mb-0">
-          <h2 class="font-heading text-2xl text-primary sm:text-3xl">{cat.title}</h2>
-          {cat.description && (
-            <p class="mt-3 max-w-2xl text-lg text-neutral-800">{cat.description}</p>
-          )}
-          <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {cat.services.map((service) => (
-              <ServiceCard
-                name={service.name}
-                description={service.description}
-                slug={service.slug}
-                image={service.image}
-              />
-            ))}
-          </div>
-        </div>
-      ))
-    }
+    <!-- Single flat grid -->
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        servicesData.map((service) => (
+          <ServiceCard
+            name={service.name}
+            description={service.description}
+            slug={service.slug}
+            category={service.category}
+            image={service.image}
+          />
+        ))
+      }
+    </div>
   </section>
 
   <!-- CTA -->
@@ -140,10 +115,13 @@ const categoryEntries = (Object.entries(categories) as [CategoryKey, string][]).
 <script>
   function initServiceFilters() {
     const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-service-filter]');
-    const categorySections = document.querySelectorAll<HTMLElement>('[data-service-category]');
+    const serviceItems = document.querySelectorAll<HTMLElement>('[data-service-item]');
+    const grid = serviceItems[0]?.parentElement;
+    let transitioning = false;
 
     filterButtons.forEach((btn) => {
       btn.addEventListener('click', () => {
+        if (transitioning) return;
         const filter = btn.dataset.serviceFilter;
 
         // Update button styles
@@ -154,23 +132,46 @@ const categoryEntries = (Object.entries(categories) as [CategoryKey, string][]).
           b.classList.toggle('gallery-filter-inactive', !isActive);
         });
 
-        // Show/hide category sections
-        let visibleSections = 0;
-        categorySections.forEach((section) => {
-          if (filter === 'tutti' || section.dataset.serviceCategory === filter) {
-            section.style.display = '';
-            visibleSections++;
-          } else {
-            section.style.display = 'none';
-          }
+        if (!grid) return;
+        transitioning = true;
+
+        // Fade out entire grid, swap content, fade in
+        const fadeOut = grid.animate([{ opacity: 1 }, { opacity: 0 }], {
+          duration: 150,
+          easing: 'ease-in',
+          fill: 'forwards',
         });
 
-        // Announce to screen readers
-        const liveRegion = document.getElementById('services-live');
-        if (liveRegion) {
-          const label = btn.textContent?.trim() || filter;
-          liveRegion.textContent = `${label}: ${visibleSections} ${visibleSections === 1 ? 'categoria' : 'categorie'}`;
-        }
+        fadeOut.onfinish = () => {
+          // Swap visibility while grid is invisible
+          let visibleCount = 0;
+          serviceItems.forEach((item) => {
+            item.getAnimations().forEach((a) => a.cancel());
+            const matches = filter === 'tutti' || item.dataset.serviceCategory === filter;
+            if (matches) {
+              visibleCount++;
+              item.style.display = '';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+
+          // Fade grid back in
+          grid.animate([{ opacity: 0 }, { opacity: 1 }], {
+            duration: 250,
+            easing: 'ease-out',
+            fill: 'forwards',
+          }).onfinish = () => {
+            transitioning = false;
+          };
+
+          // Announce to screen readers
+          const liveRegion = document.getElementById('services-live');
+          if (liveRegion) {
+            const label = btn.textContent?.trim() || filter;
+            liveRegion.textContent = `${label}: ${visibleCount} ${visibleCount === 1 ? 'servizio' : 'servizi'}`;
+          }
+        };
       });
     });
   }

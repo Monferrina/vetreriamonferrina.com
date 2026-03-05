@@ -63,9 +63,6 @@
   --color-error: #ef4444;
   --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.06);
   --shadow: 0 2px 8px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.06);
-  --shadow-md:
-    0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4),
-    0 0 0 1px rgb(255 255 255 / 0.08);
 }
 
 /* Gallery filter buttons — design-token aware for dark mode */
@@ -83,6 +80,15 @@
 }
 .gallery-filter-inactive:hover {
   background-color: color-mix(in srgb, var(--color-neutral-200) 70%, var(--color-neutral-700));
+}
+
+/* Scrollbar-hide utility for horizontal scroll filters (Apple-style chips) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 /* ==================== Global Scroll Reveal ==================== */
@@ -284,19 +290,22 @@ html {
 }
 
 /* ==================== View Transitions ==================== */
-/* Smooth crossfade between pages (Astro ClientRouter) */
+/* Fast crossfade between pages (Astro ClientRouter) — no gap */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 200ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 ::view-transition-old(root) {
-  animation: vt-fade-out 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-name: vt-fade-out;
 }
 
 ::view-transition-new(root) {
-  animation: vt-fade-in 450ms cubic-bezier(0, 0, 0.2, 1) 100ms backwards;
+  animation-name: vt-fade-in;
 }
 
 @keyframes vt-fade-out {
-  from {
-    opacity: 1;
-  }
   to {
     opacity: 0;
   }
@@ -306,39 +315,28 @@ html {
   from {
     opacity: 0;
   }
-  to {
-    opacity: 1;
-  }
 }
 
-/* Main content: gentle slide + fade */
+/* Main content: subtle slide + crossfade — simultaneous, no delay */
 ::view-transition-old(main-content) {
-  animation: vt-slide-out 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: vt-slide-out 200ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 ::view-transition-new(main-content) {
-  animation: vt-slide-in 450ms cubic-bezier(0, 0, 0.2, 1) 100ms backwards;
+  animation: vt-slide-in 250ms cubic-bezier(0, 0, 0.2, 1) forwards;
 }
 
 @keyframes vt-slide-out {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
   to {
     opacity: 0;
-    transform: translateY(-16px);
+    transform: translateY(-8px);
   }
 }
 
 @keyframes vt-slide-in {
   from {
     opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translateY(10px);
   }
 }
 

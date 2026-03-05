@@ -41,5 +41,11 @@ export default defineType({
       type: 'array',
       of: [{ type: 'image', options: { hotspot: true } }],
     },
+    {
+      name: 'workerPhotos',
+      title: 'Foto Squadra',
+      type: 'array',
+      of: [{ type: 'image', options: { hotspot: true } }],
+    },
   ],
 });
