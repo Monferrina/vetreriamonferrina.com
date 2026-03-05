@@ -334,8 +334,40 @@ const familyPhoto = aboutData?.teamPhotos?.[0]
     </div>
   </section>
 
-  <!-- Lab photo carousel (identical structure to ReviewsSection) -->
+  <!-- Team section -->
   <section class="bg-neutral-50 py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
+        <div data-reveal>
+          <ProtectedImage
+            src="/images/team-squadra.webp"
+            alt="La squadra al completo della Vetreria Monferrina in laboratorio"
+            wrapperClass="aspect-[5/4] rounded-2xl overflow-hidden"
+            class="object-[center_55%]"
+          />
+        </div>
+        <div>
+          <h2 class="font-heading text-3xl text-primary sm:text-4xl" data-reveal>
+            La nostra squadra
+          </h2>
+          <p class="mt-4 text-lg leading-relaxed text-neutral-800" data-reveal>
+            Dietro ogni lavorazione c'è una squadra affiatata che lavora insieme ogni giorno con
+            passione e precisione. Vetrai esperti, giovani talenti e una cosa in comune: l'orgoglio
+            di fare bene il proprio mestiere.
+          </p>
+          <blockquote class="mt-6 border-l-4 border-primary pl-5" data-reveal>
+            <p class="text-lg italic leading-relaxed text-neutral-800">
+              &ldquo;Non siamo solo colleghi, siamo una squadra vera. Ed è questo che fa la
+              differenza quando un cliente ci affida il suo progetto.&rdquo;
+            </p>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lab photo carousel (identical structure to ReviewsSection) -->
+  <section class="bg-surface py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-8">
         Il nostro laboratorio
@@ -402,6 +434,10 @@ const familyPhoto = aboutData?.teamPhotos?.[0]
                 alt: 'Banco delle grandi lastre con carroponte',
               },
               {
+                src: '/images/lab/squadra-laboratorio.webp',
+                alt: 'La squadra della Vetreria Monferrina in un momento di pausa in laboratorio',
+              },
+              {
                 src: '/images/lab/operaio-lastra.webp',
                 alt: 'Operaio che movimenta una grande lastra in laboratorio',
               },
@@ -425,6 +461,10 @@ const familyPhoto = aboutData?.teamPhotos?.[0]
                 src: '/images/lab/banco-grandi-lastre-2.webp',
                 alt: 'Banco delle grandi lastre con carroponte',
               },
+              {
+                src: '/images/lab/squadra-laboratorio.webp',
+                alt: 'La squadra della Vetreria Monferrina in un momento di pausa in laboratorio',
+              },
             ].map((photo) => (
               <div class="w-80 shrink-0 overflow-hidden rounded-2xl border border-neutral-200 bg-surface shadow-sm sm:w-96">
                 <ProtectedImage src={photo.src} alt={photo.alt} wrapperClass="aspect-[4/3]" />
@@ -437,7 +477,7 @@ const familyPhoto = aboutData?.teamPhotos?.[0]
   </section>
 
   <!-- CTA -->
-  <section class="bg-surface py-16 sm:py-20">
+  <section class="bg-neutral-50 py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 text-center lg:px-8">
       <h2 class="font-heading text-3xl text-primary sm:text-4xl">Vuoi saperne di più?</h2>
       <p class="mx-auto mt-4 max-w-xl text-lg text-neutral-800">

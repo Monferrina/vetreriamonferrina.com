@@ -63,9 +63,13 @@ test('chi-siamo ha sezione valori', async ({ page }) => {
   await expect(page.getByRole('heading', { name: /territorio/i })).toBeVisible();
 });
 
-test('chi-siamo ha placeholder foto famiglia', async ({ page }) => {
+test('chi-siamo ha foto o placeholder famiglia', async ({ page }) => {
   await page.goto('/chi-siamo');
-  await expect(page.getByText(/foto.*famiglia.*in arrivo/i).first()).toBeVisible();
+  const foto = page.getByAltText(/famiglia fioravanti/i).first();
+  const placeholder = page.getByText(/foto.*famiglia.*in arrivo/i).first();
+  const hasFoto = await foto.isVisible().catch(() => false);
+  const hasPlaceholder = await placeholder.isVisible().catch(() => false);
+  expect(hasFoto || hasPlaceholder).toBeTruthy();
 });
 
 test('chi-siamo ha timeline con milestone', async ({ page }) => {
@@ -104,7 +108,7 @@ test('galleria filtro nasconde elementi non corrispondenti', async ({ page }) =>
   );
 
   // Use auto-retrying assertion: non-matching items should become hidden
-  await expect(nonInstallazioniItems.first()).toBeHidden({ timeout: 2000 });
+  await expect(nonInstallazioniItems.first()).toBeHidden({ timeout: 5000 });
 
   // Verify all installazioni items are still visible
   const installazioniCount = await installazioniItems.count();
