@@ -2,39 +2,41 @@ export interface Service {
   slug: string;
   name: string;
   description: string;
-  category: 'installazioni' | 'vetri' | 'lavorazioni';
+  category:
+    | 'box-doccia'
+    | 'parapetti'
+    | 'installazioni'
+    | 'vetri'
+    | 'specchi'
+    | 'personalizzazioni'
+    | 'lavorazioni';
   image?: string;
 }
 
 export const services: Service[] = [
-  // Installazioni
+  // Box doccia
   {
     slug: 'box-doccia',
     name: 'Box doccia',
     description: 'Box doccia su misura in vetro temperato. Design moderno, sicurezza garantita.',
-    category: 'installazioni',
+    category: 'box-doccia',
     image: '/images/services/box-doccia.webp',
   },
+  // Parapetti
   {
     slug: 'parapetti',
     name: 'Parapetti',
     description: 'Parapetti in vetro per balconi, scale e terrazze. Trasparenza e sicurezza.',
-    category: 'installazioni',
+    category: 'parapetti',
     image: '/images/gallery/vetri-parapetto-moderno.webp',
   },
+  // Installazioni
   {
     slug: 'pensiline',
     name: 'Pensiline',
     description: 'Pensiline in vetro per ingressi e terrazze. Protezione con eleganza.',
     category: 'installazioni',
     image: '/images/gallery/installazioni-pensilina.webp',
-  },
-  {
-    slug: 'porte-interne',
-    name: 'Porte interne',
-    description: 'Porte interne in vetro, scorrevoli e a battente. Luce e design.',
-    category: 'installazioni',
-    image: '/images/gallery/lavorazioni-porta-fiori.webp',
   },
   {
     slug: 'vetrine',
@@ -93,12 +95,21 @@ export const services: Service[] = [
     category: 'vetri',
     image: '/images/services/vetrocamera-tripli.webp',
   },
+  // Specchi
   {
     slug: 'specchi',
     name: 'Specchi',
     description: "Specchi su misura per bagni, armadi e complementi d'arredo.",
-    category: 'vetri',
+    category: 'specchi',
     image: '/images/services/specchi.webp',
+  },
+  // Personalizzazioni
+  {
+    slug: 'porte-interne',
+    name: 'Porte interne',
+    description: 'Porte interne in vetro, scorrevoli e a battente. Luce e design.',
+    category: 'personalizzazioni',
+    image: '/images/gallery/lavorazioni-porta-fiori.webp',
   },
   // Lavorazioni
   {
@@ -125,9 +136,13 @@ export const services: Service[] = [
 ];
 
 export const categories = {
+  'box-doccia': 'Box doccia',
   installazioni: 'Installazioni',
-  vetri: 'Vetri',
   lavorazioni: 'Lavorazioni',
+  parapetti: 'Parapetti',
+  personalizzazioni: 'Personalizzazioni',
+  specchi: 'Specchi',
+  vetri: 'Vetri',
 } as const;
 
 export type CategoryKey = keyof typeof categories;

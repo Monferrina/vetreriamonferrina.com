@@ -16,12 +16,24 @@ describe('Dati servizi', () => {
   });
 
   it('i servizi si filtrano per categoria', () => {
+    const boxDoccia = services.filter((s) => s.category === 'box-doccia');
+    expect(boxDoccia.length).toBe(1);
+
+    const parapetti = services.filter((s) => s.category === 'parapetti');
+    expect(parapetti.length).toBe(1);
+
     const installazioni = services.filter((s) => s.category === 'installazioni');
-    expect(installazioni.length).toBe(6);
+    expect(installazioni.length).toBe(3);
     expect(installazioni.every((s) => s.category === 'installazioni')).toBe(true);
 
     const vetri = services.filter((s) => s.category === 'vetri');
-    expect(vetri.length).toBe(7);
+    expect(vetri.length).toBe(6);
+
+    const specchi = services.filter((s) => s.category === 'specchi');
+    expect(specchi.length).toBe(1);
+
+    const personalizzazioni = services.filter((s) => s.category === 'personalizzazioni');
+    expect(personalizzazioni.length).toBe(1);
 
     const lavorazioni = services.filter((s) => s.category === 'lavorazioni');
     expect(lavorazioni.length).toBe(3);

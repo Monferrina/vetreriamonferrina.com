@@ -17,9 +17,13 @@ export default defineType({
       type: 'string',
       options: {
         list: [
+          { title: 'Box doccia', value: 'box-doccia' },
           { title: 'Installazioni', value: 'installazioni' },
-          { title: 'Vetri', value: 'vetri' },
           { title: 'Lavorazioni', value: 'lavorazioni' },
+          { title: 'Parapetti', value: 'parapetti' },
+          { title: 'Personalizzazioni', value: 'personalizzazioni' },
+          { title: 'Specchi', value: 'specchi' },
+          { title: 'Vetri', value: 'vetri' },
         ],
       },
       validation: (r) => r.required(),

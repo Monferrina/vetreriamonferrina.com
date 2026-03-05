@@ -30,8 +30,8 @@ const galleryItems =
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Galleria</h1>
       <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
-        Una selezione dei nostri lavori: installazioni, vetri e lavorazioni realizzati nel nostro
-        laboratorio a Casale Monferrato.
+        Una selezione dei nostri lavori: box doccia, parapetti, vetri, specchi, personalizzazioni e
+        lavorazioni realizzati nel nostro laboratorio a Casale Monferrato.
       </p>
     </div>
   </section>
@@ -39,14 +39,14 @@ const galleryItems =
   <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
     <!-- Category filters -->
     <div
-      class="mb-10 flex flex-wrap gap-2"
+      class="scrollbar-hide mb-10 flex gap-2 overflow-x-auto pb-2 sm:flex-wrap sm:justify-center sm:overflow-visible sm:pb-0"
       role="group"
       aria-label="Filtra per categoria"
       data-reveal
     >
       <button
         type="button"
-        class="gallery-filter-active rounded-full px-5 py-2 text-sm font-medium transition-colors"
+        class="gallery-filter-active shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors"
         data-filter="tutti"
         aria-pressed="true"
       >
@@ -54,7 +54,15 @@ const galleryItems =
       </button>
       <button
         type="button"
-        class="gallery-filter-inactive rounded-full px-5 py-2 text-sm font-medium transition-colors"
+        class="gallery-filter-inactive shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors"
+        data-filter="box-doccia"
+        aria-pressed="false"
+      >
+        Box doccia
+      </button>
+      <button
+        type="button"
+        class="gallery-filter-inactive shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors"
         data-filter="installazioni"
         aria-pressed="false"
       >
@@ -62,19 +70,43 @@ const galleryItems =
       </button>
       <button
         type="button"
-        class="gallery-filter-inactive rounded-full px-5 py-2 text-sm font-medium transition-colors"
-        data-filter="vetri"
-        aria-pressed="false"
-      >
-        Vetri
-      </button>
-      <button
-        type="button"
-        class="gallery-filter-inactive rounded-full px-5 py-2 text-sm font-medium transition-colors"
+        class="gallery-filter-inactive shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors"
         data-filter="lavorazioni"
         aria-pressed="false"
       >
         Lavorazioni
+      </button>
+      <button
+        type="button"
+        class="gallery-filter-inactive shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors"
+        data-filter="parapetti"
+        aria-pressed="false"
+      >
+        Parapetti
+      </button>
+      <button
+        type="button"
+        class="gallery-filter-inactive shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors"
+        data-filter="personalizzazioni"
+        aria-pressed="false"
+      >
+        Personalizzazioni
+      </button>
+      <button
+        type="button"
+        class="gallery-filter-inactive shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors"
+        data-filter="specchi"
+        aria-pressed="false"
+      >
+        Specchi
+      </button>
+      <button
+        type="button"
+        class="gallery-filter-inactive shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors"
+        data-filter="vetri"
+        aria-pressed="false"
+      >
+        Vetri
       </button>
     </div>
 
@@ -106,10 +138,13 @@ const galleryItems =
     // --- Animated filter logic ---
     const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
     const galleryItems = document.querySelectorAll<HTMLElement>('[data-gallery-item]');
+    const grid = galleryItems[0]?.parentElement;
     const liveRegion = document.getElementById('gallery-live');
+    let transitioning = false;
 
     filterButtons.forEach((btn) => {
       btn.addEventListener('click', () => {
+        if (transitioning) return;
         const filter = btn.dataset.filter;
 
         // Update button styles
@@ -120,42 +155,45 @@ const galleryItems =
           b.classList.toggle('gallery-filter-inactive', !isActive);
         });
 
-        // Animated show/hide items
-        let visibleCount = 0;
-        galleryItems.forEach((item) => {
-          const matches = filter === 'tutti' || item.dataset.category === filter;
+        if (!grid) return;
+        transitioning = true;
 
-          if (matches) {
-            visibleCount++;
-            // Show with animation
-            item.style.display = '';
-            item.animate(
-              [
-                { opacity: 0, transform: 'scale(0.92) translateY(8px)' },
-                { opacity: 1, transform: 'scale(1) translateY(0)' },
-              ],
-              { duration: 400, easing: 'ease-out', fill: 'forwards' }
-            );
-          } else {
-            // Hide with animation
-            const anim = item.animate(
-              [
-                { opacity: 1, transform: 'scale(1)' },
-                { opacity: 0, transform: 'scale(0.95)' },
-              ],
-              { duration: 200, easing: 'ease-in' }
-            );
-            anim.onfinish = () => {
-              item.style.display = 'none';
-            };
-          }
+        // Fade out entire grid, swap content, fade in
+        const fadeOut = grid.animate([{ opacity: 1 }, { opacity: 0 }], {
+          duration: 150,
+          easing: 'ease-in',
+          fill: 'forwards',
         });
 
-        // Announce result count to screen readers
-        if (liveRegion) {
-          const label = btn.textContent?.trim() || filter;
-          liveRegion.textContent = `${label}: ${visibleCount} ${visibleCount === 1 ? 'elemento' : 'elementi'}`;
-        }
+        fadeOut.onfinish = () => {
+          // Swap visibility while grid is invisible
+          let visibleCount = 0;
+          galleryItems.forEach((item) => {
+            item.getAnimations().forEach((a) => a.cancel());
+            const matches = filter === 'tutti' || item.dataset.category === filter;
+            if (matches) {
+              visibleCount++;
+              item.style.display = '';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+
+          // Fade grid back in
+          grid.animate([{ opacity: 0 }, { opacity: 1 }], {
+            duration: 250,
+            easing: 'ease-out',
+            fill: 'forwards',
+          }).onfinish = () => {
+            transitioning = false;
+          };
+
+          // Announce result count to screen readers
+          if (liveRegion) {
+            const label = btn.textContent?.trim() || filter;
+            liveRegion.textContent = `${label}: ${visibleCount} ${visibleCount === 1 ? 'elemento' : 'elementi'}`;
+          }
+        };
       });
     });
 
@@ -240,11 +278,9 @@ const galleryItems =
         // Restore header interactivity
         const header = document.querySelector('header');
         if (header) (header as HTMLElement).style.pointerEvents = '';
-        // Restore focus to the element that opened the lightbox
-        if (lastFocusedElement) {
-          lastFocusedElement.focus();
-        } else if (visibleItems[currentIndex]) {
-          (visibleItems[currentIndex] as HTMLElement).focus();
+        // Remove focus from gallery item to avoid visible focus ring
+        if (document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur();
         }
       };
     }
@@ -350,7 +386,20 @@ const galleryItems =
     );
   }
 
+  // Auto-filter from URL param (e.g. /galleria?categoria=box-doccia)
+  function applyUrlFilter() {
+    const params = new URLSearchParams(window.location.search);
+    const categoria = params.get('categoria');
+    if (!categoria) return;
+    const btn = document.querySelector<HTMLButtonElement>(`[data-filter="${categoria}"]`);
+    if (btn) btn.click();
+  }
+
   // Run on initial load and on Astro page transitions
   initGallery();
-  document.addEventListener('astro:after-swap', initGallery);
+  applyUrlFilter();
+  document.addEventListener('astro:after-swap', () => {
+    initGallery();
+    applyUrlFilter();
+  });
 </script>

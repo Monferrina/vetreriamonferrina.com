@@ -63,9 +63,6 @@
   --color-error: #ef4444;
   --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.06);
   --shadow: 0 2px 8px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.06);
-  --shadow-md:
-    0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4),
-    0 0 0 1px rgb(255 255 255 / 0.08);
 }
 
 /* Gallery filter buttons — design-token aware for dark mode */
@@ -83,6 +80,15 @@
 }
 .gallery-filter-inactive:hover {
   background-color: color-mix(in srgb, var(--color-neutral-200) 70%, var(--color-neutral-700));
+}
+
+/* Scrollbar-hide utility for horizontal scroll filters (Apple-style chips) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 /* ==================== Global Scroll Reveal ==================== */

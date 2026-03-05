@@ -1,274 +1,208 @@
-<mxfile host="app.diagrams.net" modified="2026-03-02" agent="Claude" version="24.0.0" type="device">
-  <diagram id="architecture" name="Architettura">
-    <mxGraphModel dx="1422" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1500" math="0" shadow="0">
-      <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-
-        <!-- Title -->
-        <mxCell id="title" value="Vetreria Monferrina — Architettura (v1.0)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;fontColor=#1B4965;" vertex="1" parent="1">
-          <mxGeometry x="420" y="20" width="450" height="40" as="geometry" />
-        </mxCell>
-
-        <!-- CONTENT MANAGEMENT -->
-        <mxCell id="cms_group" value="Content Management" style="swimlane;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="40" y="90" width="300" height="220" as="geometry" />
-        </mxCell>
-        <mxCell id="sanity" value="Sanity CMS v5&#xa;(contenuti dinamici)&#xa;&#xa;• Servizi + Galleria foto&#xa;• Impostazioni sito&#xa;• Chi siamo + foto famiglia&#xa;• Studio: vetreriamonferrina.sanity.studio&#xa;• Project: 7bqabdpn" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="cms_group">
-          <mxGeometry x="20" y="40" width="260" height="160" as="geometry" />
-        </mxCell>
-
-        <!-- BUILD -->
-        <mxCell id="build_group" value="Build (SSG)" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="420" y="90" width="300" height="220" as="geometry" />
-        </mxCell>
-        <mxCell id="astro" value="Astro 5&#xa;(Static Site Generator)&#xa;&#xa;• Fetch da Sanity a build time&#xa;• Fetch recensioni Google&#xa;• Genera HTML statico&#xa;• Tailwind CSS 4 + Dark Mode&#xa;• View Transitions (slide+fade)&#xa;• Prefetch viewport" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="build_group">
-          <mxGeometry x="20" y="40" width="260" height="170" as="geometry" />
-        </mxCell>
-
-        <!-- HOSTING -->
-        <mxCell id="host_group" value="Hosting &amp; Delivery" style="swimlane;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="800" y="90" width="300" height="220" as="geometry" />
-        </mxCell>
-        <mxCell id="vercel" value="Vercel&#xa;(CDN globale)&#xa;&#xa;• HTML statico all'edge&#xa;• HTTPS automatico&#xa;• Deploy da Git push&#xa;• Preview per ogni branch&#xa;• Dominio .com custom&#xa;• Region: Frankfurt (fra1)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="host_group">
-          <mxGeometry x="20" y="40" width="260" height="160" as="geometry" />
-        </mxCell>
-
-        <!-- CI/CD PIPELINE -->
-        <mxCell id="cicd_group" value="CI/CD Pipeline" style="swimlane;startSize=30;fillColor=#d0cee2;strokeColor=#56517e;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="1160" y="90" width="300" height="220" as="geometry" />
-        </mxCell>
-        <mxCell id="cicd" value="GitHub Actions&#xa;&#xa;• ESLint (TS + Astro)&#xa;• Prettier format check&#xa;• astro check (type check)&#xa;• Vitest (94 unit test)&#xa;• Build di produzione&#xa;• Lighthouse CI (5 pagine)&#xa;&#xa;Pre-commit: Husky + lint-staged" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=#56517e;fontSize=11;" vertex="1" parent="cicd_group">
-          <mxGeometry x="20" y="35" width="260" height="175" as="geometry" />
-        </mxCell>
-
-        <!-- GOOGLE PLACES API (New) -->
-        <mxCell id="google_group" value="Google Places API (New)" style="swimlane;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="40" y="340" width="300" height="180" as="geometry" />
-        </mxCell>
-        <mxCell id="google_api" value="fetch-place-data.mjs (singola chiamata)&#xa;&#xa;• Recensioni >= 4★ (nomi abbreviati GDPR)&#xa;• Orari apertura reali&#xa;• 10 foto scaricate localmente&#xa;• API key solo server-side (env var)&#xa;• Quote: 50 req/day + budget $5/mese" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="google_group">
-          <mxGeometry x="20" y="35" width="260" height="130" as="geometry" />
-        </mxCell>
-
-        <!-- OPEN-METEO WEATHER -->
-        <mxCell id="weather_group" value="Open-Meteo (gratis)" style="swimlane;startSize=25;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="40" y="540" width="300" height="90" as="geometry" />
-        </mxCell>
-        <mxCell id="weather_api" value="Widget meteo client-side | No API key&#xa;Consigli intelligenti sul vetro (temp/umidita/pioggia)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="weather_group">
-          <mxGeometry x="20" y="30" width="260" height="50" as="geometry" />
-        </mxCell>
-
-        <!-- Arrows: CMS -> Build -> Host -->
-        <mxCell id="arrow1" value="webhook&#xa;on publish" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#666;" edge="1" parent="1" source="cms_group" target="build_group">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="arrow2" value="deploy&#xa;statico" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#666;" edge="1" parent="1" source="build_group" target="host_group">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <!-- Google -> Build -->
-        <mxCell id="arrow_google" value="reviews.json + hours.json&#xa;+ photos (build-time)" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#d6b656;" edge="1" parent="1" source="google_group" target="build_group">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <!-- CI/CD -> Host -->
-        <mxCell id="arrow_cicd" value="lint → check → test → build" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#56517e;" edge="1" parent="1" source="cicd_group" target="host_group">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <!-- Weather -> Browser (client-side) -->
-        <mxCell id="arrow_weather" value="fetch client-side&#xa;(no API key)" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#82b366;dashed=1;" edge="1" parent="1" source="weather_group" target="browser">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <!-- CLOUDFLARE CDN/SECURITY -->
-        <mxCell id="cloudflare_group" value="Cloudflare (DNS + CDN + Security)" style="swimlane;startSize=30;fillColor=#F4A460;strokeColor=#D2691E;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="670" y="340" width="340" height="200" as="geometry" />
-        </mxCell>
-        <mxCell id="cloudflare" value="vetreriamonferrina.com ($10/anno)&#xa;&#xa;• DNS only → A 76.76.21.21 + CNAME www&#xa;• SSL/TLS Full (Strict) + HSTS preload&#xa;• WAF + Bot Fight + AI Bot Blocking&#xa;• Page Shield + Leaked Credentials&#xa;• Email Obfuscation + Hotlink Protection&#xa;• Cache: /_astro/*, .webp, .woff2 (1y)&#xa;• HTTP/2+3, 0-RTT, Early Hints, Brotli&#xa;• Web Analytics RUM (zero cookie)&#xa;• Redirect www → root (301)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8DC;strokeColor=#D2691E;fontSize=10;align=left;spacingLeft=10;" vertex="1" parent="cloudflare_group">
-          <mxGeometry x="10" y="35" width="320" height="155" as="geometry" />
-        </mxCell>
-
-        <!-- Vercel -> Cloudflare -> Browser -->
-        <mxCell id="arrow_vercel_cf" value="origin" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#D2691E;" edge="1" parent="1" source="host_group" target="cloudflare_group">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <!-- BROWSER -->
-        <mxCell id="browser" value="Browser utente&#xa;(mobile / desktop)" style="shape=mxgraph.basic.cloud_callout;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="850" y="580" width="200" height="110" as="geometry" />
-        </mxCell>
-        <mxCell id="arrow3" value="HTTPS&#xa;cached + protected" style="endArrow=classic;endFill=1;html=1;fontSize=10;strokeWidth=2;strokeColor=#1B4965;" edge="1" parent="1" source="cloudflare_group" target="browser">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <!-- SECURITY HEADERS -->
-        <mxCell id="security_box" value="Security Headers (vercel.json)&#xa;&#xa;• CSP: self + unsafe-inline + unpkg + OSM + Open-Meteo&#xa;• HSTS: max-age=63M, includeSubDomains, preload&#xa;• X-Frame-Options: DENY&#xa;• X-Content-Type-Options: nosniff&#xa;• Referrer-Policy: strict-origin-when-cross-origin&#xa;• Permissions-Policy: camera=(), microphone=(), geolocation=()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;align=left;spacingLeft=10;" vertex="1" parent="1">
-          <mxGeometry x="1120" y="380" width="340" height="130" as="geometry" />
-        </mxCell>
-        <mxCell id="arrow_security" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#b85450;dashed=1;" edge="1" parent="1" source="security_box" target="host_group">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <!-- DARK MODE -->
-        <mxCell id="darkmode_box" value="Dark Mode automatica&#xa;&#xa;• prefers-color-scheme: dark → dark&#xa;• Ore 20-7 → dark&#xa;• Script inline anti-FOUC&#xa;• Listener ogni 15min" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A1D24;strokeColor=#5BA3CC;fontSize=10;fontColor=#D1D5DB;align=left;spacingLeft=10;" vertex="1" parent="1">
-          <mxGeometry x="850" y="540" width="200" height="90" as="geometry" />
-        </mxCell>
-        <mxCell id="arrow_dark" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#5BA3CC;dashed=1;" edge="1" parent="1" source="browser" target="darkmode_box">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <!-- ACCESSIBILITY (v0.3) -->
-        <mxCell id="a11y_box" value="Accessibilita WCAG 2.1 AA&#xa;&#xa;• Focus trap: lightbox + chatbot&#xa;• aria-live: filtri galleria + servizi&#xa;• prefers-reduced-motion: parallax&#xa;• Contrasto colori verificato&#xa;• Target size >= 44px (touch)&#xa;• Tabelle semantiche (th scope)&#xa;• Screen reader: istruzioni lightbox" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#4CAF50;fontSize=10;align=left;spacingLeft=10;" vertex="1" parent="1">
-          <mxGeometry x="1080" y="540" width="240" height="130" as="geometry" />
-        </mxCell>
-        <mxCell id="arrow_a11y" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#4CAF50;dashed=1;" edge="1" parent="1" source="a11y_box" target="browser">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <!-- VIEW TRANSITIONS (v0.3) -->
-        <mxCell id="transitions_box" value="View Transitions (v0.3)&#xa;&#xa;• Slide + fade tra pagine&#xa;• Header/footer persistenti&#xa;• Prefetch viewport (auto)&#xa;• reduced-motion rispettato" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1976D2;fontSize=10;align=left;spacingLeft=10;" vertex="1" parent="1">
-          <mxGeometry x="1340" y="540" width="200" height="90" as="geometry" />
-        </mxCell>
-
-        <!-- IMAGE OPTIMIZATION (v0.3) -->
-        <mxCell id="imgopt_box" value="Ottimizzazione immagini (v0.4)&#xa;&#xa;• WebP quality 80 (sharp)&#xa;• 24 immagini WebP&#xa;• lazy/eager intelligente&#xa;• fetchpriority=high su LCP&#xa;• sizes responsive" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;fontSize=10;align=left;spacingLeft=10;" vertex="1" parent="1">
-          <mxGeometry x="420" y="340" width="220" height="110" as="geometry" />
-        </mxCell>
-        <mxCell id="arrow_imgopt" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#E65100;dashed=1;" edge="1" parent="1" source="imgopt_box" target="build_group">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <!-- PAGES -->
-        <mxCell id="pages_group" value="Pagine (8)" style="swimlane;startSize=30;fillColor=#f5f5f5;strokeColor=#666;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="40" y="660" width="350" height="510" as="geometry" />
-        </mxCell>
-        <mxCell id="page_home" value="Home" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="pages_group">
-          <mxGeometry x="20" y="40" width="95" height="35" as="geometry" />
-        </mxCell>
-        <mxCell id="page_about" value="Chi siamo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="pages_group">
-          <mxGeometry x="125" y="40" width="95" height="35" as="geometry" />
-        </mxCell>
-        <mxCell id="page_services" value="Servizi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="pages_group">
-          <mxGeometry x="230" y="40" width="95" height="35" as="geometry" />
-        </mxCell>
-        <mxCell id="page_gallery" value="Galleria" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="pages_group">
-          <mxGeometry x="20" y="90" width="95" height="35" as="geometry" />
-        </mxCell>
-        <mxCell id="page_quote" value="Preventivo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="pages_group">
-          <mxGeometry x="125" y="90" width="95" height="35" as="geometry" />
-        </mxCell>
-        <mxCell id="page_contact" value="Contatti" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="pages_group">
-          <mxGeometry x="230" y="90" width="95" height="35" as="geometry" />
-        </mxCell>
-        <mxCell id="page_privacy" value="Privacy Policy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="pages_group">
-          <mxGeometry x="20" y="140" width="95" height="35" as="geometry" />
-        </mxCell>
-        <mxCell id="page_cookie" value="Cookie Policy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="pages_group">
-          <mxGeometry x="125" y="140" width="95" height="35" as="geometry" />
-        </mxCell>
-
-        <!-- FILTER UX -->
-        <mxCell id="filter_box" value="Filtri pill buttons (Servizi + Galleria) | aria-live | Dark mode | Pulsante Tutti" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="pages_group">
-          <mxGeometry x="20" y="190" width="305" height="35" as="geometry" />
-        </mxCell>
-
-        <!-- LEAFLET MAP -->
-        <mxCell id="leaflet_box" value="Mappa Leaflet.js (Contatti) | Marker SVG | Popup | alt+title accessibili" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="pages_group">
-          <mxGeometry x="20" y="235" width="305" height="35" as="geometry" />
-        </mxCell>
-
-        <!-- CHATBOT -->
-        <mxCell id="chatbot_box" value="Chatbot contestuale a flusso&#xa;JSON statico | Saluto per pagina | Focus trap | Sessione sicura (cap 100)&#xa;aria-live messaggi | Zero API | Guida → form / telefono" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6d0de;strokeColor=#996185;fontSize=10;" vertex="1" parent="pages_group">
-          <mxGeometry x="20" y="280" width="305" height="55" as="geometry" />
-        </mxCell>
-
-        <!-- REVIEWS on Home -->
-        <mxCell id="reviews_box" value="Recensioni Google (build-time) | Stelle | Filtro >= 4★ | Carousel fluido" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="pages_group">
-          <mxGeometry x="20" y="345" width="305" height="35" as="geometry" />
-        </mxCell>
-
-        <!-- WEATHER WIDGET -->
-        <mxCell id="weather_box" value="Widget Meteo Open-Meteo (Contatti) | Consigli vetro | No API key" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="pages_group">
-          <mxGeometry x="20" y="390" width="305" height="35" as="geometry" />
-        </mxCell>
-
-        <!-- LIGHTBOX -->
-        <mxCell id="lightbox_box" value="Lightbox galleria | z-[9990] | Focus trap | Tastiera (frecce+Esc) | Swipe touch | Counter" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="pages_group">
-          <mxGeometry x="20" y="435" width="305" height="30" as="geometry" />
-        </mxCell>
-
-        <!-- TIMELINE CHI SIAMO -->
-        <mxCell id="timeline_box" value="Timeline Chi Siamo | 4 milestones compatti | Ricordo Manuela | Carousel lab" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="pages_group">
-          <mxGeometry x="20" y="475" width="305" height="30" as="geometry" />
-        </mxCell>
-
-        <!-- FORM FLOW -->
-        <mxCell id="form_group" value="Flusso Preventivo" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="440" y="500" width="340" height="290" as="geometry" />
-        </mxCell>
-        <mxCell id="form_client" value="1. Validazione client&#xa;(nome, tel, email, tipo,&#xa;consenso privacy)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="form_group">
-          <mxGeometry x="20" y="40" width="140" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="form_edge" value="2. Edge Function&#xa;(validazione server,&#xa;rate limit 5/min/IP,&#xa;honeypot, CSRF)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="form_group">
-          <mxGeometry x="180" y="40" width="140" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="form_resend" value="3. Resend API&#xa;(manda email formattata&#xa;a vetreriamonferrina&#xa;@gmail.com)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="form_group">
-          <mxGeometry x="20" y="120" width="140" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="form_confirm" value="4. Conferma utente&#xa;('Richiesta inviata!&#xa;Ti ricontattiamo.')" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="form_group">
-          <mxGeometry x="180" y="120" width="140" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="fa1" style="endArrow=classic;html=1;strokeWidth=1.5;strokeColor=#666;" edge="1" parent="form_group" source="form_client" target="form_edge">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="fa2" style="endArrow=classic;html=1;strokeWidth=1.5;strokeColor=#666;" edge="1" parent="form_group" source="form_edge" target="form_resend">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="fa3" style="endArrow=classic;html=1;strokeWidth=1.5;strokeColor=#666;" edge="1" parent="form_group" source="form_resend" target="form_confirm">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <!-- GDPR -->
-        <mxCell id="gdpr_box" value="GDPR Compliance&#xa;&#xa;• Zero cookie terze parti | Zero database dati personali | Consenso esplicito sul form&#xa;• Privacy policy + cookie policy | Footer: P.IVA, sede, ragione sociale | HTTPS (Vercel auto)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;align=left;spacingLeft=10;" vertex="1" parent="form_group">
-          <mxGeometry x="20" y="200" width="300" height="70" as="geometry" />
-        </mxCell>
-
-        <!-- TEST SUITE -->
-        <mxCell id="test_group" value="Test Suite" style="swimlane;startSize=25;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="440" y="820" width="340" height="110" as="geometry" />
-        </mxCell>
-        <mxCell id="test_unit" value="Vitest — 9 file, 94 test&#xa;Layout, Footer, Header, Chatbot,&#xa;Validation, Sanitize, Services, Sanity, Smoke" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="test_group">
-          <mxGeometry x="10" y="30" width="155" height="70" as="geometry" />
-        </mxCell>
-        <mxCell id="test_e2e" value="Playwright — 10 file, 142 test&#xa;Home, Pages, Navigation,&#xa;A11y, SEO, Services, Chatbot,&#xa;Quote Form, Legal, Smoke" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="test_group">
-          <mxGeometry x="175" y="30" width="155" height="70" as="geometry" />
-        </mxCell>
-
-        <!-- LIGHTHOUSE SCORES (v0.3) -->
-        <mxCell id="lighthouse_group" value="Lighthouse CI (v1.0)" style="swimlane;startSize=25;fillColor=#E8F5E9;strokeColor=#4CAF50;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="440" y="960" width="340" height="120" as="geometry" />
-        </mxCell>
-        <mxCell id="lighthouse_scores" value="Homepage: P99 A96 | Servizi: P99 A96&#xa;Contatti: P99 A97 | Chi siamo: P98 A96&#xa;Preventivo: P100 A96 | Galleria: P81 A96&#xa;&#xa;Best Practices: 100 | SEO: 100 (tutte)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#4CAF50;fontSize=10;" vertex="1" parent="lighthouse_group">
-          <mxGeometry x="20" y="30" width="300" height="80" as="geometry" />
-        </mxCell>
-
-        <!-- COMPONENTS (v0.3) -->
-        <mxCell id="components_box" value="18 Componenti Astro&#xa;&#xa;Header | Footer | HeroSection | MobileMenu | ServiceCard&#xa;ServiceHighlight | StatsSection | PartnersSection | ReviewsSection (carousel)&#xa;GalleryGrid (masonry) | Lightbox | QuoteForm | Chatbot | ContactMap&#xa;WeatherWidget | CookieBanner | CtaSection | ProtectedImage" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999;fontSize=10;align=left;spacingLeft=10;" vertex="1" parent="1">
-          <mxGeometry x="40" y="1200" width="540" height="90" as="geometry" />
-        </mxCell>
-
-        <!-- LEGEND -->
-        <mxCell id="legend_title" value="Costi" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#333;" vertex="1" parent="1">
-          <mxGeometry x="850" y="660" width="100" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="legend" value="Dominio vetreriamonferrina.com: $10/anno (Cloudflare)&#xa;Cloudflare CDN+WAF: gratis (Free plan)&#xa;Vercel hosting: gratis&#xa;Sanity CMS: gratis&#xa;Resend email: gratis&#xa;Google Places API (New): gratis ($200/mese credito)&#xa;Open-Meteo meteo: gratis (no API key)&#xa;GitHub Actions CI: gratis&#xa;HTTPS/SSL: gratis (Cloudflare + Vercel)&#xa;─────────────&#xa;Totale: ~$10/anno&#xa;&#xa;⚠ Soglie consigliate GCP:&#xa;• Quote: 50 req/giorno&#xa;• Budget alert: $5/mese" style="text;html=1;align=left;verticalAlign=top;fontSize=11;fontColor=#666;spacingLeft=5;" vertex="1" parent="1">
-          <mxGeometry x="850" y="690" width="260" height="210" as="geometry" />
-        </mxCell>
-
-        <!-- VERSION HISTORY -->
-        <mxCell id="version_box" value="Versioni&#xa;&#xa;v0.1 — Scaffold, pagine base, chatbot, form, SEO, dark mode&#xa;v0.2 — Masonry gallery, scroll animations, CI/CD, partner, 94 test&#xa;v0.3 — WCAG 2.1 AA, view transitions, image optimization, email update, Lighthouse CI&#xa;v0.4 — Site audit: gallery 24 foto, lightbox fix, dark mode polish, E2E hardening (142 test)&#xa;v1.0 — LIVE: dominio .com, Cloudflare DNS, Sanity Studio, Resend email, foto famiglia CMS, Google Business" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999;fontSize=10;align=left;spacingLeft=10;" vertex="1" parent="1">
-          <mxGeometry x="850" y="930" width="380" height="90" as="geometry" />
-        </mxCell>
-
-      </root>
-    </mxGraphModel>
-  </diagram>
+<mxfile host="65bd71144e">
+    <diagram id="architecture" name="Architettura">
+        <mxGraphModel dx="846" dy="544" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1500" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="Vetreria Monferrina — Architettura (v1.0)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;fontColor=#1B4965;" parent="1" vertex="1">
+                    <mxGeometry x="420" y="20" width="450" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="cms_group" value="Content Management" style="swimlane;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="90" width="300" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="sanity" value="Sanity CMS v5&#xa;(contenuti dinamici)&#xa;&#xa;• Servizi + Galleria foto&#xa;• Impostazioni sito&#xa;• Chi siamo + foto famiglia&#xa;• Studio: vetreriamonferrina.sanity.studio&#xa;• Project: 7bqabdpn" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" parent="cms_group" vertex="1">
+                    <mxGeometry x="20" y="40" width="260" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="build_group" value="Build (SSG)" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="420" y="90" width="300" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="astro" value="Astro 5&#xa;(Static Site Generator)&#xa;&#xa;• Fetch da Sanity a build time&#xa;• Fetch recensioni Google&#xa;• Genera HTML statico&#xa;• Tailwind CSS 4 + Dark Mode&#xa;• View Transitions (slide+fade)&#xa;• Prefetch viewport" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="build_group" vertex="1">
+                    <mxGeometry x="20" y="40" width="260" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="host_group" value="Hosting &amp; Delivery" style="swimlane;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="800" y="90" width="300" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="vercel" value="Vercel&#xa;(CDN globale)&#xa;&#xa;• HTML statico all&#39;edge&#xa;• HTTPS automatico&#xa;• Deploy da Git push&#xa;• Preview per ogni branch&#xa;• Dominio .com custom&#xa;• Region: Frankfurt (fra1)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" parent="host_group" vertex="1">
+                    <mxGeometry x="20" y="40" width="260" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="cicd_group" value="CI/CD Pipeline" style="swimlane;startSize=30;fillColor=#d0cee2;strokeColor=#56517e;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="1160" y="90" width="300" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="cicd" value="GitHub Actions&#xa;&#xa;• ESLint (TS + Astro)&#xa;• Prettier format check&#xa;• astro check (type check)&#xa;• Vitest (94 unit test)&#xa;• Build di produzione&#xa;• Lighthouse CI (5 pagine)&#xa;&#xa;Pre-commit: Husky + lint-staged" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=#56517e;fontSize=11;" parent="cicd_group" vertex="1">
+                    <mxGeometry x="20" y="35" width="260" height="175" as="geometry"/>
+                </mxCell>
+                <mxCell id="google_group" value="Google Places API (New)" style="swimlane;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="340" width="300" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="google_api" value="fetch-place-data.mjs (singola chiamata)&#xa;&#xa;• Recensioni &gt;= 4★ (nomi abbreviati GDPR)&#xa;• Orari apertura reali&#xa;• 10 foto scaricate localmente&#xa;• API key solo server-side (env var)&#xa;• Quote: 50 req/day + budget $5/mese" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" parent="google_group" vertex="1">
+                    <mxGeometry x="20" y="35" width="260" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="weather_group" value="Open-Meteo (gratis)" style="swimlane;startSize=25;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="540" width="300" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="weather_api" value="Widget meteo client-side | No API key&#xa;Consigli intelligenti sul vetro (temp/umidita/pioggia)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="weather_group" vertex="1">
+                    <mxGeometry x="20" y="30" width="260" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow1" value="webhook&#xa;on publish" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#666;" parent="1" source="cms_group" target="build_group" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow2" value="deploy&#xa;statico" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#666;" parent="1" source="build_group" target="host_group" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow_google" value="reviews.json + hours.json&#xa;+ photos (build-time)" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#d6b656;" parent="1" source="google_group" target="build_group" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow_cicd" value="lint → check → test → build" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#56517e;" parent="1" source="cicd_group" target="host_group" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow_weather" value="fetch client-side&#xa;(no API key)" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#82b366;dashed=1;" parent="1" source="weather_group" target="browser" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cloudflare_group" value="Cloudflare (DNS + CDN + Security)" style="swimlane;startSize=30;fillColor=#F4A460;strokeColor=#D2691E;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="670" y="340" width="340" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="cloudflare" value="vetreriamonferrina.com ($10/anno)&#xa;&#xa;• DNS only → A 76.76.21.21 + CNAME www&#xa;• SSL/TLS Full (Strict) + HSTS preload&#xa;• WAF + Bot Fight + AI Bot Blocking&#xa;• Page Shield + Leaked Credentials&#xa;• Email Obfuscation + Hotlink Protection&#xa;• Cache: /_astro/*, .webp, .woff2 (1y)&#xa;• HTTP/2+3, 0-RTT, Early Hints, Brotli&#xa;• Web Analytics RUM (zero cookie)&#xa;• Redirect www → root (301)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8DC;strokeColor=#D2691E;fontSize=10;align=left;spacingLeft=10;" parent="cloudflare_group" vertex="1">
+                    <mxGeometry x="10" y="35" width="320" height="155" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow_vercel_cf" value="origin" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#D2691E;" parent="1" source="host_group" target="cloudflare_group" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="browser" value="Browser utente&#xa;(mobile / desktop)" style="shape=mxgraph.basic.cloud_callout;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="850" y="590" width="200" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow3" value="HTTPS&#xa;cached + protected" style="endArrow=classic;endFill=1;html=1;fontSize=10;strokeWidth=2;strokeColor=#1B4965;" parent="1" source="cloudflare_group" target="browser" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="security_box" value="Security Headers (vercel.json)&#xa;&#xa;• CSP: self + unsafe-inline + unpkg + OSM + Open-Meteo&#xa;• HSTS: max-age=63M, includeSubDomains, preload&#xa;• X-Frame-Options: DENY&#xa;• X-Content-Type-Options: nosniff&#xa;• Referrer-Policy: strict-origin-when-cross-origin&#xa;• Permissions-Policy: camera=(), microphone=(), geolocation=()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="1120" y="380" width="340" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow_security" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#b85450;dashed=1;" parent="1" source="security_box" target="host_group" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="darkmode_box" value="Dark Mode automatica&#xa;&#xa;• prefers-color-scheme: dark → dark&#xa;• Ore 20-7 → dark&#xa;• Script inline anti-FOUC&#xa;• Listener ogni 15min" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A1D24;strokeColor=#5BA3CC;fontSize=10;fontColor=#D1D5DB;align=left;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="1190" y="720" width="200" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow_dark" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#5BA3CC;dashed=1;" parent="1" source="browser" target="darkmode_box" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="a11y_box" value="Accessibilita WCAG 2.1 AA&#xa;&#xa;• Focus trap: lightbox + chatbot&#xa;• aria-live: filtri galleria + servizi&#xa;• prefers-reduced-motion: parallax&#xa;• Contrasto colori verificato&#xa;• Target size &gt;= 44px (touch)&#xa;• Tabelle semantiche (th scope)&#xa;• Screen reader: istruzioni lightbox" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#4CAF50;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="1080" y="540" width="240" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow_a11y" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#4CAF50;dashed=1;" parent="1" source="a11y_box" target="browser" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="transitions_box" value="View Transitions (v0.3)&#xa;&#xa;• Slide + fade tra pagine&#xa;• Header/footer persistenti&#xa;• Prefetch viewport (auto)&#xa;• reduced-motion rispettato" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1976D2;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="1340" y="540" width="200" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="imgopt_box" value="Ottimizzazione immagini (v0.4)&#xa;&#xa;• WebP quality 80 (sharp)&#xa;• 24 immagini WebP&#xa;• lazy/eager intelligente&#xa;• fetchpriority=high su LCP&#xa;• sizes responsive" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="420" y="340" width="220" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow_imgopt" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#E65100;dashed=1;" parent="1" source="imgopt_box" target="build_group" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pages_group" value="Pagine (8)" style="swimlane;startSize=30;fillColor=#f5f5f5;strokeColor=#666;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="660" width="350" height="510" as="geometry"/>
+                </mxCell>
+                <mxCell id="page_home" value="Home" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="pages_group" vertex="1">
+                    <mxGeometry x="20" y="40" width="95" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="page_about" value="Chi siamo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="pages_group" vertex="1">
+                    <mxGeometry x="125" y="40" width="95" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="page_services" value="Servizi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="pages_group" vertex="1">
+                    <mxGeometry x="230" y="40" width="95" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="page_gallery" value="Galleria" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="pages_group" vertex="1">
+                    <mxGeometry x="20" y="90" width="95" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="page_quote" value="Preventivo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" parent="pages_group" vertex="1">
+                    <mxGeometry x="125" y="90" width="95" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="page_contact" value="Contatti" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="pages_group" vertex="1">
+                    <mxGeometry x="230" y="90" width="95" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="page_privacy" value="Privacy Policy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" parent="pages_group" vertex="1">
+                    <mxGeometry x="20" y="140" width="95" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="page_cookie" value="Cookie Policy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" parent="pages_group" vertex="1">
+                    <mxGeometry x="125" y="140" width="95" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="filter_box" value="Filtri pill buttons (Servizi + Galleria) | aria-live | Dark mode | Pulsante Tutti" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="pages_group" vertex="1">
+                    <mxGeometry x="20" y="190" width="305" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="leaflet_box" value="Mappa Leaflet.js (Contatti) | Marker SVG | Popup | alt+title accessibili" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="pages_group" vertex="1">
+                    <mxGeometry x="20" y="235" width="305" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="chatbot_box" value="Chatbot contestuale a flusso&#xa;JSON statico | Saluto per pagina | Focus trap | Sessione sicura (cap 100)&#xa;aria-live messaggi | Zero API | Guida → form / telefono" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6d0de;strokeColor=#996185;fontSize=10;" parent="pages_group" vertex="1">
+                    <mxGeometry x="20" y="280" width="305" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="reviews_box" value="Recensioni Google (build-time) | Stelle | Filtro &gt;= 4★ | Carousel fluido" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" parent="pages_group" vertex="1">
+                    <mxGeometry x="20" y="345" width="305" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="weather_box" value="Widget Meteo Open-Meteo (Contatti) | Consigli vetro | No API key" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="pages_group" vertex="1">
+                    <mxGeometry x="20" y="390" width="305" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="lightbox_box" value="Lightbox galleria | z-[9990] | Focus trap | Tastiera (frecce+Esc) | Swipe touch | Counter" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="pages_group" vertex="1">
+                    <mxGeometry x="20" y="435" width="305" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="timeline_box" value="Timeline Chi Siamo | 4 milestones compatti | Ricordo Manuela | Carousel lab" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="pages_group" vertex="1">
+                    <mxGeometry x="20" y="475" width="305" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="form_group" value="Flusso Preventivo" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="440" y="660" width="340" height="290" as="geometry"/>
+                </mxCell>
+                <mxCell id="form_client" value="1. Validazione client&#xa;(nome, tel, email, tipo,&#xa;consenso privacy)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" parent="form_group" vertex="1">
+                    <mxGeometry x="20" y="40" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="form_edge" value="2. Edge Function&#xa;(validazione server,&#xa;rate limit 5/min/IP,&#xa;honeypot, CSRF)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" parent="form_group" vertex="1">
+                    <mxGeometry x="180" y="40" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="form_resend" value="3. Resend API&#xa;(manda email formattata&#xa;a vetreriamonferrina&#xa;@gmail.com)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" parent="form_group" vertex="1">
+                    <mxGeometry x="20" y="120" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="form_confirm" value="4. Conferma utente&#xa;(&#39;Richiesta inviata!&#xa;Ti ricontattiamo.&#39;)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="form_group" vertex="1">
+                    <mxGeometry x="180" y="120" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="fa1" style="endArrow=classic;html=1;strokeWidth=1.5;strokeColor=#666;" parent="form_group" source="form_client" target="form_edge" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fa2" style="endArrow=classic;html=1;strokeWidth=1.5;strokeColor=#666;" parent="form_group" source="form_edge" target="form_resend" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="fa3" style="endArrow=classic;html=1;strokeWidth=1.5;strokeColor=#666;" parent="form_group" source="form_resend" target="form_confirm" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="gdpr_box" value="GDPR Compliance&#xa;&#xa;• Zero cookie terze parti | Zero database dati personali | Consenso esplicito sul form&#xa;• Privacy policy + cookie policy | Footer: P.IVA, sede, ragione sociale | HTTPS (Vercel auto)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;align=left;spacingLeft=10;" parent="form_group" vertex="1">
+                    <mxGeometry x="20" y="190" width="300" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="test_group" value="Test Suite" style="swimlane;startSize=25;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="440" y="970" width="340" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="test_unit" value="Vitest — 9 file, 94 test&#xa;Layout, Footer, Header, Chatbot,&#xa;Validation, Sanitize, Services, Sanity, Smoke" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="test_group" vertex="1">
+                    <mxGeometry x="10" y="30" width="155" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="test_e2e" value="Playwright — 10 file, 142 test&#xa;Home, Pages, Navigation,&#xa;A11y, SEO, Services, Chatbot,&#xa;Quote Form, Legal, Smoke" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="test_group" vertex="1">
+                    <mxGeometry x="175" y="30" width="155" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="lighthouse_group" value="Lighthouse CI (v1.0)" style="swimlane;startSize=25;fillColor=#E8F5E9;strokeColor=#4CAF50;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="440" y="1100" width="340" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="lighthouse_scores" value="Homepage: P99 A96 | Servizi: P99 A96&#xa;Contatti: P99 A97 | Chi siamo: P98 A96&#xa;Preventivo: P100 A96 | Galleria: P81 A96&#xa;&#xa;Best Practices: 100 | SEO: 100 (tutte)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#4CAF50;fontSize=10;" parent="lighthouse_group" vertex="1">
+                    <mxGeometry x="20" y="30" width="300" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="components_box" value="18 Componenti Astro&#xa;&#xa;Header | Footer | HeroSection | MobileMenu | ServiceCard&#xa;ServiceHighlight | StatsSection | PartnersSection | ReviewsSection (carousel)&#xa;GalleryGrid (masonry) | Lightbox | QuoteForm | Chatbot | ContactMap&#xa;WeatherWidget | CookieBanner | CtaSection | ProtectedImage" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="1230" width="540" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend_title" value="Costi" style="text;html=1;align=left;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#333;" parent="1" vertex="1">
+                    <mxGeometry x="860" y="720" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend" value="Dominio vetreriamonferrina.com: $10/anno (Cloudflare)&#xa;Cloudflare CDN+WAF: gratis (Free plan)&#xa;Vercel hosting: gratis&#xa;Sanity CMS: gratis&#xa;Resend email: gratis&#xa;Google Places API (New): gratis ($200/mese credito)&#xa;Open-Meteo meteo: gratis (no API key)&#xa;GitHub Actions CI: gratis&#xa;HTTPS/SSL: gratis (Cloudflare + Vercel)&#xa;─────────────&#xa;Totale: ~$10/anno&#xa;&#xa;⚠ Soglie consigliate GCP:&#xa;• Quote: 50 req/giorno&#xa;• Budget alert: $5/mese" style="text;html=1;align=left;verticalAlign=top;fontSize=11;fontColor=#666;spacingLeft=5;" parent="1" vertex="1">
+                    <mxGeometry x="850" y="750" width="260" height="210" as="geometry"/>
+                </mxCell>
+                <mxCell id="version_box" value="Versioni&#xa;&#xa;v0.1 — Scaffold, pagine base, chatbot, form, SEO, dark mode&#xa;v0.2 — Masonry gallery, scroll animations, CI/CD, partner, 94 test&#xa;v0.3 — WCAG 2.1 AA, view transitions, image optimization, email update, Lighthouse CI&#xa;v0.4 — Site audit: gallery 24 foto, lightbox fix, dark mode polish, E2E hardening (142 test)&#xa;v1.0 — LIVE: dominio .com, Cloudflare DNS, Sanity Studio, Resend email, foto famiglia CMS, Google Business" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="850" y="980" width="380" height="130" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
 </mxfile>
