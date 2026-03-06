@@ -263,7 +263,7 @@ test-results/
 
 ```
 RESEND_API_KEY=re_xxxxxxxxxxxx
-RESEND_FROM_EMAIL=noreply@vetreriamonferrina.com
+RESEND_FROM_EMAIL=preventivi@vetreriamonferrina.com
 VETRERIA_EMAIL=info@example.com
 SANITY_PROJECT_ID=xxxxxxxxxx
 SANITY_DATASET=production

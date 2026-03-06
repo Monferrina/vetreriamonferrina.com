@@ -52,7 +52,7 @@ Copia `.env.example` in `.env.local` per lo sviluppo locale. Su Vercel, configur
 | Variabile           | Descrizione                                   | Dove ottenerla                                     |
 | ------------------- | --------------------------------------------- | -------------------------------------------------- |
 | `RESEND_API_KEY`    | API key Resend per invio email                | [resend.com/api-keys](https://resend.com/api-keys) |
-| `RESEND_FROM_EMAIL` | Mittente email (dominio verificato su Resend) | Es. `noreply@vetreriamonferrina.com`               |
+| `RESEND_FROM_EMAIL` | Mittente email (dominio verificato su Resend) | Es. `preventivi@vetreriamonferrina.com`            |
 | `VETRERIA_EMAIL`    | Casella che riceve i preventivi               | `vetreriamonferrina@gmail.com`                     |
 | `SANITY_PROJECT_ID` | ID progetto Sanity                            | [sanity.io/manage](https://sanity.io/manage)       |
 | `SANITY_DATASET`    | Dataset Sanity                                | `production`                                       |
