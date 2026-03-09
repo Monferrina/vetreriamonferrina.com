@@ -22,11 +22,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = resolve(__dirname, '../src/data');
 
 const API_KEY = process.env.GOOGLE_PLACES_API_KEY;
-const PLACE_ID = process.env.GOOGLE_PLACE_ID || 'ChIJcx_Q1ESwh0cRqv3FdLTrU1w';
+const PLACE_ID = process.env.GOOGLE_PLACE_ID;
 const MIN_RATING = 4;
 
-if (!API_KEY) {
-  console.error('Error: GOOGLE_PLACES_API_KEY environment variable is required.');
+if (!API_KEY || !PLACE_ID) {
+  console.error('Error: GOOGLE_PLACES_API_KEY and GOOGLE_PLACE_ID environment variables are required.');
   process.exit(1);
 }
 

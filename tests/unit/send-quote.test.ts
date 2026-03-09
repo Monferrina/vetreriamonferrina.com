@@ -26,8 +26,8 @@ function makeEmailSender(
 const config: SendQuoteConfig = {
   allowedOrigins: ['https://vetreriamonferrina.com'],
   resendApiKey: 're_test_key',
-  fromEmail: 'preventivi@vetreriamonferrina.com',
-  toEmail: 'vetreriamonferrina@gmail.com',
+  fromEmail: 'noreply@test.example.com',
+  toEmail: 'recipient@test.example.com',
 };
 
 const validBody = {
@@ -81,8 +81,8 @@ describe('handleSendQuote', () => {
     await handleSendQuote(makeReq({ ip: uniqueIp() }), config, sender);
 
     const [params] = sender.calls[0];
-    expect(params.from).toBe('preventivi@vetreriamonferrina.com');
-    expect(params.to).toBe('vetreriamonferrina@gmail.com');
+    expect(params.from).toBe('noreply@test.example.com');
+    expect(params.to).toBe('recipient@test.example.com');
     expect(params.subject).toContain('box-doccia');
     expect(params.subject).toContain('Mario Rossi');
   });
