@@ -1,0 +1,98 @@
+import { validateQuoteForm, type QuoteFormData } from './validation';
+import { sanitizeFormData } from './sanitize';
+import { isRateLimited } from './rate-limit';
+
+export interface SendQuoteConfig {
+  allowedOrigins: string[];
+  resendApiKey: string;
+  fromEmail: string;
+  toEmail: string;
+}
+
+export interface SendQuoteRequest {
+  origin: string | null;
+  ip: string;
+  body: unknown;
+}
+
+interface JsonResponse {
+  status: number;
+  body: Record<string, unknown>;
+}
+
+function json(status: number, body: Record<string, unknown>): JsonResponse {
+  return { status, body };
+}
+
+export interface EmailSender {
+  send(params: {
+    from: string;
+    to: string;
+    subject: string;
+    html: string;
+  }): Promise<{ data: { id: string } | null; error: { name: string; message: string } | null }>;
+}
+
+export async function handleSendQuote(
+  req: SendQuoteRequest,
+  config: SendQuoteConfig,
+  emailSender: EmailSender
+): Promise<JsonResponse> {
+  // 1. Verify Origin (anti-CSRF)
+  if (!req.origin || !config.allowedOrigins.some((o) => req.origin!.startsWith(o))) {
+    return json(403, { error: 'Origine non autorizzata' });
+  }
+
+  // 2. Rate limiting
+  if (isRateLimited(req.ip)) {
+    return json(429, { error: 'Troppe richieste. Riprova tra un minuto.' });
+  }
+
+  // 3. Sanitize and validate
+  if (!req.body || typeof req.body !== 'object') {
+    return json(400, { error: 'Dati non validi' });
+  }
+
+  const data = sanitizeFormData(req.body as Record<string, unknown>) as unknown as QuoteFormData;
+
+  const errors = validateQuoteForm(data);
+  if (errors.length > 0) {
+    // Honeypot: silently accept to not reveal bot detection
+    if (errors[0].field === 'honeypot') {
+      return json(200, { success: true });
+    }
+    return json(422, { errors });
+  }
+
+  // 4. Send email
+  try {
+    const { data: emailData, error: emailError } = await emailSender.send({
+      from: config.fromEmail,
+      to: config.toEmail,
+      subject: `Richiesta preventivo: ${data.serviceType} — ${data.name}`,
+      html: `
+        <h2>Nuova richiesta di preventivo</h2>
+        <p><strong>Nome:</strong> ${data.name}</p>
+        <p><strong>Telefono:</strong> ${data.phone}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Tipo di lavoro:</strong> ${data.serviceType}</p>
+        ${data.description ? `<p><strong>Descrizione:</strong> ${data.description}</p>` : ''}
+        ${data.measurements ? `<p><strong>Misure:</strong> ${data.measurements}</p>` : ''}
+        <hr />
+        <p><small>Inviato dal sito web — IP: ${req.ip}</small></p>
+      `,
+    });
+
+    if (emailError) {
+      console.error('[send-quote] Resend error:', emailError.name, emailError.message);
+      return json(500, { error: 'Errore invio email. Riprova o chiamaci.' });
+    }
+
+    console.log('[send-quote] Email sent successfully, id:', emailData?.id);
+  } catch (err) {
+    console.error('[send-quote] Unexpected error:', err);
+    return json(500, { error: 'Errore invio email. Riprova o chiamaci.' });
+  }
+
+  return json(200, { success: true });
+}
