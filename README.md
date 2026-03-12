@@ -174,11 +174,11 @@ Il sito e deployato su Vercel con adapter `@astrojs/vercel`. Le pagine statiche 
 
 ### Cloudflare
 
-Il dominio `vetreriamonferrina.com` e gestito su Cloudflare (piano Free).
+Il dominio `vetreriamonferrina.com` e gestito su Cloudflare.
 
 | Configurazione | Dettaglio                                                         |
 | -------------- | ----------------------------------------------------------------- |
-| DNS            | A → `76.76.21.21` + CNAME www → `cname.vercel-dns.com` (DNS Only) |
+| DNS            | A → `0.0.0.0` + CNAME www → `vercel` (DNS Only) |
 | SSL/TLS        | Full (Strict)                                                     |
 | HSTS           | 12 mesi, preload, includeSubDomains                               |
 | WAF            | Bot Fight Mode + AI Bot Blocking                                  |
@@ -194,7 +194,7 @@ Per l'invio email dal form preventivo. Il dominio mittente (`vetreriamonferrina.
 
 CMS headless per contenuti dinamici (foto famiglia, orari, testi pagina Chi Siamo). Lo studio Sanity e in `sanity/`.
 
-**Studio in produzione:** [vetreriamonferrina.sanity.studio](https://vetreriamonferrina.sanity.studio/)
+**Studio in produzione:** [sanity.io](https://www.sanity.io/)
 
 ```bash
 # Dev locale (opzionale)
