@@ -1,0 +1,29 @@
+name: Feature Request
+description: Proponi una nuova funzionalità
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Hai un'idea per migliorare il sito? Descrivila qui!
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema o esigenza
+      description: Quale problema risolverebbe questa funzionalità?
+      placeholder: "Sarebbe utile perché..."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Soluzione proposta
+      description: Come vorresti che funzionasse?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative considerate
+      description: Hai pensato ad altre soluzioni?

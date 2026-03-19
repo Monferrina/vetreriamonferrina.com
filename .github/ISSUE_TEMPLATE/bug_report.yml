@@ -1,0 +1,51 @@
+name: Bug Report
+description: Segnala un bug o un problema
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Grazie per la segnalazione! Compila i campi per aiutarci a risolvere il problema.
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrizione
+      description: Descrivi il problema in modo chiaro
+      placeholder: "Cosa non funziona?"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passaggi per riprodurre
+      description: Come possiamo riprodurre il problema?
+      placeholder: |
+        1. Vai a '...'
+        2. Clicca su '...'
+        3. Vedi l'errore
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamento atteso
+      description: Cosa dovrebbe succedere?
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      description: Quale browser usi?
+      placeholder: "Chrome 120, Safari 17, Firefox 121..."
+  - type: input
+    id: device
+    attributes:
+      label: Dispositivo
+      placeholder: "Desktop, iPhone 15, Samsung Galaxy S24..."
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshot
+      description: Se possibile, allega screenshot del problema
