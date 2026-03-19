@@ -39,12 +39,14 @@ export async function handleSendQuote(
   emailSender: EmailSender
 ): Promise<JsonResponse> {
   // 1. Verify Origin (anti-CSRF)
-  if (!req.origin || !config.allowedOrigins.some((o) => req.origin!.startsWith(o))) {
+  if (!req.origin || !config.allowedOrigins.some((o) => req.origin === o)) {
+    console.warn('[send-quote] Origin rejected:', req.origin, 'from IP:', req.ip);
     return json(403, { error: 'Origine non autorizzata' });
   }
 
   // 2. Rate limiting
   if (isRateLimited(req.ip)) {
+    console.warn('[send-quote] Rate limited IP:', req.ip);
     return json(429, { error: 'Troppe richieste. Riprova tra un minuto.' });
   }
 

@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { sanitizeString, sanitizeEmail, sanitizeFormData } from '../../src/lib/sanitize';
+import {
+  sanitizeString,
+  sanitizeEmail,
+  sanitizeFormData,
+  escapeHtml,
+} from '../../src/lib/sanitize';
 
 describe('sanitizeString', () => {
   it('rimuove newline (previene email header injection)', () => {
@@ -18,12 +23,14 @@ describe('sanitizeString', () => {
     expect(sanitizeString('test\ninjection')).toBe('test injection');
   });
 
-  it('rimuove tag HTML', () => {
-    expect(sanitizeString('<script>alert(1)</script>')).toBe('scriptalert(1)/script');
+  it('escapa tag HTML con entity encoding', () => {
+    expect(sanitizeString('<script>alert(1)</script>')).toBe(
+      '&lt;script&gt;alert(1)&lt;/script&gt;'
+    );
   });
 
-  it('rimuove angolari da input misti', () => {
-    expect(sanitizeString('hello <b>world</b>')).toBe('hello bworld/b');
+  it('escapa angolari da input misti', () => {
+    expect(sanitizeString('hello <b>world</b>')).toBe('hello &lt;b&gt;world&lt;/b&gt;');
   });
 
   it('rimuove javascript: protocol', () => {
@@ -43,7 +50,7 @@ describe('sanitizeString', () => {
   });
 
   it('preserva caratteri speciali italiani', () => {
-    expect(sanitizeString("citta', perche', piu'")).toBe("citta', perche', piu'");
+    expect(sanitizeString('città, perché, più')).toBe('città, perché, più');
   });
 
   it('preserva numeri e simboli sicuri', () => {
@@ -58,14 +65,19 @@ describe('sanitizeString', () => {
     expect(sanitizeString('')).toBe('');
   });
 
+  it('bypass con doppio javascript: viene neutralizzato', () => {
+    expect(sanitizeString('javasjavascript:cript:alert(1)')).not.toContain('javascript:');
+  });
+
   it('combinazione di attacchi multipli', () => {
     const malicious = '<script>javascript:alert(1)</script>\r\nBcc: spam@evil.com';
     const result = sanitizeString(malicious);
-    expect(result).not.toContain('<');
-    expect(result).not.toContain('>');
     expect(result).not.toContain('javascript:');
     expect(result).not.toContain('\r');
     expect(result).not.toContain('\n');
+    // HTML entities are used instead of raw angle brackets
+    expect(result).toContain('&lt;');
+    expect(result).toContain('&gt;');
   });
 });
 
@@ -146,5 +158,30 @@ describe('sanitizeFormData', () => {
   it('oggetto vuoto ritorna oggetto vuoto', () => {
     const result = sanitizeFormData({});
     expect(Object.keys(result)).toHaveLength(0);
+  });
+
+  it('filtra chiavi pericolose per prototype pollution', () => {
+    const result = sanitizeFormData({
+      __proto__: '{"isAdmin": true}',
+      constructor: 'Object',
+      prototype: 'evil',
+      name: 'Mario',
+    });
+    expect(result).not.toHaveProperty('__proto__');
+    expect(result).not.toHaveProperty('constructor');
+    expect(result).not.toHaveProperty('prototype');
+    expect(result.name).toBe('Mario');
+  });
+});
+
+describe('escapeHtml', () => {
+  it('escapa tutti i caratteri HTML pericolosi', () => {
+    expect(escapeHtml('<script>"test" & \'xss\'</script>')).toBe(
+      '&lt;script&gt;&quot;test&quot; &amp; &#x27;xss&#x27;&lt;/script&gt;'
+    );
+  });
+
+  it('non modifica testo sicuro', () => {
+    expect(escapeHtml('Mario Rossi 120x80')).toBe('Mario Rossi 120x80');
   });
 });
