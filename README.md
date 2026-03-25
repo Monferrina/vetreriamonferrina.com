@@ -218,7 +218,20 @@ Guida completa: `docs/plans/google-reviews-setup.md`
 
 ## Manutenzione
 
-Per mettere il sito in manutenzione, impostare la variabile `MAINTENANCE_MODE=true` su Vercel e ri-deployare. Tutte le pagine mostreranno la pagina 503 con i contatti della vetreria.
+### Attivare la manutenzione
+
+1. Impostare `MAINTENANCE_MODE=true` nella [dashboard Vercel](https://vercel.com) → Settings → Environment Variables
+2. Triggerare un redeploy (merge di una PR o `vercel deploy --prod`)
+3. Tutte le pagine (incluse le statiche e l'API) mostreranno la pagina di manutenzione
+
+### Disattivare la manutenzione
+
+1. Impostare `MAINTENANCE_MODE=false` (o rimuovere la variabile)
+2. Triggerare un redeploy
+
+### Come funziona
+
+Il file `middleware.ts` alla root del progetto è un [Vercel Routing Middleware](https://vercel.com/docs/functions/edge-middleware) — una feature a livello piattaforma che gira **prima** dei file statici e delle serverless function. Legge `process.env.MAINTENANCE_MODE` a runtime nel Vercel Edge Runtime e riscrive tutte le richieste a `/maintenance` quando attivo.
 
 ## Documentazione tecnica
 
