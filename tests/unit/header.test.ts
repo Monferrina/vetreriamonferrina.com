@@ -61,26 +61,14 @@ describe('Header', () => {
     expect(html).toContain('backdrop-blur');
   });
 
-  test('ha il pulsante hamburger per mobile', async () => {
+  test('non contiene il menu hamburger (sostituito da BottomNav)', async () => {
     const container = await AstroContainer.create();
     const html = await container.renderToString(Header, {
       request: new Request('https://vetreriamonferrina.com/'),
     });
 
-    expect(html).toContain('data-menu-toggle');
-    expect(html).toContain('aria-label="Apri menu"');
-    expect(html).toContain('aria-expanded="false"');
-  });
-
-  test('contiene il mobile menu con data-mobile-menu', async () => {
-    const container = await AstroContainer.create();
-    const html = await container.renderToString(Header, {
-      request: new Request('https://vetreriamonferrina.com/'),
-    });
-
-    expect(html).toContain('data-mobile-menu');
-    expect(html).toContain('data-menu-close');
-    expect(html).toContain('data-menu-overlay');
+    expect(html).not.toContain('data-menu-toggle');
+    expect(html).not.toContain('data-mobile-menu');
   });
 
   test('evidenzia il link della pagina corrente', async () => {

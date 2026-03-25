@@ -1,7 +1,5 @@
 ---
 // src/components/Header.astro
-import MobileMenu from './MobileMenu.astro';
-
 const pathname = Astro.url.pathname;
 
 const navLinks = [
@@ -69,87 +67,5 @@ function isActive(href: string): boolean {
         </li>
       </ul>
     </nav>
-
-    <!-- Mobile hamburger button (hidden — replaced by BottomNav) -->
-    <button
-      type="button"
-      class="hidden"
-      aria-label="Apri menu"
-      aria-expanded="false"
-      data-menu-toggle
-    >
-      <svg
-        class="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        aria-hidden="true"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
-      </svg>
-    </button>
   </div>
 </header>
-
-<MobileMenu navLinks={navLinks} pathname={pathname} />
-
-<script>
-  function initMobileMenu() {
-    const toggleBtn = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
-    const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
-    const closeBtn = document.querySelector<HTMLButtonElement>('[data-menu-close]');
-    const overlay = document.querySelector<HTMLElement>('[data-menu-overlay]');
-    const panel = menu?.querySelector<HTMLElement>('[data-menu-panel]');
-
-    if (!toggleBtn || !menu || !closeBtn || !overlay || !panel) return;
-
-    function openMenu() {
-      menu!.classList.remove('hidden');
-      // Force reflow so transitions work after display change
-      void menu!.offsetHeight;
-      overlay!.classList.remove('opacity-0');
-      overlay!.classList.add('opacity-100');
-      panel!.classList.remove('translate-x-full');
-      panel!.classList.add('translate-x-0');
-      toggleBtn!.setAttribute('aria-expanded', 'true');
-      closeBtn!.focus();
-    }
-
-    function closeMenu() {
-      overlay!.classList.remove('opacity-100');
-      overlay!.classList.add('opacity-0');
-      panel!.classList.remove('translate-x-0');
-      panel!.classList.add('translate-x-full');
-      toggleBtn!.setAttribute('aria-expanded', 'false');
-      toggleBtn!.focus();
-      // Wait for transition to finish before hiding
-      setTimeout(() => {
-        menu!.classList.add('hidden');
-      }, 300);
-    }
-
-    toggleBtn.addEventListener('click', () => {
-      if (toggleBtn.getAttribute('aria-expanded') === 'true') {
-        closeMenu();
-      } else {
-        openMenu();
-      }
-    });
-    closeBtn.addEventListener('click', closeMenu);
-    overlay.addEventListener('click', closeMenu);
-
-    // Close on Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && toggleBtn.getAttribute('aria-expanded') === 'true') {
-        closeMenu();
-      }
-    });
-  }
-
-  // Run on initial load and on Astro page transitions
-  document.addEventListener('astro:page-load', initMobileMenu);
-</script>

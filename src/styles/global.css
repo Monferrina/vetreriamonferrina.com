@@ -352,11 +352,15 @@ html {
   }
 }
 
-/* Header & footer persist across navigations — no animation */
+/* Header, footer & bottom nav persist across navigations — no animation */
 ::view-transition-old(site-header),
 ::view-transition-new(site-header),
 ::view-transition-old(site-footer),
-::view-transition-new(site-footer) {
+::view-transition-new(site-footer),
+::view-transition-old(bottom-nav),
+::view-transition-new(bottom-nav),
+::view-transition-old(chatbot-toggle),
+::view-transition-new(chatbot-toggle) {
   animation: none;
   mix-blend-mode: normal;
 }
