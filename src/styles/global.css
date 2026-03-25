@@ -136,7 +136,7 @@
 /* ==================== Back to Top ==================== */
 .back-to-top {
   position: fixed;
-  bottom: 2rem;
+  bottom: 5.5rem;
   right: 2rem;
   z-index: 40;
   display: flex;
@@ -164,6 +164,11 @@
 }
 .back-to-top:hover {
   background: var(--color-primary-dark);
+}
+@media (min-width: 768px) {
+  .back-to-top {
+    bottom: 2rem;
+  }
 }
 
 /* ==================== Glass Card Effect ==================== */
@@ -337,6 +342,13 @@ html {
   from {
     opacity: 0;
     transform: translateY(10px);
+  }
+}
+
+/* Bottom nav: add padding to body on mobile so content doesn't hide behind the bar */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: calc(3.5rem + env(safe-area-inset-bottom, 0px));
   }
 }
 

@@ -4,6 +4,7 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import BottomNav from '../components/BottomNav.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import Chatbot from '../components/Chatbot.astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
@@ -88,7 +89,7 @@ const jsonLd = {
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>{title} | Vetreria Monferrina</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
@@ -147,6 +148,7 @@ const jsonLd = {
       <slot />
     </main>
     <Footer />
+    <BottomNav />
     <CookieBanner />
     <Chatbot />
     <SpeedInsights />
