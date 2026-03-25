@@ -63,6 +63,24 @@ const jsonLd = {
   ],
   priceRange: '$$',
   image: 'https://vetreriamonferrina.com/images/og-image.jpg',
+  areaServed: [
+    { '@type': 'State', name: 'Piemonte' },
+    { '@type': 'State', name: 'Lombardia' },
+    { '@type': 'State', name: 'Liguria' },
+    { '@type': 'State', name: "Valle d'Aosta" },
+    { '@type': 'Country', name: 'France' },
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Servizi di vetreria',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Box doccia su misura' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Parapetti in vetro' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Vetri camera e isolanti' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Trasporto e montaggio' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Sopralluoghi gratuiti' } },
+    ],
+  },
 };
 ---
 
