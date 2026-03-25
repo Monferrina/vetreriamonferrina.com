@@ -22,8 +22,8 @@ writeFileSync(
       entrypoint: 'index.js',
     },
     null,
-    2,
-  ),
+    2
+  )
 );
 
 writeFileSync(
@@ -69,7 +69,7 @@ writeFileSync(
 export const config = {
   matcher: ['/((?!_astro|images|fonts|favicon).*)'],
 };
-`,
+`
 );
 
 // 2. Update the routing config to invoke middleware before filesystem
