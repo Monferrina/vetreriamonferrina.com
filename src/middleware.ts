@@ -1,7 +1,10 @@
 import { defineMiddleware } from 'astro:middleware';
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  const isMaintenanceMode = import.meta.env.MAINTENANCE_MODE === 'true';
+  // Use process.env for runtime access in Vercel Edge Middleware
+  // (import.meta.env is inlined at build time and won't reflect runtime changes)
+  const isMaintenanceMode =
+    (process.env.MAINTENANCE_MODE ?? import.meta.env.MAINTENANCE_MODE) === 'true';
 
   if (!isMaintenanceMode) {
     return next();
