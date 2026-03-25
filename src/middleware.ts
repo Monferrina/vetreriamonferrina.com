@@ -1,8 +1,10 @@
 import { defineMiddleware } from 'astro:middleware';
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  // process.env is read at runtime in the Vercel serverless function
-  const isMaintenanceMode = process.env.MAINTENANCE_MODE === 'true';
+  // Dynamic access prevents Vite/esbuild from inlining the value at build time.
+  // In Vercel Edge Runtime, process.env is available and populated from the dashboard.
+  const env = globalThis.process?.env ?? {};
+  const isMaintenanceMode = env.MAINTENANCE_MODE === 'true';
 
   if (!isMaintenanceMode) {
     return next();
