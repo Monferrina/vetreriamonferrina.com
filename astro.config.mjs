@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   output: 'server',
-  adapter: vercel({ edgeMiddleware: true }),
+  adapter: vercel(),
   site: 'https://vetreriamonferrina.com',
   trailingSlash: 'never',
 
