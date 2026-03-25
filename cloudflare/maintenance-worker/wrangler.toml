@@ -1,0 +1,14 @@
+name = "maintenance-mode"
+main = "src/index.ts"
+compatibility_date = "2026-03-25"
+
+# Route: intercept ALL requests to the domain
+routes = [
+  { pattern = "vetreriamonferrina.com/*", zone_name = "vetreriamonferrina.com" },
+  { pattern = "www.vetreriamonferrina.com/*", zone_name = "vetreriamonferrina.com" }
+]
+
+# Default: maintenance OFF
+# Override in Cloudflare Dashboard → Workers & Pages → maintenance-mode → Settings → Variables
+[vars]
+MAINTENANCE_ENABLED = "false"

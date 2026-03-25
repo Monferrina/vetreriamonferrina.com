@@ -57,7 +57,6 @@ Copia `.env.example` in `.env.local` per lo sviluppo locale. Su Vercel, configur
 | `SANITY_PROJECT_ID` | ID progetto Sanity                            | [sanity.io/manage](https://sanity.io/manage)       |
 | `SANITY_DATASET`    | Dataset Sanity                                | `production`                                       |
 | `SITE_URL`          | URL del sito in produzione                    | `https://vetreriamonferrina.com`                   |
-| `MAINTENANCE_MODE`  | Attiva la pagina di manutenzione 503          | `true` / `false`                                   |
 
 **Google Places API** (opzionale, per aggiornare recensioni/orari):
 
@@ -220,18 +219,18 @@ Guida completa: `docs/plans/google-reviews-setup.md`
 
 ### Attivare la manutenzione
 
-1. Impostare `MAINTENANCE_MODE=true` nella [dashboard Vercel](https://vercel.com) → Settings → Environment Variables
-2. Triggerare un redeploy (merge di una PR o `vercel deploy --prod`)
-3. Tutte le pagine (incluse le statiche e l'API) mostreranno la pagina di manutenzione
+1. Andare su [Cloudflare Dashboard](https://dash.cloudflare.com) → Workers & Pages → `maintenance-mode`
+2. Settings → Variables and Secrets → impostare `MAINTENANCE_ENABLED` a `true`
+3. Effetto immediato, nessun deploy necessario
 
 ### Disattivare la manutenzione
 
-1. Impostare `MAINTENANCE_MODE=false` (o rimuovere la variabile)
-2. Triggerare un redeploy
+1. Stessa pagina, impostare `MAINTENANCE_ENABLED` a `false`
+2. Effetto immediato
 
 ### Come funziona
 
-Il file `middleware.ts` alla root del progetto è un [Vercel Routing Middleware](https://vercel.com/docs/functions/edge-middleware) — una feature a livello piattaforma che gira **prima** dei file statici e delle serverless function. Legge `process.env.MAINTENANCE_MODE` a runtime nel Vercel Edge Runtime e riscrive tutte le richieste a `/maintenance` quando attivo.
+Un [Cloudflare Worker](https://developers.cloudflare.com/workers/) intercetta tutte le richieste **prima** che arrivino a Vercel. Quando la manutenzione è attiva, il worker recupera la pagina `/maintenance` da Vercel e la serve con status 503. Quando è disattiva, il worker fa un semplice passthrough al sito. Il codice del worker è in `cloudflare/maintenance-worker/`.
 
 ## Documentazione tecnica
 

@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/inject-maintenance-middleware.mjs",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
