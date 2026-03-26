@@ -43,13 +43,27 @@ const partners = [
     filter: grayscale(100%) opacity(0.45);
     transition: filter 0.3s ease;
   }
-  .partner-item:hover .partner-logo {
-    filter: grayscale(0%) opacity(1);
-  }
-  .partner-item:hover span {
-    color: var(--color-neutral-700);
-  }
   .partner-item span {
     transition: color 0.3s ease;
+  }
+
+  /* Desktop: hover */
+  @media (hover: hover) {
+    .partner-item:hover .partner-logo {
+      filter: grayscale(0%) opacity(1);
+    }
+    .partner-item:hover span {
+      color: var(--color-neutral-700);
+    }
+  }
+
+  /* Touch: active only while pressing */
+  @media (hover: none) {
+    .partner-item:active .partner-logo {
+      filter: grayscale(0%) opacity(1);
+    }
+    .partner-item:active span {
+      color: var(--color-neutral-700);
+    }
   }
 </style>

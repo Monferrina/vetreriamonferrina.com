@@ -31,6 +31,12 @@ const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
       <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
         Esperienza, precisione e cura artigianale nella lavorazione del vetro, al servizio di
         privati, aziende e professionisti dell'edilizia.
+        <a
+          href="/trasporto-e-montaggio"
+          class="transport-link mt-2 inline-block text-neutral-50 no-underline underline-offset-4 hover:decoration-neutral-50"
+        >
+          Tutti i servizi includono trasporto e montaggio professionali.
+        </a>
       </p>
     </div>
   </section>
@@ -178,4 +184,92 @@ const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
 
   initServiceFilters();
   document.addEventListener('astro:after-swap', initServiceFilters);
+</script>
+
+<style>
+  .transport-link {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    overflow: hidden;
+  }
+  .transport-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse 120% 200% at 50% 50%,
+      transparent 25%,
+      rgb(255 255 255 / 0.08) 36%,
+      rgb(255 255 255 / 0.45) 46%,
+      rgb(255 255 255 / 0.2) 56%,
+      rgb(255 255 255 / 0.05) 66%,
+      transparent 78%
+    );
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+  .transport-link.drawn::before {
+    animation: transport-shine 2.5s ease-in-out forwards;
+  }
+  .transport-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 1px;
+    background: var(--color-neutral-50);
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .transport-link.drawn::after {
+    width: 100%;
+  }
+  .transport-link:hover::after {
+    width: 100%;
+    transition: width 0.3s ease;
+  }
+
+  @keyframes transport-shine {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .transport-link::before {
+      display: none;
+    }
+    .transport-link::after {
+      transition: none;
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  function initTransportLink(): void {
+    const link = document.querySelector<HTMLElement>('.transport-link');
+    if (!link) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Force animation restart
+            link.classList.remove('drawn');
+            void link.offsetWidth;
+            setTimeout(() => link.classList.add('drawn'), 600);
+          } else {
+            link.classList.remove('drawn');
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(link);
+  }
+
+  initTransportLink();
+  document.addEventListener('astro:after-swap', initTransportLink);
 </script>

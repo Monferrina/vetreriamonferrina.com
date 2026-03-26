@@ -156,7 +156,7 @@ const jsonLd = {
     <!-- Back to top button -->
     <button type="button" class="back-to-top" aria-label="Torna in cima" data-back-to-top>
       <svg
-        class="h-5 w-5"
+        class="h-3.5 w-3.5"
         fill="none"
         viewBox="0 0 24 24"
         stroke-width="2.5"
@@ -223,9 +223,9 @@ const jsonLd = {
               progressBar.style.setProperty('--scroll', String(scrollY / docHeight));
             }
 
-            // Back-to-top visibility (show after 400px)
-            if (backToTop) {
-              backToTop.classList.toggle('visible', scrollY > 400);
+            // Back-to-top visibility (show at 80% scroll)
+            if (backToTop && docHeight > 0) {
+              backToTop.classList.toggle('visible', scrollY / docHeight > 0.8);
             }
 
             ticking = false;
