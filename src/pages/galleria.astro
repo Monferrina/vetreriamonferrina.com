@@ -258,9 +258,11 @@ const galleryItems =
       });
 
       document.body.style.overflow = 'hidden';
-      // Prevent sticky header (with backdrop-blur stacking context) from intercepting lightbox clicks
+      // Hide header and bottom nav behind lightbox
       const header = document.querySelector('header');
-      if (header) (header as HTMLElement).style.pointerEvents = 'none';
+      const bottomNav = document.querySelector('[data-bottom-nav]');
+      if (header) (header as HTMLElement).style.display = 'none';
+      if (bottomNav) (bottomNav as HTMLElement).style.display = 'none';
       document.addEventListener('keydown', trapFocus);
       closeBtn!.focus();
     }
@@ -275,9 +277,11 @@ const galleryItems =
         lightbox!.classList.add('hidden');
         lightbox!.classList.remove('flex');
         document.body.style.overflow = '';
-        // Restore header interactivity
+        // Restore header and bottom nav
         const header = document.querySelector('header');
-        if (header) (header as HTMLElement).style.pointerEvents = '';
+        const bottomNav = document.querySelector('[data-bottom-nav]');
+        if (header) (header as HTMLElement).style.display = '';
+        if (bottomNav) (bottomNav as HTMLElement).style.display = '';
         // Remove focus from gallery item to avoid visible focus ring
         if (document.activeElement instanceof HTMLElement) {
           document.activeElement.blur();
