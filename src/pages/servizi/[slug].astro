@@ -1,0 +1,154 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { services } from '../../data/services';
+import { serviceDetails } from '../../data/service-details';
+export const prerender = true;
+
+export function getStaticPaths() {
+  return services.filter((s) => serviceDetails[s.slug]).map((s) => ({ params: { slug: s.slug } }));
+}
+
+const { slug } = Astro.params;
+const service = services.find((s) => s.slug === slug)!;
+const details = serviceDetails[slug!]!;
+
+// Related services: same category, excluding current
+const related = services
+  .filter((s) => s.category === service.category && s.slug !== slug)
+  .slice(0, 3);
+const hasMaterials = details.materials && details.materials.length > 0;
+---
+
+<BaseLayout title={service.name} description={details.seoDescription}>
+  <!-- Hero -->
+  <section class="bg-primary py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <nav class="mb-4 text-sm text-neutral-300" aria-label="Breadcrumb">
+        <a href="/servizi" class="transition-colors hover:text-neutral-50">Servizi</a>
+        <span class="mx-2">/</span>
+        <span class="text-neutral-50">{service.name}</span>
+      </nav>
+      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">{service.name}</h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+        {details.intro}
+      </p>
+    </div>
+  </section>
+
+  <!-- Immagine + Caratteristiche -->
+  <section class="bg-neutral-50 py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      {
+        service.image && (
+          <div class="mx-auto mb-12 max-w-sm sm:max-w-md" data-reveal>
+            <img
+              src={service.image}
+              alt={service.name}
+              class="w-full rounded-2xl shadow-md"
+              loading="eager"
+            />
+          </div>
+        )
+      }
+
+      <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-12" data-reveal>
+        Caratteristiche
+      </h2>
+      <div class="grid gap-6 sm:grid-cols-2">
+        {
+          details.features.map((feat, i) => (
+            <div data-reveal data-delay={String((i % 4) + 1)} class="group pb-1">
+              <div class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm transition-all duration-200 group-hover:-translate-y-1">
+                <h3 class="font-heading text-lg text-primary">{feat.title}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-neutral-800">{feat.text}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Materiali (se presenti) -->
+  {
+    hasMaterials && (
+      <section class="bg-surface py-16 sm:py-20">
+        <div class="mx-auto max-w-7xl px-4 lg:px-8">
+          <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-8" data-reveal>
+            Materiali disponibili
+          </h2>
+          <div class="flex flex-wrap justify-center gap-3" data-reveal data-delay="1">
+            {details.materials!.map((mat) => (
+              <span class="rounded-full border border-neutral-200 bg-neutral-50 px-5 py-2.5 text-sm font-medium text-neutral-800 transition-colors hover:border-primary hover:text-primary">
+                {mat}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Servizi correlati -->
+  {
+    related.length > 0 && (
+      <section class:list={[hasMaterials ? 'bg-neutral-50' : 'bg-surface', 'py-16 sm:py-20']}>
+        <div class="mx-auto max-w-7xl px-4 lg:px-8">
+          <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-8" data-reveal>
+            Servizi correlati
+          </h2>
+          <div
+            class:list={[
+              'grid gap-6',
+              related.length === 1 && 'max-w-md mx-auto',
+              related.length === 2 && 'sm:grid-cols-2 max-w-3xl mx-auto',
+              related.length >= 3 && 'sm:grid-cols-2 lg:grid-cols-3',
+            ]}
+          >
+            {related.map((rel, i) => (
+              <a
+                href={`/servizi/${rel.slug}`}
+                data-reveal
+                data-delay={String(i + 1)}
+                class="group pb-1 block"
+              >
+                <div class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm transition-all duration-200 group-hover:-translate-y-1">
+                  <h3 class="font-heading text-lg text-primary group-hover:text-primary-dark">
+                    {rel.name}
+                  </h3>
+                  <p class="mt-2 text-sm text-neutral-800">{rel.description}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- CTA -->
+  <section class="bg-primary py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center lg:px-8">
+      <h2 class="font-heading text-3xl text-neutral-50 sm:text-4xl">
+        Interessato? Richiedi un preventivo
+      </h2>
+      <p class="mx-auto mt-4 max-w-xl text-lg text-neutral-200">
+        Sopralluogo gratuito, preventivo senza impegno e installazione professionale.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="/preventivo"
+          class="inline-block rounded-full bg-surface px-8 py-3.5 text-base font-semibold text-primary transition-colors hover:bg-neutral-100"
+        >
+          Richiedi preventivo
+        </a>
+        <a
+          href="/contatti"
+          class="inline-block rounded-full border-2 border-neutral-50 px-8 py-3 text-base font-semibold text-neutral-50 transition-colors hover:bg-neutral-50/10"
+        >
+          Contattaci
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

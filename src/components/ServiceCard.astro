@@ -64,16 +64,29 @@ const { name, description, slug, category, image } = Astro.props;
       <p class="mt-2 flex-1 leading-relaxed text-neutral-800">{description}</p>
       <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2">
         <a
-          href={`/preventivo?servizio=${slug}`}
-          class="inline-flex items-center gap-1.5 text-sm font-semibold text-secondary-dark transition-colors hover:text-primary"
+          href={`/servizi/${slug}`}
+          class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary-dark"
         >
-          Richiedi preventivo
+          Scopri di più
+          <svg
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path>
+          </svg>
         </a>
         <a
           href={`/galleria?categoria=${category}`}
           class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary/70 transition-colors hover:text-primary"
         >
-          Vedi in galleria
+          Galleria
           <svg
             class="h-4 w-4"
             fill="none"
