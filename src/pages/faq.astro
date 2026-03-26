@@ -1,0 +1,343 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+export const prerender = true;
+
+const faqs = [
+  {
+    id: 'servizi',
+    category: 'Servizi',
+    questions: [
+      {
+        q: 'Che tipo di vetro utilizzate?',
+        a: 'Lavoriamo con vetri temperati, stratificati, monolitici, vetrocamera doppi e tripli, vetri blindati e decorativi Madras. Tutti i materiali sono di prima scelta e conformi alla marcatura CE.',
+      },
+      {
+        q: 'Realizzate lavori su misura?',
+        a: 'Sì, ogni lavorazione è realizzata su misura nel nostro laboratorio a Casale Monferrato. Sagomatura, foratura, molatura e posa: ogni progetto è pensato e sviluppato insieme al cliente.',
+      },
+    ],
+  },
+  {
+    id: 'preventivi',
+    category: 'Preventivi',
+    questions: [
+      {
+        q: 'Il sopralluogo è gratuito?',
+        a: 'Il sopralluogo è gratuito e senza impegno in Piemonte e Lombardia. Per Liguria, Valle d\'Aosta e altre destinazioni, valutiamo insieme la fattibilità. <a href="/trasporto-e-montaggio" class="text-primary hover:underline font-medium">Scopri le zone servite</a>.',
+      },
+      {
+        q: 'Quanto tempo ci vuole per ricevere un preventivo?',
+        a: 'Per lavori standard rispondiamo entro 24–48 ore. Per progetti più complessi, dopo il sopralluogo prepariamo un preventivo dettagliato entro pochi giorni lavorativi.',
+      },
+    ],
+  },
+  {
+    id: 'trasporto',
+    category: 'Trasporto e montaggio',
+    questions: [
+      {
+        q: 'Dove consegnate e installate?',
+        a: 'Operiamo in tutto il Piemonte e la Lombardia con sopralluogo gratuito. Siamo disponibili anche in Liguria, Valle d\'Aosta e all\'estero per progetti speciali. <a href="/trasporto-e-montaggio" class="text-primary hover:underline font-medium">Maggiori dettagli</a>.',
+      },
+      {
+        q: 'Chi si occupa del montaggio?',
+        a: "La posa è eseguita esclusivamente dai nostri vetrai, mai da terzi. Ogni installazione è a regola d'arte, nel pieno rispetto delle normative vigenti.",
+      },
+    ],
+  },
+  {
+    id: 'tempi',
+    category: 'Tempi',
+    questions: [
+      {
+        q: 'Quanto tempo ci vuole per completare un lavoro?',
+        a: "Dipende dalla complessità dell'intervento. Lavori semplici come la sostituzione di un vetro richiedono pochi giorni. Progetti più articolati — box doccia su misura, parapetti, pensiline — possono richiedere alcune settimane tra sopralluogo, lavorazione e posa. In fase di preventivo indichiamo sempre i tempi previsti.",
+      },
+    ],
+  },
+  {
+    id: 'pulizia',
+    category: 'Pulizia e cura',
+    questions: [
+      {
+        q: "Come si pulisce il vetro dopo l'installazione?",
+        a: "Al termine di ogni lavoro puliamo tutto e lasciamo l'ambiente in ordine. Per la manutenzione quotidiana è sufficiente un panno morbido con acqua e detergente neutro. Evitare spugne abrasive e prodotti aggressivi.",
+      },
+      {
+        q: 'Come si mantengono i vetri nel tempo?',
+        a: "I nostri vetri sono progettati per durare. Per i box doccia consigliamo di asciugare le superfici dopo ogni utilizzo, così da prevenire depositi di calcare. Per vetrate esterne e parapetti basta un lavaggio periodico con acqua. Guarnizioni e profili vanno controllati almeno una volta all'anno.",
+      },
+    ],
+  },
+  {
+    id: 'pagamenti',
+    category: 'Pagamenti',
+    questions: [
+      {
+        q: 'Quali metodi di pagamento accettate?',
+        a: "Accettiamo bonifico bancario, contanti e assegno. Per lavori di importo significativo è possibile concordare un acconto alla conferma dell'ordine e il saldo a lavori ultimati.",
+      },
+      {
+        q: 'Rilasciate fattura?',
+        a: 'Sì, emettiamo sempre regolare fattura. Per interventi che rientrano nelle agevolazioni fiscali (ristrutturazione edilizia, risparmio energetico) forniamo tutta la documentazione necessaria per accedere alle detrazioni.',
+      },
+    ],
+  },
+  {
+    id: 'conformita',
+    category: 'Conformità e normative',
+    questions: [
+      {
+        q: 'I vostri vetri sono certificati?',
+        a: 'Sì, tutti i vetri che installiamo sono conformi alla marcatura CE secondo il Regolamento UE sui prodotti da costruzione. Ogni fornitura è accompagnata dalla dichiarazione di prestazione e dalle schede tecniche dei materiali.',
+      },
+      {
+        q: 'Quali normative rispettate per la posa in opera?',
+        a: 'Ogni installazione rispetta la norma <strong>UNI 7697</strong> sui criteri di sicurezza per le applicazioni vetrarie e il <strong>D.Lgs. 81/2008</strong> sulla sicurezza sul lavoro. I nostri operatori sono formati e dotati di tutti i dispositivi di protezione previsti dalla legge.',
+      },
+      {
+        q: 'Rilasciate documentazione a fine lavori?',
+        a: 'Sì, al termine di ogni intervento rilasciamo la dichiarazione di conformità, le schede tecniche dei materiali utilizzati e i certificati necessari. Per maggiori dettagli, visita la sezione <a href="/trasporto-e-montaggio" class="text-primary hover:underline font-medium">conformità e garanzie</a>.',
+      },
+      {
+        q: 'I lavori sono coperti da garanzia?',
+        a: 'Ogni installazione è coperta da garanzia. In caso di difetti di posa interveniamo senza costi aggiuntivi, nel rispetto delle tutele previste dal Codice Civile e dal Codice del Consumo.',
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Domande frequenti"
+  description="Risposte alle domande più frequenti sulla Vetreria Monferrina: servizi, preventivi, trasporto, montaggio, tempi, pulizia e pagamenti."
+>
+  <!-- Hero -->
+  <section class="bg-primary py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Domande frequenti</h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+        Tutto quello che c'è da sapere sui nostri servizi, dalla lavorazione alla posa in opera. Non
+        trovi la risposta?
+        <a
+          href="/contatti"
+          class="faq-shine-link relative overflow-hidden underline decoration-neutral-50/40 underline-offset-4 hover:decoration-neutral-50"
+          >Contattaci</a
+        >.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ: sidebar + accordion -->
+  <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
+    <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-12">
+      <!-- Sidebar navigazione categorie (desktop) -->
+      <nav class="hidden lg:block" aria-label="Categorie FAQ">
+        <div class="sticky top-24">
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-4">
+            Categorie
+          </h2>
+          <ul class="space-y-1">
+            {
+              faqs.map((section) => (
+                <li>
+                  <a
+                    href={`#${section.id}`}
+                    class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-primary/10 hover:text-primary"
+                  >
+                    {section.category}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Contenuto FAQ -->
+      <div>
+        {
+          faqs.map((section, sIdx) => (
+            <div
+              id={section.id}
+              class:list={['faq-section scroll-mt-24', sIdx > 0 && 'mt-14']}
+              data-reveal
+            >
+              <h2 class="font-heading text-2xl text-primary sm:text-3xl mb-6">
+                {section.category}
+              </h2>
+              <div class="space-y-3">
+                {section.questions.map((item) => (
+                  <details class="group rounded-2xl border border-neutral-200 bg-surface shadow-sm transition-all duration-200 hover:shadow-md">
+                    <summary class="flex cursor-pointer items-center justify-between gap-4 p-5 text-left font-medium text-neutral-800 select-none">
+                      <span>{item.q}</span>
+                      <svg
+                        class="h-5 w-5 shrink-0 text-primary transition-transform duration-300 group-open:rotate-180"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                        />
+                      </svg>
+                    </summary>
+                    <div class="px-5 pb-5 text-neutral-800 leading-relaxed" set:html={item.a} />
+                  </details>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-primary py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center lg:px-8">
+      <h2 class="font-heading text-3xl text-neutral-50 sm:text-4xl" data-reveal>
+        Non hai trovato la risposta?
+      </h2>
+      <p class="mx-auto mt-4 max-w-xl text-lg text-neutral-200" data-reveal data-delay="1">
+        Siamo sempre disponibili per rispondere alle tue domande.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4" data-reveal data-delay="2">
+        <a
+          href="/preventivo"
+          class="inline-block rounded-full bg-surface px-8 py-3.5 text-base font-semibold text-primary transition-colors hover:bg-neutral-100"
+        >
+          Richiedi preventivo
+        </a>
+        <a
+          href="/contatti"
+          class="inline-block rounded-full border-2 border-neutral-50 px-8 py-3 text-base font-semibold text-neutral-50 transition-colors hover:bg-neutral-50/10"
+        >
+          Contattaci
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Smooth open/close animation */
+  details[open] > div {
+    animation: faq-open 0.3s ease-out;
+  }
+  @keyframes faq-open {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Remove default marker */
+  summary {
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Glass shine effect */
+  .faq-shine-link {
+    clip-path: inset(0);
+  }
+  .faq-shine-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      115deg,
+      transparent 15%,
+      rgb(255 255 255 / 0.05) 30%,
+      rgb(255 255 255 / 0.15) 38%,
+      rgb(255 255 255 / 0.85) 47%,
+      rgb(255 255 255 / 0.4) 53%,
+      rgb(255 255 255 / 0.1) 62%,
+      rgb(255 255 255 / 0.03) 72%,
+      transparent 85%
+    );
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+  .faq-shine-link.drawn::after {
+    animation: faq-shine 2.5s ease-in-out forwards;
+  }
+  @keyframes faq-shine {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    details[open] > div {
+      animation: none;
+    }
+    .faq-shine-link::after {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  function initFaqNav(): void {
+    const links = document.querySelectorAll<HTMLAnchorElement>('nav[aria-label="Categorie FAQ"] a');
+    const sections = document.querySelectorAll<HTMLElement>('.faq-section');
+    if (!links.length || !sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            links.forEach((link) => {
+              const isActive = link.getAttribute('href') === `#${id}`;
+              link.classList.toggle('bg-primary/10', isActive);
+              link.classList.toggle('text-primary', isActive);
+            });
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -60% 0px' }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+  }
+
+  initFaqNav();
+  document.addEventListener('astro:after-swap', initFaqNav);
+
+  function initFaqShine(): void {
+    const el = document.querySelector<HTMLElement>('.faq-shine-link');
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.remove('drawn');
+            void el.offsetWidth;
+            setTimeout(() => el.classList.add('drawn'), 600);
+          } else {
+            el.classList.remove('drawn');
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+  }
+
+  initFaqShine();
+  document.addEventListener('astro:after-swap', initFaqShine);
+</script>

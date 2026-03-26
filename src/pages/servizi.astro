@@ -42,51 +42,53 @@ const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
   </section>
 
   <!-- Services grid with filters -->
-  <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
-    <!-- Category filters -->
-    <div
-      class="scrollbar-hide mb-10 flex gap-2 overflow-x-auto pb-2 sm:flex-wrap sm:justify-center sm:overflow-visible sm:pb-0"
-      role="group"
-      aria-label="Filtra per categoria"
-    >
-      <button
-        type="button"
-        class="gallery-filter-active shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors"
-        data-service-filter="tutti"
-        aria-pressed="true"
+  <section class="bg-neutral-50 py-16">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <!-- Category filters -->
+      <div
+        class="scrollbar-hide mb-10 flex gap-2 overflow-x-auto pb-2 sm:flex-wrap sm:justify-center sm:overflow-visible sm:pb-0"
+        role="group"
+        aria-label="Filtra per categoria"
       >
-        Tutti
-      </button>
-      {
-        categoryButtons.map(([key, title]) => (
-          <button
-            type="button"
-            class="gallery-filter-inactive shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors"
-            data-service-filter={key}
-            aria-pressed="false"
-          >
-            {title}
-          </button>
-        ))
-      }
-    </div>
+        <button
+          type="button"
+          class="gallery-filter-active shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors"
+          data-service-filter="tutti"
+          aria-pressed="true"
+        >
+          Tutti
+        </button>
+        {
+          categoryButtons.map(([key, title]) => (
+            <button
+              type="button"
+              class="gallery-filter-inactive shrink-0 rounded-full px-5 py-2 text-sm font-medium transition-colors"
+              data-service-filter={key}
+              aria-pressed="false"
+            >
+              {title}
+            </button>
+          ))
+        }
+      </div>
 
-    <!-- Live region for screen readers -->
-    <div id="services-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+      <!-- Live region for screen readers -->
+      <div id="services-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-    <!-- Single flat grid -->
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        servicesData.map((service) => (
-          <ServiceCard
-            name={service.name}
-            description={service.description}
-            slug={service.slug}
-            category={service.category}
-            image={service.image}
-          />
-        ))
-      }
+      <!-- Single flat grid -->
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          servicesData.map((service) => (
+            <ServiceCard
+              name={service.name}
+              description={service.description}
+              slug={service.slug}
+              category={service.category}
+              image={service.image}
+            />
+          ))
+        }
+      </div>
     </div>
   </section>
 
