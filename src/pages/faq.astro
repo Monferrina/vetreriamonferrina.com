@@ -106,12 +106,29 @@ const faqs = [
     ],
   },
 ];
+
+// Generate FAQ Schema.org structured data
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.flatMap((section) =>
+    section.questions.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.a.replace(/<[^>]*>/g, ''),
+      },
+    }))
+  ),
+};
 ---
 
 <BaseLayout
   title="Domande frequenti"
   description="Risposte alle domande più frequenti sulla Vetreria Monferrina: servizi, preventivi, trasporto, montaggio, tempi, pulizia e pagamenti."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <!-- Hero -->
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
