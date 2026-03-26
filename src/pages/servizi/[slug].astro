@@ -19,7 +19,11 @@ const related = services
 const hasMaterials = details.materials && details.materials.length > 0;
 ---
 
-<BaseLayout title={service.name} description={details.seoDescription}>
+<BaseLayout
+  title={service.name}
+  description={details.seoDescription}
+  ogImage={service.image ? `https://vetreriamonferrina.com${service.image}` : undefined}
+>
   <!-- Hero -->
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">

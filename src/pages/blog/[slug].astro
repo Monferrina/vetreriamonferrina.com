@@ -60,7 +60,11 @@ const articleSchema = {
 };
 ---
 
-<BaseLayout title={post.title} description={post.description}>
+<BaseLayout
+  title={post.title}
+  description={post.description}
+  ogImage={post.image ? `https://vetreriamonferrina.com${post.image}` : undefined}
+>
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 
   <!-- Hero -->
