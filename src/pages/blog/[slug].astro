@@ -1,0 +1,279 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { blogPosts } from '../../data/blog-posts';
+export const prerender = true;
+
+export function getStaticPaths() {
+  return blogPosts.map((post) => ({ params: { slug: post.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = blogPosts.find((p) => p.slug === slug)!;
+
+// Extract h2 headings for sidebar TOC
+const headingRegex = /<h2>(.*?)<\/h2>/g;
+const headings: { id: string; text: string }[] = [];
+let match;
+while ((match = headingRegex.exec(post.content)) !== null) {
+  const text = match[1];
+  const id = text
+    .toLowerCase()
+    .replace(/[^a-zà-ú0-9\s]/g, '')
+    .replace(/\s+/g, '-')
+    .slice(0, 50);
+  headings.push({ id, text });
+}
+
+// Inject IDs into h2 tags for anchor links
+const contentWithIds = post.content.replace(/<h2>(.*?)<\/h2>/g, (_full, text) => {
+  const id = text
+    .toLowerCase()
+    .replace(/[^a-zà-ú0-9\s]/g, '')
+    .replace(/\s+/g, '-')
+    .slice(0, 50);
+  return `<h2 id="${id}">${text}</h2>`;
+});
+
+// Related posts
+const related = post.related
+  ? post.related.map((r) => blogPosts.find((p) => p.slug === r)).filter(Boolean)
+  : [];
+
+// Schema.org Article
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.title,
+  description: post.description,
+  datePublished: post.date,
+  author: {
+    '@type': 'Organization',
+    name: 'Vetreria Monferrina',
+    url: 'https://vetreriamonferrina.com',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Vetreria Monferrina',
+    url: 'https://vetreriamonferrina.com',
+  },
+  ...(post.image && { image: `https://vetreriamonferrina.com${post.image}` }),
+};
+---
+
+<BaseLayout title={post.title} description={post.description}>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <!-- Hero -->
+  <section class="bg-primary py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <nav class="mb-4 text-sm text-neutral-300" aria-label="Breadcrumb">
+        <a href="/blog" class="transition-colors hover:text-neutral-50">Blog</a>
+        <span class="mx-2">/</span>
+        <span class="text-neutral-50">{post.title}</span>
+      </nav>
+      <h1 class="font-heading text-3xl text-neutral-50 sm:text-5xl">{post.title}</h1>
+      <time datetime={post.date} class="mt-4 block text-sm text-neutral-300">
+        {
+          new Date(post.date).toLocaleDateString('it-IT', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })
+        }
+      </time>
+    </div>
+  </section>
+
+  <!-- Article content -->
+  <section class="bg-neutral-50 py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-12">
+        <!-- Sidebar TOC (desktop) -->
+        {
+          headings.length > 1 && (
+            <nav class="hidden lg:block" aria-label="Indice dell'articolo">
+              <div class="sticky top-24">
+                <h2 class="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-4">
+                  In questo articolo
+                </h2>
+                <ul class="space-y-1">
+                  {headings.map((h) => (
+                    <li>
+                      <a
+                        href={`#${h.id}`}
+                        class="blog-toc-link block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-primary/10 hover:text-primary"
+                      >
+                        {h.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </nav>
+          )
+        }
+
+        <!-- Content -->
+        <div class="mx-auto max-w-3xl">
+          {
+            post.image && (
+              <div class="mx-auto mb-10 max-w-sm sm:max-w-md" data-reveal>
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  class="w-full rounded-2xl shadow-md"
+                  loading="eager"
+                />
+              </div>
+            )
+          }
+
+          <article class="blog-content" data-reveal set:html={contentWithIds} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related posts -->
+  {
+    related.length > 0 && (
+      <section class="bg-surface py-16 sm:py-20">
+        <div class="mx-auto max-w-7xl px-4 lg:px-8">
+          <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-8" data-reveal>
+            Articoli correlati
+          </h2>
+          <div
+            class:list={[
+              'grid gap-6',
+              related.length === 1 && 'max-w-md mx-auto',
+              related.length >= 2 && 'sm:grid-cols-2 max-w-3xl mx-auto',
+            ]}
+          >
+            {related.map((rel, i) => (
+              <a
+                href={`/blog/${rel!.slug}`}
+                data-reveal
+                data-delay={String(i + 1)}
+                class="group pb-1 block"
+              >
+                <div class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm transition-all duration-200 group-hover:-translate-y-1">
+                  <h3 class="font-heading text-lg text-primary group-hover:text-primary-dark">
+                    {rel!.title}
+                  </h3>
+                  <p class="mt-2 text-sm text-neutral-800">{rel!.description}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- CTA -->
+  <section class="bg-primary py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center lg:px-8">
+      <h2 class="font-heading text-3xl text-neutral-50 sm:text-4xl">Hai un progetto in mente?</h2>
+      <p class="mx-auto mt-4 max-w-xl text-lg text-neutral-200">
+        Contattaci per un sopralluogo gratuito e un preventivo senza impegno.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="/preventivo"
+          class="inline-block rounded-full bg-surface px-8 py-3.5 text-base font-semibold text-primary transition-colors hover:bg-neutral-100"
+        >
+          Richiedi preventivo
+        </a>
+        <a
+          href="/contatti"
+          class="inline-block rounded-full border-2 border-neutral-50 px-8 py-3 text-base font-semibold text-neutral-50 transition-colors hover:bg-neutral-50/10"
+        >
+          Contattaci
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  /* Blog article typography */
+  .blog-content h2 {
+    font-family: var(--font-heading);
+    font-size: 1.375rem;
+    color: var(--color-primary);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-neutral-200);
+    scroll-margin-top: 6rem;
+  }
+  .blog-content h2:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+  .blog-content h3 {
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    color: var(--color-primary);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .blog-content p {
+    color: var(--color-neutral-800);
+    line-height: 1.8;
+    margin-bottom: 1.125rem;
+  }
+  .blog-content ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1.125rem;
+    color: var(--color-neutral-800);
+  }
+  .blog-content li {
+    line-height: 1.75;
+    margin-bottom: 0.5rem;
+  }
+  .blog-content strong {
+    font-weight: 600;
+    color: var(--color-neutral-900);
+  }
+
+  @media (min-width: 640px) {
+    .blog-content h2 {
+      font-size: 1.5rem;
+    }
+    .blog-content h3 {
+      font-size: 1.25rem;
+    }
+  }
+</style>
+
+<script>
+  function initBlogToc(): void {
+    const links = document.querySelectorAll<HTMLAnchorElement>('.blog-toc-link');
+    const headings = document.querySelectorAll<HTMLElement>('.blog-content h2[id]');
+    if (!links.length || !headings.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            links.forEach((link) => {
+              const isActive = link.getAttribute('href') === `#${id}`;
+              link.classList.toggle('bg-primary/10', isActive);
+              link.classList.toggle('text-primary', isActive);
+            });
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -60% 0px' }
+    );
+
+    headings.forEach((heading) => observer.observe(heading));
+  }
+
+  initBlogToc();
+  document.addEventListener('astro:after-swap', initBlogToc);
+</script>

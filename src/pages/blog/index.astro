@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { blogPosts } from '../../data/blog-posts';
+export const prerender = true;
+
+const posts = [...blogPosts].sort(
+  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+);
+---
+
+<BaseLayout
+  title="Blog"
+  description="Guide e consigli sulla lavorazione del vetro: box doccia, vetrocamera, vetro temperato, stratificato e manutenzione."
+>
+  <!-- Hero -->
+  <section class="bg-primary py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Blog</h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+        Guide pratiche e consigli per scegliere, installare e mantenere il vetro. Dalla nostra
+        esperienza al vostro progetto.
+      </p>
+    </div>
+  </section>
+
+  <!-- Post grid -->
+  <section class="bg-neutral-50 py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <div class="grid gap-8 sm:grid-cols-2">
+        {
+          posts.map((post, i) => (
+            <a
+              href={`/blog/${post.slug}`}
+              data-reveal
+              data-delay={String((i % 4) + 1)}
+              class="group pb-1 block"
+            >
+              <article class="glass-hover glass-reflect h-full overflow-hidden rounded-2xl border border-neutral-200 bg-surface shadow-sm transition-all duration-200 group-hover:-translate-y-1">
+                {post.image && (
+                  <div class="aspect-[16/9] overflow-hidden">
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div class="p-6">
+                  <time
+                    datetime={post.date}
+                    class="text-xs font-medium uppercase tracking-wider text-neutral-500"
+                  >
+                    {new Date(post.date).toLocaleDateString('it-IT', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                  </time>
+                  <h2 class="mt-2 font-heading text-xl text-primary group-hover:text-primary-dark">
+                    {post.title}
+                  </h2>
+                  <p class="mt-2 text-sm leading-relaxed text-neutral-800">{post.description}</p>
+                  <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+                    Leggi l'articolo
+                    <svg
+                      class="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="2"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </article>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-primary py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 text-center lg:px-8">
+      <h2 class="font-heading text-3xl text-neutral-50 sm:text-4xl">Hai un progetto in mente?</h2>
+      <p class="mx-auto mt-4 max-w-xl text-lg text-neutral-200">
+        Contattaci per un sopralluogo gratuito e un preventivo senza impegno.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="/preventivo"
+          class="inline-block rounded-full bg-surface px-8 py-3.5 text-base font-semibold text-primary transition-colors hover:bg-neutral-100"
+        >
+          Richiedi preventivo
+        </a>
+        <a
+          href="/contatti"
+          class="inline-block rounded-full border-2 border-neutral-50 px-8 py-3 text-base font-semibold text-neutral-50 transition-colors hover:bg-neutral-50/10"
+        >
+          Contattaci
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
