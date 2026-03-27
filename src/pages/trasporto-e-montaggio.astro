@@ -1,4 +1,5 @@
 ---
+// src/pages/trasporto-e-montaggio.astro — Servizio trasporto, montaggio e smaltimento vetri.
 import BaseLayout from '../layouts/BaseLayout.astro';
 export const prerender = true;
 ---
@@ -7,7 +8,6 @@ export const prerender = true;
   title="Trasporto e montaggio"
   description="Trasporto sicuro e montaggio professionale del vetro a Casale Monferrato e in tutto il Piemonte. Sopralluogo gratuito, posa in opera a regola d'arte."
 >
-  <!-- Hero -->
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Trasporto e montaggio</h1>
@@ -18,14 +18,12 @@ export const prerender = true;
     </div>
   </section>
 
-  <!-- Come funziona — 3 step -->
   <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
     <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-12" data-reveal>
       Come funziona
     </h2>
 
     <div class="grid gap-8 sm:grid-cols-3">
-      <!-- Step 1 -->
       <div data-reveal data-delay="1" class="group pb-1">
         <div
           class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 group-hover:-translate-y-1"
@@ -65,7 +63,6 @@ export const prerender = true;
         </div>
       </div>
 
-      <!-- Step 2 -->
       <div data-reveal data-delay="2" class="group pb-1">
         <div
           class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 group-hover:-translate-y-1"
@@ -101,7 +98,6 @@ export const prerender = true;
         </div>
       </div>
 
-      <!-- Step 3 -->
       <div data-reveal data-delay="3" class="group pb-1">
         <div
           class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 group-hover:-translate-y-1"
@@ -139,7 +135,6 @@ export const prerender = true;
     </div>
   </section>
 
-  <!-- Cosa installiamo -->
   <section class="bg-neutral-50 py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-4" data-reveal>
@@ -204,7 +199,6 @@ export const prerender = true;
     </div>
   </section>
 
-  <!-- Zone servite -->
   <section class="bg-surface py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-4" data-reveal>
@@ -220,7 +214,6 @@ export const prerender = true;
       </p>
 
       <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-        <!-- Piemonte -->
         <div data-reveal data-delay="1" class="group pb-1">
           <div
             class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 group-hover:-translate-y-1"
@@ -259,7 +252,6 @@ export const prerender = true;
           </div>
         </div>
 
-        <!-- Lombardia -->
         <div data-reveal data-delay="2" class="group pb-1">
           <div
             class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 group-hover:-translate-y-1"
@@ -297,7 +289,6 @@ export const prerender = true;
           </div>
         </div>
 
-        <!-- Liguria & Valle d'Aosta -->
         <div data-reveal data-delay="3" class="group pb-1">
           <div
             class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 group-hover:-translate-y-1"
@@ -331,7 +322,6 @@ export const prerender = true;
           </div>
         </div>
 
-        <!-- Estero -->
         <div data-reveal data-delay="4" class="group pb-1">
           <div
             class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 group-hover:-translate-y-1"
@@ -366,7 +356,6 @@ export const prerender = true;
         </div>
       </div>
 
-      <!-- Rassicurazione -->
       <div
         data-reveal
         class="mt-12 rounded-2xl border border-neutral-200 bg-neutral-50 p-6 text-center shadow-sm sm:p-8"
@@ -414,7 +403,6 @@ export const prerender = true;
     </div>
   </section>
 
-  <!-- Conformità e garanzie -->
   <section class="bg-neutral-50 py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-4" data-reveal>
@@ -430,7 +418,6 @@ export const prerender = true;
       </p>
 
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <!-- UNI 7697 -->
         <div
           data-reveal
           data-delay="1"
@@ -459,7 +446,6 @@ export const prerender = true;
           </p>
         </div>
 
-        <!-- D.Lgs. 81/2008 -->
         <div
           data-reveal
           data-delay="2"
@@ -488,7 +474,6 @@ export const prerender = true;
           </p>
         </div>
 
-        <!-- Marcatura CE -->
         <div
           data-reveal
           data-delay="3"
@@ -508,7 +493,6 @@ export const prerender = true;
           </p>
         </div>
 
-        <!-- Trasporto a norma -->
         <div
           data-reveal
           data-delay="1"
@@ -537,7 +521,6 @@ export const prerender = true;
           </p>
         </div>
 
-        <!-- Garanzia sui lavori -->
         <div
           data-reveal
           data-delay="2"
@@ -566,7 +549,6 @@ export const prerender = true;
           </p>
         </div>
 
-        <!-- Documentazione completa -->
         <div
           data-reveal
           data-delay="3"

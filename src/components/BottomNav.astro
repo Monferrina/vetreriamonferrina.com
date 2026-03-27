@@ -55,16 +55,15 @@ function isActive(href: string): boolean {
           class:list={[
             'relative flex flex-col items-center justify-center gap-0.5 px-2 py-1.5 text-[10px] font-medium transition-colors min-w-0 w-full min-h-[44px]',
             tab.cta && isActive(tab.href)
-              ? 'text-secondary'
+              ? 'text-secondary-dark'
               : tab.cta
-                ? 'text-secondary/70'
+                ? 'text-secondary-dark'
                 : isActive(tab.href)
                   ? 'text-primary'
-                  : 'text-neutral-500',
+                  : 'text-neutral-600',
           ]}
           aria-current={isActive(tab.href) ? 'page' : undefined}
         >
-          {/* Active indicator dot */}
           <span class="relative">
             {tab.icon === 'home' && (
               <svg
@@ -152,7 +151,7 @@ function isActive(href: string): boolean {
             <span
               class:list={[
                 'absolute -bottom-0.5 h-1 w-1 rounded-full',
-                tab.cta ? 'bg-secondary' : 'bg-primary',
+                tab.cta ? 'bg-secondary-dark' : 'bg-primary',
               ]}
               aria-hidden="true"
             />

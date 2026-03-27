@@ -1,4 +1,5 @@
 ---
+// src/pages/cookie.astro — Cookie policy con tabella cookie tecnici e istruzioni gestione browser.
 import BaseLayout from '../layouts/BaseLayout.astro';
 export const prerender = true;
 ---
@@ -7,7 +8,6 @@ export const prerender = true;
   title="Cookie Policy"
   description="Informativa sull'utilizzo dei cookie nel sito di Vetreria Monferrina."
 >
-  <!-- Hero section -->
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Cookie Policy</h1>
@@ -18,11 +18,9 @@ export const prerender = true;
     </div>
   </section>
 
-  <!-- Content -->
   <section class="bg-surface py-16 sm:py-20">
     <div class="mx-auto max-w-4xl px-4 lg:px-8">
       <div class="prose-legal space-y-10 text-justify text-neutral-800 leading-relaxed">
-        <!-- 1. Cosa sono i cookie -->
         <div>
           <h2 class="font-heading text-2xl text-primary sm:text-3xl">1. Cosa sono i cookie</h2>
           <p class="mt-3">
@@ -38,7 +36,6 @@ export const prerender = true;
           </p>
         </div>
 
-        <!-- 2. Cookie utilizzati -->
         <div>
           <h2 class="font-heading text-2xl text-primary sm:text-3xl">
             2. Cookie e tecnologie utilizzati da questo sito
@@ -48,7 +45,6 @@ export const prerender = true;
             (e tecnologie equivalenti) strettamente necessari al funzionamento del sito.
           </p>
 
-          <!-- Table -->
           <div class="mt-6 overflow-x-auto">
             <table class="w-full border-collapse text-sm">
               <thead>
@@ -120,7 +116,6 @@ export const prerender = true;
           </div>
         </div>
 
-        <!-- 3. Gestione dei cookie -->
         <div>
           <h2 class="font-heading text-2xl text-primary sm:text-3xl">3. Gestione dei cookie</h2>
           <p class="mt-3">
@@ -134,7 +129,7 @@ export const prerender = true;
                 href="https://support.google.com/chrome/answer/95647"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-primary hover:underline">Google Chrome</a
+                class="text-primary underline underline-offset-2">Google Chrome</a
               >
             </li>
             <li>
@@ -142,7 +137,7 @@ export const prerender = true;
                 href="https://support.mozilla.org/it/kb/protezione-antitracciamento-avanzata-firefox-desktop"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-primary hover:underline">Mozilla Firefox</a
+                class="text-primary underline underline-offset-2">Mozilla Firefox</a
               >
             </li>
             <li>
@@ -150,7 +145,7 @@ export const prerender = true;
                 href="https://support.apple.com/it-it/guide/safari/sfri11471/mac"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-primary hover:underline">Apple Safari</a
+                class="text-primary underline underline-offset-2">Apple Safari</a
               >
             </li>
             <li>
@@ -158,7 +153,7 @@ export const prerender = true;
                 href="https://support.microsoft.com/it-it/microsoft-edge/eliminare-i-cookie-in-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-primary hover:underline">Microsoft Edge</a
+                class="text-primary underline underline-offset-2">Microsoft Edge</a
               >
             </li>
           </ul>
@@ -168,7 +163,6 @@ export const prerender = true;
           </p>
         </div>
 
-        <!-- 4. Base normativa -->
         <div>
           <h2 class="font-heading text-2xl text-primary sm:text-3xl">4. Base normativa</h2>
           <p class="mt-3">
@@ -185,25 +179,24 @@ export const prerender = true;
           </p>
         </div>
 
-        <!-- 5. Contatti -->
         <div>
           <h2 class="font-heading text-2xl text-primary sm:text-3xl">5. Contatti</h2>
           <p class="mt-3">
             Per qualsiasi domanda relativa alla presente Cookie Policy, è possibile contattare il
             titolare del trattamento all'indirizzo email:
-            <a href="mailto:vetreriamonferrina@gmail.com" class="text-primary hover:underline"
-              >vetreriamonferrina@gmail.com</a
+            <a
+              href="mailto:vetreriamonferrina@gmail.com"
+              class="text-primary underline underline-offset-2">vetreriamonferrina@gmail.com</a
             >
           </p>
           <p class="mt-3">
             Per informazioni complete sul trattamento dei dati personali, consulta la nostra <a
               href="/privacy"
-              class="text-primary hover:underline">Privacy Policy</a
+              class="text-primary underline underline-offset-2">Privacy Policy</a
             >.
           </p>
         </div>
 
-        <!-- Last updated -->
         <div class="border-t border-neutral-200 pt-8 text-sm text-neutral-500">
           <p>Ultimo aggiornamento: marzo 2026</p>
         </div>

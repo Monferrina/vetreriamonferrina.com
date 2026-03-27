@@ -13,14 +13,10 @@ export interface Props {
 const { name, description, slug, category, image } = Astro.props;
 ---
 
-{
-  /* Outer wrapper with pb-1 absorbs the translateY so the hover zone stays stable at the bottom edge */
-}
 <div class="group pb-1" data-service-item data-service-category={category}>
   <article
     class="glass-hover glass-reflect flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-surface shadow-sm transition-all duration-200 group-hover:-translate-y-1"
   >
-    {/* Image or placeholder */}
     {
       image ? (
         <div class="aspect-[4/3] overflow-hidden">
@@ -58,7 +54,6 @@ const { name, description, slug, category, image } = Astro.props;
       )
     }
 
-    <!-- Content -->
     <div class="flex flex-1 flex-col p-6">
       <h3 class="font-heading text-xl text-primary">{name}</h3>
       <p class="mt-2 flex-1 leading-relaxed text-neutral-800">{description}</p>

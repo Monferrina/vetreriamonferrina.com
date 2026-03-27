@@ -2,7 +2,7 @@
 
 Sito web ufficiale della **Vetreria Monferrina di Fioravanti Giuseppe** — Casale Monferrato (AL).
 
-Sito vetrina con form preventivi, galleria lavori, chatbot informativo e integrazione Google Places.
+Sito vetrina con form preventivi, galleria lavori, blog, 16 pagine servizio, FAQ e integrazione Google Places.
 
 ## Tech Stack
 
@@ -13,7 +13,7 @@ Sito vetrina con form preventivi, galleria lavori, chatbot informativo e integra
 | CMS             | Sanity v5                                             |
 | Email           | Resend                                                |
 | Hosting         | Vercel (serverless)                                   |
-| CDN / DNS / WAF | Cloudflare                                            |
+| CDN / DNS / WAF | Cloudflare (proxy attivo)                             |
 | Mappa           | Leaflet.js                                            |
 | Meteo           | Open-Meteo (gratis, no API key)                       |
 | Recensioni      | Google Places API (New) — dati scaricati a build-time |
@@ -77,15 +77,6 @@ npm run test:e2e     # E2E test (Playwright)
 npm run lint         # ESLint
 npm run format:check # Prettier check
 npm run check        # Type check (astro check)
-npm run lighthouse   # Lighthouse CI
-```
-
-### Docker (opzionale)
-
-```bash
-docker compose up              # Dev server
-npm run test:docker:unit       # Unit test in Docker
-npm run test:docker:e2e        # E2E test in Docker
 ```
 
 ## CI/CD
@@ -95,9 +86,9 @@ La pipeline GitHub Actions (`.github/workflows/ci.yml`) esegue automaticamente s
 1. **Lint** — ESLint
 2. **Format** — Prettier
 3. **Type check** — `astro check`
-4. **Unit test** — Vitest
+4. **Unit test** — Vitest (10 file, 115 test)
 5. **Build** — build di produzione
-6. **Lighthouse CI** — soglie: performance >= 0.85, accessibility >= 0.9, SEO >= 0.9
+6. **Lighthouse CI** — soglie: accessibility >= 0.95, best practices >= 0.95, SEO >= 0.9
 
 I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 
@@ -122,24 +113,26 @@ I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 
 ```
 ├── .github/workflows/       # CI pipeline
-├── docs/
-│   └── plans/               # Design doc, architettura, guide tecniche
+├── cloudflare/              # Cloudflare Worker (maintenance mode)
+├── docs/plans/              # Guide tecniche (Google Reviews)
 ├── sanity/                  # Sanity CMS (schemi, config)
 ├── scripts/                 # Script build-time (Google Places, immagini, logo)
 ├── src/
-│   ├── components/          # Componenti Astro (Header, Footer, Chatbot, Lightbox, etc.)
+│   ├── components/          # 18 componenti Astro
 │   ├── data/                # Dati statici JSON (chatbot, recensioni, orari, servizi)
 │   ├── layouts/             # Layout base (dark mode, View Transitions, SEO)
 │   ├── lib/                 # Logica condivisa (Sanity client, validazione, sanitize, rate limit)
 │   ├── pages/               # Pagine + API routes
-│   │   └── api/             # Serverless functions (form preventivo)
+│   │   ├── api/             # Serverless functions (form preventivo)
+│   │   ├── blog/            # Blog (4 articoli)
+│   │   └── servizi/         # 16 pagine servizio individuali
 │   ├── styles/              # Design system CSS (token, dark mode, transizioni)
 │   └── middleware.ts        # Middleware (maintenance mode)
 ├── public/
 │   ├── fonts/               # Font self-hosted (Inter, DM Serif Display)
 │   └── images/              # Immagini ottimizzate WebP
 ├── tests/
-│   ├── unit/                # Unit test (Vitest)
+│   ├── unit/                # Unit test (Vitest — 10 file, 115 test)
 │   └── e2e/                 # E2E test (Playwright)
 ├── astro.config.mjs         # Configurazione Astro
 ├── vercel.json              # Security headers (CSP, HSTS, etc.)
@@ -148,20 +141,25 @@ I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 
 ## Pagine
 
-| Route             | Descrizione                                          | Rendering |
-| ----------------- | ---------------------------------------------------- | --------- |
-| `/`               | Homepage (hero, servizi, stats, recensioni, partner) | SSG       |
-| `/servizi`        | Catalogo servizi con filtri per categoria            | SSG       |
-| `/galleria`       | Galleria masonry con lightbox                        | SSG       |
-| `/chi-siamo`      | Storia, team, timeline, sezione memoriale            | SSG       |
-| `/contatti`       | Mappa Leaflet, orari, meteo, contatti                | SSG       |
-| `/preventivo`     | Form richiesta preventivo                            | SSG       |
-| `/privacy`        | Informativa privacy                                  | SSG       |
-| `/cookie`         | Policy cookie                                        | SSG       |
-| `/api/send-quote` | API invio email preventivo (Resend)                  | SSR       |
-| `/404`            | Pagina errore 404                                    | SSG       |
-| `/500`            | Pagina errore 500                                    | SSG       |
-| `/maintenance`    | Pagina manutenzione 503                              | SSG       |
+| Route                    | Descrizione                                          | Rendering |
+| ------------------------ | ---------------------------------------------------- | --------- |
+| `/`                      | Homepage (hero, servizi, stats, recensioni, partner) | SSG       |
+| `/servizi`               | Catalogo servizi con filtri per categoria            | SSG       |
+| `/servizi/[slug]`        | 16 pagine servizio individuali                       | SSG       |
+| `/galleria`              | Galleria masonry con lightbox                        | SSG       |
+| `/chi-siamo`             | Storia, team, timeline, sezione memoriale            | SSG       |
+| `/contatti`              | Mappa Leaflet, orari, meteo, contatti                | SSG       |
+| `/preventivo`            | Form richiesta preventivo                            | SSG       |
+| `/faq`                   | FAQ (7 categorie, Schema.org FAQPage)                | SSG       |
+| `/blog`                  | Blog (4 articoli sempreverdi con TOC)                | SSG       |
+| `/blog/[slug]`           | Articoli blog individuali                            | SSG       |
+| `/trasporto-e-montaggio` | Servizio trasporto e montaggio                       | SSG       |
+| `/privacy`               | Informativa privacy                                  | SSG       |
+| `/cookie`                | Policy cookie                                        | SSG       |
+| `/api/send-quote`        | API invio email preventivo (Resend)                  | SSR       |
+| `/404`                   | Pagina errore 404                                    | SSG       |
+| `/500`                   | Pagina errore 500                                    | SSG       |
+| `/maintenance`           | Pagina manutenzione 503                              | SSG       |
 
 ## Infrastruttura
 
@@ -173,17 +171,18 @@ Il sito e deployato su Vercel con adapter `@astrojs/vercel`. Le pagine statiche 
 
 ### Cloudflare
 
-Il dominio `vetreriamonferrina.com` e gestito su Cloudflare (piano Free).
+Il dominio `vetreriamonferrina.com` e gestito su Cloudflare (piano Free) con proxy attivo (nuvoletta arancione).
 
 | Configurazione | Dettaglio                                                         |
 | -------------- | ----------------------------------------------------------------- |
-| DNS            | A → `76.76.21.21` + CNAME www → `cname.vercel-dns.com` (DNS Only) |
+| DNS            | A → `76.76.21.21` + CNAME www → `cname.vercel-dns.com` (Proxied)  |
 | SSL/TLS        | Full (Strict)                                                     |
 | HSTS           | 12 mesi, preload, includeSubDomains                               |
 | WAF            | Bot Fight Mode + AI Bot Blocking                                  |
 | Cache          | Asset statici 1 anno (`/_astro/`, `.webp`, `.woff2`)              |
 | Analytics      | Web Analytics (RUM, zero cookie)                                  |
 | Rocket Loader  | **OFF** (interferisce con Astro)                                  |
+| Worker         | `maintenance-mode` — attivare/disattivare da dashboard Cloudflare |
 
 ### Resend
 
@@ -213,7 +212,7 @@ Genera: `src/data/reviews.json`, `src/data/opening-hours.json` + foto in `public
 
 Guida completa: `docs/plans/google-reviews-setup.md`
 
-**Sicurezza:** la chiave Google non va mai committata. Limitarla a "Places API" e "Places API (New)" nella Google Cloud Console. Impostare quota 50 req/giorno e budget alert $5/mese.
+**Sicurezza:** la chiave Google non va mai committata. Limitarla a "Places API" e "Places API (New)" nella Google Cloud Console.
 
 ## Manutenzione
 
@@ -230,11 +229,10 @@ Guida completa: `docs/plans/google-reviews-setup.md`
 
 ### Come funziona
 
-Un [Cloudflare Worker](https://developers.cloudflare.com/workers/) intercetta tutte le richieste **prima** che arrivino a Vercel. Quando la manutenzione è attiva, il worker recupera la pagina `/maintenance` da Vercel e la serve con status 503. Quando è disattiva, il worker fa un semplice passthrough al sito. Il codice del worker è in `cloudflare/maintenance-worker/`.
+Un [Cloudflare Worker](https://developers.cloudflare.com/workers/) intercetta tutte le richieste **prima** che arrivino a Vercel. Quando la manutenzione e attiva, il worker recupera la pagina `/maintenance` da Vercel e la serve con status 503. Quando e disattiva, il worker fa un semplice passthrough al sito. Il codice del worker e in `cloudflare/maintenance-worker/`.
 
 ## Documentazione tecnica
 
-- `docs/plans/2026-02-27-vetreria-monferrina-design.md` — Design document
 - `docs/plans/google-reviews-setup.md` — Guida Google Places API
 - `docs/plans/architecture.drawio` — Diagramma architettura (draw.io)
 
