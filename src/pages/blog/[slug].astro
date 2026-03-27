@@ -1,4 +1,5 @@
 ---
+// src/pages/blog/[slug].astro — Articolo blog individuale con sidebar TOC e post correlati.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { blogPosts } from '../../data/blog-posts';
 export const prerender = true;
@@ -67,7 +68,6 @@ const articleSchema = {
 >
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 
-  <!-- Hero -->
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <nav class="mb-4 text-sm text-neutral-300" aria-label="Breadcrumb">
@@ -88,11 +88,9 @@ const articleSchema = {
     </div>
   </section>
 
-  <!-- Article content -->
   <section class="bg-neutral-50 py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-12">
-        <!-- Sidebar TOC (desktop) -->
         {
           headings.length > 1 && (
             <nav class="hidden lg:block" aria-label="Indice dell'articolo">
@@ -117,7 +115,6 @@ const articleSchema = {
           )
         }
 
-        <!-- Content -->
         <div class="mx-auto max-w-3xl">
           {
             post.image && (
@@ -138,7 +135,6 @@ const articleSchema = {
     </div>
   </section>
 
-  <!-- Related posts -->
   {
     related.length > 0 && (
       <section class="bg-surface py-16 sm:py-20">
@@ -174,7 +170,6 @@ const articleSchema = {
     )
   }
 
-  <!-- CTA -->
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 text-center lg:px-8">
       <h2 class="font-heading text-3xl text-neutral-50 sm:text-4xl">Hai un progetto in mente?</h2>

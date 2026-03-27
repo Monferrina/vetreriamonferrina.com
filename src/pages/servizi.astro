@@ -24,7 +24,6 @@ const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
   title="Servizi"
   description="Tutti i servizi della Vetreria Monferrina: box doccia, parapetti, pensiline, vetri camera, specchi e lavorazioni su misura."
 >
-  <!-- Hero section -->
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">I nostri servizi</h1>
@@ -41,10 +40,10 @@ const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
     </div>
   </section>
 
-  <!-- Services grid with filters -->
   <section class="bg-neutral-50 py-16">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
-      <!-- Category filters -->
+      <h2 class="sr-only">Elenco servizi</h2>
+
       <div
         class="scrollbar-hide mb-10 flex gap-2 overflow-x-auto pb-2 sm:flex-wrap sm:justify-center sm:overflow-visible sm:pb-0"
         role="group"
@@ -72,10 +71,8 @@ const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
         }
       </div>
 
-      <!-- Live region for screen readers -->
       <div id="services-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-      <!-- Single flat grid -->
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {
           servicesData.map((service) => (
@@ -92,7 +89,6 @@ const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
     </div>
   </section>
 
-  <!-- CTA -->
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 text-center lg:px-8">
       <h2 class="font-heading text-3xl text-neutral-50 sm:text-4xl">

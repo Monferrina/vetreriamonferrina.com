@@ -1,4 +1,5 @@
 ---
+// src/pages/faq.astro — Domande frequenti con sidebar navigazione e Schema.org FAQPage.
 import BaseLayout from '../layouts/BaseLayout.astro';
 export const prerender = true;
 
@@ -129,7 +130,6 @@ const faqSchema = {
   description="Risposte alle domande più frequenti sulla Vetreria Monferrina: servizi, preventivi, trasporto, montaggio, tempi, pulizia e pagamenti."
 >
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-  <!-- Hero -->
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Domande frequenti</h1>
@@ -145,10 +145,8 @@ const faqSchema = {
     </div>
   </section>
 
-  <!-- FAQ: sidebar + accordion -->
   <section class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
     <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-12">
-      <!-- Sidebar navigazione categorie (desktop) -->
       <nav class="hidden lg:block" aria-label="Categorie FAQ">
         <div class="sticky top-24">
           <h2 class="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-4">
@@ -171,7 +169,6 @@ const faqSchema = {
         </div>
       </nav>
 
-      <!-- Contenuto FAQ -->
       <div>
         {
           faqs.map((section, sIdx) => (
@@ -214,7 +211,6 @@ const faqSchema = {
     </div>
   </section>
 
-  <!-- CTA -->
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 text-center lg:px-8">
       <h2 class="font-heading text-3xl text-neutral-50 sm:text-4xl" data-reveal>

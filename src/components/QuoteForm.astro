@@ -8,13 +8,11 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
 ---
 
 <form id="quote-form" novalidate class="space-y-6">
-  <!-- Honeypot: hidden from humans, traps bots -->
   <div style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">
     <label for="website">Non compilare questo campo</label>
     <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
   </div>
 
-  <!-- Nome e cognome -->
   <div>
     <label for="name" class="block text-sm font-medium text-neutral-800">
       Nome e cognome <span class="text-error">*</span>
@@ -42,7 +40,6 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     </p>
   </div>
 
-  <!-- Telefono -->
   <div>
     <label for="phone" class="block text-sm font-medium text-neutral-800">
       Telefono <span class="text-error">*</span>
@@ -68,7 +65,6 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     </p>
   </div>
 
-  <!-- Email -->
   <div>
     <label for="email" class="block text-sm font-medium text-neutral-800">
       Email <span class="text-error">*</span>
@@ -94,7 +90,6 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     </p>
   </div>
 
-  <!-- Tipo di lavoro -->
   <div>
     <label for="serviceType" class="block text-sm font-medium text-neutral-800">
       Tipo di lavoro <span class="text-error">*</span>
@@ -131,7 +126,6 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     </p>
   </div>
 
-  <!-- Descrizione -->
   <div>
     <label for="description" class="block text-sm font-medium text-neutral-800">
       Descrizione / note
@@ -152,7 +146,6 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     </p>
   </div>
 
-  <!-- Misure -->
   <div>
     <label for="measurements" class="block text-sm font-medium text-neutral-800">
       Misure approssimative
@@ -174,7 +167,6 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     </p>
   </div>
 
-  <!-- Privacy -->
   <div>
     <label for="privacy" class="flex items-start gap-3 cursor-pointer">
       <input
@@ -198,7 +190,6 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     </p>
   </div>
 
-  <!-- Submit -->
   <div>
     <button
       type="submit"
@@ -222,7 +213,6 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     </button>
   </div>
 
-  <!-- Global status messages -->
   <div
     id="form-success"
     class="hidden rounded-lg border border-success/30 bg-success/10 p-6 text-center"

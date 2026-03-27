@@ -1,32 +1,15 @@
 # Google Places — Guida Configurazione
 
 > Questa guida spiega come collegare i dati Google (recensioni, orari, foto)
-> alla Vetreria Monferrina. Tutto viene scaricato a build-time (gratis).
-
-## Costi
-
-**Gratis.** Google Cloud offre **$200/mese di credito gratuito** per Maps Platform (per sempre).
-I primi 90 giorni hanno anche $300 di credito aggiuntivo.
-
-| Endpoint                                     | Costo per richiesta | Con $200/mese     |
-| -------------------------------------------- | ------------------- | ----------------- |
-| Place Details (Basic)                        | $0.00 (gratis)      | Illimitato        |
-| Place Details (Contact)                      | $0.003              | ~66.600 richieste |
-| Place Details (Atmosphere — include reviews) | $0.005              | ~40.000 richieste |
-| Place Photos                                 | $0.007              | ~28.500 richieste |
-
-Noi facciamo **1 chiamata a build-time** che recupera tutto (recensioni, orari, foto).
-Con un fetch al giorno: **30 richieste/mese = ~$0.15/mese** — ampiamente coperto dal credito.
-
-**Costo effettivo: $0/mese** (anche con fetch giornaliero automatico via CI).
+> alla Vetreria Monferrina. Tutto viene scaricato a build-time.
 
 ## Soglie consigliate (IMPORTANTE)
 
-| Azione                 | Dove in Google Cloud Console   | Valore                          |
-| ---------------------- | ------------------------------ | ------------------------------- |
-| Quota Places API (New) | IAM e amministrazione → Quote  | 50 req/giorno                   |
-| Quota Places API       | IAM e amministrazione → Quote  | 50 req/giorno                   |
-| Budget alert           | Fatturazione → Budget e avvisi | $5/mese (notifica a 50% e 100%) |
+| Azione                 | Dove in Google Cloud Console   | Valore             |
+| ---------------------- | ------------------------------ | ------------------ |
+| Quota Places API (New) | IAM e amministrazione → Quote  | 50 req/giorno      |
+| Quota Places API       | IAM e amministrazione → Quote  | 50 req/giorno      |
+| Budget alert           | Fatturazione → Budget e avvisi | Attivare notifiche |
 
 Queste soglie proteggono da usi accidentali o abusi. Docs: https://docs.cloud.google.com/docs/quotas/view-manage
 
@@ -194,6 +177,6 @@ Vercel fara' il rebuild automatico dopo il push.
 - Lo script gira solo a build-time (server-side), la chiave non finisce mai nel browser
 - `place-photos.json` e' in `.gitignore` per cautela
 - I file JSON committati contengono solo dati pubblici (visibili a chiunque su Google)
-- **Impostare quote GCP**: 50 req/giorno + budget alert $5/mese
+- **Impostare quote GCP**: 50 req/giorno + budget alert attivo
 - **Futuro**: quando si usa Google Maps JS lato client, aggiungere Firebase App Check
   - Docs: https://developers.google.com/maps/documentation/javascript/places-app-check

@@ -132,7 +132,7 @@ const jsonLd = {
     />
     <ClientRouter />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-    <!-- Theme detection: system preference + time-based (inline to prevent FOUC) -->
+
     <script is:inline>
       (function () {
         const h = new Date().getHours();
@@ -142,7 +142,6 @@ const jsonLd = {
     </script>
   </head>
   <body class="font-body text-neutral-800 bg-neutral-50 antialiased overflow-x-hidden">
-    <!-- Skip to main content (accessibility) -->
     <a
       href="#main-content"
       class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[9999] focus:rounded-lg focus:bg-primary focus:px-6 focus:py-3 focus:text-neutral-50 focus:shadow-lg"
@@ -150,7 +149,6 @@ const jsonLd = {
       Vai al contenuto principale
     </a>
 
-    <!-- Scroll progress bar -->
     <div class="scroll-progress" aria-hidden="true"></div>
 
     <Header />
@@ -163,7 +161,6 @@ const jsonLd = {
     <Chatbot />
     <SpeedInsights />
 
-    <!-- Back to top button -->
     <button type="button" class="back-to-top" aria-label="Torna in cima" data-back-to-top>
       <svg
         class="h-3.5 w-3.5"
@@ -176,7 +173,7 @@ const jsonLd = {
         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5"></path>
       </svg>
     </button>
-    <!-- Image protection: block save/download/drag on protected images -->
+
     <script>
       function initImageProtection(): void {
         document.addEventListener('contextmenu', (e) => {
@@ -194,7 +191,7 @@ const jsonLd = {
       }
       initImageProtection();
     </script>
-    <!-- Global scroll reveal + scroll progress + back-to-top -->
+
     <script>
       function initGlobalUI(): void {
         // --- Scroll Reveal (IntersectionObserver) ---
@@ -255,7 +252,6 @@ const jsonLd = {
       document.addEventListener('astro:page-load', initGlobalUI);
     </script>
 
-    <!-- Dynamic theme updates: recheck time every 15 min + listen for system changes -->
     <script>
       function applyTheme(): void {
         const h = new Date().getHours();

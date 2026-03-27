@@ -4,7 +4,6 @@
 // Pure Astro + vanilla JS — no framework hydration needed.
 ---
 
-<!-- Toggle button -->
 <button
   id="chatbot-toggle"
   type="button"
@@ -12,7 +11,6 @@
   style="view-transition-name: chatbot-toggle;"
   class="fixed bottom-20 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-transform hover:scale-105 hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 md:bottom-6"
 >
-  <!-- Chat icon -->
   <svg
     id="chatbot-icon-open"
     xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +26,6 @@
   >
     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
   </svg>
-  <!-- Close icon (hidden by default) -->
   <svg
     id="chatbot-icon-close"
     class="hidden"
@@ -48,7 +45,6 @@
   </svg>
 </button>
 
-<!-- Welcome tooltip -->
 <div
   id="chatbot-tooltip"
   class="chatbot-tooltip fixed bottom-[8.5rem] right-6 z-50 hidden rounded-xl bg-primary px-4 py-3 text-sm text-white shadow-lg md:bottom-[5.5rem]"
@@ -64,14 +60,12 @@
     class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-surface text-primary shadow-md text-xs font-bold hover:bg-neutral-100"
     >✕</button
   >
-  <!-- Arrow pointing down -->
   <div
     class="absolute -bottom-2 right-6 h-0 w-0 border-x-8 border-t-8 border-x-transparent border-t-primary"
   >
   </div>
 </div>
 
-<!-- Chat panel -->
 <div
   id="chatbot-panel"
   data-chatbot-panel
@@ -80,7 +74,6 @@
   aria-label="Assistente virtuale"
   class="chatbot-panel fixed z-50 hidden flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-surface shadow-2xl"
 >
-  <!-- Header -->
   <div class="flex items-center justify-between bg-primary px-4 py-3 text-white">
     <div class="flex items-center gap-2">
       <svg
@@ -123,22 +116,18 @@
     </button>
   </div>
 
-  <!-- Messages area -->
   <div
     id="chatbot-messages"
     class="chatbot-messages flex-1 overflow-y-auto px-4 py-5"
     aria-live="polite"
     aria-relevant="additions"
   >
-    <!-- Messages are injected here by JS -->
   </div>
 
-  <!-- Options area -->
   <div
     id="chatbot-options"
     class="chatbot-options border-t border-neutral-200 bg-neutral-50 px-3 py-3"
   >
-    <!-- Option buttons are injected here by JS -->
   </div>
 </div>
 
@@ -660,29 +649,27 @@
       iconClose.classList.remove('hidden');
       toggle.setAttribute('aria-label', 'Chiudi assistente');
 
-      // Initialize chat if empty
-      if (messagesArea.children.length === 0) {
-        const restored = restoreSession();
-        if (restored) {
-          // Replay last node from history
-          const history = engine.getHistory();
-          const lastNodeId = history[history.length - 1];
-          if (lastNodeId) {
-            // Re-render without re-navigating (it is already in history)
-            const node = engine.getNode(lastNodeId);
-            if (node) {
-              addBotMessage(node.message);
-              if (node.options) renderOptions(node.options);
-            }
-          }
-        } else {
-          showNode(getStartNode());
-        }
-      }
-
-      // Focus trap + focus close button for a11y
       document.addEventListener('keydown', chatTrapFocus);
       closeBtn.focus();
+
+      if (messagesArea.children.length === 0) {
+        requestAnimationFrame(() => {
+          const restored = restoreSession();
+          if (restored) {
+            const history = engine.getHistory();
+            const lastNodeId = history[history.length - 1];
+            if (lastNodeId) {
+              const node = engine.getNode(lastNodeId);
+              if (node) {
+                addBotMessage(node.message);
+                if (node.options) renderOptions(node.options);
+              }
+            }
+          } else {
+            showNode(getStartNode());
+          }
+        });
+      }
     }
 
     function closePanel(): void {
