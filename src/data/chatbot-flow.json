@@ -1,234 +1,427 @@
 {
   "welcome": {
-    "message": "Ciao! Sono l'assistente della Vetreria Monferrina. Come posso aiutarti?",
+    "message": "Ciao! Sono Glassy \ud83d\udc4b l'assistente della Vetreria Monferrina. Come posso aiutarti?",
     "options": [
-      { "label": "Che lavori fate?", "next": "servizi" },
-      { "label": "Orari e dove trovarci", "next": "orari" },
-      { "label": "Voglio un preventivo", "action": "open_form" },
-      { "label": "Altra domanda", "next": "altra" }
+      { "label": "\ud83d\udd27 Che lavori fate?", "next": "servizi" },
+      { "label": "\u2753 Ho una domanda", "next": "faq" },
+      { "label": "\ud83d\udccd Orari e dove trovarci", "next": "orari" },
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\ud83d\udcac Altra domanda", "next": "altra" }
     ]
   },
   "servizi": {
-    "message": "Lavoriamo il vetro da generazioni! Ecco cosa facciamo:",
+    "message": "Lavoriamo il vetro da generazioni! \u2728 Ecco cosa facciamo:",
     "options": [
-      {
-        "label": "Installazioni (box doccia, parapetti, pensiline)",
-        "next": "servizi_installazioni"
-      },
-      { "label": "Tipi di vetro (blindati, stratificati, camera)", "next": "servizi_vetri" },
-      { "label": "Lavorazioni (sagomature, fori, molature)", "next": "servizi_lavorazioni" },
+      { "label": "\ud83d\udebf Installazioni", "next": "servizi_installazioni" },
+      { "label": "\ud83e\ude9f Tipi di vetro", "next": "servizi_vetri" },
+      { "label": "\u2699\ufe0f Lavorazioni", "next": "servizi_lavorazioni" },
+      { "label": "\ud83d\udcc4 Vedi tutti i servizi", "action": "open_page", "param": "/servizi" },
       { "label": "\u2190 Torna indietro", "next": "welcome" }
     ]
   },
   "servizi_installazioni": {
-    "message": "Ecco i nostri servizi di installazione:",
+    "message": "Ecco i nostri servizi di installazione \ud83d\udee0\ufe0f",
     "options": [
-      { "label": "Box doccia", "next": "dettaglio_doccia" },
-      { "label": "Parapetti", "next": "dettaglio_parapetti" },
-      { "label": "Pensiline", "next": "dettaglio_pensiline" },
-      { "label": "Porte interne", "next": "dettaglio_porte" },
-      { "label": "Posa di vetrine", "next": "dettaglio_vetrine" },
-      { "label": "Sostituzione vetri finestre", "next": "dettaglio_sostituzione_vetri" },
+      { "label": "\ud83d\udebf Box doccia", "next": "dettaglio_doccia" },
+      { "label": "\ud83c\udf09 Parapetti", "next": "dettaglio_parapetti" },
+      { "label": "\u2602\ufe0f Pensiline", "next": "dettaglio_pensiline" },
+      { "label": "\ud83d\udeaa Porte interne", "next": "dettaglio_porte" },
+      { "label": "\ud83c\udfea Vetrine", "next": "dettaglio_vetrine" },
+      { "label": "\ud83e\ude9f Sostituzione vetri", "next": "dettaglio_sostituzione_vetri" },
       { "label": "\u2190 Torna indietro", "next": "servizi" }
     ]
   },
   "servizi_vetri": {
-    "message": "Trattiamo diversi tipi di vetro per ogni esigenza:",
+    "message": "Trattiamo diversi tipi di vetro per ogni esigenza \ud83d\udd0d",
     "options": [
-      { "label": "Vetri blindati", "next": "dettaglio_blindati" },
-      { "label": "Vetri Madras", "next": "dettaglio_madras" },
-      { "label": "Vetri stratificati", "next": "dettaglio_stratificati" },
-      { "label": "Vetri monolitici", "next": "dettaglio_monolitici" },
-      { "label": "Vetri camera", "next": "dettaglio_vetrocamera" },
-      { "label": "Vetri camera tripli", "next": "dettaglio_vetrocamera_tripli" },
-      { "label": "Specchi", "next": "dettaglio_specchi" },
+      { "label": "\ud83d\udee1\ufe0f Blindati", "next": "dettaglio_blindati" },
+      { "label": "\ud83c\udf2b\ufe0f Madras", "next": "dettaglio_madras" },
+      { "label": "\ud83e\uddea Stratificati", "next": "dettaglio_stratificati" },
+      { "label": "\ud83e\ude9f Monolitici", "next": "dettaglio_monolitici" },
+      { "label": "\ud83c\udf21\ufe0f Vetrocamera", "next": "dettaglio_vetrocamera" },
+      { "label": "\u2744\ufe0f Vetrocamera tripli", "next": "dettaglio_vetrocamera_tripli" },
+      { "label": "\ud83e\ude9e Specchi", "next": "dettaglio_specchi" },
       { "label": "\u2190 Torna indietro", "next": "servizi" }
     ]
   },
   "servizi_lavorazioni": {
-    "message": "Offriamo lavorazioni di precisione sul vetro:",
+    "message": "Lavorazioni di precisione sul vetro \u2699\ufe0f",
     "options": [
-      { "label": "Sagomature", "next": "dettaglio_sagomature" },
-      { "label": "Fori", "next": "dettaglio_fori" },
-      { "label": "Molature", "next": "dettaglio_molature" },
+      { "label": "\u2702\ufe0f Sagomature", "next": "dettaglio_sagomature" },
+      { "label": "\ud83d\udd33 Fori", "next": "dettaglio_fori" },
+      { "label": "\u2728 Molature", "next": "dettaglio_molature" },
       { "label": "\u2190 Torna indietro", "next": "servizi" }
     ]
   },
   "dettaglio_doccia": {
-    "message": "Box doccia su misura in vetro temperato. Realizziamo cabine doccia con design moderno, sicurezza garantita e finiture personalizzate per ogni tipo di bagno.",
+    "message": "\ud83d\udebf Box doccia su misura in vetro temperato. Design moderno, sicurezza garantita e finiture personalizzate per ogni tipo di bagno.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "box-doccia" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/box-doccia"
+      },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "box-doccia" },
       { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
     ]
   },
   "dettaglio_parapetti": {
-    "message": "Parapetti in vetro per balconi, scale e terrazze. Sicurezza garantita senza rinunciare alla vista e alla luminosit\u00e0.",
+    "message": "\ud83c\udf09 Parapetti in vetro per balconi, scale e terrazze. Sicurezza senza rinunciare alla vista e alla luminosit\u00e0.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "parapetti" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/parapetti"
+      },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "parapetti" },
       { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
     ]
   },
   "dettaglio_pensiline": {
-    "message": "Pensiline in vetro per ingressi e terrazze. Protezione dagli agenti atmosferici con un tocco di eleganza e modernit\u00e0.",
+    "message": "\u2602\ufe0f Pensiline in vetro per ingressi e terrazze. Protezione dagli agenti atmosferici con eleganza e modernit\u00e0.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "pensiline" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/pensiline"
+      },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "pensiline" },
       { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
     ]
   },
   "dettaglio_porte": {
-    "message": "Porte interne in vetro, scorrevoli e a battente. Ideali per dividere gli ambienti lasciando passare la luce, con design elegante e moderno.",
+    "message": "\ud83d\udeaa Porte interne in vetro, scorrevoli e a battente. Dividono gli ambienti lasciando passare la luce.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "porte-interne" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/porte-interne"
+      },
+      {
+        "label": "\ud83d\udcdd Richiedi preventivo",
+        "action": "open_form",
+        "param": "porte-interne"
+      },
       { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
     ]
   },
   "dettaglio_vetrine": {
-    "message": "Installazione e posa di vetrine per negozi e attivit\u00e0 commerciali. Vetrine resistenti e trasparenti per valorizzare la tua esposizione.",
+    "message": "\ud83c\udfea Vetrine per negozi e attivit\u00e0 commerciali. Resistenti e trasparenti per valorizzare la tua esposizione.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "vetrine" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/vetrine"
+      },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "vetrine" },
       { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
     ]
   },
   "dettaglio_sostituzione_vetri": {
-    "message": "Sostituzione vetri per finestre esistenti. Interveniamo rapidamente per sostituire vetri rotti o migliorare l'isolamento delle tue finestre.",
+    "message": "\ud83e\ude9f Sostituzione vetri per finestre. Interveniamo rapidamente per vetri rotti o per migliorare l'isolamento.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "sostituzione-vetri" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/sostituzione-vetri"
+      },
+      {
+        "label": "\ud83d\udcdd Richiedi preventivo",
+        "action": "open_form",
+        "param": "sostituzione-vetri"
+      },
       { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
     ]
   },
   "dettaglio_blindati": {
-    "message": "Vetri blindati antieffrazione per massima sicurezza. Protezione certificata per abitazioni, uffici e attivit\u00e0 commerciali.",
+    "message": "\ud83d\udee1\ufe0f Vetri blindati antieffrazione. Protezione certificata per abitazioni, uffici e attivit\u00e0 commerciali.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "blindati" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/blindati"
+      },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "blindati" },
       { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
     ]
   },
   "dettaglio_madras": {
-    "message": "Vetro decorativo Madras\u00ae per privacy e design d'interni. Superfici satinate e decorate disponibili in molteplici fantasie e texture.",
+    "message": "\ud83c\udf2b\ufe0f Vetro decorativo Madras\u00ae per privacy e design. Superfici satinate in molteplici fantasie e texture.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "madras" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/madras"
+      },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "madras" },
       { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
     ]
   },
   "dettaglio_stratificati": {
-    "message": "Vetri stratificati trasparenti, satinati e colorati. Composti da pi\u00f9 lastre unite da pellicola PVB per sicurezza e versatilit\u00e0.",
+    "message": "\ud83e\uddea Vetri stratificati: pi\u00f9 lastre unite da pellicola PVB per sicurezza e versatilit\u00e0. Disponibili trasparenti, satinati e colorati.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "stratificati" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/stratificati"
+      },
+      {
+        "label": "\ud83d\udcdd Richiedi preventivo",
+        "action": "open_form",
+        "param": "stratificati"
+      },
       { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
     ]
   },
   "dettaglio_monolitici": {
-    "message": "Vetri monolitici trasparenti e satinati per ogni esigenza. Lastre singole di alta qualit\u00e0 disponibili in diversi spessori.",
+    "message": "\ud83e\ude9f Vetri monolitici di alta qualit\u00e0 in diversi spessori. Trasparenti e satinati per ogni esigenza.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "monolitici" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/monolitici"
+      },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "monolitici" },
       { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
     ]
   },
   "dettaglio_vetrocamera": {
-    "message": "Vetrocamera doppi per isolamento termico e acustico. Due lastre di vetro separate da un'intercapedine di gas inerte per massima efficienza energetica.",
+    "message": "\ud83c\udf21\ufe0f Vetrocamera doppi: due lastre separate da gas inerte per isolamento termico e acustico eccellente.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "vetrocamera" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/vetrocamera"
+      },
+      {
+        "label": "\ud83d\udcda Doppio o triplo? Leggi la guida",
+        "action": "open_page",
+        "param": "/blog/vetrocamera-doppio-o-triplo"
+      },
+      {
+        "label": "\ud83d\udcdd Richiedi preventivo",
+        "action": "open_form",
+        "param": "vetrocamera"
+      },
       { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
     ]
   },
   "dettaglio_vetrocamera_tripli": {
-    "message": "Triplo vetro per massimo isolamento termico e acustico. Tre lastre con doppie intercapedini per prestazioni superiori in climi estremi.",
+    "message": "\u2744\ufe0f Triplo vetro: tre lastre con doppie intercapedini per prestazioni superiori in climi estremi.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "vetrocamera-tripli" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/vetrocamera-tripli"
+      },
+      {
+        "label": "\ud83d\udcda Doppio o triplo? Leggi la guida",
+        "action": "open_page",
+        "param": "/blog/vetrocamera-doppio-o-triplo"
+      },
+      {
+        "label": "\ud83d\udcdd Richiedi preventivo",
+        "action": "open_form",
+        "param": "vetrocamera-tripli"
+      },
       { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
     ]
   },
   "dettaglio_specchi": {
-    "message": "Specchi su misura per bagni, armadi e complementi d'arredo. Taglio personalizzato, molatura bordi e installazione professionale.",
+    "message": "\ud83e\ude9e Specchi su misura per bagni, armadi e arredo. Taglio personalizzato, molatura bordi e installazione.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "specchi" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/specchi"
+      },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "specchi" },
       { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
     ]
   },
   "dettaglio_sagomature": {
-    "message": "Taglio e sagomatura del vetro su misura per qualsiasi forma. Realizziamo sagome personalizzate con precisione millimetrica.",
+    "message": "\u2702\ufe0f Taglio e sagomatura su misura per qualsiasi forma. Precisione millimetrica.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "sagomature" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/sagomature"
+      },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "sagomature" },
       { "label": "\u2190 Torna indietro", "next": "servizi_lavorazioni" }
     ]
   },
   "dettaglio_fori": {
-    "message": "Foratura del vetro per maniglie, cerniere e fissaggi. Fori precisi eseguiti con macchinari a controllo numerico.",
+    "message": "\ud83d\udd33 Foratura per maniglie, cerniere e fissaggi. Fori precisi con macchinari a controllo numerico.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "fori" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/fori"
+      },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "fori" },
       { "label": "\u2190 Torna indietro", "next": "servizi_lavorazioni" }
     ]
   },
   "dettaglio_molature": {
-    "message": "Molatura bordi del vetro a filo lucido, filo opaco e bisello. Finitura professionale per un risultato elegante e sicuro al tatto.",
+    "message": "\u2728 Molatura bordi a filo lucido, opaco e bisello. Finitura elegante e sicura al tatto.",
     "options": [
-      { "label": "Richiedi preventivo", "action": "open_form", "param": "molature" },
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/molature"
+      },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "molature" },
       { "label": "\u2190 Torna indietro", "next": "servizi_lavorazioni" }
     ]
   },
-  "orari": {
-    "message": "Orari di apertura:\nLuned\u00ec \u2013 Venerd\u00ec: 08:00\u201312:00 / 13:30\u201317:30\nSabato: 08:00\u201312:00\nDomenica: Chiuso\nCi trovi in Strada Statale 31, 98/C \u2014 15033 Casale Monferrato (AL).",
+  "faq": {
+    "message": "Ecco le domande pi\u00f9 frequenti \ud83d\udca1 Su quale argomento hai dubbi?",
     "options": [
-      { "label": "Apri contatti", "action": "open_contacts" },
-      { "label": "Chiamaci ora", "action": "call_phone" },
+      { "label": "\ud83e\udd14 Temperato o stratificato?", "next": "faq_temperato_stratificato" },
+      { "label": "\ud83d\udebf Come scegliere il box doccia?", "next": "faq_box_doccia" },
+      { "label": "\ud83e\uddf9 Come pulire i vetri?", "next": "faq_pulizia" },
+      { "label": "\ud83d\ude9a Fate trasporto e montaggio?", "next": "faq_trasporto" },
+      { "label": "\ud83d\udcc4 Tutte le FAQ", "action": "open_page", "param": "/faq" },
+      { "label": "\u2190 Torna indietro", "next": "welcome" }
+    ]
+  },
+  "faq_temperato_stratificato": {
+    "message": "Il temperato \u00e8 5\u00d7 pi\u00f9 resistente e si frantuma in pezzi non taglienti. Lo stratificato tiene insieme i frammenti grazie alla pellicola PVB. Regola semplice: temperato per box doccia, stratificato per parapetti e sicurezza \ud83d\udc4d",
+    "options": [
+      {
+        "label": "\ud83d\udcda Leggi la guida completa",
+        "action": "open_page",
+        "param": "/blog/vetro-temperato-vs-stratificato"
+      },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form" },
+      { "label": "\u2190 Torna indietro", "next": "faq" }
+    ]
+  },
+  "faq_box_doccia": {
+    "message": "Per scegliere il box doccia considera: spazio (scorrevole per bagni piccoli, battente per grandi), vetro (trasparente o satinato per privacy) e spessore (8mm standard, 10mm premium) \ud83d\udebf",
+    "options": [
+      {
+        "label": "\ud83d\udcda Leggi la guida completa",
+        "action": "open_page",
+        "param": "/blog/come-scegliere-vetro-box-doccia"
+      },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "box-doccia" },
+      { "label": "\u2190 Torna indietro", "next": "faq" }
+    ]
+  },
+  "faq_pulizia": {
+    "message": "Acqua tiepida + detersivo neutro + panno in microfibra. Niente prodotti abrasivi! Per il calcare del box doccia, aceto bianco diluito funziona benissimo \u2728",
+    "options": [
+      {
+        "label": "\ud83d\udcda Leggi la guida completa",
+        "action": "open_page",
+        "param": "/blog/come-pulire-mantenere-vetri"
+      },
+      { "label": "\u2190 Torna indietro", "next": "faq" }
+    ]
+  },
+  "faq_trasporto": {
+    "message": "Certo! \ud83d\ude9a Tutti i servizi includono trasporto e montaggio professionale. Operiamo in tutto il Piemonte, con priorit\u00e0 nella provincia di Alessandria.",
+    "options": [
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/trasporto-e-montaggio"
+      },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form" },
+      { "label": "\u2190 Torna indietro", "next": "faq" }
+    ]
+  },
+  "orari": {
+    "message": "\ud83d\udccd Orari di apertura:\nLuned\u00ec \u2013 Venerd\u00ec: 08:00\u201312:00 / 13:30\u201317:30\nSabato: 08:00\u201312:00\nDomenica: Chiuso\n\nStrada Statale 31, 98/C \u2014 15033 Casale Monferrato (AL)",
+    "options": [
+      { "label": "\ud83d\udccd Apri contatti", "action": "open_contacts" },
+      { "label": "\ud83d\udcde Chiamaci ora", "action": "call_phone" },
       { "label": "\u2190 Torna indietro", "next": "welcome" }
     ]
   },
   "altra": {
-    "message": "Per qualsiasi altra domanda, chiamaci al +39 0142 563728 o scrivi a vetreriamonferrina@gmail.com. Saremo felici di aiutarti!",
+    "message": "Posso aiutarti in diversi modi \ud83d\ude0a",
     "options": [
-      { "label": "Chiamaci ora", "action": "call_phone" },
-      { "label": "Apri contatti", "action": "open_contacts" },
+      { "label": "\u2753 Domande frequenti", "action": "open_page", "param": "/faq" },
+      { "label": "\ud83d\udcda Leggi il blog", "action": "open_page", "param": "/blog" },
+      { "label": "\ud83d\udcde Chiamaci ora", "action": "call_phone" },
+      { "label": "\ud83d\udccd Apri contatti", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "welcome" }
     ]
   },
   "welcome_servizi": {
-    "message": "Cerchi informazioni su un servizio? Posso aiutarti!",
+    "message": "Cerchi informazioni su un servizio? Glassy ti aiuta! \ud83d\udd0d",
     "options": [
-      {
-        "label": "Installazioni (box doccia, parapetti, pensiline)",
-        "next": "servizi_installazioni"
-      },
-      { "label": "Tipi di vetro (blindati, stratificati, camera)", "next": "servizi_vetri" },
-      { "label": "Lavorazioni (sagomature, fori, molature)", "next": "servizi_lavorazioni" },
-      { "label": "Voglio un preventivo", "action": "open_form" },
-      { "label": "Altra domanda", "next": "altra" }
+      { "label": "\ud83d\udebf Installazioni", "next": "servizi_installazioni" },
+      { "label": "\ud83e\ude9f Tipi di vetro", "next": "servizi_vetri" },
+      { "label": "\u2699\ufe0f Lavorazioni", "next": "servizi_lavorazioni" },
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\u2753 Ho una domanda", "next": "faq" }
     ]
   },
   "welcome_galleria": {
-    "message": "Ti piace un nostro lavoro? Possiamo realizzarne uno simile per te.",
+    "message": "Ti piace un nostro lavoro? Possiamo realizzarne uno simile per te \u2728",
     "options": [
-      { "label": "Voglio un preventivo", "action": "open_form" },
-      { "label": "Che lavori fate?", "next": "servizi" },
-      { "label": "Orari e dove trovarci", "next": "orari" },
-      { "label": "Altra domanda", "next": "altra" }
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\ud83d\udd27 Che lavori fate?", "next": "servizi" },
+      { "label": "\ud83d\udccd Orari e dove trovarci", "next": "orari" },
+      { "label": "\u2753 Ho una domanda", "next": "faq" }
     ]
   },
   "welcome_contatti": {
-    "message": "Hai bisogno di raggiungerci o vuoi altre informazioni?",
+    "message": "Hai bisogno di raggiungerci? \ud83d\udccd",
     "options": [
-      { "label": "Orari di apertura", "next": "orari" },
-      { "label": "Chiamaci ora", "action": "call_phone" },
-      { "label": "Voglio un preventivo", "action": "open_form" },
-      { "label": "Altra domanda", "next": "altra" }
+      { "label": "\ud83d\udd53 Orari di apertura", "next": "orari" },
+      { "label": "\ud83d\udcde Chiamaci ora", "action": "call_phone" },
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\u2753 Ho una domanda", "next": "faq" }
     ]
   },
   "welcome_preventivo": {
-    "message": "Stai compilando il preventivo? Se hai dubbi, posso aiutarti.",
+    "message": "Stai compilando il preventivo? Se hai dubbi, Glassy ti aiuta \ud83d\ude0a",
     "options": [
-      { "label": "Che lavori fate?", "next": "servizi" },
-      { "label": "Chiamaci ora", "action": "call_phone" },
-      { "label": "Orari e dove trovarci", "next": "orari" },
-      { "label": "Altra domanda", "next": "altra" }
+      { "label": "\ud83d\udd27 Che lavori fate?", "next": "servizi" },
+      { "label": "\u2753 Ho una domanda", "next": "faq" },
+      { "label": "\ud83d\udcde Chiamaci ora", "action": "call_phone" },
+      { "label": "\ud83d\udccd Orari e dove trovarci", "next": "orari" }
     ]
   },
   "welcome_chi_siamo": {
-    "message": "Vuoi saperne di pi\u00f9 su di noi o hai bisogno di qualcosa?",
+    "message": "Vuoi saperne di pi\u00f9 su di noi? \ud83d\ude0a",
     "options": [
-      { "label": "Che lavori fate?", "next": "servizi" },
-      { "label": "Voglio un preventivo", "action": "open_form" },
-      { "label": "Orari e dove trovarci", "next": "orari" },
-      { "label": "Altra domanda", "next": "altra" }
+      { "label": "\ud83d\udd27 Che lavori fate?", "next": "servizi" },
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\u2753 Ho una domanda", "next": "faq" },
+      { "label": "\ud83d\udccd Orari e dove trovarci", "next": "orari" }
+    ]
+  },
+  "welcome_blog": {
+    "message": "Stai leggendo il nostro blog! \ud83d\udcda Hai domande?",
+    "options": [
+      { "label": "\u2753 Domande frequenti", "next": "faq" },
+      { "label": "\ud83d\udd27 Che lavori fate?", "next": "servizi" },
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\ud83d\udccd Orari e dove trovarci", "next": "orari" }
+    ]
+  },
+  "welcome_faq": {
+    "message": "Non trovi la risposta nelle FAQ? Glassy \u00e8 qui per te \ud83d\ude0a",
+    "options": [
+      { "label": "\ud83d\udcde Chiamaci ora", "action": "call_phone" },
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\ud83d\udd27 Che lavori fate?", "next": "servizi" },
+      { "label": "\ud83d\udccd Apri contatti", "action": "open_contacts" }
+    ]
+  },
+  "welcome_trasporto": {
+    "message": "Hai domande su trasporto e montaggio? \ud83d\ude9a",
+    "options": [
+      { "label": "\ud83d\uddfa\ufe0f Dove operate?", "next": "faq_trasporto" },
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\ud83d\udcde Chiamaci ora", "action": "call_phone" },
+      { "label": "\ud83d\udccd Orari e dove trovarci", "next": "orari" }
     ]
   }
 }
