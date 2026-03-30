@@ -32,6 +32,9 @@ blob-report/
 # Build-time generated data (contains API references)
 src/data/place-photos.json
 
+# Cloudflare
+.wrangler/
+
 # Sanity Studio
 sanity/.sanity/
 
