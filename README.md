@@ -14,7 +14,7 @@ Sito vetrina con form preventivi, galleria lavori, blog, 16 pagine servizio, FAQ
 | Email           | Resend                                                |
 | Hosting         | Vercel (serverless)                                   |
 | CDN / DNS / WAF | Cloudflare (proxy attivo)                             |
-| Mappa           | Leaflet.js                                            |
+| Mappa           | Google Maps Embed API                                 |
 | Meteo           | Open-Meteo (gratis, no API key)                       |
 | Recensioni      | Google Places API (New) — dati scaricati a build-time |
 | Test            | Vitest (unit) + Playwright (E2E)                      |
@@ -148,7 +148,7 @@ I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 | `/servizi/[slug]`        | 16 pagine servizio individuali                       | SSG       |
 | `/galleria`              | Galleria masonry con lightbox                        | SSG       |
 | `/chi-siamo`             | Storia, team, timeline, sezione memoriale            | SSG       |
-| `/contatti`              | Mappa Leaflet, orari, meteo, contatti                | SSG       |
+| `/contatti`              | Mappa Google, orari, meteo, contatti                 | SSG       |
 | `/preventivo`            | Form richiesta preventivo                            | SSG       |
 | `/faq`                   | FAQ (7 categorie, Schema.org FAQPage)                | SSG       |
 | `/blog`                  | Blog (4 articoli sempreverdi con TOC)                | SSG       |

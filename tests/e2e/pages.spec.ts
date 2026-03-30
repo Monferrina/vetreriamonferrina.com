@@ -31,13 +31,10 @@ test('contatti ha link email cliccabile', async ({ page }) => {
   await expect(page.locator('main a[href^="mailto:"]')).toBeVisible();
 });
 
-test('contatti ha mappa interattiva', async ({ page }) => {
+test('contatti ha mappa Google', async ({ page }) => {
   await page.goto('/contatti');
-  // The map is rendered via Leaflet (not an iframe), verify the map container and attribution
-  const mapContainer = page.locator('.leaflet-container');
-  await expect(mapContainer).toBeVisible();
-  // Verify OpenStreetMap attribution link inside the map
-  await expect(page.locator('.leaflet-container a[href*="openstreetmap.org"]')).toBeVisible();
+  const mapIframe = page.locator('iframe[src*="google.com/maps"]');
+  await expect(mapIframe).toBeVisible();
 });
 
 test('contatti ha orari di apertura', async ({ page }) => {

@@ -73,7 +73,7 @@
                 <mxCell id="arrow3" value="HTTPS&#xa;cached + protected" style="endArrow=classic;endFill=1;html=1;fontSize=10;strokeWidth=2;strokeColor=#1B4965;" parent="1" source="cloudflare_group" target="browser" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="security_box" value="Security Headers (vercel.json)&#xa;&#xa;• CSP: self + unsafe-inline + unpkg + OSM + Open-Meteo&#xa;• HSTS: max-age=63M, includeSubDomains, preload&#xa;• X-Frame-Options: DENY&#xa;• X-Content-Type-Options: nosniff&#xa;• Referrer-Policy: strict-origin-when-cross-origin&#xa;• Permissions-Policy: camera=(), microphone=(), geolocation=()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
+                <mxCell id="security_box" value="Security Headers (vercel.json)&#xa;&#xa;• CSP: self + unsafe-inline + Google Maps + Open-Meteo&#xa;• HSTS: max-age=63M, includeSubDomains, preload&#xa;• X-Frame-Options: DENY&#xa;• X-Content-Type-Options: nosniff&#xa;• Referrer-Policy: strict-origin-when-cross-origin&#xa;• Permissions-Policy: camera=(), microphone=(), geolocation=()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
                     <mxGeometry x="1120" y="380" width="340" height="130" as="geometry"/>
                 </mxCell>
                 <mxCell id="arrow_security" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#b85450;dashed=1;" parent="1" source="security_box" target="host_group" edge="1">
@@ -142,7 +142,7 @@
                 <mxCell id="filter_box" value="Filtri pill buttons (Servizi + Galleria) | aria-live | Dark mode | Pulsante Tutti" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="pages_group" vertex="1">
                     <mxGeometry x="20" y="245" width="305" height="35" as="geometry"/>
                 </mxCell>
-                <mxCell id="leaflet_box" value="Mappa Leaflet.js (Contatti) | Marker SVG | Popup | alt+title accessibili" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="pages_group" vertex="1">
+                <mxCell id="googlemaps_box" value="Mappa Google Maps Embed (Contatti) | Place ID | Apri in Google Maps" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="pages_group" vertex="1">
                     <mxGeometry x="20" y="290" width="305" height="35" as="geometry"/>
                 </mxCell>
                 <mxCell id="chatbot_box" value="Chatbot contestuale a flusso&#xa;JSON statico | Saluto per pagina | Focus trap | Sessione sicura (cap 100)&#xa;aria-live messaggi | Zero API | Guida → form / telefono" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6d0de;strokeColor=#996185;fontSize=10;" parent="pages_group" vertex="1">
