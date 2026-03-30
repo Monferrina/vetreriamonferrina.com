@@ -39,48 +39,58 @@ async function passthrough(request: Request): Promise<Response> {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    if (env.MAINTENANCE_ENABLED !== 'true') {
-      return passthrough(request);
-    }
+    try {
+      if (env.MAINTENANCE_ENABLED !== 'true') {
+        return await passthrough(request);
+      }
 
-    const url = new URL(request.url);
-    const path = url.pathname;
+      const url = new URL(request.url);
+      const path = url.pathname;
 
-    if (
-      path === '/maintenance' ||
-      path.startsWith('/_astro/') ||
-      path.startsWith('/images/') ||
-      path.startsWith('/fonts/') ||
-      path.startsWith('/favicon') ||
-      path.endsWith('.svg') ||
-      path.endsWith('.png') ||
-      path.endsWith('.webp') ||
-      path.endsWith('.woff2') ||
-      path.endsWith('.ico')
-    ) {
-      return passthrough(request);
-    }
+      if (
+        path === '/maintenance' ||
+        path.startsWith('/_astro/') ||
+        path.startsWith('/images/') ||
+        path.startsWith('/fonts/') ||
+        path.startsWith('/favicon') ||
+        path.endsWith('.svg') ||
+        path.endsWith('.png') ||
+        path.endsWith('.webp') ||
+        path.endsWith('.woff2') ||
+        path.endsWith('.ico')
+      ) {
+        return await passthrough(request);
+      }
 
-    if (path.startsWith('/api/')) {
-      return new Response(JSON.stringify({ error: 'Sito in manutenzione. Riprova più tardi.' }), {
+      if (path.startsWith('/api/')) {
+        return new Response(JSON.stringify({ error: 'Sito in manutenzione. Riprova più tardi.' }), {
+          status: 503,
+          headers: {
+            'Content-Type': 'application/json',
+            'Retry-After': '3600',
+          },
+        });
+      }
+
+      const maintenanceResponse = await fetch(`${ORIGIN}/maintenance`);
+      return new Response(maintenanceResponse.body, {
         status: 503,
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'text/html;charset=UTF-8',
           'Retry-After': '3600',
+          'Cache-Control': 'no-store',
+          'x-maintenance': 'on',
+          'x-worker': 'active',
+        },
+      });
+    } catch {
+      return new Response('Servizio temporaneamente non disponibile.', {
+        status: 502,
+        headers: {
+          'Content-Type': 'text/plain;charset=UTF-8',
+          'Retry-After': '60',
         },
       });
     }
-
-    const maintenanceResponse = await fetch(`${ORIGIN}/maintenance`);
-    return new Response(maintenanceResponse.body, {
-      status: 503,
-      headers: {
-        'Content-Type': 'text/html;charset=UTF-8',
-        'Retry-After': '3600',
-        'Cache-Control': 'no-store',
-        'x-maintenance': 'on',
-        'x-worker': 'active',
-      },
-    });
   },
 };
