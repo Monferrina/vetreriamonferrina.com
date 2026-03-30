@@ -9,7 +9,7 @@ interface ChatNode {
 export interface ChatOption {
   label: string;
   next?: string;
-  action?: 'open_form' | 'open_contacts' | 'call_phone';
+  action?: 'open_form' | 'open_contacts' | 'call_phone' | 'open_page';
   param?: string;
 }
 
