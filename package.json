@@ -53,6 +53,8 @@
     "sharp": "^0.34.5",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.2",
-    "vitest": "^4.0.18"
+    "vitest": "^4.0.18",
+    "checkly": "latest",
+    "jiti": "^2"
   }
 }

@@ -1,6 +1,7 @@
 import { validateQuoteForm, type QuoteFormData } from './validation';
 import { sanitizeFormData } from './sanitize';
 import { isRateLimited } from './rate-limit';
+import { quoteRequestEmail } from './email-templates/quote-request';
 
 export interface SendQuoteConfig {
   allowedOrigins: string[];
@@ -72,17 +73,15 @@ export async function handleSendQuote(
       from: config.fromEmail,
       to: config.toEmail,
       subject: `Richiesta preventivo: ${data.serviceType} — ${data.name}`,
-      html: `
-        <h2>Nuova richiesta di preventivo</h2>
-        <p><strong>Nome:</strong> ${data.name}</p>
-        <p><strong>Telefono:</strong> ${data.phone}</p>
-        <p><strong>Email:</strong> ${data.email}</p>
-        <p><strong>Tipo di lavoro:</strong> ${data.serviceType}</p>
-        ${data.description ? `<p><strong>Descrizione:</strong> ${data.description}</p>` : ''}
-        ${data.measurements ? `<p><strong>Misure:</strong> ${data.measurements}</p>` : ''}
-        <hr />
-        <p><small>Inviato dal sito web — IP: ${req.ip}</small></p>
-      `,
+      html: quoteRequestEmail({
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        serviceType: data.serviceType,
+        description: data.description,
+        measurements: data.measurements,
+        ip: req.ip,
+      }),
     });
 
     if (emailError) {

@@ -357,6 +357,32 @@ html {
   }
 }
 
+/* Social icons — colored with bounce animation on hover */
+.social-icon {
+  display: inline-flex;
+  transition: transform 0.3s ease;
+}
+
+.social-icon:hover {
+  animation: social-bounce 0.6s ease;
+}
+
+@keyframes social-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-4px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(-2px);
+  }
+}
+
 /* Header, footer & bottom nav persist across navigations — no animation */
 ::view-transition-old(site-header),
 ::view-transition-new(site-header),

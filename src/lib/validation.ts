@@ -47,14 +47,24 @@ export function validateQuoteForm(data: QuoteFormData): ValidationError[] {
     errors.push({ field: 'serviceType', message: 'Seleziona un tipo di lavoro' });
   }
 
-  if (data.description && data.description.length > MAX_DESCRIPTION_LENGTH) {
+  if (!data.description || data.description.trim().length < 10) {
+    errors.push({
+      field: 'description',
+      message: 'Descrivi il lavoro di cui hai bisogno (minimo 10 caratteri)',
+    });
+  } else if (data.description.length > MAX_DESCRIPTION_LENGTH) {
     errors.push({
       field: 'description',
       message: 'Descrizione troppo lunga (max 2000 caratteri)',
     });
   }
 
-  if (data.measurements && data.measurements.length > MAX_MEASUREMENTS_LENGTH) {
+  if (!data.measurements || data.measurements.trim().length < 3) {
+    errors.push({
+      field: 'measurements',
+      message: 'Inserisci le misure approssimative (es. 120x80 cm)',
+    });
+  } else if (data.measurements.length > MAX_MEASUREMENTS_LENGTH) {
     errors.push({ field: 'measurements', message: 'Misure troppo lunghe (max 500 caratteri)' });
   }
 

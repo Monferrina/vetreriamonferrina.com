@@ -110,9 +110,24 @@ describe('validateQuoteForm', () => {
     expect(errors.some((e) => e.field === 'description')).toBe(false);
   });
 
-  it('descrizione vuota: nessun errore (campo opzionale)', () => {
+  it('descrizione vuota: errore (campo obbligatorio)', () => {
     const errors = validateQuoteForm({ ...validData, description: '' });
-    expect(errors.some((e) => e.field === 'description')).toBe(false);
+    expect(errors.some((e) => e.field === 'description')).toBe(true);
+  });
+
+  it('descrizione troppo corta: errore', () => {
+    const errors = validateQuoteForm({ ...validData, description: 'ciao' });
+    expect(errors.some((e) => e.field === 'description')).toBe(true);
+  });
+
+  it('misure vuote: errore (campo obbligatorio)', () => {
+    const errors = validateQuoteForm({ ...validData, measurements: '' });
+    expect(errors.some((e) => e.field === 'measurements')).toBe(true);
+  });
+
+  it('misure troppo corte: errore', () => {
+    const errors = validateQuoteForm({ ...validData, measurements: 'ab' });
+    expect(errors.some((e) => e.field === 'measurements')).toBe(true);
   });
 
   it('misure troppo lunghe: errore', () => {

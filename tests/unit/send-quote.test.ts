@@ -100,14 +100,16 @@ describe('handleSendQuote', () => {
     expect(params.html).toContain('120x80');
   });
 
-  it("campi opzionali vuoti: non inclusi nell'html", async () => {
+  it('descrizione e misure vuote: risponde 422', async () => {
     const sender = makeEmailSender();
     const body = { ...validBody, description: '', measurements: '' };
-    await handleSendQuote(makeReq({ ip: uniqueIp(), body }), config, sender);
+    const result = await handleSendQuote(makeReq({ ip: uniqueIp(), body }), config, sender);
 
-    const [params] = sender.calls[0];
-    expect(params.html).not.toContain('Descrizione');
-    expect(params.html).not.toContain('Misure');
+    expect(result.status).toBe(422);
+    const errors = result.body.errors as Array<{ field: string }>;
+    expect(errors.some((e) => e.field === 'description')).toBe(true);
+    expect(errors.some((e) => e.field === 'measurements')).toBe(true);
+    expect(sender.calls).toHaveLength(0);
   });
 
   // --- CSRF / Origin ---

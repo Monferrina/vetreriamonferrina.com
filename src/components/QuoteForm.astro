@@ -7,6 +7,18 @@ import { services, categories, type CategoryKey } from '../data/services';
 const categoryKeys = Object.keys(categories) as CategoryKey[];
 ---
 
+<div
+  id="form-guidelines"
+  class="mb-6 rounded-lg border border-primary/20 bg-primary/5 p-4 text-sm text-neutral-700"
+>
+  <p class="font-semibold text-primary">Come compilare il form</p>
+  <ul class="mt-2 list-inside list-disc space-y-1">
+    <li>Descrivi il lavoro nel modo pi&ugrave; dettagliato possibile</li>
+    <li>Indica le misure approssimative (anche a occhio, ci pensiamo noi a verificare)</li>
+    <li>Pi&ugrave; dettagli fornisci, pi&ugrave; preciso sar&agrave; il preventivo</li>
+  </ul>
+</div>
+
 <form id="quote-form" novalidate class="space-y-6">
   <div style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">
     <label for="website">Non compilare questo campo</label>
@@ -128,15 +140,20 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
 
   <div>
     <label for="description" class="block text-sm font-medium text-neutral-800">
-      Descrizione / note
+      Descrizione del lavoro <span class="text-error">*</span>
     </label>
     <textarea
       id="description"
       name="description"
       rows="4"
+      required
+      aria-required="true"
+      aria-describedby="description-error"
+      minlength="10"
       maxlength="2000"
       class="mt-1 block w-full rounded-lg border border-neutral-200 bg-surface px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-      placeholder="Descrivi il lavoro di cui hai bisogno..."></textarea>
+      placeholder="Descrivi il lavoro di cui hai bisogno: tipo di vetro, dove va installato, eventuali preferenze..."
+    ></textarea>
     <p
       data-error="description"
       class="mt-1 hidden text-sm text-error"
@@ -148,15 +165,19 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
 
   <div>
     <label for="measurements" class="block text-sm font-medium text-neutral-800">
-      Misure approssimative
+      Misure approssimative <span class="text-error">*</span>
     </label>
     <input
       type="text"
       id="measurements"
       name="measurements"
+      required
+      aria-required="true"
+      aria-describedby="measurements-error"
+      minlength="3"
       maxlength="500"
       class="mt-1 block w-full rounded-lg border border-neutral-200 bg-surface px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-      placeholder="es. 120x80 cm"
+      placeholder="es. 120x80 cm, altezza 200 cm"
     />
     <p
       data-error="measurements"
@@ -312,13 +333,23 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     if (!serviceType || !VALID_SERVICE_TYPES.includes(serviceType)) {
       errors.push({ field: 'serviceType', message: 'Seleziona un tipo di lavoro' });
     }
-    if (description && description.length > 2000) {
+    if (!description || description.trim().length < 10) {
+      errors.push({
+        field: 'description',
+        message: 'Descrivi il lavoro di cui hai bisogno (minimo 10 caratteri)',
+      });
+    } else if (description.length > 2000) {
       errors.push({
         field: 'description',
         message: 'Descrizione troppo lunga (max 2000 caratteri)',
       });
     }
-    if (measurements && measurements.length > 500) {
+    if (!measurements || measurements.trim().length < 3) {
+      errors.push({
+        field: 'measurements',
+        message: 'Inserisci le misure approssimative (es. 120x80 cm)',
+      });
+    } else if (measurements.length > 500) {
       errors.push({ field: 'measurements', message: 'Misure troppo lunghe (max 500 caratteri)' });
     }
     if (!privacy) {
@@ -379,10 +410,12 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     const form = document.getElementById('quote-form') as HTMLFormElement;
     const success = document.getElementById('form-success') as HTMLDivElement;
     const error = document.getElementById('form-error') as HTMLDivElement;
+    const guidelines = document.getElementById('form-guidelines') as HTMLDivElement;
 
-    // Hide form fields, show success
+    // Hide form fields and guidelines, show success
     const fieldsets = form.querySelectorAll(':scope > div:not(#form-success):not(#form-error)');
     fieldsets.forEach((el) => (el as HTMLElement).classList.add('hidden'));
+    guidelines.classList.add('hidden');
     error.classList.add('hidden');
     success.classList.remove('hidden');
     success.focus();
