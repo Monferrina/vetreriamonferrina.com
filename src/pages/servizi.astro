@@ -147,34 +147,29 @@ const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
         });
 
         fadeOut.onfinish = () => {
-          // Swap visibility while grid is invisible
           let visibleCount = 0;
-          serviceItems.forEach((item) => {
-            item.getAnimations().forEach((a) => a.cancel());
-            const matches = filter === 'tutti' || item.dataset.serviceCategory === filter;
-            if (matches) {
-              visibleCount++;
-              item.style.display = '';
-            } else {
-              item.style.display = 'none';
+          requestAnimationFrame(() => {
+            serviceItems.forEach((item) => {
+              item.getAnimations().forEach((a) => a.cancel());
+              const matches = filter === 'tutti' || item.dataset.serviceCategory === filter;
+              item.style.display = matches ? '' : 'none';
+              if (matches) visibleCount++;
+            });
+
+            grid.animate([{ opacity: 0 }, { opacity: 1 }], {
+              duration: 250,
+              easing: 'ease-out',
+              fill: 'forwards',
+            }).onfinish = () => {
+              transitioning = false;
+            };
+
+            const liveRegion = document.getElementById('services-live');
+            if (liveRegion) {
+              const label = btn.textContent?.trim() || filter;
+              liveRegion.textContent = `${label}: ${visibleCount} ${visibleCount === 1 ? 'servizio' : 'servizi'}`;
             }
           });
-
-          // Fade grid back in
-          grid.animate([{ opacity: 0 }, { opacity: 1 }], {
-            duration: 250,
-            easing: 'ease-out',
-            fill: 'forwards',
-          }).onfinish = () => {
-            transitioning = false;
-          };
-
-          // Announce to screen readers
-          const liveRegion = document.getElementById('services-live');
-          if (liveRegion) {
-            const label = btn.textContent?.trim() || filter;
-            liveRegion.textContent = `${label}: ${visibleCount} ${visibleCount === 1 ? 'servizio' : 'servizi'}`;
-          }
         };
       });
     });

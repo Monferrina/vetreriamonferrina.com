@@ -82,12 +82,14 @@
     banner.classList.remove('hidden');
     banner.classList.add('cookie-banner-visible');
 
-    // Push chatbot toggle and tooltip above the banner
+    // Defer layout read to next frame to avoid forced synchronous layout
     const chatToggle = document.getElementById('chatbot-toggle');
     const chatTooltip = document.getElementById('chatbot-tooltip');
-    const bannerHeight = banner.offsetHeight;
-    if (chatToggle) chatToggle.style.bottom = `${bannerHeight + 24}px`;
-    if (chatTooltip) chatTooltip.style.bottom = `${bannerHeight + 88}px`;
+    requestAnimationFrame(() => {
+      const bannerHeight = banner.offsetHeight;
+      if (chatToggle) chatToggle.style.bottom = `${bannerHeight + 24}px`;
+      if (chatTooltip) chatTooltip.style.bottom = `${bannerHeight + 88}px`;
+    });
 
     // Guard against duplicate handlers on re-init
     if (dismissBtn.dataset.initialized) return;

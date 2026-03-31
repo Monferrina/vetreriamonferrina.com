@@ -161,33 +161,31 @@ const galleryItems =
         });
 
         fadeOut.onfinish = () => {
-          // Swap visibility while grid is invisible
+          // Batch all DOM mutations in a single frame
           let visibleCount = 0;
-          galleryItems.forEach((item) => {
-            item.getAnimations().forEach((a) => a.cancel());
-            const matches = filter === 'tutti' || item.dataset.category === filter;
-            if (matches) {
-              visibleCount++;
-              item.style.display = '';
-            } else {
-              item.style.display = 'none';
+          requestAnimationFrame(() => {
+            galleryItems.forEach((item) => {
+              item.getAnimations().forEach((a) => a.cancel());
+              const matches = filter === 'tutti' || item.dataset.category === filter;
+              item.style.display = matches ? '' : 'none';
+              if (matches) visibleCount++;
+            });
+
+            // Fade grid back in
+            grid.animate([{ opacity: 0 }, { opacity: 1 }], {
+              duration: 250,
+              easing: 'ease-out',
+              fill: 'forwards',
+            }).onfinish = () => {
+              transitioning = false;
+            };
+
+            // Announce result count to screen readers
+            if (liveRegion) {
+              const label = btn.textContent?.trim() || filter;
+              liveRegion.textContent = `${label}: ${visibleCount} ${visibleCount === 1 ? 'elemento' : 'elementi'}`;
             }
           });
-
-          // Fade grid back in
-          grid.animate([{ opacity: 0 }, { opacity: 1 }], {
-            duration: 250,
-            easing: 'ease-out',
-            fill: 'forwards',
-          }).onfinish = () => {
-            transitioning = false;
-          };
-
-          // Announce result count to screen readers
-          if (liveRegion) {
-            const label = btn.textContent?.trim() || filter;
-            liveRegion.textContent = `${label}: ${visibleCount} ${visibleCount === 1 ? 'elemento' : 'elementi'}`;
-          }
         };
       });
     });
@@ -253,11 +251,10 @@ const galleryItems =
       });
 
       document.body.style.overflow = 'hidden';
-      // Hide header and bottom nav behind lightbox
       const header = document.querySelector('header');
       const bottomNav = document.querySelector('[data-bottom-nav]');
-      if (header) (header as HTMLElement).style.display = 'none';
-      if (bottomNav) (bottomNav as HTMLElement).style.display = 'none';
+      if (header) (header as HTMLElement).style.visibility = 'hidden';
+      if (bottomNav) (bottomNav as HTMLElement).style.visibility = 'hidden';
       document.addEventListener('keydown', trapFocus);
       closeBtn!.focus();
     }
@@ -272,11 +269,10 @@ const galleryItems =
         lightbox!.classList.add('hidden');
         lightbox!.classList.remove('flex');
         document.body.style.overflow = '';
-        // Restore header and bottom nav
         const header = document.querySelector('header');
         const bottomNav = document.querySelector('[data-bottom-nav]');
-        if (header) (header as HTMLElement).style.display = '';
-        if (bottomNav) (bottomNav as HTMLElement).style.display = '';
+        if (header) (header as HTMLElement).style.visibility = '';
+        if (bottomNav) (bottomNav as HTMLElement).style.visibility = '';
         // Remove focus from gallery item to avoid visible focus ring
         if (document.activeElement instanceof HTMLElement) {
           document.activeElement.blur();

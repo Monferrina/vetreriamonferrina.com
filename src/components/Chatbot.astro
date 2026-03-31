@@ -511,12 +511,13 @@
 
     function renderOptions(options: ChatOption[]): void {
       removeAllChildren(optionsArea);
+      const fragment = document.createDocumentFragment();
+
       for (const opt of options) {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'chatbot-option-btn';
 
-        // CTA styling for "Richiedi preventivo" and action buttons
         if (opt.action === 'open_form') {
           btn.classList.add('chatbot-option-cta');
         } else if (opt.action === 'open_page') {
@@ -525,16 +526,17 @@
 
         btn.textContent = opt.label;
         btn.addEventListener('click', () => handleOption(opt));
-        optionsArea.appendChild(btn);
+        fragment.appendChild(btn);
       }
 
-      // Always add an exit button at the bottom
       const exitBtn = document.createElement('button');
       exitBtn.type = 'button';
       exitBtn.className = 'chatbot-option-btn chatbot-option-exit';
       exitBtn.textContent = '✕ Chiudi Glassy';
       exitBtn.addEventListener('click', () => closePanel());
-      optionsArea.appendChild(exitBtn);
+      fragment.appendChild(exitBtn);
+
+      optionsArea.appendChild(fragment);
     }
 
     function scrollToBottom(): void {
