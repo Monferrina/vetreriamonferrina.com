@@ -253,8 +253,12 @@ const galleryItems =
       document.body.style.overflow = 'hidden';
       const header = document.querySelector('header');
       const bottomNav = document.querySelector('[data-bottom-nav]');
+      const chatToggle = document.getElementById('chatbot-toggle');
+      const chatTooltip = document.getElementById('chatbot-tooltip');
       if (header) (header as HTMLElement).style.visibility = 'hidden';
       if (bottomNav) (bottomNav as HTMLElement).style.visibility = 'hidden';
+      if (chatToggle) chatToggle.style.visibility = 'hidden';
+      if (chatTooltip) chatTooltip.style.visibility = 'hidden';
       document.addEventListener('keydown', trapFocus);
       closeBtn!.focus();
     }
@@ -271,8 +275,12 @@ const galleryItems =
         document.body.style.overflow = '';
         const header = document.querySelector('header');
         const bottomNav = document.querySelector('[data-bottom-nav]');
+        const chatToggle = document.getElementById('chatbot-toggle');
+        const chatTooltip = document.getElementById('chatbot-tooltip');
         if (header) (header as HTMLElement).style.visibility = '';
         if (bottomNav) (bottomNav as HTMLElement).style.visibility = '';
+        if (chatToggle) chatToggle.style.visibility = '';
+        if (chatTooltip) chatTooltip.style.visibility = '';
         // Remove focus from gallery item to avoid visible focus ring
         if (document.activeElement instanceof HTMLElement) {
           document.activeElement.blur();

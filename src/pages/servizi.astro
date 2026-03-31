@@ -184,6 +184,7 @@ const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
     position: relative;
     text-decoration: none;
     display: inline-block;
+    max-width: fit-content;
     overflow: hidden;
   }
   .transport-link::before {
@@ -226,6 +227,13 @@ const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
   @keyframes transport-shine {
     to {
       transform: translateX(100%);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .transport-link::before,
+    .transport-link::after {
+      display: none;
     }
   }
 
