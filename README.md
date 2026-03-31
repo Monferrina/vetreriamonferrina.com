@@ -11,9 +11,11 @@ Sito vetrina con form preventivi, galleria lavori, blog, 16 pagine servizio, FAQ
 | Framework       | Astro 5 (SSG + SSR ibrido)                            |
 | Stile           | Tailwind CSS 4                                        |
 | CMS             | Sanity v5                                             |
-| Email           | Resend                                                |
+| Email           | Resend (account Proton, TLS enforced)                 |
+| Email templates | HTML brand templates (`src/lib/email-templates/`)     |
 | Hosting         | Vercel (serverless)                                   |
 | CDN / DNS / WAF | Cloudflare (proxy attivo)                             |
+| Monitoring      | Checkly (uptime, API, browser checks)                 |
 | Mappa           | Google Maps Embed API                                 |
 | Meteo           | Open-Meteo (gratis, no API key)                       |
 | Recensioni      | Google Places API (New) — dati scaricati a build-time |
@@ -86,7 +88,7 @@ La pipeline GitHub Actions (`.github/workflows/ci.yml`) esegue automaticamente s
 1. **Lint** — ESLint
 2. **Format** — Prettier
 3. **Type check** — `astro check`
-4. **Unit test** — Vitest (10 file, 115 test)
+4. **Unit test** — Vitest (10 file, 118 test)
 5. **Build** — build di produzione
 6. **Lighthouse CI** — soglie: accessibility >= 0.95, best practices >= 0.95, SEO >= 0.9
 
@@ -112,6 +114,7 @@ I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 ## Struttura progetto
 
 ```
+├── __checks__/              # Checkly monitoring checks (API, URL, browser)
 ├── .github/workflows/       # CI pipeline
 ├── cloudflare/              # Cloudflare Worker (maintenance mode)
 ├── docs/plans/              # Guide tecniche (Google Reviews)
@@ -121,7 +124,7 @@ I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 │   ├── components/          # 18 componenti Astro
 │   ├── data/                # Dati statici JSON (chatbot, recensioni, orari, servizi)
 │   ├── layouts/             # Layout base (dark mode, View Transitions, SEO)
-│   ├── lib/                 # Logica condivisa (Sanity client, validazione, sanitize, rate limit)
+│   ├── lib/                 # Logica condivisa (Sanity client, validazione, sanitize, rate limit, email templates)
 │   ├── pages/               # Pagine + API routes
 │   │   ├── api/             # Serverless functions (form preventivo)
 │   │   ├── blog/            # Blog (4 articoli)
@@ -132,34 +135,35 @@ I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 │   ├── fonts/               # Font self-hosted (Inter, DM Serif Display)
 │   └── images/              # Immagini ottimizzate WebP
 ├── tests/
-│   ├── unit/                # Unit test (Vitest — 10 file, 115 test)
+│   ├── unit/                # Unit test (Vitest — 10 file, 118 test)
 │   └── e2e/                 # E2E test (Playwright)
 ├── astro.config.mjs         # Configurazione Astro
+├── checkly.config.ts        # Configurazione Checkly monitoring
 ├── vercel.json              # Security headers (CSP, HSTS, etc.)
 └── package.json
 ```
 
 ## Pagine
 
-| Route                    | Descrizione                                          | Rendering |
-| ------------------------ | ---------------------------------------------------- | --------- |
-| `/`                      | Homepage (hero, servizi, stats, recensioni, partner) | SSG       |
-| `/servizi`               | Catalogo servizi con filtri per categoria            | SSG       |
-| `/servizi/[slug]`        | 16 pagine servizio individuali                       | SSG       |
-| `/galleria`              | Galleria masonry con lightbox                        | SSG       |
-| `/chi-siamo`             | Storia, team, timeline, sezione memoriale            | SSG       |
-| `/contatti`              | Mappa Google, orari, meteo, contatti                 | SSG       |
-| `/preventivo`            | Form richiesta preventivo                            | SSG       |
-| `/faq`                   | FAQ (7 categorie, Schema.org FAQPage)                | SSG       |
-| `/blog`                  | Blog (4 articoli sempreverdi con TOC)                | SSG       |
-| `/blog/[slug]`           | Articoli blog individuali                            | SSG       |
-| `/trasporto-e-montaggio` | Servizio trasporto e montaggio                       | SSG       |
-| `/privacy`               | Informativa privacy                                  | SSG       |
-| `/cookie`                | Policy cookie                                        | SSG       |
-| `/api/send-quote`        | API invio email preventivo (Resend)                  | SSR       |
-| `/404`                   | Pagina errore 404                                    | SSG       |
-| `/500`                   | Pagina errore 500                                    | SSG       |
-| `/maintenance`           | Pagina manutenzione 503                              | SSG       |
+| Route                    | Descrizione                                                                  | Rendering |
+| ------------------------ | ---------------------------------------------------------------------------- | --------- |
+| `/`                      | Homepage (hero, servizi, stats, recensioni, partner)                         | SSG       |
+| `/servizi`               | Catalogo servizi con filtri per categoria                                    | SSG       |
+| `/servizi/[slug]`        | 16 pagine servizio individuali                                               | SSG       |
+| `/galleria`              | Galleria masonry con lightbox                                                | SSG       |
+| `/chi-siamo`             | Storia, team, timeline, sezione memoriale                                    | SSG       |
+| `/contatti`              | Mappa Google, orari, meteo, contatti                                         | SSG       |
+| `/preventivo`            | Form richiesta preventivo                                                    | SSG       |
+| `/faq`                   | FAQ (7 categorie, Schema.org FAQPage)                                        | SSG       |
+| `/blog`                  | Blog (4 articoli sempreverdi con TOC)                                        | SSG       |
+| `/blog/[slug]`           | Articoli blog individuali                                                    | SSG       |
+| `/trasporto-e-montaggio` | Servizio trasporto e montaggio                                               | SSG       |
+| `/privacy`               | Informativa privacy                                                          | SSG       |
+| `/cookie`                | Policy cookie                                                                | SSG       |
+| `/api/send-quote`        | API invio email preventivo (Resend, campi obbligatori: descrizione + misure) | SSR       |
+| `/404`                   | Pagina errore 404                                                            | SSG       |
+| `/500`                   | Pagina errore 500                                                            | SSG       |
+| `/maintenance`           | Pagina manutenzione 503                                                      | SSG       |
 
 ## Infrastruttura
 
@@ -186,7 +190,28 @@ Il dominio `vetreriamonferrina.com` e gestito su Cloudflare (piano Free) con pro
 
 ### Resend
 
-Per l'invio email dal form preventivo. Il dominio mittente (`vetreriamonferrina.com`) deve essere verificato su Resend con record DNS (MX, SPF, DKIM).
+Per l'invio email dal form preventivo. Account su `giuseppefioravanti@proton.me`. Il dominio mittente (`vetreriamonferrina.com`) e verificato su Resend con record DNS (MX, SPF, DKIM). TLS enforced, click/open tracking disattivati.
+
+Le email usano template HTML professionali con colori brand (`src/lib/email-templates/`).
+
+### DNS Email (Cloudflare)
+
+| Record | Nome                | Valore                                                            |
+| ------ | ------------------- | ----------------------------------------------------------------- |
+| TXT    | `resend._domainkey` | Chiave DKIM Resend                                                |
+| MX     | `send`              | `feedback-smtp.eu-west-1.amazonses.com` (priorita 10)             |
+| TXT    | `send`              | `v=spf1 include:amazonses.com ~all`                               |
+| TXT    | `_dmarc`            | `v=DMARC1; p=quarantine; rua=mailto:giuseppefioravanti@proton.me` |
+
+### Checkly (Monitoring)
+
+Monitoring sintetico con 3 check ogni 10 minuti da `eu-central-1` e `eu-west-1`:
+
+- **Homepage Uptime** — URL monitor, verifica status 200
+- **Send Quote API** — POST con honeypot (non invia email reali), verifica status 200
+- **Homepage Browser** — Playwright check, verifica titolo e rendering
+
+Configurazione in `checkly.config.ts` e `__checks__/`. Alert su email Proton. Integrazioni attive: Vercel + GitHub.
 
 ### Sanity
 
