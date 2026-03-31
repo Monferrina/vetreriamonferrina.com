@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaSection from '../components/CtaSection.astro';
 import ProtectedImage from '../components/ProtectedImage.astro';
 import { fetchWithFallback, queries, urlFor } from '../lib/sanity';
 export const prerender = true;
@@ -461,29 +462,10 @@ const familyPhoto = aboutData?.teamPhotos?.[0]
     </div>
   </section>
 
-  <section class="bg-primary py-16 sm:py-20">
-    <div class="mx-auto max-w-7xl px-4 text-center lg:px-8">
-      <h2 class="font-heading text-3xl text-neutral-50 sm:text-4xl">Vuoi saperne di più?</h2>
-      <p class="mx-auto mt-4 max-w-xl text-lg text-neutral-200">
-        Contattaci per un preventivo gratuito o passa a trovarci nel nostro laboratorio a Casale
-        Monferrato.
-      </p>
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-        <a
-          href="/preventivo"
-          class="inline-block rounded-full bg-surface px-8 py-3.5 text-base font-semibold text-primary transition-colors hover:bg-neutral-100"
-        >
-          Richiedi preventivo
-        </a>
-        <a
-          href="/contatti"
-          class="inline-block rounded-full border-2 border-neutral-50 px-8 py-3 text-base font-semibold text-neutral-50 transition-colors hover:bg-neutral-50/10"
-        >
-          Contattaci
-        </a>
-      </div>
-    </div>
-  </section>
+  <CtaSection
+    title="Vuoi saperne di più?"
+    description="Contattaci per un preventivo gratuito o passa a trovarci nel nostro laboratorio a Casale Monferrato."
+  />
 
   <style is:global>
     /* Timeline dot pop-in (desktop only — dots hidden on mobile) */

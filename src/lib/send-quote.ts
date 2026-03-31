@@ -67,7 +67,13 @@ export async function handleSendQuote(
     return json(422, { errors });
   }
 
-  // 4. Send email
+  // 4. Dry run: skip email (used by Checkly monitoring)
+  if ((req.body as Record<string, unknown>).dryRun === true) {
+    console.log('[send-quote] Dry run — skipping email');
+    return json(200, { success: true, dryRun: true });
+  }
+
+  // 5. Send email
   try {
     const { data: emailData, error: emailError } = await emailSender.send({
       from: config.fromEmail,

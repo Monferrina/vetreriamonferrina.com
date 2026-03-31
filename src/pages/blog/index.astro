@@ -1,6 +1,7 @@
 ---
 // src/pages/blog/index.astro — Indice del blog con griglia articoli.
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaSection from '../../components/CtaSection.astro';
 import { blogPosts } from '../../data/blog-posts';
 export const prerender = true;
 
@@ -86,26 +87,8 @@ const posts = [...blogPosts].sort(
     </div>
   </section>
 
-  <section class="bg-primary py-16 sm:py-20">
-    <div class="mx-auto max-w-7xl px-4 text-center lg:px-8">
-      <h2 class="font-heading text-3xl text-neutral-50 sm:text-4xl">Hai un progetto in mente?</h2>
-      <p class="mx-auto mt-4 max-w-xl text-lg text-neutral-200">
-        Contattaci per un sopralluogo gratuito e un preventivo senza impegno.
-      </p>
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-        <a
-          href="/preventivo"
-          class="inline-block rounded-full bg-surface px-8 py-3.5 text-base font-semibold text-primary transition-colors hover:bg-neutral-100"
-        >
-          Richiedi preventivo
-        </a>
-        <a
-          href="/contatti"
-          class="inline-block rounded-full border-2 border-neutral-50 px-8 py-3 text-base font-semibold text-neutral-50 transition-colors hover:bg-neutral-50/10"
-        >
-          Contattaci
-        </a>
-      </div>
-    </div>
-  </section>
+  <CtaSection
+    title="Hai un progetto in mente?"
+    description="Contattaci per un sopralluogo gratuito e un preventivo senza impegno."
+  />
 </BaseLayout>
