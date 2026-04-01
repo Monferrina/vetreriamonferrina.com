@@ -379,7 +379,12 @@
   import { ChatbotEngine } from '../lib/chatbot-engine';
   import chatFlowData from '../data/chatbot-flow.json';
 
+  let chatbotAbort: AbortController | null = null;
+
   function initChatbot(): void {
+    if (chatbotAbort) chatbotAbort.abort();
+    chatbotAbort = new AbortController();
+    const { signal } = chatbotAbort;
     const SESSION_KEY = 'chatbot_history';
     const TYPING_DELAY = 300;
 
@@ -593,7 +598,7 @@
           window.location.href = 'tel:+390142563728';
           break;
         case 'open_page':
-          if (param) {
+          if (param && param.startsWith('/')) {
             window.location.href = param;
           }
           break;
@@ -635,10 +640,14 @@
     }
 
     if (tooltipClose) {
-      tooltipClose.addEventListener('click', (e) => {
-        e.stopPropagation();
-        hideTooltip();
-      });
+      tooltipClose.addEventListener(
+        'click',
+        (e) => {
+          e.stopPropagation();
+          hideTooltip();
+        },
+        { signal }
+      );
     }
 
     // --- Focus trap for chatbot panel ---
@@ -725,25 +734,36 @@
       toggle.focus();
     }
 
-    // --- Event listeners ---
-    toggle.addEventListener('click', () => {
-      if (isOpen) {
-        closePanel();
-      } else {
-        openPanel();
-      }
-    });
+    // --- Event listeners (all use AbortController signal for cleanup) ---
+    toggle.addEventListener(
+      'click',
+      () => {
+        if (isOpen) {
+          closePanel();
+        } else {
+          openPanel();
+        }
+      },
+      { signal }
+    );
 
-    closeBtn.addEventListener('click', () => {
-      closePanel();
-    });
-
-    // Close on Escape key
-    document.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+    closeBtn.addEventListener(
+      'click',
+      () => {
         closePanel();
-      }
-    });
+      },
+      { signal }
+    );
+
+    document.addEventListener(
+      'keydown',
+      (e: KeyboardEvent) => {
+        if (e.key === 'Escape' && isOpen) {
+          closePanel();
+        }
+      },
+      { signal }
+    );
 
     // Contextual tooltip text
     function updateTooltipText(): void {

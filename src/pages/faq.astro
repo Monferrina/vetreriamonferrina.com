@@ -287,12 +287,17 @@ const faqSchema = {
 </style>
 
 <script>
+  let faqNavObserver: IntersectionObserver | null = null;
+  let faqShineObserver: IntersectionObserver | null = null;
+
   function initFaqNav(): void {
+    if (faqNavObserver) faqNavObserver.disconnect();
+
     const links = document.querySelectorAll<HTMLAnchorElement>('nav[aria-label="Categorie FAQ"] a');
     const sections = document.querySelectorAll<HTMLElement>('.faq-section');
     if (!links.length || !sections.length) return;
 
-    const observer = new IntersectionObserver(
+    faqNavObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -308,17 +313,19 @@ const faqSchema = {
       { rootMargin: '-20% 0px -60% 0px' }
     );
 
-    sections.forEach((section) => observer.observe(section));
+    sections.forEach((section) => faqNavObserver!.observe(section));
   }
 
   initFaqNav();
   document.addEventListener('astro:after-swap', initFaqNav);
 
   function initFaqShine(): void {
+    if (faqShineObserver) faqShineObserver.disconnect();
+
     const el = document.querySelector<HTMLElement>('.faq-shine-link');
     if (!el) return;
 
-    const observer = new IntersectionObserver(
+    faqShineObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -332,7 +339,7 @@ const faqSchema = {
       },
       { threshold: 0.5 }
     );
-    observer.observe(el);
+    faqShineObserver.observe(el);
   }
 
   initFaqShine();

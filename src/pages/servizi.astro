@@ -131,28 +131,25 @@ const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
 
         fadeOut.onfinish = () => {
           let visibleCount = 0;
-          requestAnimationFrame(() => {
-            serviceItems.forEach((item) => {
-              item.getAnimations().forEach((a) => a.cancel());
-              const matches = filter === 'tutti' || item.dataset.serviceCategory === filter;
-              item.style.display = matches ? '' : 'none';
-              if (matches) visibleCount++;
-            });
+          for (const item of serviceItems) {
+            const matches = filter === 'tutti' || item.dataset.serviceCategory === filter;
+            item.style.display = matches ? '' : 'none';
+            if (matches) visibleCount++;
+          }
 
-            grid.animate([{ opacity: 0 }, { opacity: 1 }], {
-              duration: 250,
-              easing: 'ease-out',
-              fill: 'forwards',
-            }).onfinish = () => {
-              transitioning = false;
-            };
+          grid.animate([{ opacity: 0 }, { opacity: 1 }], {
+            duration: 250,
+            easing: 'ease-out',
+            fill: 'forwards',
+          }).onfinish = () => {
+            transitioning = false;
+          };
 
-            const liveRegion = document.getElementById('services-live');
-            if (liveRegion) {
-              const label = btn.textContent?.trim() || filter;
-              liveRegion.textContent = `${label}: ${visibleCount} ${visibleCount === 1 ? 'servizio' : 'servizi'}`;
-            }
-          });
+          const liveRegion = document.getElementById('services-live');
+          if (liveRegion) {
+            const label = btn.textContent?.trim() || filter;
+            liveRegion.textContent = `${label}: ${visibleCount} ${visibleCount === 1 ? 'servizio' : 'servizi'}`;
+          }
         };
       });
     });
