@@ -148,7 +148,7 @@ const hasHalfStar = rating - fullStars >= 0.3;
         {/* Original + duplicate for seamless loop */}
         {
           [...reviews, ...reviews].map((review) => (
-            <article class="flex w-80 shrink-0 flex-col rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm sm:w-96">
+            <article class="flex w-80 shrink-0 flex-col rounded-2xl border border-neutral-200/60 bg-surface/80 p-6 shadow-sm backdrop-blur-md backdrop-saturate-125 sm:w-96">
               <div class="flex items-center gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <svg

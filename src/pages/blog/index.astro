@@ -2,6 +2,7 @@
 // src/pages/blog/index.astro — Indice del blog con griglia articoli.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CtaSection from '../../components/CtaSection.astro';
+import GlassPanel from '../../components/GlassPanel.astro';
 import { blogPosts } from '../../data/blog-posts';
 export const prerender = true;
 
@@ -16,11 +17,13 @@ const posts = [...blogPosts].sort(
 >
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
-      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Blog</h1>
-      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
-        Guide pratiche e consigli per scegliere, installare e mantenere il vetro. Dalla nostra
-        esperienza al vostro progetto.
-      </p>
+      <GlassPanel class="max-w-3xl">
+        <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Blog</h1>
+        <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+          Guide pratiche e consigli per scegliere, installare e mantenere il vetro. Dalla nostra
+          esperienza al vostro progetto.
+        </p>
+      </GlassPanel>
     </div>
   </section>
 

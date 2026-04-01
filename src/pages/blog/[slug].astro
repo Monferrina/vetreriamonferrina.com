@@ -2,6 +2,7 @@
 // src/pages/blog/[slug].astro — Articolo blog individuale con sidebar TOC e post correlati.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CtaSection from '../../components/CtaSection.astro';
+import GlassPanel from '../../components/GlassPanel.astro';
 import { blogPosts } from '../../data/blog-posts';
 export const prerender = true;
 
@@ -71,21 +72,23 @@ const articleSchema = {
 
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
-      <nav class="mb-4 text-sm text-neutral-300" aria-label="Breadcrumb">
-        <a href="/blog" class="transition-colors hover:text-neutral-50">Blog</a>
-        <span class="mx-2">/</span>
-        <span class="text-neutral-50">{post.title}</span>
-      </nav>
-      <h1 class="font-heading text-3xl text-neutral-50 sm:text-5xl">{post.title}</h1>
-      <time datetime={post.date} class="mt-4 block text-sm text-neutral-300">
-        {
-          new Date(post.date).toLocaleDateString('it-IT', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          })
-        }
-      </time>
+      <GlassPanel class="max-w-3xl">
+        <nav class="mb-4 text-sm text-neutral-300" aria-label="Breadcrumb">
+          <a href="/blog" class="transition-colors hover:text-neutral-50">Blog</a>
+          <span class="mx-2">/</span>
+          <span class="text-neutral-50">{post.title}</span>
+        </nav>
+        <h1 class="font-heading text-3xl text-neutral-50 sm:text-5xl">{post.title}</h1>
+        <time datetime={post.date} class="mt-4 block text-sm text-neutral-300">
+          {
+            new Date(post.date).toLocaleDateString('it-IT', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            })
+          }
+        </time>
+      </GlassPanel>
     </div>
   </section>
 

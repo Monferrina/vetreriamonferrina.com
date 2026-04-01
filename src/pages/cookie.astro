@@ -1,6 +1,7 @@
 ---
 // src/pages/cookie.astro — Cookie policy con tabella cookie tecnici e istruzioni gestione browser.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import GlassPanel from '../components/GlassPanel.astro';
 export const prerender = true;
 ---
 
@@ -10,11 +11,13 @@ export const prerender = true;
 >
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
-      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Cookie Policy</h1>
-      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
-        Informativa sull'utilizzo dei cookie e delle tecnologie di memorizzazione locale nel sito di
-        Vetreria Monferrina.
-      </p>
+      <GlassPanel class="max-w-3xl">
+        <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Cookie Policy</h1>
+        <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+          Informativa sull'utilizzo dei cookie e delle tecnologie di memorizzazione locale nel sito
+          di Vetreria Monferrina.
+        </p>
+      </GlassPanel>
     </div>
   </section>
 

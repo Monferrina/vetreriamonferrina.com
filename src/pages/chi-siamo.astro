@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CtaSection from '../components/CtaSection.astro';
+import GlassPanel from '../components/GlassPanel.astro';
 import ProtectedImage from '../components/ProtectedImage.astro';
 import { fetchWithFallback, queries, urlFor } from '../lib/sanity';
 export const prerender = true;
@@ -33,10 +34,12 @@ const familyPhoto = aboutData?.teamPhotos?.[0]
 >
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
-      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">{heroTitle}</h1>
-      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
-        {heroIntro}
-      </p>
+      <GlassPanel class="max-w-3xl">
+        <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">{heroTitle}</h1>
+        <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+          {heroIntro}
+        </p>
+      </GlassPanel>
     </div>
   </section>
 

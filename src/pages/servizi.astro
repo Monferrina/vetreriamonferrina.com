@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CtaSection from '../components/CtaSection.astro';
+import GlassPanel from '../components/GlassPanel.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import { services as staticServices, categories, type CategoryKey } from '../data/services';
 import { fetchWithFallback, queries } from '../lib/sanity';
@@ -27,17 +28,19 @@ const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
 >
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
-      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">I nostri servizi</h1>
-      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
-        Esperienza, precisione e cura artigianale nella lavorazione del vetro, al servizio di
-        privati, aziende e professionisti dell'edilizia.
-        <a
-          href="/trasporto-e-montaggio"
-          class="transport-link mt-2 inline-block text-neutral-50 no-underline underline-offset-4 hover:decoration-neutral-50"
-        >
-          Tutti i servizi includono trasporto e montaggio professionali.
-        </a>
-      </p>
+      <GlassPanel class="max-w-3xl">
+        <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">I nostri servizi</h1>
+        <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+          Esperienza, precisione e cura artigianale nella lavorazione del vetro, al servizio di
+          privati, aziende e professionisti dell'edilizia.
+          <a
+            href="/trasporto-e-montaggio"
+            class="transport-link mt-2 inline-block text-neutral-50 no-underline underline-offset-4 hover:decoration-neutral-50"
+          >
+            Tutti i servizi includono trasporto e montaggio professionali.
+          </a>
+        </p>
+      </GlassPanel>
     </div>
   </section>
 

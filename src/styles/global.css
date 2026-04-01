@@ -92,6 +92,20 @@
   --color-neutral-200: #e5e5e5;
 }
 
+/* Liquid glass panel — reusable on colored backgrounds */
+.glass-panel {
+  border-radius: 1.5rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background: rgb(255 255 255 / 0.05);
+  padding: 2rem;
+  backdrop-filter: blur(4px);
+}
+@media (min-width: 640px) {
+  .glass-panel {
+    padding: 2.5rem;
+  }
+}
+
 /* Gallery filter buttons — design-token aware for dark mode */
 .gallery-filter-active {
   background-color: var(--color-primary);
@@ -214,6 +228,9 @@
   box-shadow:
     0 8px 32px rgb(27 73 101 / 0.1),
     inset 0 0 0 1px rgb(255 255 255 / 0.08);
+  border-color: rgb(255 255 255 / 0.4);
+  backdrop-filter: blur(8px) saturate(120%);
+  background: color-mix(in srgb, var(--color-surface) 85%, transparent);
 }
 
 /* Subtle glass reflection sweep on hover */
