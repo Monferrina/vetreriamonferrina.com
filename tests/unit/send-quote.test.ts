@@ -269,6 +269,36 @@ describe('handleSendQuote', () => {
     }
   });
 
+  // --- Dry run (Checkly monitoring) ---
+  it('dryRun: true → risponde 200 senza inviare email', async () => {
+    const sender = makeEmailSender();
+    const body = { ...validBody, dryRun: true };
+    const result = await handleSendQuote(makeReq({ ip: uniqueIp(), body }), config, sender);
+
+    expect(result.status).toBe(200);
+    expect(result.body).toEqual({ success: true, dryRun: true });
+    expect(sender.calls).toHaveLength(0);
+  });
+
+  it('dryRun: false → invia email normalmente', async () => {
+    const sender = makeEmailSender();
+    const body = { ...validBody, dryRun: false };
+    const result = await handleSendQuote(makeReq({ ip: uniqueIp(), body }), config, sender);
+
+    expect(result.status).toBe(200);
+    expect(result.body).toEqual({ success: true });
+    expect(sender.calls).toHaveLength(1);
+  });
+
+  it('dryRun con dati invalidi: risponde 422 (validazione attiva)', async () => {
+    const sender = makeEmailSender();
+    const body = { ...validBody, name: '', dryRun: true };
+    const result = await handleSendQuote(makeReq({ ip: uniqueIp(), body }), config, sender);
+
+    expect(result.status).toBe(422);
+    expect(sender.calls).toHaveLength(0);
+  });
+
   // --- IP tracking in email ---
   it("IP del client incluso nell'email", async () => {
     const sender = makeEmailSender();
