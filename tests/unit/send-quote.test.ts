@@ -52,10 +52,7 @@ function makeReq(overrides: Partial<SendQuoteRequest> = {}): SendQuoteRequest {
 
 // Reset rate-limit state between tests (in-memory Map persists)
 beforeEach(async () => {
-  // Re-import to get a fresh module — rate-limit uses a module-level Map
-  const { isRateLimited } = await import('../../src/lib/rate-limit');
-  // Exhaust any leftover state by waiting (rate limit is per-IP, use unique IPs in tests)
-  // We use unique IPs per test via makeReq to avoid interference
+  await import('../../src/lib/rate-limit');
 });
 
 let testIpCounter = 0;

@@ -10,6 +10,10 @@ interface QuoteEmailData {
   ip: string;
 }
 
+function escapeAttr(value: string): string {
+  return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 function row(label: string, value: string): string {
   return `
     <tr>
@@ -28,9 +32,9 @@ export function quoteRequestEmail(data: QuoteEmailData): string {
       <tbody>
         ${row('Nome', data.name)}
         <tr><td colspan="2" style="border-bottom:1px solid #f5f5f5;"></td></tr>
-        ${row('Telefono', `<a href="tel:${data.phone}" style="color:#1b4965;text-decoration:none;">${data.phone}</a>`)}
+        ${row('Telefono', `<a href="tel:${escapeAttr(data.phone)}" style="color:#1b4965;text-decoration:none;">${data.phone}</a>`)}
         <tr><td colspan="2" style="border-bottom:1px solid #f5f5f5;"></td></tr>
-        ${row('Email', `<a href="mailto:${data.email}" style="color:#1b4965;text-decoration:none;">${data.email}</a>`)}
+        ${row('Email', `<a href="mailto:${escapeAttr(data.email)}" style="color:#1b4965;text-decoration:none;">${data.email}</a>`)}
         <tr><td colspan="2" style="border-bottom:1px solid #f5f5f5;"></td></tr>
         ${row('Tipo di lavoro', data.serviceType)}
         <tr><td colspan="2" style="border-bottom:1px solid #f5f5f5;"></td></tr>

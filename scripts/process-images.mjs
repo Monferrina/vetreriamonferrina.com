@@ -4,16 +4,11 @@
  *
  * Usage: node scripts/process-images.mjs
  */
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const sharp = require('sharp');
-
+import sharp from 'sharp';
 import { mkdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
-
-import { dirname as _dirname } from 'path';
 import { fileURLToPath } from 'url';
-const __dirname = _dirname(fileURLToPath(import.meta.url));
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const DOWNLOADS = join(__dirname, '..', 'source-photos');
 const OUTPUT = join(__dirname, '..', 'public/images');
 

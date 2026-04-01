@@ -228,12 +228,9 @@ const galleryItems =
       return Array.from(galleryItems).filter((item) => item.style.display !== 'none');
     }
 
-    let lastFocusedElement: HTMLElement | null = null;
-
     function openLightbox(index: number) {
       visibleItems = getVisibleItems();
       currentIndex = index;
-      lastFocusedElement = document.activeElement as HTMLElement;
       updateLightboxContent(false);
 
       lightbox!.classList.remove('hidden');
