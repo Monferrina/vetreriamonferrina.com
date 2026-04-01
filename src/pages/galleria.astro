@@ -195,8 +195,10 @@ const galleryItems =
     const closeBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-close]');
     const prevBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-prev]');
     const nextBtn = document.querySelector<HTMLButtonElement>('[data-lightbox-next]');
+    const prevBtnMobile = document.querySelector<HTMLButtonElement>('[data-lightbox-prev-mobile]');
+    const nextBtnMobile = document.querySelector<HTMLButtonElement>('[data-lightbox-next-mobile]');
 
-    if (!lightbox || !lightboxTitle || !lightboxImage || !closeBtn || !prevBtn || !nextBtn) return;
+    if (!lightbox || !lightboxTitle || !lightboxImage || !closeBtn) return;
 
     // Focus trap: keep Tab cycling within the lightbox while open
     const focusableSelector = 'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])';
@@ -289,35 +291,43 @@ const galleryItems =
       const item = visibleItems[currentIndex];
       if (!item) return;
 
-      const doUpdate = () => {
-        lightboxTitle!.textContent = item.dataset.galleryTitle || '';
-        if (lightboxCounter) {
-          lightboxCounter.textContent = `${currentIndex + 1} / ${visibleItems.length}`;
-        }
+      lightboxTitle!.textContent = item.dataset.galleryTitle || '';
+      if (lightboxCounter) {
+        lightboxCounter.textContent = `${currentIndex + 1} / ${visibleItems.length}`;
+      }
 
-        // Clone gallery image into lightbox
-        const imgEl = item.querySelector('img');
-        if (imgEl && lightboxImage) {
-          while (lightboxImage.firstChild) {
-            lightboxImage.removeChild(lightboxImage.firstChild);
-          }
-          const clone = imgEl.cloneNode(true) as HTMLImageElement;
-          clone.className = 'max-h-[80vh] max-w-full rounded-lg object-contain';
-          clone.removeAttribute('loading');
-          clone.style.pointerEvents = 'none';
-          lightboxImage.appendChild(clone);
-        }
-      };
+      const imgEl = item.querySelector('img');
+      if (!imgEl || !lightboxImage) return;
+
+      const clone = imgEl.cloneNode(true) as HTMLImageElement;
+      clone.className = 'max-h-[80vh] max-w-full rounded-lg object-contain';
+      clone.removeAttribute('loading');
+      clone.removeAttribute('width');
+      clone.removeAttribute('height');
+      clone.style.pointerEvents = 'none';
 
       if (animate) {
-        // Crossfade: fade out, update, fade in
-        lightboxImage!.style.opacity = '0';
+        clone.style.opacity = '0';
+        clone.style.transition = 'opacity 0.2s ease';
+        const oldImg = lightboxImage.querySelector('img');
+        if (oldImg) {
+          oldImg.style.transition = 'opacity 0.15s ease';
+          oldImg.style.opacity = '0';
+        }
         setTimeout(() => {
-          doUpdate();
-          lightboxImage!.style.opacity = '1';
-        }, 200);
+          while (lightboxImage!.firstChild) {
+            lightboxImage!.removeChild(lightboxImage!.firstChild);
+          }
+          lightboxImage!.appendChild(clone);
+          requestAnimationFrame(() => {
+            clone.style.opacity = '1';
+          });
+        }, 150);
       } else {
-        doUpdate();
+        while (lightboxImage.firstChild) {
+          lightboxImage.removeChild(lightboxImage.firstChild);
+        }
+        lightboxImage.appendChild(clone);
       }
     }
 
@@ -341,8 +351,10 @@ const galleryItems =
     });
 
     closeBtn.addEventListener('click', closeLightbox);
-    prevBtn.addEventListener('click', showPrev);
-    nextBtn.addEventListener('click', showNext);
+    if (prevBtn) prevBtn.addEventListener('click', showPrev);
+    if (nextBtn) nextBtn.addEventListener('click', showNext);
+    if (prevBtnMobile) prevBtnMobile.addEventListener('click', showPrev);
+    if (nextBtnMobile) nextBtnMobile.addEventListener('click', showNext);
 
     // Close on backdrop click
     lightbox.addEventListener('click', (e) => {

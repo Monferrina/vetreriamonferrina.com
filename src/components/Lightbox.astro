@@ -36,7 +36,7 @@
 
   <button
     type="button"
-    class="absolute left-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+    class="absolute left-4 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white sm:flex"
     aria-label="Immagine precedente"
     data-lightbox-prev
   >
@@ -54,7 +54,7 @@
 
   <button
     type="button"
-    class="absolute right-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+    class="absolute right-4 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white sm:flex"
     aria-label="Immagine successiva"
     data-lightbox-next
   >
@@ -70,9 +70,11 @@
     </svg>
   </button>
 
-  <div class="protected-img-wrap mx-auto flex max-w-5xl flex-col items-center px-4 sm:px-16">
+  <div
+    class="protected-img-wrap mx-auto flex h-full max-w-5xl flex-col items-center justify-center px-4 py-16 sm:px-16 sm:py-8"
+  >
     <div
-      class="flex max-h-[80vh] w-full items-center justify-center"
+      class="flex min-h-0 flex-1 w-full items-center justify-center overflow-hidden"
       data-lightbox-image
       style="opacity: 1;"
     >
@@ -95,11 +97,54 @@
       </div>
     </div>
 
-    <div class="mt-4 flex items-center gap-4 text-center" aria-live="polite" aria-atomic="true">
-      <p class="text-lg font-medium text-white" data-lightbox-title></p>
-      <span
-        class="whitespace-nowrap rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-neutral-300"
-        data-lightbox-counter></span>
+    <div
+      class="mt-4 flex shrink-0 items-center gap-4 text-center"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <button
+        type="button"
+        class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white sm:hidden"
+        aria-label="Immagine precedente"
+        data-lightbox-prev-mobile
+      >
+        <svg
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"
+          ></path>
+        </svg>
+      </button>
+
+      <div class="flex flex-1 flex-col items-center gap-1">
+        <p class="text-lg font-medium text-white" data-lightbox-title></p>
+        <span
+          class="whitespace-nowrap rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-neutral-300"
+          data-lightbox-counter></span>
+      </div>
+
+      <button
+        type="button"
+        class="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white sm:hidden"
+        aria-label="Immagine successiva"
+        data-lightbox-next-mobile
+      >
+        <svg
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+        </svg>
+      </button>
     </div>
   </div>
 </div>
