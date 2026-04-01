@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  statuses: write
 
 jobs:
   quality:
@@ -44,3 +45,5 @@ jobs:
 
       - name: Lighthouse CI
         run: npx @lhci/cli autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
