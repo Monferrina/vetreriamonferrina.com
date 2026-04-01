@@ -1,6 +1,7 @@
 ---
 // src/pages/preventivo.astro — Form di richiesta preventivo con validazione client-side.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import GlassPanel from '../components/GlassPanel.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 export const prerender = true;
 ---
@@ -11,11 +12,13 @@ export const prerender = true;
 >
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
-      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Richiedi un preventivo</h1>
-      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
-        Compilate il modulo e vi ricontatteremo al più presto. Il preventivo è sempre gratuito e
-        senza impegno.
-      </p>
+      <GlassPanel class="max-w-3xl">
+        <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Richiedi un preventivo</h1>
+        <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+          Compilate il modulo e vi ricontatteremo al più presto. Il preventivo è sempre gratuito e
+          senza impegno.
+        </p>
+      </GlassPanel>
     </div>
   </section>
 

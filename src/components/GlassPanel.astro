@@ -1,0 +1,12 @@
+---
+// src/components/GlassPanel.astro
+interface Props {
+  class?: string;
+}
+
+const className = Astro.props.class ?? '';
+---
+
+<div class:list={['glass-panel', className]}>
+  <slot />
+</div>

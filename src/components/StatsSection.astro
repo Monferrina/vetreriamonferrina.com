@@ -13,7 +13,11 @@ const stats = [
     <div class="grid gap-10 sm:grid-cols-3">
       {
         stats.map((stat, i) => (
-          <div class="text-center" data-reveal data-delay={String(i + 1)}>
+          <div
+            class="rounded-2xl border border-neutral-200/60 bg-surface/80 px-6 py-8 text-center backdrop-blur-md backdrop-saturate-125"
+            data-reveal
+            data-delay={String(i + 1)}
+          >
             <p class="font-heading text-3xl text-primary sm:text-4xl">{stat.value}</p>
             <p class="mt-2 text-lg text-neutral-800">{stat.label}</p>
           </div>

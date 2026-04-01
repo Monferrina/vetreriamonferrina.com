@@ -1,6 +1,7 @@
 ---
 // src/components/HeroSection.astro
 // Hero uses CSS-only animation (no data-reveal) to avoid delaying LCP.
+import GlassPanel from './GlassPanel.astro';
 ---
 
 <section
@@ -14,7 +15,7 @@
   </div>
 
   <div class="relative mx-auto max-w-7xl px-4 py-20 sm:py-28 lg:px-8 lg:py-36">
-    <div class="max-w-3xl">
+    <GlassPanel class="max-w-3xl">
       <h1 class="hero-fade-in font-heading text-4xl text-neutral-50 sm:text-5xl lg:text-6xl">
         Vetreria Monferrina
       </h1>
@@ -59,7 +60,7 @@
           </svg>
         </a>
       </div>
-    </div>
+    </GlassPanel>
   </div>
 </section>
 

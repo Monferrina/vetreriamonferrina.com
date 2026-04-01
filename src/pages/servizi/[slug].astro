@@ -2,6 +2,7 @@
 // src/pages/servizi/[slug].astro — Pagina servizio individuale con caratteristiche, materiali e servizi correlati.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CtaSection from '../../components/CtaSection.astro';
+import GlassPanel from '../../components/GlassPanel.astro';
 import { services } from '../../data/services';
 import { serviceDetails } from '../../data/service-details';
 export const prerender = true;
@@ -28,15 +29,17 @@ const hasMaterials = details.materials && details.materials.length > 0;
 >
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
-      <nav class="mb-4 text-sm text-neutral-300" aria-label="Breadcrumb">
-        <a href="/servizi" class="transition-colors hover:text-neutral-50">Servizi</a>
-        <span class="mx-2">/</span>
-        <span class="text-neutral-50">{service.name}</span>
-      </nav>
-      <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">{service.name}</h1>
-      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
-        {details.intro}
-      </p>
+      <GlassPanel class="max-w-3xl">
+        <nav class="mb-4 text-sm text-neutral-300" aria-label="Breadcrumb">
+          <a href="/servizi" class="transition-colors hover:text-neutral-50">Servizi</a>
+          <span class="mx-2">/</span>
+          <span class="text-neutral-50">{service.name}</span>
+        </nav>
+        <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">{service.name}</h1>
+        <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+          {details.intro}
+        </p>
+      </GlassPanel>
     </div>
   </section>
 

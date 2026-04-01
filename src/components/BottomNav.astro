@@ -47,7 +47,11 @@ function isActive(href: string): boolean {
   aria-label="Navigazione principale"
   data-bottom-nav
 >
-  <div class="flex h-14 items-center justify-around">
+  <div class="relative flex h-14 items-center justify-around">
+    <span
+      data-nav-bubble
+      class="pointer-events-none absolute top-1 h-12 rounded-2xl border border-white/25 bg-white/15 shadow-[0_2px_12px_rgb(0_0_0/0.06),inset_0_1px_0_rgb(255_255_255/0.2)] backdrop-blur-lg backdrop-saturate-150 transition-[left,width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+      aria-hidden="true"></span>
     {
       tabs.map((tab) => (
         <a
@@ -147,17 +151,34 @@ function isActive(href: string): boolean {
             )}
           </span>
           <span class="truncate">{tab.label}</span>
-          {isActive(tab.href) && (
-            <span
-              class:list={[
-                'absolute -bottom-0.5 h-1 w-1 rounded-full',
-                tab.cta ? 'bg-secondary-dark' : 'bg-primary',
-              ]}
-              aria-hidden="true"
-            />
-          )}
         </a>
       ))
     }
   </div>
 </nav>
+
+<script>
+  function initNavBubble(): void {
+    const nav = document.querySelector<HTMLElement>('[data-bottom-nav]');
+    const bubble = document.querySelector<HTMLElement>('[data-nav-bubble]');
+    if (!nav || !bubble) return;
+
+    const container = bubble.parentElement!;
+    const active = nav.querySelector<HTMLAnchorElement>('a[aria-current="page"]');
+
+    if (!active) {
+      bubble.style.opacity = '0';
+      return;
+    }
+
+    const containerRect = container.getBoundingClientRect();
+    const activeRect = active.getBoundingClientRect();
+    const left = activeRect.left - containerRect.left;
+
+    bubble.style.left = `${left}px`;
+    bubble.style.width = `${activeRect.width}px`;
+    bubble.style.opacity = '1';
+  }
+
+  document.addEventListener('astro:page-load', initNavBubble);
+</script>
