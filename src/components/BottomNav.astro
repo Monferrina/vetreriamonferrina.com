@@ -50,7 +50,7 @@ function isActive(href: string): boolean {
   <div class="relative flex h-14 items-center justify-around">
     <span
       data-nav-bubble
-      class="pointer-events-none absolute top-1 h-12 rounded-2xl border border-white/25 bg-white/15 shadow-[0_2px_12px_rgb(0_0_0/0.06),inset_0_1px_0_rgb(255_255_255/0.2)] backdrop-blur-lg backdrop-saturate-150 transition-[left,width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+      class="pointer-events-none absolute top-1 h-12 rounded-2xl border border-white/25 bg-white/15 shadow-[0_2px_12px_rgb(0_0_0/0.06),inset_0_1px_0_rgb(255_255_255/0.2)] backdrop-blur-lg backdrop-saturate-150 transition-[left,width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none"
       aria-hidden="true"></span>
     {
       tabs.map((tab) => (
@@ -163,7 +163,8 @@ function isActive(href: string): boolean {
     const bubble = document.querySelector<HTMLElement>('[data-nav-bubble]');
     if (!nav || !bubble) return;
 
-    const container = bubble.parentElement!;
+    const container = bubble.parentElement;
+    if (!container) return;
     const active = nav.querySelector<HTMLAnchorElement>('a[aria-current="page"]');
 
     if (!active) {

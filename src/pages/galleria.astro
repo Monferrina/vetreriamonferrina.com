@@ -164,31 +164,25 @@ const galleryItems =
         });
 
         fadeOut.onfinish = () => {
-          // Batch all DOM mutations in a single frame
           let visibleCount = 0;
-          requestAnimationFrame(() => {
-            galleryItems.forEach((item) => {
-              item.getAnimations().forEach((a) => a.cancel());
-              const matches = filter === 'tutti' || item.dataset.category === filter;
-              item.style.display = matches ? '' : 'none';
-              if (matches) visibleCount++;
-            });
+          for (const item of galleryItems) {
+            const matches = filter === 'tutti' || item.dataset.category === filter;
+            item.style.display = matches ? '' : 'none';
+            if (matches) visibleCount++;
+          }
 
-            // Fade grid back in
-            grid.animate([{ opacity: 0 }, { opacity: 1 }], {
-              duration: 250,
-              easing: 'ease-out',
-              fill: 'forwards',
-            }).onfinish = () => {
-              transitioning = false;
-            };
+          grid.animate([{ opacity: 0 }, { opacity: 1 }], {
+            duration: 250,
+            easing: 'ease-out',
+            fill: 'forwards',
+          }).onfinish = () => {
+            transitioning = false;
+          };
 
-            // Announce result count to screen readers
-            if (liveRegion) {
-              const label = btn.textContent?.trim() || filter;
-              liveRegion.textContent = `${label}: ${visibleCount} ${visibleCount === 1 ? 'elemento' : 'elementi'}`;
-            }
-          });
+          if (liveRegion) {
+            const label = btn.textContent?.trim() || filter;
+            liveRegion.textContent = `${label}: ${visibleCount} ${visibleCount === 1 ? 'elemento' : 'elementi'}`;
+          }
         };
       });
     });

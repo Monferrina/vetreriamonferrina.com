@@ -193,7 +193,14 @@ const jsonLd = {
     </script>
 
     <script>
+      let globalCleanup: (() => void) | null = null;
+
       function initGlobalUI(): void {
+        if (globalCleanup) {
+          globalCleanup();
+          globalCleanup = null;
+        }
+
         // --- Scroll Reveal (IntersectionObserver) ---
         const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');
         revealEls.forEach((el) => el.classList.add('reveal-ready'));
@@ -225,12 +232,10 @@ const jsonLd = {
             const scrollY = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
 
-            // Progress bar
             if (progressBar && docHeight > 0) {
               progressBar.style.setProperty('--scroll', String(scrollY / docHeight));
             }
 
-            // Back-to-top visibility (show at 80% scroll)
             if (backToTop && docHeight > 0) {
               backToTop.classList.toggle('visible', scrollY / docHeight > 0.8);
             }
@@ -242,11 +247,18 @@ const jsonLd = {
         window.addEventListener('scroll', onScroll, { passive: true });
         onScroll();
 
-        if (backToTop) {
-          backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          });
+        function onBackToTop() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        if (backToTop) {
+          backToTop.addEventListener('click', onBackToTop);
+        }
+
+        globalCleanup = () => {
+          revealObserver.disconnect();
+          window.removeEventListener('scroll', onScroll);
+          if (backToTop) backToTop.removeEventListener('click', onBackToTop);
+        };
       }
 
       document.addEventListener('astro:page-load', initGlobalUI);
@@ -264,18 +276,19 @@ const jsonLd = {
           document.documentElement.removeAttribute('data-theme');
         }
       }
-      // Listen for system theme changes (e.g. macOS Auto switching)
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
-      // Recheck time-based theme every 15 minutes
-      setInterval(applyTheme, 15 * 60 * 1000);
-      // Preserve dark mode during View Transitions — copy data-theme to new document before swap
-      document.addEventListener('astro:before-swap', (e: any) => {
-        const theme = document.documentElement.getAttribute('data-theme');
-        if (theme) {
-          e.newDocument.documentElement.setAttribute('data-theme', theme);
-        }
-      });
-      // Re-apply on Astro page transitions
+
+      // One-time setup: system theme listener + interval + view transition handler
+      if (!(window as any).__themeInit) {
+        (window as any).__themeInit = true;
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+        setInterval(applyTheme, 15 * 60 * 1000);
+        document.addEventListener('astro:before-swap', (e: any) => {
+          const theme = document.documentElement.getAttribute('data-theme');
+          if (theme) {
+            e.newDocument.documentElement.setAttribute('data-theme', theme);
+          }
+        });
+      }
       document.addEventListener('astro:page-load', applyTheme);
     </script>
   </body>

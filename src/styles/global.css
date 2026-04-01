@@ -122,6 +122,10 @@
 .gallery-filter-inactive:hover {
   background-color: color-mix(in srgb, var(--color-neutral-200) 70%, var(--color-neutral-700));
 }
+[data-theme='dark'] .gallery-filter-inactive:hover {
+  background-color: color-mix(in srgb, var(--color-neutral-200) 70%, var(--color-neutral-700));
+  color: #f3f4f6;
+}
 
 /* Scrollbar-hide utility for horizontal scroll filters (Apple-style chips) */
 .scrollbar-hide {
@@ -168,7 +172,7 @@
   width: 100%;
   height: 3px;
   background: linear-gradient(90deg, var(--color-secondary), var(--color-secondary-light));
-  z-index: 9999;
+  z-index: 60;
   transform-origin: left;
   transform: scaleX(var(--scroll, 0));
   pointer-events: none;
@@ -178,7 +182,7 @@
 .back-to-top {
   position: fixed;
   bottom: 5.5rem;
-  right: 5.5rem;
+  right: 1.5rem;
   z-index: 40;
   display: flex;
   align-items: center;
