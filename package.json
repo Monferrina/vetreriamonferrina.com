@@ -29,7 +29,7 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.1",
     "@astrojs/vercel": "^9.0.5",
-    "@sanity/client": "^7.17.0",
+    "@sanity/client": "^7.20.0",
     "@sanity/image-url": "^2.0.3",
     "@tailwindcss/vite": "^4.2.2",
     "@vercel/speed-insights": "^2.0.0",
