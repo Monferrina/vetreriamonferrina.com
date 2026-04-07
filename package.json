@@ -33,7 +33,7 @@
     "@sanity/image-url": "^2.0.3",
     "@tailwindcss/vite": "^4.2.2",
     "@vercel/speed-insights": "^2.0.0",
-    "astro": "^5.17.1",
+    "astro": "^6.1.4",
     "resend": "^6.9.4",
     "tailwindcss": "^4.2.1"
   },
