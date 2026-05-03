@@ -52,7 +52,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "sharp": "^0.34.5",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.58.0",
+    "typescript-eslint": "^8.58.2",
     "vitest": "^4.1.4",
     "checkly": "latest",
     "jiti": "^2"
