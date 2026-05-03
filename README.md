@@ -1,10 +1,26 @@
 # Vetreria Monferrina — Sito Web
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Monferrina_vetreriamonferrina.com&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Monferrina_vetreriamonferrina.com)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Monferrina_vetreriamonferrina.com&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Monferrina_vetreriamonferrina.com)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Monferrina_vetreriamonferrina.com&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Monferrina_vetreriamonferrina.com)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Monferrina_vetreriamonferrina.com&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Monferrina_vetreriamonferrina.com)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Monferrina_vetreriamonferrina.com&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Monferrina_vetreriamonferrina.com)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Monferrina_vetreriamonferrina.com&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Monferrina_vetreriamonferrina.com)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Monferrina_vetreriamonferrina.com&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Monferrina_vetreriamonferrina.com)
+
+[![CI](https://github.com/Monferrina/vetreriamonferrina.com/actions/workflows/ci.yml/badge.svg)](https://github.com/Monferrina/vetreriamonferrina.com/actions/workflows/ci.yml)
+[![Vercel](https://img.shields.io/badge/Vercel-deployed-black?logo=vercel)](https://vetreriamonferrina.com)
+[![Astro](https://img.shields.io/badge/Astro-5-FF5D01?logo=astro&logoColor=white)](https://astro.build)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![License](https://img.shields.io/badge/License-All_Rights_Reserved-red)](/LICENSE)
+
+---
 
 Sito web ufficiale della **Vetreria Monferrina di Fioravanti Giuseppe** — Casale Monferrato (AL).
 
 Sito vetrina con form preventivi, galleria lavori, blog, 16 pagine servizio, FAQ e integrazione Google Places.
+
+**[vetreriamonferrina.com](https://vetreriamonferrina.com)**
 
 ## Tech Stack
 
@@ -23,7 +39,7 @@ Sito vetrina con form preventivi, galleria lavori, blog, 16 pagine servizio, FAQ
 | Recensioni      | Google Places API (New) — dati scaricati a build-time |
 | Test            | Vitest (unit) + Playwright (E2E)                      |
 | CI              | GitHub Actions                                        |
-| Code quality    | ESLint + Prettier + Husky + lint-staged               |
+| Code quality    | ESLint + Prettier + Husky + lint-staged + SonarCloud  |
 
 ## Requisiti
 
@@ -87,12 +103,14 @@ npm run check        # Type check (astro check)
 
 La pipeline GitHub Actions (`.github/workflows/ci.yml`) esegue automaticamente su push e PR:
 
-1. **Lint** — ESLint
-2. **Format** — Prettier
-3. **Type check** — `astro check`
-4. **Unit test** — Vitest (10 file, 118 test)
-5. **Build** — build di produzione
-6. **Lighthouse CI** — soglie: accessibility >= 0.95, best practices >= 0.95, SEO >= 0.9
+1. **Security audit** — `npm audit` (produzione)
+2. **Lint** — ESLint
+3. **Format** — Prettier
+4. **Type check** — `astro check`
+5. **Tests** — Vitest con coverage (11 file, 134 test)
+6. **Build** — build di produzione
+7. **SonarCloud** — analisi qualita, sicurezza, coverage
+8. **Lighthouse CI** — soglie: accessibility >= 0.95, best practices >= 0.95, SEO >= 0.9
 
 I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 
@@ -137,7 +155,7 @@ I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 │   ├── fonts/               # Font self-hosted (Inter, DM Serif Display)
 │   └── images/              # Immagini ottimizzate WebP
 ├── tests/
-│   ├── unit/                # Unit test (Vitest — 10 file, 118 test)
+│   ├── unit/                # Test (Vitest — 11 file, 134 test)
 │   └── e2e/                 # E2E test (Playwright)
 ├── astro.config.mjs         # Configurazione Astro
 ├── checkly.config.ts        # Configurazione Checkly monitoring
