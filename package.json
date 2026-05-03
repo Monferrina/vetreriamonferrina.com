@@ -8,6 +8,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "lint": "eslint .",
@@ -42,10 +43,13 @@
     "@eslint/js": "^10.0.1",
     "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.59.1",
+    "@vitest/coverage-v8": "^4.1.5",
+    "checkly": "latest",
     "eslint": "^10.2.0",
     "eslint-plugin-astro": "^1.6.0",
     "happy-dom": "^20.9.0",
     "husky": "^9.1.7",
+    "jiti": "^2",
     "lint-staged": "^16.4.0",
     "potrace": "^2.1.8",
     "prettier": "^3.8.2",
@@ -53,8 +57,6 @@
     "sharp": "^0.34.5",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.58.2",
-    "vitest": "^4.1.4",
-    "checkly": "latest",
-    "jiti": "^2"
+    "vitest": "^4.1.4"
   }
 }
