@@ -11,7 +11,7 @@ interface QuoteEmailData {
 }
 
 function escapeAttr(value: string): string {
-  return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  return value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 }
 
 function row(label: string, value: string): string {

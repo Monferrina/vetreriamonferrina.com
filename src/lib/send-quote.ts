@@ -40,7 +40,7 @@ export async function handleSendQuote(
   emailSender: EmailSender
 ): Promise<JsonResponse> {
   // 1. Verify Origin (anti-CSRF)
-  if (!req.origin || !config.allowedOrigins.some((o) => req.origin === o)) {
+  if (!req.origin || !config.allowedOrigins.includes(req.origin)) {
     console.warn('[send-quote] Origin rejected:', req.origin, 'from IP:', req.ip);
     return json(403, { error: 'Origine non autorizzata' });
   }
