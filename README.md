@@ -1,5 +1,7 @@
 # Vetreria Monferrina — Sito Web
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Monferrina_vetreriamonferrina.com&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Monferrina_vetreriamonferrina.com)
+
 Sito web ufficiale della **Vetreria Monferrina di Fioravanti Giuseppe** — Casale Monferrato (AL).
 
 Sito vetrina con form preventivi, galleria lavori, blog, 16 pagine servizio, FAQ e integrazione Google Places.

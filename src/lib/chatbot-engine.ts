@@ -16,7 +16,7 @@ export interface ChatOption {
 export type ChatFlow = Record<string, ChatNode>;
 
 export class ChatbotEngine {
-  private flow: ChatFlow;
+  private readonly flow: ChatFlow;
   private history: string[] = [];
 
   constructor(flow: ChatFlow) {

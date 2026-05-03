@@ -63,6 +63,15 @@ describe('ChatbotEngine', () => {
     expect(engine.getNode('nodo_che_non_esiste')).toBeUndefined();
   });
 
+  it('tronca la history a 50 elementi quando supera 100', () => {
+    const engine = new ChatbotEngine(flow as ChatFlow);
+    // Naviga 101 volte su un nodo esistente per superare la soglia di troncamento
+    for (let i = 0; i < 101; i++) {
+      engine.navigate('welcome');
+    }
+    expect(engine.getHistory().length).toBe(50);
+  });
+
   it('ogni dettaglio ha opzione preventivo con param', () => {
     const detailNodes = Object.entries(flow).filter(([key]) => key.startsWith('dettaglio_'));
     expect(detailNodes.length).toBe(16);
