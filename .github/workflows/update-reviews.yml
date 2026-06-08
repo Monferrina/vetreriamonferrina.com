@@ -13,9 +13,11 @@ jobs:
   update-reviews:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.REVIEWS_PAT }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
 
@@ -27,7 +29,7 @@ jobs:
 
       - name: Crea PR se dati cambiati
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.REVIEWS_PAT }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -43,5 +45,5 @@ jobs:
           gh pr create \
             --title "chore: aggiorna recensioni Google $(date +%Y-%m-%d)" \
             --body "Aggiornamento automatico recensioni, orari e foto da Google Places API." \
-            --base main || true
-          gh pr merge "$BRANCH" --squash --auto || true
+            --base main
+          gh pr merge "$BRANCH" --squash --auto
