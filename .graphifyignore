@@ -1,0 +1,17 @@
+# Immagini — nessun valore nel grafo del codice
+public/images/
+public/fonts/
+
+# Build output
+dist/
+.vercel/
+.astro/
+coverage/
+graphify-out/
+
+# Dipendenze
+node_modules/
+sanity/node_modules/
+
+# Cache e log
+.wrangler/
