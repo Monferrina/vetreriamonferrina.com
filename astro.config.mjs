@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -9,6 +9,15 @@ export default defineConfig({
   adapter: vercel(),
   site: 'https://vetreriamonferrina.com',
   trailingSlash: 'never',
+
+  env: {
+    schema: {
+      RESEND_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      RESEND_FROM_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      VETRERIA_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      SITE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+    },
+  },
 
   prefetch: {
     prefetchAll: true,

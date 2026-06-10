@@ -10,7 +10,7 @@
 
 [![CI](https://github.com/Monferrina/vetreriamonferrina.com/actions/workflows/ci.yml/badge.svg)](https://github.com/Monferrina/vetreriamonferrina.com/actions/workflows/ci.yml)
 [![Vercel](https://img.shields.io/badge/Vercel-deployed-black?logo=vercel)](https://vetreriamonferrina.com)
-[![Astro](https://img.shields.io/badge/Astro-5-FF5D01?logo=astro&logoColor=white)](https://astro.build)
+[![Astro](https://img.shields.io/badge/Astro-6-FF5D01?logo=astro&logoColor=white)](https://astro.build)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![License](https://img.shields.io/badge/License-All_Rights_Reserved-red)](/LICENSE)
 
@@ -26,7 +26,7 @@ Sito vetrina con form preventivi, galleria lavori, blog, 16 pagine servizio, FAQ
 
 | Categoria       | Tecnologia                                            |
 | --------------- | ----------------------------------------------------- |
-| Framework       | Astro 5 (SSG + SSR ibrido)                            |
+| Framework       | Astro 6 (SSG + SSR ibrido)                            |
 | Stile           | Tailwind CSS 4                                        |
 | CMS             | Sanity v5                                             |
 | Email           | Resend (account Proton, TLS enforced)                 |

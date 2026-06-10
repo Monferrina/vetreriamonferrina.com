@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { expect, test, describe } from 'vitest';
 import Footer from '../../src/components/Footer.astro';
