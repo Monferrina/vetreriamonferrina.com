@@ -1,13 +1,14 @@
 import type { APIContext } from 'astro';
 import { Resend } from 'resend';
+import { RESEND_API_KEY, RESEND_FROM_EMAIL, VETRERIA_EMAIL, SITE_URL } from 'astro:env/server';
 import { handleSendQuote } from '../../lib/send-quote';
 
 export const prerender = false;
 
 export async function POST({ request, clientAddress }: APIContext) {
-  const resend = new Resend(import.meta.env.RESEND_API_KEY);
+  const resend = new Resend(RESEND_API_KEY);
 
-  const siteUrl = (import.meta.env.SITE_URL || '').trim();
+  const siteUrl = (SITE_URL || '').trim();
   const allowedOrigins = [
     siteUrl,
     ...(import.meta.env.DEV ? ['http://localhost:4321', 'http://localhost:3000'] : []),
@@ -31,9 +32,9 @@ export async function POST({ request, clientAddress }: APIContext) {
     },
     {
       allowedOrigins,
-      resendApiKey: import.meta.env.RESEND_API_KEY,
-      fromEmail: import.meta.env.RESEND_FROM_EMAIL,
-      toEmail: import.meta.env.VETRERIA_EMAIL,
+      resendApiKey: RESEND_API_KEY ?? '',
+      fromEmail: RESEND_FROM_EMAIL ?? '',
+      toEmail: VETRERIA_EMAIL ?? '',
     },
     resend.emails
   );
