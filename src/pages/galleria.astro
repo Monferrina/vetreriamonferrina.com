@@ -224,6 +224,25 @@ const galleryItems =
     let currentIndex = 0;
     let visibleItems: HTMLElement[] = [];
 
+    // Page chrome painted above the lightbox: <main> has a view-transition-name,
+    // so it forms a stacking context and the lightbox z-index cannot win over
+    // later siblings (footer, cookie banner, ...). Hide them while open.
+    const pageChromeSelectors = [
+      'header',
+      'footer',
+      '[data-bottom-nav]',
+      '#cookie-banner',
+      '#chatbot-toggle',
+      '#chatbot-tooltip',
+    ];
+
+    function setPageChromeHidden(hidden: boolean) {
+      for (const selector of pageChromeSelectors) {
+        const el = document.querySelector<HTMLElement>(selector);
+        if (el) el.style.visibility = hidden ? 'hidden' : '';
+      }
+    }
+
     function getVisibleItems(): HTMLElement[] {
       return Array.from(galleryItems).filter((item) => item.style.display !== 'none');
     }
@@ -247,14 +266,7 @@ const galleryItems =
       });
 
       document.body.style.overflow = 'hidden';
-      const header = document.querySelector('header');
-      const bottomNav = document.querySelector('[data-bottom-nav]');
-      const chatToggle = document.getElementById('chatbot-toggle');
-      const chatTooltip = document.getElementById('chatbot-tooltip');
-      if (header) (header as HTMLElement).style.visibility = 'hidden';
-      if (bottomNav) (bottomNav as HTMLElement).style.visibility = 'hidden';
-      if (chatToggle) chatToggle.style.visibility = 'hidden';
-      if (chatTooltip) chatTooltip.style.visibility = 'hidden';
+      setPageChromeHidden(true);
       document.addEventListener('keydown', trapFocus);
       closeBtn!.focus();
     }
@@ -269,14 +281,7 @@ const galleryItems =
         lightbox!.classList.add('hidden');
         lightbox!.classList.remove('flex');
         document.body.style.overflow = '';
-        const header = document.querySelector('header');
-        const bottomNav = document.querySelector('[data-bottom-nav]');
-        const chatToggle = document.getElementById('chatbot-toggle');
-        const chatTooltip = document.getElementById('chatbot-tooltip');
-        if (header) (header as HTMLElement).style.visibility = '';
-        if (bottomNav) (bottomNav as HTMLElement).style.visibility = '';
-        if (chatToggle) chatToggle.style.visibility = '';
-        if (chatTooltip) chatTooltip.style.visibility = '';
+        setPageChromeHidden(false);
         // Remove focus from gallery item to avoid visible focus ring
         if (document.activeElement instanceof HTMLElement) {
           document.activeElement.blur();
