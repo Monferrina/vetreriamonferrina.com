@@ -165,20 +165,29 @@ function isActive(href: string): boolean {
 
     const container = bubble.parentElement;
     if (!container) return;
-    const active = nav.querySelector<HTMLAnchorElement>('a[aria-current="page"]');
 
-    if (!active) {
-      bubble.style.opacity = '0';
-      return;
+    function moveBubbleTo(tab: HTMLAnchorElement): void {
+      const containerRect = container!.getBoundingClientRect();
+      const tabRect = tab.getBoundingClientRect();
+
+      bubble!.style.left = `${tabRect.left - containerRect.left}px`;
+      bubble!.style.width = `${tabRect.width}px`;
+      bubble!.style.opacity = '1';
     }
 
-    const containerRect = container.getBoundingClientRect();
-    const activeRect = active.getBoundingClientRect();
-    const left = activeRect.left - containerRect.left;
+    const active = nav.querySelector<HTMLAnchorElement>('a[aria-current="page"]');
+    if (active) {
+      moveBubbleTo(active);
+    } else {
+      bubble.style.opacity = '0';
+    }
 
-    bubble.style.left = `${left}px`;
-    bubble.style.width = `${activeRect.width}px`;
-    bubble.style.opacity = '1';
+    // Feedback immediato al tap: la bolla si sposta sulla voce toccata prima
+    // che la nuova pagina arrivi dalla rete, così l'utente sa che l'input è
+    // stato ricevuto e non ritocca il tasto.
+    nav.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((tab) => {
+      tab.addEventListener('click', () => moveBubbleTo(tab));
+    });
   }
 
   document.addEventListener('astro:page-load', initNavBubble);
