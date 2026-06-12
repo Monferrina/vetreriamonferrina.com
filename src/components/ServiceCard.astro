@@ -8,9 +8,11 @@ export interface Props {
   slug: string;
   category: string;
   image?: string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
 }
 
-const { name, description, slug, category, image } = Astro.props;
+const { name, description, slug, category, image, loading, fetchpriority } = Astro.props;
 ---
 
 <div class="group pb-1" data-service-item data-service-category={category}>
@@ -27,6 +29,8 @@ const { name, description, slug, category, image } = Astro.props;
             wrapperClass="h-full w-full bg-neutral-200"
             width={800}
             height={600}
+            loading={loading}
+            fetchpriority={fetchpriority}
           />
         </div>
       ) : (

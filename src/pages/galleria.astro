@@ -116,7 +116,7 @@ const galleryItems =
     <GalleryGrid items={galleryItems} />
   </section>
 
-  <Lightbox />
+  <Lightbox slot="overlay" />
 </BaseLayout>
 
 <script>
@@ -224,9 +224,8 @@ const galleryItems =
     let currentIndex = 0;
     let visibleItems: HTMLElement[] = [];
 
-    // Page chrome painted above the lightbox: <main> has a view-transition-name,
-    // so it forms a stacking context and the lightbox z-index cannot win over
-    // later siblings (footer, cookie banner, ...). Hide them while open.
+    // Il lightbox (slot overlay, ultimo nel body) copre già tutto il chrome;
+    // nasconderlo evita che traspaia dallo sfondo semitrasparente sfocato.
     const pageChromeSelectors = [
       'header',
       'footer',
@@ -234,6 +233,7 @@ const galleryItems =
       '#cookie-banner',
       '#chatbot-toggle',
       '#chatbot-tooltip',
+      '[data-back-to-top]',
     ];
 
     function setPageChromeHidden(hidden: boolean) {
