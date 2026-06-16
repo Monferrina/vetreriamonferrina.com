@@ -32,7 +32,7 @@
     "@astrojs/vercel": "^10.0.8",
     "@sanity/client": "^7.22.1",
     "@sanity/image-url": "^2.1.1",
-    "@tailwindcss/vite": "^4.3.0",
+    "@tailwindcss/vite": "^4.3.1",
     "@vercel/speed-insights": "^2.0.0",
     "astro": "^6.4.5",
     "resend": "^6.11.0",
