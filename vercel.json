@@ -1,4 +1,7 @@
 {
+  "redirects": [
+    { "source": "/sitemap.xml", "destination": "/sitemap-index.xml", "statusCode": 301 }
+  ],
   "headers": [
     {
       "source": "/(.*)",
