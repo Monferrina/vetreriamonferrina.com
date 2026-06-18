@@ -6,7 +6,7 @@ const config = defineConfig({
   repoUrl: 'https://github.com/Monferrina/vetreriamonferrina.com',
   checks: {
     frequency: 10,
-    locations: ['eu-central-1', 'eu-west-1'],
+    locations: ['eu-central-1', 'eu-west-2'],
     tags: ['production'],
     runtimeId: '2025.04',
     checkMatch: '**/__checks__/**/*.check.ts',
