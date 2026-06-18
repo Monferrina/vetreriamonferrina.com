@@ -1,0 +1,55 @@
+name: Checkly
+
+# Monitoring as code: valida i check sulle PR e li deploya su Checkly al merge in main.
+# Gira solo quando cambiano le definizioni dei check (paths filter) per efficienza.
+# Se i secret non sono configurati, gli step si skippano: la CI resta verde.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '__checks__/**'
+      - 'checkly.config.ts'
+      - '.github/workflows/checkly.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '__checks__/**'
+      - 'checkly.config.ts'
+      - '.github/workflows/checkly.yml'
+
+concurrency:
+  group: checkly-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checkly:
+    name: Test & Deploy Monitors
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
+      CHECKLY_ACCOUNT_ID: ${{ secrets.CHECKLY_ACCOUNT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate checks (PR)
+        if: ${{ github.event_name == 'pull_request' && env.CHECKLY_API_KEY != '' }}
+        run: npx checkly test
+
+      - name: Deploy checks (main)
+        if: ${{ github.event_name == 'push' && env.CHECKLY_API_KEY != '' }}
+        run: npx checkly deploy --force
