@@ -7,6 +7,7 @@ const partners = [
   { name: 'AGC', logo: '/images/partners/agc.svg' },
   { name: 'Pilkington', logo: '/images/partners/pilkington.svg' },
   { name: 'Cilvea', logo: '/images/partners/cilvea.png' },
+  { name: 'Madras', logo: '/images/partners/madras.png' },
 ];
 ---
 
@@ -18,7 +19,9 @@ const partners = [
       materiali di prima qualità.
     </p>
 
-    <div class="mt-12 grid grid-cols-2 items-center gap-8 sm:grid-cols-4 sm:gap-10 lg:gap-16">
+    <div
+      class="mt-12 grid grid-cols-2 items-center gap-8 sm:grid-cols-3 sm:gap-10 lg:grid-cols-5 lg:gap-16"
+    >
       {
         partners.map((partner) => (
           <div class="partner-item flex flex-col items-center gap-3">
