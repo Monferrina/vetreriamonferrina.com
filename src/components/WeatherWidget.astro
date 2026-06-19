@@ -114,10 +114,33 @@ const LON = 8.4525;
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initWeather);
-  } else {
-    initWeather();
+  // Carica il meteo solo quando il widget entra in viewport: il meteo non è
+  // contenuto critico, così togliamo fetch + lavoro DOM dal percorso di load
+  // iniziale (meglio INP/TBT su mobile). Fallback: se manca IntersectionObserver
+  // carica subito.
+  function scheduleWeather() {
+    const widget = document.getElementById('weather-widget');
+    if (!widget || widget.dataset.loaded) return;
+    if (!('IntersectionObserver' in window)) {
+      initWeather();
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        if (entries[0].isIntersecting) {
+          obs.disconnect();
+          initWeather();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(widget);
   }
-  document.addEventListener('astro:after-swap', initWeather);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleWeather);
+  } else {
+    scheduleWeather();
+  }
+  document.addEventListener('astro:after-swap', scheduleWeather);
 </script>

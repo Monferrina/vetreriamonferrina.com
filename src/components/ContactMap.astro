@@ -1,22 +1,50 @@
 ---
 // src/components/ContactMap.astro
-// Google Maps Embed — zero JavaScript, zero dipendenze esterne.
+// Google Maps con FACADE (click-to-load): mostra un placeholder leggero e carica
+// l'iframe di Google solo al click dell'utente. Vantaggi:
+//  - INP: niente JS pesante di Google al caricamento pagina (era la causa del
+//    punteggio basso di /contatti);
+//  - Privacy/GDPR: cookie e script di Google partono solo su azione esplicita.
+// Placeholder alto 400px come l'iframe → nessun layout shift (CLS).
 const PLACE_ID = 'ChIJcx_Q1ESwh0cRqv3FdLTrU1w';
 const API_KEY = import.meta.env.GOOGLE_PLACES_API_KEY ?? '';
 const embedUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=place_id:${PLACE_ID}&zoom=17&language=it`;
 ---
 
 <div class="relative z-0 overflow-hidden rounded-xl border border-neutral-200">
-  <iframe
-    src={embedUrl}
-    width="100%"
-    height="400"
-    style="border:0;"
-    loading="lazy"
-    referrerpolicy="no-referrer-when-downgrade"
-    allowfullscreen
-    title="Mappa posizione Vetreria Monferrina — Strada Statale 31, 98/C, Casale Monferrato"
-  ></iframe>
+  <button
+    type="button"
+    id="map-facade"
+    data-embed={embedUrl}
+    class="group flex h-[400px] w-full cursor-pointer flex-col items-center justify-center gap-2 bg-neutral-100 px-4 text-center transition-colors hover:bg-neutral-200/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+    aria-label="Carica la mappa interattiva — Vetreria Monferrina, Strada Statale 31, 98/C, Casale Monferrato"
+  >
+    <svg
+      class="h-12 w-12 text-primary transition-transform group-hover:scale-110"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      aria-hidden="true"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+      ></path>
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"></path>
+    </svg>
+    <span class="font-heading text-lg text-neutral-800">Visualizza la mappa</span>
+    <span class="text-sm text-neutral-600">Strada Statale 31, 98/C — Casale Monferrato</span>
+    <span
+      class="mt-1 inline-block rounded-full bg-secondary-dark px-4 py-1.5 text-sm font-medium text-neutral-50 shadow-sm transition-colors group-hover:bg-secondary"
+    >
+      Carica Google Maps
+    </span>
+    <span class="mt-1 text-xs text-neutral-500"
+      >Carica Google solo al click, per la tua privacy</span
+    >
+  </button>
   <p class="bg-neutral-100 px-4 py-2 text-sm text-neutral-700">
     <a
       href={`https://www.google.com/maps/place/?q=place_id:${PLACE_ID}`}
@@ -28,3 +56,34 @@ const embedUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=pl
     </a>
   </p>
 </div>
+
+<script>
+  function initMapFacade() {
+    const facade = document.getElementById('map-facade');
+    if (!(facade instanceof HTMLElement) || facade.dataset.loaded) return;
+
+    const load = () => {
+      if (facade.dataset.loaded) return;
+      facade.dataset.loaded = 'true';
+      const url = facade.dataset.embed;
+      if (!url) return;
+
+      const iframe = document.createElement('iframe');
+      iframe.src = url;
+      iframe.width = '100%';
+      iframe.height = '400';
+      iframe.style.border = '0';
+      iframe.loading = 'lazy';
+      iframe.referrerPolicy = 'no-referrer-when-downgrade';
+      iframe.allowFullscreen = true;
+      iframe.title =
+        'Mappa posizione Vetreria Monferrina — Strada Statale 31, 98/C, Casale Monferrato';
+      facade.replaceWith(iframe);
+    };
+
+    facade.addEventListener('click', load, { once: true });
+  }
+
+  initMapFacade();
+  document.addEventListener('astro:after-swap', initMapFacade);
+</script>
