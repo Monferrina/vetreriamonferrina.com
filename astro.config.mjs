@@ -28,5 +28,10 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // Esclude la pagina di manutenzione (503 servita dal Worker Cloudflare): non navigabile né indicizzabile.
+      filter: (page) => !page.endsWith('/maintenance') && !page.endsWith('/maintenance/'),
+    }),
+  ],
 });
