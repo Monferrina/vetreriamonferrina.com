@@ -134,6 +134,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Pensiline in vetro per ingressi e terrazze a Casale Monferrato. Progettazione su misura, installazione professionale.',
+    whenToChoose:
+      'Una pensilina in vetro protegge ingressi, porte e terrazze dalla pioggia e dal sole senza appesantire la facciata. È la scelta giusta quando vuoi un riparo che non rinunci alla luce e all’eleganza: il vetro stratificato lascia passare la luminosità ed evita l’effetto “tettoia” delle coperture opache. Studiamo forma, inclinazione e fissaggi su misura, perché la pensilina si integri con lo stile dell’edificio.',
+    faq: [
+      {
+        q: 'La pensilina in vetro resiste a grandine e intemperie?',
+        a: 'Sì: usiamo vetro stratificato di sicurezza, pensato per resistere a pioggia, grandine e raggi UV, e per trattenere i frammenti in caso di rottura.',
+      },
+      {
+        q: 'Come viene sostenuta la pensilina?',
+        a: 'Con tiranti in acciaio inox o mensole a sbalzo, dimensionati per garantire stabilità e sicurezza nel tempo.',
+      },
+      {
+        q: 'Si può fare su misura per il mio ingresso?',
+        a: 'Sì, forma, dimensioni e inclinazione vengono studiate sul tuo ingresso e sullo stile architettonico dell’edificio.',
+      },
+    ],
     related: ['parapetti', 'vetrine', 'sostituzione-vetri'],
   },
 
@@ -160,6 +176,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Installazione vetrine per negozi e attività commerciali a Casale Monferrato. Vetro di sicurezza, posa professionale.',
+    whenToChoose:
+      'Una vetrina è il biglietto da visita di un’attività: deve essere ampia, luminosa e sicura. Interveniamo dalla singola vetrina alla facciata continua, con vetro temperato o stratificato a seconda delle esigenze di sicurezza, e vetrocamera quando serve isolare. Sappiamo che un negozio fermo perde incassi, perciò lavoriamo per ridurre al minimo i tempi e le chiusure.',
+    faq: [
+      {
+        q: 'Sostituite una vetrina rotta in tempi rapidi?',
+        a: 'Sì, è una delle nostre priorità: ci organizziamo per ridurre al minimo i tempi di intervento e la chiusura del negozio.',
+      },
+      {
+        q: 'Che vetro si usa per le vetrine?',
+        a: 'Temperato o stratificato di sicurezza secondo le normative, con vetrocamera quando serve isolamento termico e acustico.',
+      },
+      {
+        q: 'Posate anche vetrate di grandi dimensioni?',
+        a: 'Sì, abbiamo esperienza e attrezzature professionali per la posa di vetrate commerciali anche di grande formato.',
+      },
+    ],
     related: ['parapetti', 'blindati', 'sostituzione-vetri'],
   },
 
@@ -186,6 +218,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Sostituzione vetri finestre a Casale Monferrato. Miglioramento isolamento termico e acustico senza sostituire il serramento.',
+    whenToChoose:
+      'Sostituire solo il vetro è la scelta intelligente quando il serramento è ancora buono ma il vetro non isola più: passando da vetro singolo a vetrocamera migliori subito comfort e bolletta, senza il costo e i disagi di cambiare l’intera finestra. Interveniamo su legno, alluminio e PVC, senza opere murarie. È spesso anche un intervento che rientra nelle detrazioni per il risparmio energetico.',
+    faq: [
+      {
+        q: 'Devo cambiare tutta la finestra?',
+        a: 'No: nella maggior parte dei casi sostituiamo solo il vetro mantenendo il telaio esistente. Intervento rapido e senza opere murarie.',
+      },
+      {
+        q: 'Su quali serramenti intervenite?',
+        a: 'Su legno, alluminio e PVC, di qualsiasi marca e modello.',
+      },
+      {
+        q: 'Migliora davvero l’isolamento?',
+        a: 'Sì: il passaggio da vetro singolo a vetrocamera riduce sensibilmente la dispersione di calore e il rumore esterno.',
+      },
+    ],
   },
 
   blindati: {
@@ -211,6 +259,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Vetri blindati antieffrazione a Casale Monferrato. Classi di resistenza certificate EN 356, installazione professionale.',
+    whenToChoose:
+      'I vetri blindati sono la scelta giusta quando la sicurezza viene prima di tutto: abitazioni al piano terra, vetrine di negozi, uffici con beni o dati sensibili, o semplicemente per dormire sonni tranquilli. A differenza di un’inferriata proteggono senza chiudere la vista e senza rinunciare alla luce. In sopralluogo valutiamo insieme la classe di resistenza più adatta al livello di protezione che cerchi.',
+    faq: [
+      {
+        q: 'Quanto resiste un vetro blindato?',
+        a: 'Dipende dalla classe (da P1A a P8B, norma EN 356): si va dalla resistenza al lancio di oggetti fino a quella contro attacchi ripetuti con corpi contundenti.',
+      },
+      {
+        q: 'Si vede che è un vetro blindato?',
+        a: 'No: nonostante lo spessore maggiore mantiene un’ottima trasparenza ed è praticamente indistinguibile da un vetro normale.',
+      },
+      {
+        q: 'Posso montarlo su finestre esistenti?',
+        a: 'Spesso sì, con ferramenta rinforzata. Valutiamo in sopralluogo la compatibilità con il serramento.',
+      },
+    ],
   },
 
   madras: {
@@ -236,6 +300,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Vetro decorativo Madras a Casale Monferrato. Privacy e design per porte, divisori e box doccia. Lavorazione su misura.',
+    whenToChoose:
+      'Il vetro Madras è la risposta quando servono privacy e luce insieme: porte interne, divisori, box doccia, finestre su strada o ante di mobili. Le sue texture filtrano la vista lasciando passare la luce naturale, così schermi un ambiente senza renderlo buio. Con decine di pattern disponibili è anche una scelta estetica: scegliamo insieme la finitura più adatta al tuo arredo.',
+    faq: [
+      {
+        q: 'Il vetro Madras è trasparente?',
+        a: 'È traslucido: lascia passare la luce ma sfuma le forme, garantendo privacy. Il grado di riservatezza dipende dalla texture scelta.',
+      },
+      {
+        q: 'Dove si usa più spesso?',
+        a: 'Porte interne, divisori, box doccia e finestre dove serve riservatezza senza rinunciare alla luminosità.',
+      },
+      {
+        q: 'Si può lavorare su misura?',
+        a: 'Sì: taglio, foratura e molatura su misura nel nostro laboratorio, per qualsiasi forma e dimensione.',
+      },
+    ],
   },
 
   stratificati: {
@@ -267,6 +347,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Vetri stratificati di sicurezza a Casale Monferrato. Trasparenti, satinati e colorati. Taglio su misura e installazione.',
+    whenToChoose:
+      'Il vetro stratificato è la scelta quando la sicurezza conta: parapetti, vetrate basse, porte, lucernari, ovunque un vetro che si rompe e cade possa essere pericoloso. L’intercalare in PVB trattiene i frammenti, abbatte il rumore e filtra fino al 99% dei raggi UV, proteggendo arredi e pavimenti dallo scolorimento. Lo forniamo trasparente, satinato, extra-chiaro o colorato, e combinabile con vetrocamera.',
+    faq: [
+      {
+        q: 'Cosa succede se il vetro stratificato si rompe?',
+        a: 'I frammenti restano attaccati all’intercalare in PVB: il vetro si crepa ma non cade, eliminando il rischio di tagli.',
+      },
+      {
+        q: 'Aiuta contro il rumore?',
+        a: 'Sì, l’intercalare in PVB migliora sensibilmente l’isolamento acustico rispetto a un vetro singolo.',
+      },
+      {
+        q: 'Protegge dai raggi solari?',
+        a: 'Filtra fino al 99% dei raggi UV, proteggendo mobili, tende e pavimenti dallo scolorimento.',
+      },
+    ],
   },
 
   monolitici: {
@@ -293,6 +389,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     materials: ['Float trasparente', 'Float satinato', 'Float extra-chiaro'],
     seoDescription:
       'Vetri monolitici trasparenti e satinati a Casale Monferrato. Taglio su misura, molatura e lavorazioni di bordo.',
+    whenToChoose:
+      'Il vetro monolitico è il punto di partenza di quasi ogni lavorazione: piani tavolo, mensole, ripiani, cornici e top. Lo forniamo tagliato su misura nello spessore giusto per ogni uso, dai 2 mm per piccoli inserti fino ai 19 mm per piani portanti. Quando serve più sicurezza o isolamento, è anche la base da cui partiamo per tempera, stratifica e vetrocamera.',
+    faq: [
+      {
+        q: 'Che spessore mi serve?',
+        a: 'Dipende dall’uso: pochi millimetri per cornici e inserti, 8-19 mm per piani tavolo e ripiani portanti. Ti consigliamo in base al progetto.',
+      },
+      {
+        q: 'Posso averlo sagomato?',
+        a: 'Sì, tagliamo su misura qualsiasi forma e rifiniamo i bordi con molatura a filo lucido, opaco o bisello.',
+      },
+      {
+        q: 'Che differenza c’è con lo stratificato?',
+        a: 'Il monolitico è una lastra singola; lo stratificato unisce più lastre per maggiore sicurezza. Il monolitico è spesso la base di partenza.',
+      },
+    ],
   },
 
   vetrocamera: {
@@ -319,6 +431,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     materials: ['Vetrocamera 4/16/4', 'Vetrocamera basso-emissivo', 'Vetrocamera con gas argon'],
     seoDescription:
       'Vetrocamera doppi per isolamento termico e acustico a Casale Monferrato. Basso-emissivi, con gas argon. Sostituzione e posa.',
+    whenToChoose:
+      'Il vetrocamera è la scelta standard quando vuoi una casa più calda d’inverno, più fresca d’estate e più silenziosa: due lastre separate da un’intercapedine isolante riducono la dispersione di calore e il rumore della strada. È l’intervento giusto per chi cambia le finestre o sostituisce vetri vecchi a lastra singola, e con trattamento basso-emissivo e gas argon le prestazioni salgono ancora. Rientra spesso nelle detrazioni fiscali.',
+    faq: [
+      {
+        q: 'Quanto isola rispetto a un vetro singolo?',
+        a: 'Riduce la dispersione di calore del 50-60% e abbatte sensibilmente il rumore esterno.',
+      },
+      {
+        q: 'Cos’è il trattamento basso-emissivo?',
+        a: 'Un rivestimento invisibile che riflette il calore verso l’interno d’inverno e lo respinge d’estate, migliorando l’isolamento.',
+      },
+      {
+        q: 'Posso averlo sui miei serramenti?',
+        a: 'Spesso sì: valutiamo in sopralluogo la compatibilità e, se serve, sostituiamo solo il vetro mantenendo il telaio.',
+      },
+    ],
   },
 
   'vetrocamera-tripli': {
@@ -344,6 +472,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Vetrocamera tripli per massimo isolamento termico e acustico a Casale Monferrato. Ideale per edifici ad alta efficienza energetica.',
+    whenToChoose:
+      'Il triplo vetrocamera è la scelta per chi punta al massimo comfort e alla massima efficienza: tre lastre e due intercapedini con gas argon portano l’isolamento a livelli da nuova costruzione. È l’ideale per case nuove, ristrutturazioni importanti, edifici in zone fredde o su strade molto trafficate, dove contano sia il calore sia il silenzio. Elimina anche la sensazione di freddo vicino alle finestre.',
+    faq: [
+      {
+        q: 'Quando conviene il triplo rispetto al doppio?',
+        a: 'Per nuove costruzioni, ristrutturazioni importanti, climi rigidi o massimo isolamento acustico. Su semplici sostituzioni spesso basta il doppio basso-emissivo.',
+      },
+      {
+        q: 'Quanto isola un triplo vetro?',
+        a: 'Raggiunge valori di trasmittanza (Ug) fino a 0,5 W/m²K, circa il doppio dell’isolamento di un vetrocamera doppio.',
+      },
+      {
+        q: 'Riduce la condensa sulle finestre?',
+        a: 'Sì: elimina la sensazione di freddo vicino al vetro e riduce la formazione di condensa interna.',
+      },
+    ],
   },
 
   specchi: {
@@ -411,6 +555,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Porte interne in vetro a Casale Monferrato. Scorrevoli e a battente, vetro temperato di sicurezza. Installazione su misura.',
+    whenToChoose:
+      'Una porta interna in vetro è la scelta giusta quando vuoi portare luce tra le stanze e dare un senso di ampiezza, senza rinunciare alla separazione degli ambienti. Scorrevole a vista, a scomparsa nel muro o a battente: il sistema dipende dallo spazio che hai. Con vetro trasparente, satinato o decorato, scegliamo insieme la soluzione più adatta all’arredo e alla privacy che desideri.',
+    faq: [
+      {
+        q: 'Una porta in vetro è sicura?',
+        a: 'Sì: usiamo vetro temperato di sicurezza da 8 o 10 mm, resistente agli urti e conforme alla normativa.',
+      },
+      {
+        q: 'Meglio scorrevole o a battente?',
+        a: 'Dipende dallo spazio: la scorrevole (a vista o a scomparsa) fa risparmiare ingombro, la battente è la soluzione più classica.',
+      },
+      {
+        q: 'Posso avere privacy con una porta in vetro?',
+        a: 'Sì, con vetro satinato o decorato come il Madras: lascia passare la luce ma scherma la vista.',
+      },
+    ],
     related: ['madras', 'specchi', 'box-doccia'],
   },
 
@@ -437,6 +597,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Sagomatura e taglio vetro su misura a Casale Monferrato. Qualsiasi forma e dimensione, precisione millimetrica.',
+    whenToChoose:
+      'La sagomatura serve quando il vetro deve adattarsi a uno spazio o a un progetto che esce dalle forme standard: top con angoli smussati, piani tondi o ovali, inserti curvi, vetri per mobili su disegno. Con la nostra macchina da taglio automatica realizziamo qualsiasi forma con precisione millimetrica, anche in serie. Dopo il taglio possiamo molare, forare e temprare, seguendo l’intero ciclo di lavorazione.',
+    faq: [
+      {
+        q: 'Che forme potete tagliare?',
+        a: 'Rettangoli, cerchi, ovali, angoli smussati e forme libere su disegno del cliente, con precisione millimetrica.',
+      },
+      {
+        q: 'Tagliate anche vetri particolari?',
+        a: 'Sì: float, satinato, specchio, laminato e vetri decorativi.',
+      },
+      {
+        q: 'Dopo il taglio si può lavorare ancora il vetro?',
+        a: 'Sì, il taglio è il primo passo: seguono molatura, foratura ed eventuale tempera.',
+      },
+    ],
   },
 
   fori: {
@@ -462,6 +638,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Foratura vetro di precisione a Casale Monferrato. Fori per maniglie, cerniere e fissaggi con utensili diamantati.',
+    whenToChoose:
+      'La foratura serve ogni volta che un vetro deve ospitare maniglie, cerniere, pomelli, distanziali o passaggi per tubazioni: porte in vetro, box doccia, parapetti, mensole. Va eseguita con precisione e — fondamentale — sempre prima della tempera, perché un vetro temperato non può più essere lavorato. Ci occupiamo dell’intero ciclo, dal foro alla tempera finale.',
+    faq: [
+      {
+        q: 'Posso forare un vetro già temperato?',
+        a: 'No, è impossibile: la foratura va eseguita prima del trattamento di tempera. Per questo seguiamo l’intero ciclo di lavorazione.',
+      },
+      {
+        q: 'Che diametri di foro realizzate?',
+        a: 'Da 6 a 100 mm, per qualsiasi tipo di ferramenta, cerniera o fissaggio.',
+      },
+      {
+        q: 'I bordi del foro sono sicuri?',
+        a: 'Sì, usiamo utensili diamantati che danno fori netti e senza scheggiature, anche su vetri spessi.',
+      },
+    ],
   },
 
   molature: {
@@ -487,5 +679,21 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Molatura bordi vetro a Casale Monferrato. Filo lucido, filo opaco e bisello. Lavorazione professionale su misura.',
+    whenToChoose:
+      'La molatura serve ogni volta che un bordo di vetro resta a vista o a portata di mano: piani tavolo, mensole, specchi, ripiani. Trasforma un bordo grezzo e tagliente in una finitura liscia, sicura ed elegante. La scelta tra filo lucido, filo opaco e bisello dipende dall’uso e dall’effetto estetico desiderato: ti consigliamo la lavorazione giusta in base al pezzo.',
+    faq: [
+      {
+        q: 'A cosa serve la molatura?',
+        a: 'A rendere il bordo del vetro liscio e sicuro, eliminando le parti taglienti del taglio grezzo, e a dargli una finitura curata.',
+      },
+      {
+        q: 'Che differenza c’è tra filo lucido e bisello?',
+        a: 'Il filo lucido è un bordo lavorato a specchio; il bisello è uno smusso inclinato che crea un effetto decorativo, classico per gli specchi.',
+      },
+      {
+        q: 'Si può molare qualsiasi vetro?',
+        a: 'Sì, lavoriamo vetro float, specchio, stratificato e vetri decorativi di vari spessori.',
+      },
+    ],
   },
 };
