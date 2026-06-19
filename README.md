@@ -54,7 +54,7 @@ Sito vetrina con form preventivi, galleria lavori, blog, 16 pagine servizio, FAQ
 
 ## Requisiti
 
-- **Node.js** >= 20 (vedi `.nvmrc`)
+- **Node.js** >= 22 (vedi `.nvmrc`)
 - **npm** >= 10
 
 ## Setup locale
@@ -118,9 +118,9 @@ La pipeline GitHub Actions (`.github/workflows/ci.yml`) esegue automaticamente s
 2. **Lint** — ESLint
 3. **Format** — Prettier
 4. **Type check** — `astro check`
-5. **Tests** — Vitest con coverage (11 file, 134 test)
+5. **Tests** — Vitest con coverage (13 file, 138 test)
 6. **Build** — build di produzione
-7. **SonarCloud** — analisi qualita, sicurezza, coverage
+7. **SonarCloud** — analisi qualità, sicurezza, coverage
 8. **Lighthouse CI** — soglie: accessibility >= 0.95, best practices >= 0.95, SEO >= 0.9
 
 I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
@@ -166,7 +166,7 @@ I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 │   ├── fonts/               # Font self-hosted (Inter, DM Serif Display)
 │   └── images/              # Immagini ottimizzate WebP
 ├── tests/
-│   ├── unit/                # Test (Vitest — 11 file, 134 test)
+│   ├── unit/                # Test (Vitest — 13 file, 138 test)
 │   └── e2e/                 # E2E test (Playwright)
 ├── astro.config.mjs         # Configurazione Astro
 ├── checkly.config.ts        # Configurazione Checkly monitoring
@@ -211,19 +211,19 @@ Il sito è ottimizzato per la ricerca locale e organica:
 
 ### Vercel
 
-Il sito e deployato su Vercel con adapter `@astrojs/vercel`. Le pagine statiche (SSG) sono pre-renderizzate, l'API route `/api/send-quote` e una serverless function.
+Il sito è deployato su Vercel con adapter `@astrojs/vercel`. Le pagine statiche (SSG) sono pre-renderizzate, l'API route `/api/send-quote` è una serverless function.
 
 **Environment variables:** configurare su Vercel > Settings > Environment Variables (Production + Preview).
 
 ### Cloudflare
 
-Il dominio `vetreriamonferrina.com` e gestito su Cloudflare (piano Free) con proxy attivo (nuvoletta arancione).
+Il dominio `vetreriamonferrina.com` è gestito su Cloudflare (piano Free) con proxy attivo (nuvoletta arancione).
 
 | Configurazione | Dettaglio                                                         |
 | -------------- | ----------------------------------------------------------------- |
 | DNS            | A → `76.76.21.21` + CNAME www → `cname.vercel-dns.com` (Proxied)  |
 | SSL/TLS        | Full (Strict)                                                     |
-| HSTS           | 12 mesi, preload, includeSubDomains                               |
+| HSTS           | 2 anni (max-age 63072000), includeSubDomains, preload             |
 | WAF            | Bot Fight Mode + AI Bot Blocking                                  |
 | Cache          | Asset statici 1 anno (`/_astro/`, `.webp`, `.woff2`)              |
 | Analytics      | Web Analytics (RUM, zero cookie)                                  |
@@ -232,7 +232,7 @@ Il dominio `vetreriamonferrina.com` e gestito su Cloudflare (piano Free) con pro
 
 ### Resend
 
-Per l'invio email dal form preventivo. Account su `giuseppefioravanti@proton.me`. Il dominio mittente (`vetreriamonferrina.com`) e verificato su Resend con record DNS (MX, SPF, DKIM). TLS enforced, click/open tracking disattivati.
+Per l'invio email dal form preventivo. Account su `giuseppefioravanti@proton.me`. Il dominio mittente (`vetreriamonferrina.com`) è verificato su Resend con record DNS (MX, SPF, DKIM). TLS enforced, click/open tracking disattivati.
 
 Le email usano template HTML professionali con colori brand (`src/lib/email-templates/`).
 
@@ -241,7 +241,7 @@ Le email usano template HTML professionali con colori brand (`src/lib/email-temp
 | Record | Nome                | Valore                                                            |
 | ------ | ------------------- | ----------------------------------------------------------------- |
 | TXT    | `resend._domainkey` | Chiave DKIM Resend                                                |
-| MX     | `send`              | `feedback-smtp.eu-west-1.amazonses.com` (priorita 10)             |
+| MX     | `send`              | `feedback-smtp.eu-west-1.amazonses.com` (priorità 10)             |
 | TXT    | `send`              | `v=spf1 include:amazonses.com ~all`                               |
 | TXT    | `_dmarc`            | `v=DMARC1; p=quarantine; rua=mailto:giuseppefioravanti@proton.me` |
 
@@ -296,7 +296,7 @@ Guida completa: `docs/plans/google-reviews-setup.md`
 
 ### Come funziona
 
-Un [Cloudflare Worker](https://developers.cloudflare.com/workers/) intercetta tutte le richieste **prima** che arrivino a Vercel. Quando la manutenzione e attiva, il worker recupera la pagina `/maintenance` da Vercel e la serve con status 503. Quando e disattiva, il worker fa un semplice passthrough al sito. Il codice del worker e in `cloudflare/maintenance-worker/`.
+Un [Cloudflare Worker](https://developers.cloudflare.com/workers/) intercetta tutte le richieste **prima** che arrivino a Vercel. Quando la manutenzione è attiva, il worker recupera la pagina `/maintenance` da Vercel e la serve con status 503. Quando è disattiva, il worker fa un semplice passthrough al sito. Il codice del worker è in `cloudflare/maintenance-worker/`.
 
 ## Documentazione tecnica
 
