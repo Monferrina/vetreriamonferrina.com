@@ -14,6 +14,17 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![License](https://img.shields.io/badge/License-All_Rights_Reserved-red)](/LICENSE)
 
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![Sanity](https://img.shields.io/badge/Sanity-v5-F03E2F?logo=sanity&logoColor=white)](https://www.sanity.io)
+[![Resend](https://img.shields.io/badge/Resend-email-000000?logo=resend&logoColor=white)](https://resend.com)
+
+[![Cloudflare](https://img.shields.io/badge/Cloudflare-DNS%20%7C%20WAF-F38020?logo=cloudflare&logoColor=white)](https://www.cloudflare.com)
+[![Checkly](https://img.shields.io/badge/Checkly-monitoring-3A52EE)](https://www.checklyhq.com)
+[![Vitest](https://img.shields.io/badge/Vitest-unit-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev)
+[![Playwright](https://img.shields.io/badge/Playwright-E2E-2EAD33?logo=playwright&logoColor=white)](https://playwright.dev)
+[![CodeQL](https://img.shields.io/badge/CodeQL-security-2088FF?logo=github&logoColor=white)](https://codeql.github.com)
+
 ---
 
 Sito web ufficiale della **Vetreria Monferrina di Fioravanti Giuseppe** — Casale Monferrato (AL).
@@ -184,6 +195,17 @@ I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 | `/404`                   | Pagina errore 404                                                            | SSG       |
 | `/500`                   | Pagina errore 500                                                            | SSG       |
 | `/maintenance`           | Pagina manutenzione 503                                                      | SSG       |
+
+## SEO e dati strutturati
+
+Il sito è ottimizzato per la ricerca locale e organica:
+
+- **Dati strutturati JSON-LD** — `LocalBusiness` su ogni pagina e `FAQPage` sulle pagine servizio con FAQ (idoneo ai rich snippet di Google).
+- **Pagine servizio ricche** — ogni servizio include intro, caratteristiche, materiali, una sezione "Quando scegliere" e domande frequenti, con località e keyword integrate in modo naturale.
+- **Link interni curati** — la sezione "Servizi correlati" usa abbinamenti curati (non solo per categoria) per distribuire il valore tra le pagine e dare contesto a Google.
+- **Meta description per pagina** ottimizzate per il local (con "Casale Monferrato").
+- **Sitemap** generata automaticamente (`@astrojs/sitemap`); la pagina `/maintenance` è esclusa e in `noindex`.
+- **robots.txt** gestito da Cloudflare con Content Signals: ricerca consentita, crawler di training AI esclusi.
 
 ## Infrastruttura
 
