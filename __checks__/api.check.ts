@@ -1,12 +1,23 @@
 import { ApiCheck, AssertionBuilder } from 'checkly/constructs';
 
+// Liveness check dell'API preventivi — SILENZIOSO (niente mail reali) e affidabile.
+//
+// Usa il meccanismo `dryRun` dell'API (src/lib/send-quote.ts, step 4): un body
+// valido con `dryRun: true` passa la validazione e l'API risponde 200
+// `{"success":true,"dryRun":true}` SALTANDO l'invio email. Verifica così l'intero
+// percorso (parsing + validazione + handler) senza inviare preventivi falsi.
+//
+// Punta all'origine Vercel diretta: il Worker Cloudflare corrompe i body POST
+// chunked di Checkly, perdendo campi del payload (era la causa sia dei falsi 400
+// sia delle mail false: senza `dryRun`/honeypot nel body corrotto, l'email partiva).
+// Bypassandolo, il body arriva integro e `dryRun` viene rispettato.
 new ApiCheck('send-quote-api', {
   name: 'Send Quote API',
   activated: true,
   degradedResponseTime: 5000,
   maxResponseTime: 10000,
   request: {
-    url: 'https://vetreriamonferrina.com/api/send-quote',
+    url: 'https://vetreriamonferrina.vercel.app/api/send-quote',
     method: 'POST',
     followRedirects: true,
     skipSSL: false,
@@ -19,12 +30,15 @@ new ApiCheck('send-quote-api', {
       email: 'monitor@checkly.com',
       phone: '0000000000',
       serviceType: 'box-doccia',
-      description: 'Test automatico Checkly - ignorare',
+      description: 'Monitoraggio automatico Checkly - dry run, ignorare',
       measurements: '100x100 cm',
       privacy: true,
-      website: 'honeypot-trigger',
+      dryRun: true,
     }),
-    assertions: [AssertionBuilder.statusCode().equals(200)],
+    assertions: [
+      AssertionBuilder.statusCode().equals(200),
+      AssertionBuilder.jsonBody('$.dryRun').equals(true),
+    ],
   },
   runParallel: false,
 });
