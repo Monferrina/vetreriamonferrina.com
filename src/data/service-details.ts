@@ -9,6 +9,10 @@ export interface ServiceDetail {
   seoDescription: string;
   /** Slug di servizi correlati curati. Se assente, la pagina usa i servizi della stessa categoria. */
   related?: string[];
+  /** Paragrafo "Quando scegliere": contesto d'uso del servizio. Opzionale. */
+  whenToChoose?: string;
+  /** Domande frequenti. Se presenti, generano anche structured data FAQPage. Opzionale. */
+  faq?: { q: string; a: string }[];
 }
 
 export const serviceDetails: Record<string, ServiceDetail> = {
@@ -42,6 +46,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     seoDescription:
       'Box doccia su misura in vetro temperato a Casale Monferrato. Progettazione, realizzazione e montaggio professionale. Sopralluogo gratuito.',
     related: ['specchi', 'porte-interne', 'madras'],
+    whenToChoose:
+      'La maggior parte dei box doccia in commercio ha misure standard, che raramente combaciano con lo spazio reale del bagno. Con un box su misura non sei tu a dover adattare il bagno al box: è il box ad adattarsi al bagno. È la scelta giusta quando hai una nicchia, un sottotetto in pendenza o una parete non perfettamente dritta, oppure quando cerchi semplicemente un risultato pulito, senza profili e ingombri inutili. Durante il sopralluogo prendiamo le misure esatte e ti consigliamo apertura, spessore del vetro e finiture più adatte al tuo spazio.',
+    faq: [
+      {
+        q: 'È difficile pulire il vetro del box doccia?',
+        a: 'Con il trattamento anticalcare basta passare una spatola dopo la doccia. Senza trattamento è sufficiente una pulizia settimanale con acqua e aceto bianco.',
+      },
+      {
+        q: 'Si può realizzare un box doccia per la vasca?',
+        a: 'Sì. Realizziamo pareti e antine su misura anche per la vasca da bagno, con lo stesso vetro temperato di sicurezza.',
+      },
+      {
+        q: 'Quale apertura conviene per un bagno piccolo?',
+        a: 'Negli spazi stretti consigliamo l’anta scorrevole o il modello walk-in, che non ingombrano quando si aprono.',
+      },
+    ],
   },
 
   parapetti: {
@@ -73,6 +93,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     seoDescription:
       'Parapetti in vetro per balconi, scale e terrazze a Casale Monferrato. Installazione certificata con vetro stratificato di sicurezza.',
     related: ['stratificati', 'pensiline', 'vetrine'],
+    whenToChoose:
+      'Un parapetto in vetro mette in sicurezza balconi, scale e terrazze senza togliere luce né visuale. È la soluzione ideale quando vuoi proteggere senza chiudere: il vetro stratificato di sicurezza garantisce resistenza e, in caso di rottura, trattiene i frammenti restando in posizione. Scegliamo insieme il sistema di fissaggio — a pinza, a pavimento o a muro — in base al contesto architettonico e alle normative vigenti.',
+    faq: [
+      {
+        q: 'Un parapetto in vetro è sicuro come uno tradizionale?',
+        a: 'Sì. Usiamo vetro stratificato di sicurezza conforme alle norme UNI 7697 e NTC 2018: resiste agli urti e, se si rompe, resta in posizione senza cadere.',
+      },
+      {
+        q: 'Serve una struttura in metallo a vista?',
+        a: 'Dipende dal sistema scelto: si può fissare a pinza, con profilo continuo a pavimento o a muro. Valutiamo la soluzione più adatta durante il sopralluogo.',
+      },
+      {
+        q: 'Il vetro resiste a pioggia, vento e sole?',
+        a: 'Sì, i materiali sono pensati per l’esterno e resistono ad agenti atmosferici e sbalzi termici senza alterarsi nel tempo.',
+      },
+    ],
   },
 
   pensiline: {
@@ -334,6 +370,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     seoDescription:
       "Specchi su misura a Casale Monferrato. Taglio, molatura e installazione professionale per bagni, armadi e complementi d'arredo.",
     related: ['box-doccia', 'molature', 'porte-interne'],
+    whenToChoose:
+      'Uno specchio su misura risolve tutti i casi in cui i modelli standard non bastano: pareti irregolari, spazi sopra il lavabo, ante di armadi, palestre e studi di danza. Possiamo tagliare qualsiasi forma e rifinire i bordi con molatura a filo lucido o bisello, per un risultato sicuro ed elegante. In fase di sopralluogo valutiamo insieme dimensioni, tipo di fissaggio e finitura più adatti all’ambiente.',
+    faq: [
+      {
+        q: 'Posso avere uno specchio di forma irregolare?',
+        a: 'Sì, tagliamo lo specchio in qualsiasi sagoma: tonda, ovale, con angoli smussati o forme personalizzate su disegno.',
+      },
+      {
+        q: 'Come si fissa lo specchio senza forarlo?',
+        a: 'Usiamo un collante strutturale dedicato, oppure clips e profili a muro: soluzioni sicure che non richiedono fori sulla lastra.',
+      },
+      {
+        q: 'Gli specchi del bagno si rovinano con l’umidità?',
+        a: 'Per i bagni proponiamo specchi con trattamento di protezione posteriore, che previene le tipiche macchie scure dovute all’umidità nel tempo.',
+      },
+    ],
   },
 
   'porte-interne': {
