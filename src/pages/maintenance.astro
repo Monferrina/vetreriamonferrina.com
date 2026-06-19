@@ -4,7 +4,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 export const prerender = true;
 ---
 
-<BaseLayout title="Sito in manutenzione" description="Il sito è temporaneamente in manutenzione.">
+<BaseLayout
+  title="Sito in manutenzione"
+  description="Il sito è temporaneamente in manutenzione."
+  noindex={true}
+>
   <section class="flex min-h-[60vh] items-center justify-center px-4 py-20">
     <div class="text-center">
       <div

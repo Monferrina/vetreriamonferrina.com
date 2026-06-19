@@ -13,12 +13,14 @@ export interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  noindex?: boolean;
 }
 
 const {
   title,
   description = 'Vetreria storica a Casale Monferrato. Box doccia, parapetti, pensiline, vetri camera, specchi e lavorazioni su misura.',
   ogImage,
+  noindex = false,
 } = Astro.props;
 const canonicalURL = Astro.site
   ? new URL(Astro.url.pathname, Astro.site)
@@ -92,6 +94,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>{title} | Vetreria Monferrina</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
