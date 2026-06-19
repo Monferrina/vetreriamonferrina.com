@@ -223,6 +223,15 @@ const articleSchema = {
     font-weight: 600;
     color: var(--color-neutral-900);
   }
+  .blog-content a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+  }
+  .blog-content a:hover {
+    color: var(--color-primary-dark);
+  }
 
   @media (min-width: 640px) {
     .blog-content h2 {

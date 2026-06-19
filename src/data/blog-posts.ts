@@ -43,7 +43,7 @@ export const blogPosts: BlogPost[] = [
 </ul>
 
 <h2>Su misura è meglio</h2>
-<p>I box doccia industriali hanno misure standard che raramente si adattano perfettamente allo spazio disponibile. Un box doccia su misura elimina il problema: le lastre vengono tagliate sulle dimensioni esatte del vostro bagno, compresi spazi irregolari, nicchie e sottotetti.</p>
+<p>I box doccia industriali hanno misure standard che raramente si adattano perfettamente allo spazio disponibile. Un <a href="/servizi/box-doccia">box doccia su misura</a> elimina il problema: le lastre vengono tagliate sulle dimensioni esatte del vostro bagno, compresi spazi irregolari, nicchie e sottotetti.</p>
 <p>Ogni box doccia che realizziamo nel nostro laboratorio è un pezzo unico, pensato insieme al cliente dalla prima misurazione alla posa finale.</p>
 `,
   },
@@ -77,14 +77,14 @@ export const blogPosts: BlogPost[] = [
 </ul>
 
 <h2>Quando scegliere il triplo</h2>
-<p>Il vetrocamera triplo è la scelta giusta quando:</p>
+<p>Il <a href="/servizi/vetrocamera-tripli">vetrocamera triplo</a> è la scelta giusta quando:</p>
 <ul>
 <li>Si costruisce una casa nuova o si fa una ristrutturazione importante.</li>
 <li>L'edificio si trova in zona climatica E o F (inverni rigidi).</li>
 <li>Si vuole raggiungere la classe energetica A o superiore.</li>
 <li>L'abitazione è su una strada trafficata e serve il massimo isolamento acustico.</li>
 </ul>
-<p>Per sostituzioni su serramenti esistenti, il doppio vetrocamera con trattamento basso-emissivo rappresenta spesso la scelta più equilibrata.</p>
+<p>Per sostituzioni su serramenti esistenti, il <a href="/servizi/vetrocamera">doppio vetrocamera</a> con trattamento basso-emissivo rappresenta spesso la scelta più equilibrata.</p>
 
 <h2>Gas argon e trattamento basso-emissivo</h2>
 <p>Due accorgimenti che migliorano le prestazioni di qualsiasi vetrocamera:</p>
@@ -110,11 +110,11 @@ export const blogPosts: BlogPost[] = [
 <h2>Vetro temperato</h2>
 <p>Il vetro temperato viene riscaldato a circa 700°C e poi raffreddato rapidamente. Questo processo crea tensioni interne che aumentano la resistenza meccanica di 4-5 volte.</p>
 <p><strong>In caso di rottura:</strong> si frantuma in piccoli frammenti a bordi arrotondati, simili a granuli. Nessun pezzo tagliente, ma il vetro non resta in posizione.</p>
-<p><strong>Dove si usa:</strong> box doccia, porte interne in vetro, piani tavolo, mensole, ripiani.</p>
+<p><strong>Dove si usa:</strong> <a href="/servizi/box-doccia">box doccia</a>, <a href="/servizi/porte-interne">porte interne in vetro</a>, piani tavolo, mensole, ripiani.</p>
 <p><strong>Importante:</strong> il vetro temperato non può essere tagliato, forato o lavorato dopo la tempera. Tutte le lavorazioni (sagomatura, foratura, molatura) vanno eseguite prima del trattamento termico.</p>
 
 <h2>Vetro stratificato</h2>
-<p>Il vetro stratificato è composto da due o più lastre unite da un intercalare plastico in PVB (polivinilbutirrale). L'intercalare tiene insieme i frammenti in caso di rottura.</p>
+<p>Il <a href="/servizi/stratificati">vetro stratificato</a> è composto da due o più lastre unite da un intercalare plastico in PVB (polivinilbutirrale). L'intercalare tiene insieme i frammenti in caso di rottura.</p>
 <p><strong>In caso di rottura:</strong> il vetro si crepa ma resta in posizione, trattenuto dall'intercalare. Nessuna caduta di frammenti.</p>
 <p><strong>Dove si usa:</strong> parapetti, balaustre, pensiline, vetrine, lucernari — ovunque un vetro rotto che cade potrebbe essere pericoloso.</p>
 <p><strong>Vantaggi aggiuntivi:</strong> l'intercalare in PVB filtra fino al 99% dei raggi UV e migliora l'isolamento acustico.</p>
@@ -146,7 +146,7 @@ export const blogPosts: BlogPost[] = [
 <p>Il vetro è un materiale resistente e facile da mantenere. Nella maggior parte dei casi bastano acqua e un panno morbido. I prodotti aggressivi non solo sono inutili, ma possono danneggiare guarnizioni e profili.</p>
 
 <h2>Box doccia</h2>
-<p>Il box doccia è la superficie vetrata più esposta al calcare. Pochi accorgimenti fanno la differenza:</p>
+<p>Il <a href="/servizi/box-doccia">box doccia</a> è la superficie vetrata più esposta al calcare. Pochi accorgimenti fanno la differenza:</p>
 <ul>
 <li><strong>Dopo ogni utilizzo</strong> — passate una spatola o un panno asciutto sulle pareti. Trenta secondi che prevengono ore di pulizia.</li>
 <li><strong>Pulizia settimanale</strong> — acqua tiepida con un goccio di detersivo per piatti. Risciacquate e asciugate.</li>
@@ -163,7 +163,7 @@ export const blogPosts: BlogPost[] = [
 </ul>
 
 <h2>Parapetti in vetro</h2>
-<p>I parapetti esterni sono esposti alle intemperie ma richiedono poca manutenzione:</p>
+<p>I <a href="/servizi/parapetti">parapetti</a> esterni sono esposti alle intemperie ma richiedono poca manutenzione:</p>
 <ul>
 <li><strong>Pulizia</strong> — acqua e detergente neutro, come per le vetrate.</li>
 <li><strong>Fissaggi</strong> — controllate una volta all'anno che pinze, morsetti e viti siano ben serrati.</li>
@@ -171,7 +171,7 @@ export const blogPosts: BlogPost[] = [
 </ul>
 
 <h2>Specchi</h2>
-<p>Gli specchi sono più delicati dei vetri normali perché hanno un rivestimento posteriore sensibile all'umidità:</p>
+<p>Gli <a href="/servizi/specchi">specchi</a> sono più delicati dei vetri normali perché hanno un rivestimento posteriore sensibile all'umidità:</p>
 <ul>
 <li><strong>Pulizia</strong> — spray specifico per specchi o acqua con poco aceto. Spruzzate sul panno, mai direttamente sullo specchio (l'umidità può infiltrarsi dai bordi).</li>
 <li><strong>Bordi</strong> — mantenete asciutti i bordi inferiori, soprattutto negli specchi da bagno. L'umidità persistente può causare macchie scure nel tempo.</li>
