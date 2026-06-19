@@ -3,7 +3,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CtaSection from '../../components/CtaSection.astro';
 import GlassPanel from '../../components/GlassPanel.astro';
-import { services } from '../../data/services';
+import { services, type Service } from '../../data/services';
 import { serviceDetails } from '../../data/service-details';
 export const prerender = true;
 
@@ -15,10 +15,12 @@ const { slug } = Astro.params;
 const service = services.find((s) => s.slug === slug)!;
 const details = serviceDetails[slug!]!;
 
-// Related services: same category, excluding current
-const related = services
-  .filter((s) => s.category === service.category && s.slug !== slug)
-  .slice(0, 3);
+// Related services: curated list when defined, otherwise same category (excluding current)
+const related: Service[] = details.related
+  ? details.related
+      .map((relSlug) => services.find((s) => s.slug === relSlug))
+      .filter((s): s is Service => Boolean(s))
+  : services.filter((s) => s.category === service.category && s.slug !== slug).slice(0, 3);
 const hasMaterials = details.materials && details.materials.length > 0;
 ---
 

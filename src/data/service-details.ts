@@ -7,6 +7,8 @@ export interface ServiceDetail {
   features: { title: string; text: string }[];
   materials?: string[];
   seoDescription: string;
+  /** Slug di servizi correlati curati. Se assente, la pagina usa i servizi della stessa categoria. */
+  related?: string[];
 }
 
 export const serviceDetails: Record<string, ServiceDetail> = {
@@ -39,6 +41,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Box doccia su misura in vetro temperato a Casale Monferrato. Progettazione, realizzazione e montaggio professionale. Sopralluogo gratuito.',
+    related: ['specchi', 'porte-interne', 'madras'],
   },
 
   parapetti: {
@@ -69,6 +72,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Parapetti in vetro per balconi, scale e terrazze a Casale Monferrato. Installazione certificata con vetro stratificato di sicurezza.',
+    related: ['stratificati', 'pensiline', 'vetrine'],
   },
 
   pensiline: {
@@ -94,6 +98,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Pensiline in vetro per ingressi e terrazze a Casale Monferrato. Progettazione su misura, installazione professionale.',
+    related: ['parapetti', 'vetrine', 'sostituzione-vetri'],
   },
 
   vetrine: {
@@ -119,6 +124,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Installazione vetrine per negozi e attività commerciali a Casale Monferrato. Vetro di sicurezza, posa professionale.',
+    related: ['parapetti', 'blindati', 'sostituzione-vetri'],
   },
 
   'sostituzione-vetri': {
@@ -327,6 +333,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       "Specchi su misura a Casale Monferrato. Taglio, molatura e installazione professionale per bagni, armadi e complementi d'arredo.",
+    related: ['box-doccia', 'molature', 'porte-interne'],
   },
 
   'porte-interne': {
@@ -352,6 +359,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       'Porte interne in vetro a Casale Monferrato. Scorrevoli e a battente, vetro temperato di sicurezza. Installazione su misura.',
+    related: ['madras', 'specchi', 'box-doccia'],
   },
 
   sagomature: {
