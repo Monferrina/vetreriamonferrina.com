@@ -1,9 +1,15 @@
 {
   "rating": 4.4,
   "totalReviews": 35,
-  "placeId": "ChIJcx_Q1ESwh0cRqv3FdLTrU1w",
-  "lastUpdated": "2026-06-15",
+  "placeId": "ChIJcx_Q1ESwh0cRqv3FdLTrU1w ",
+  "lastUpdated": "2026-06-22",
   "reviews": [
+    {
+      "author": "Nicola R.",
+      "rating": 5,
+      "date": "2026-05-18",
+      "text": "Stamattina ho ordinato un vetro camera e stasera era già pronto.... Tanta roba velocissimi consiglio vivamente"
+    },
     {
       "author": "Claudio B.",
       "rating": 5,
@@ -15,12 +21,6 @@
       "rating": 5,
       "date": "2023-10-31",
       "text": "Disponibilità,  professionalità e serietà,  cose che nn si trovano spesso tutte insieme in un azienda."
-    },
-    {
-      "author": "Mario S.",
-      "rating": 5,
-      "date": "2022-11-01",
-      "text": "Molto professionali, disponibilità e gentili e soprattutto prezzi giusti"
     }
   ]
 }
