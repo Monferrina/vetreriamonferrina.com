@@ -427,6 +427,11 @@ html {
   animation: social-bounce 0.6s ease;
 }
 
+/* GitHub icon: il nero brand (#181717) è invisibile sul footer scuro → schiarisci in dark mode */
+[data-theme='dark'] .github-icon {
+  color: #f0f6fc;
+}
+
 @keyframes social-bounce {
   0%,
   100% {
