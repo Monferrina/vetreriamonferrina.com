@@ -375,7 +375,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
 
   monolitici: {
     intro:
-      'I vetri monolitici sono lastre singole di vetro float, la base di ogni lavorazione vetraria. Li forniamo trasparenti e satinati, tagliati su misura e con lavorazioni di bordo a richiesta.',
+      'I vetri monolitici sono lastre singole di vetro float, la base di ogni lavorazione del vetro. Forniamo vetro su misura — trasparente, satinato o extra-chiaro — tagliato nello spessore giusto e rifinito sui bordi a richiesta.',
     features: [
       {
         title: 'Taglio su misura',
@@ -383,7 +383,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       },
       {
         title: 'Lavorazioni di bordo',
-        text: 'Molatura a filo lucido, filo opaco o bisello per una finitura curata e sicura.',
+        text: 'Molatura a filo lucido o filo grezzo per una finitura curata e sicura.',
       },
       {
         title: 'Spessori disponibili',
@@ -407,11 +407,15 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       },
       {
         q: 'Posso averlo sagomato?',
-        a: 'Sì, tagliamo su misura qualsiasi forma e rifiniamo i bordi con molatura a filo lucido, opaco o bisello.',
+        a: 'Sì, tagliamo qualsiasi forma su disegno: angoli smussati, curve, fori e sagome particolari.',
       },
       {
         q: 'Che differenza c’è con lo stratificato?',
         a: 'Il monolitico è una lastra singola; lo stratificato unisce più lastre per maggiore sicurezza. Il monolitico è spesso la base di partenza.',
+      },
+      {
+        q: 'Tagliate il vetro su misura?',
+        a: 'Sì: tagliamo ogni lastra sulle tue dimensioni, anche sagomata, e rifiniamo i bordi con molatura a filo lucido o filo grezzo. Portaci le misure o un disegno e pensiamo noi al resto.',
       },
     ],
   },
@@ -671,15 +675,15 @@ export const serviceDetails: Record<string, ServiceDetail> = {
 
   molature: {
     intro:
-      'La molatura è la lavorazione dei bordi del vetro che li rende lisci, sicuri ed esteticamente curati. Offriamo filo lucido, filo opaco e bisello per ogni esigenza funzionale e decorativa.',
+      'La molatura è la lavorazione dei bordi del vetro che li rende lisci, sicuri ed esteticamente curati. Offriamo filo lucido e filo grezzo, oltre al bisello su richiesta, per ogni esigenza funzionale e decorativa.',
     features: [
       {
         title: 'Filo lucido',
         text: 'Bordo lavorato e lucidato a specchio. La finitura più elegante per piani tavolo, mensole e specchi.',
       },
       {
-        title: 'Filo opaco',
-        text: 'Bordo lavorato con finitura satinata. Ideale per vetri da incassare in telai o profili.',
+        title: 'Filo grezzo',
+        text: 'Bordo molato per eliminare il taglio vivo, senza lucidatura. La finitura essenziale per vetri da incassare in telai o profili, dove il bordo non resta a vista.',
       },
       {
         title: 'Bisello',
@@ -691,10 +695,10 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       },
     ],
     seoDescription:
-      'Molatura bordi vetro a Casale Monferrato. Filo lucido, filo opaco e bisello. Lavorazione professionale su misura.',
+      'Molatura bordi vetro a Casale Monferrato. Filo lucido, filo grezzo e bisello su richiesta. Lavorazione professionale su misura.',
     related: ['specchi', 'sagomature', 'fori'],
     whenToChoose:
-      'La molatura serve ogni volta che un bordo di vetro resta a vista o a portata di mano: piani tavolo, mensole, specchi, ripiani. Trasforma un bordo grezzo e tagliente in una finitura liscia, sicura ed elegante. La scelta tra filo lucido, filo opaco e bisello dipende dall’uso e dall’effetto estetico desiderato: ti consigliamo la lavorazione giusta in base al pezzo.',
+      'La molatura serve ogni volta che un bordo di vetro resta a vista o a portata di mano: piani tavolo, mensole, specchi, ripiani. Trasforma un bordo grezzo e tagliente in una finitura liscia, sicura ed elegante. La scelta tra filo lucido, filo grezzo e bisello dipende dall’uso e dall’effetto estetico desiderato: ti consigliamo la lavorazione giusta in base al pezzo.',
     faq: [
       {
         q: 'A cosa serve la molatura?',
