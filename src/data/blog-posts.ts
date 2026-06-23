@@ -241,4 +241,42 @@ export const blogPosts: BlogPost[] = [
 </ul>
 `,
   },
+  {
+    slug: 'come-tagliare-vetro-temperato',
+    title: 'Come tagliare il vetro temperato',
+    description:
+      'Si può tagliare il vetro temperato? No: una volta temperato non si taglia né si fora. Ecco perché e come si lavora correttamente, prima della tempera.',
+    date: '2026-06-23',
+    image: '/images/services/box-doccia.webp',
+    related: ['vetro-temperato-vs-stratificato', 'come-scegliere-vetro-box-doccia'],
+    content: `
+<h2>Si può tagliare il vetro temperato?</h2>
+<p>No. Una volta temperato, il vetro non si può più tagliare né forare: qualsiasi incisione ne rompe l'equilibrio interno e lo fa frantumare in un istante in migliaia di piccoli frammenti. Il vetro temperato va quindi tagliato, molato e forato <strong>prima</strong> della tempera, mai dopo. È il punto più importante da sapere prima di ordinare o modificare una lastra.</p>
+
+<h2>Perché il temperato non si taglia dopo la tempera</h2>
+<p>La tempera è un trattamento termico: il vetro viene scaldato a circa 600 °C e poi raffreddato in fretta. Così la superficie resta in compressione e il cuore in tensione, ed è questo equilibrio a renderlo fino a cinque volte più resistente del vetro normale. Un taglio o un foro spezzano quell'equilibrio di colpo: la lastra non si "scheggia", esplode tutta insieme. È lo stesso motivo per cui è così sicuro in caso di rottura.</p>
+
+<h2>Come si lavora correttamente: prima si dimensiona, poi si tempra</h2>
+<p>Con il temperato l'ordine è tutto. Ogni lavorazione va decisa e fatta sulla lastra ancora "cruda":</p>
+<ul>
+<li><strong>Taglio su misura</strong> — la lastra si porta alle dimensioni esatte richieste.</li>
+<li><strong>Lavorazione dei bordi</strong> — molatura a filo lucido o filo grezzo.</li>
+<li><strong>Fori e sagomature</strong> — per cerniere, maniglie, prese e forme particolari.</li>
+</ul>
+<p>Solo quando il pezzo è completo in ogni dettaglio si passa al forno di tempera. Dopo, la lastra è definitiva: non si tocca più.</p>
+
+<h2>Mi serve una misura diversa: si può ridurre?</h2>
+<p>Purtroppo no: un vetro temperato non si può rifilare nemmeno di pochi millimetri. Se la misura non va, la lastra va rifatta da capo su misura. Per questo conta molto prendere le quote giuste fin dall'inizio — nel dubbio, un sopralluogo evita errori costosi. Se l'applicazione lo permette, in alcuni casi si valuta il vetro stratificato, che offre sicurezza con un'altra logica di lavorazione: ne parliamo nella guida su <a href="/blog/vetro-temperato-vs-stratificato">temperato e stratificato a confronto</a>.</p>
+
+<h2>Il vetro normale invece si taglia?</h2>
+<p>Sì, ed è proprio qui la differenza. Il vetro float (non temperato) si incide e si taglia su misura senza problemi, e infatti è la base di partenza di quasi ogni lavorazione. Il temperato è un prodotto "finito": nasce già nella forma definitiva. Quando ti serve un pezzo robusto e sicuro — un <a href="/servizi/box-doccia">box doccia</a>, un <a href="/servizi/parapetti">parapetto</a> o una <a href="/servizi/porte-interne">porta in vetro</a> — partiamo dalle tue misure e prepariamo tutto prima della tempera.</p>
+
+<h2>Domande frequenti</h2>
+<ul>
+<li><strong>Cosa significa "vetro temperato"?</strong> È vetro sottoposto a un trattamento termico che lo rende molto più resistente e, in caso di rottura, lo fa frantumare in piccoli frammenti non taglienti. Per questo è richiesto dove serve sicurezza.</li>
+<li><strong>Posso fare un foro in un vetro temperato già pronto?</strong> No: forare un temperato lo rompe. Fori e asole vanno eseguiti prima della tempera.</li>
+<li><strong>Come faccio a sapere se un vetro è temperato?</strong> Spesso porta un piccolo marchio inciso in un angolo. Nel dubbio, chiedici una verifica prima di tentare qualsiasi lavorazione.</li>
+</ul>
+`,
+  },
 ];
