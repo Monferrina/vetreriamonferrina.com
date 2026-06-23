@@ -13,6 +13,7 @@
 [![Astro](https://img.shields.io/badge/Astro-6-FF5D01?logo=astro&logoColor=white)](https://astro.build)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![License](https://img.shields.io/badge/License-All_Rights_Reserved-red)](/LICENSE)
+[![Made by MK023](https://img.shields.io/badge/Made_by-MK023-181717?logo=github&logoColor=white)](https://github.com/MK023)
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org)
@@ -306,3 +307,5 @@ Un [Cloudflare Worker](https://developers.cloudflare.com/workers/) intercetta tu
 ## Licenza
 
 Progetto proprietario — Vetreria Monferrina di Fioravanti Giuseppe. Tutti i diritti riservati.
+
+Sviluppato da [Marco Bellingeri](https://github.com/MK023).
