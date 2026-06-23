@@ -56,7 +56,7 @@ export const services: Service[] = [
   {
     slug: 'blindati',
     name: 'Vetri blindati',
-    description: 'Vetri blindati antieffrazione per massima sicurezza.',
+    description: 'Vetri blindati antisfondamento e antiproiettile per massima sicurezza.',
     category: 'vetri',
     image: '/images/services/blindati.webp',
   },
