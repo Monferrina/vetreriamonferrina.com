@@ -327,7 +327,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
 
   stratificati: {
     intro:
-      'I vetri stratificati sono composti da due o più lastre unite da un intercalare plastico (PVB). In caso di rottura il vetro resta unito, garantendo sicurezza. Disponibili trasparenti, satinati e colorati.',
+      'I vetri stratificati sono il vetro di sicurezza per eccellenza: due o più lastre unite da un intercalare plastico (PVB) che, in caso di rottura, trattiene i frammenti. Un vetro antinfortunistico che protegge dalle cadute e dai tagli. Disponibili trasparenti, satinati e colorati.',
     features: [
       {
         title: 'Sicurezza passiva',
@@ -369,6 +369,10 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       {
         q: 'Protegge dai raggi solari?',
         a: 'Filtra fino al 99% dei raggi UV, proteggendo mobili, tende e pavimenti dallo scolorimento.',
+      },
+      {
+        q: 'Dove è obbligatorio il vetro di sicurezza?',
+        a: 'La norma UNI 7697 indica dove serve il vetro stratificato o temperato: parapetti, vetrate a tutta altezza, porte, lucernari e superfici a rischio di urto o caduta. Ti aiutiamo a scegliere il vetro a norma per ogni applicazione.',
       },
     ],
   },
