@@ -434,7 +434,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
 
   vetrocamera: {
     intro:
-      "Il vetrocamera è composto da due lastre di vetro separate da un'intercapedine d'aria o gas nobile. È la soluzione standard per l'isolamento termico e acustico di finestre e vetrate.",
+      "Il vetrocamera — il classico doppio vetro — è composto da due lastre separate da un'intercapedine d'aria o gas nobile. È il vetro isolante standard per l'isolamento termico e acustico di finestre e vetrate.",
     features: [
       {
         title: 'Isolamento termico',
@@ -450,7 +450,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       },
       {
         title: 'Vetri basso-emissivi',
-        text: 'Disponibili con trattamento basso-emissivo per prestazioni termiche ancora superiori.',
+        text: 'Disponibili con trattamento basso-emissivo e selettivo (controllo solare) per prestazioni termiche ancora superiori.',
       },
     ],
     materials: ['Vetrocamera 4/16/4', 'Vetrocamera basso-emissivo', 'Vetrocamera con gas argon'],
@@ -561,7 +561,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
 
   'porte-interne': {
     intro:
-      "Installiamo porte interne in vetro, scorrevoli e a battente, per portare luce e leggerezza negli ambienti. Il vetro temperato di sicurezza garantisce resistenza e tranquillità nell'uso quotidiano.",
+      "Installiamo porte interne in vetro — la porta scorrevole in vetro, a vista o a scomparsa nel muro, e il modello a battente — per portare luce e leggerezza negli ambienti. Il vetro temperato di sicurezza garantisce resistenza e tranquillità nell'uso quotidiano.",
     features: [
       {
         title: 'Scorrevoli e a battente',
@@ -596,6 +596,10 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       {
         q: 'Posso avere privacy con una porta in vetro?',
         a: 'Sì, con vetro satinato o decorato come il Madras: lascia passare la luce ma scherma la vista.',
+      },
+      {
+        q: 'La porta scorrevole in vetro si può nascondere nel muro?',
+        a: 'Sì: con un controtelaio a scomparsa la porta scorre dentro la parete e sparisce alla vista, liberando spazio. In alternativa lo scorrevole a vista monta un binario a parete, senza opere murarie.',
       },
     ],
     related: ['madras', 'specchi', 'box-doccia'],
