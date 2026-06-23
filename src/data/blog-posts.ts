@@ -16,7 +16,11 @@ export const blogPosts: BlogPost[] = [
       'Guida alla scelta del vetro giusto per il box doccia: temperato o stratificato, spessori, finiture e trattamenti.',
     date: '2026-03-26',
     image: '/images/services/box-doccia.webp',
-    related: ['vetrocamera-doppio-o-triplo', 'vetro-temperato-vs-stratificato'],
+    related: [
+      'come-pulire-box-doccia-incrostato',
+      'vetrocamera-doppio-o-triplo',
+      'vetro-temperato-vs-stratificato',
+    ],
     content: `
 <h2>Vetro temperato: lo standard per il box doccia</h2>
 <p>Il vetro temperato è la scelta più diffusa per i box doccia, e per buone ragioni. Sottoposto a un trattamento termico che ne aumenta la resistenza meccanica di 4-5 volte rispetto al vetro comune, in caso di rottura si frantuma in piccoli frammenti a bordi smussati, riducendo al minimo il rischio di tagli.</p>
@@ -183,6 +187,57 @@ export const blogPosts: BlogPost[] = [
 <li>Non usate prodotti a base di acido fluoridrico o muriatico.</li>
 <li>Non pulite il vetro sotto il sole diretto: il detergente si asciuga troppo in fretta e lascia aloni.</li>
 <li>Non forzate mai le ante del box doccia se incontrano resistenza: controllate guide e cerniere.</li>
+</ul>
+`,
+  },
+  {
+    slug: 'come-pulire-box-doccia-incrostato',
+    title: 'Come pulire un box doccia molto incrostato',
+    description:
+      'Guida pratica per togliere calcare e incrostazioni dal box doccia in vetro: rimedi che funzionano, errori da evitare e come prevenire gli aloni.',
+    date: '2026-06-23',
+    image: '/images/services/box-doccia.webp',
+    related: ['come-scegliere-vetro-box-doccia', 'come-pulire-mantenere-vetri'],
+    content: `
+<h2>Come pulire un box doccia molto incrostato</h2>
+<p>Sul box doccia il calcare è il nemico numero uno: si deposita a ogni doccia e, se trascurato, forma una patina opaca difficile da togliere. La buona notizia è che nella maggior parte dei casi si rimuove con prodotti che hai già in casa, un po' di pazienza e il gesto giusto. Vediamo come, partendo dalle incrostazioni più ostinate.</p>
+<p>Il rimedio veloce: scalda dell'aceto bianco (tiepido agisce meglio), passalo sul vetro con un panno morbido o uno spruzzino e lascialo agire 15-20 minuti. Poi strofina con delicatezza e risciacqua con acqua tiepida. Per le incrostazioni più dure va benissimo anche l'acido citrico sciolto in acqua calda. Niente spugne abrasive: sul vetro lasciano micro-graffi.</p>
+
+<h2>Calcare ostinato: i rimedi che funzionano davvero</h2>
+<p>Quando la patina è spessa, servono tempo di posa e un pizzico di metodo. Tre soluzioni semplici:</p>
+<ul>
+<li><strong>Aceto bianco caldo</strong> — il più versatile. Imbevi un panno, appoggialo sul vetro come un impacco e lascialo aderire mezz'ora.</li>
+<li><strong>Acido citrico</strong> — un paio di cucchiai in mezzo litro d'acqua calda. Inodore e delicato sul vetro, ottimo sui depositi più tenaci.</li>
+<li><strong>Bicarbonato in pasta</strong> — mescolato con poca acqua, aiuta meccanicamente sulle macchie localizzate. Applica, attendi, poi rimuovi con un panno umido.</li>
+</ul>
+<p>Ripeti l'impacco invece di aumentare la forza: è il tempo, non l'attrito, a sciogliere il calcare.</p>
+
+<h2>Pulire il box doccia in vetro trasparente senza aloni</h2>
+<p>Sul vetro trasparente ogni alone si nota, perciò conta più l'asciugatura che il detergente. Dopo aver risciacquato, passa un tergivetro dall'alto verso il basso, poi una microfibra asciutta. Se l'acqua di casa è molto dura, un ultimo passaggio con acqua demineralizzata evita le tracce bianche quando asciuga.</p>
+
+<h2>Gli errori da evitare</h2>
+<p>Qualche gesto fa più male che bene. Da evitare:</p>
+<ul>
+<li><strong>Spugne abrasive, pagliette e lamette</strong> — graffiano il vetro in modo permanente.</li>
+<li><strong>Prodotti troppo aggressivi su alluminio e silicone</strong> — acidi forti e candeggina rovinano profili e guarnizioni.</li>
+<li><strong>Lasciare asciugare i prodotti al sole</strong> — possono lasciare aloni difficili da togliere.</li>
+</ul>
+<p>Sul vetro vale sempre la regola della delicatezza: meno aggredisci, più dura nel tempo.</p>
+
+<h2>Come evitare che il calcare torni</h2>
+<p>Prevenire costa molto meno che recuperare. Bastano tre abitudini: passare il tergivetro dopo ogni doccia, arieggiare il bagno per far asciugare le superfici, e una pulizia leggera una volta a settimana. Su un vetro con <a href="/servizi/box-doccia">trattamento anticalcare</a> il mantenimento è ancora più semplice, perché l'acqua scivola via senza lasciare depositi. Per la cura di tutti i vetri di casa trovi altri consigli nella nostra <a href="/blog/come-pulire-mantenere-vetri">guida alla pulizia dei vetri</a>.</p>
+
+<h2>Silicone annerito: quando pulirlo e quando rifarlo</h2>
+<p>Il silicone che diventa nero ai bordi è muffa, non sporco normale. Se è superficiale, si pulisce con una pasta di bicarbonato lasciata agire e poi rimossa. Ma quando il silicone si stacca, si screpola o la muffa è penetrata, l'unica soluzione è rifare la sigillatura: si rimuove il vecchio cordolo, si pulisce e si asciuga bene la sede e si stende un silicone nuovo specifico per il bagno. Un box ben sigillato protegge anche la parete dietro la doccia.</p>
+
+<h2>Quando il vetro non torna più pulito</h2>
+<p>A volte, dopo anni di calcare trascurato, il vetro resta opaco anche dopo una pulizia accurata: il deposito ha ormai inciso la superficie e l'alone è permanente. In quei casi non è una questione di prodotto. Si può valutare un <a href="/servizi/box-doccia">box doccia nuovo su misura</a>, magari con trattamento anticalcare di serie, così la pulizia torna a essere questione di pochi minuti. Se stai scegliendo, ti aiuta la nostra guida su <a href="/blog/come-scegliere-vetro-box-doccia">come scegliere il vetro per il box doccia</a>.</p>
+
+<h2>Domande frequenti</h2>
+<ul>
+<li><strong>Posso usare l'aceto sul box doccia tutti i giorni?</strong> Meglio di no: l'aceto è ottimo per il calcare, ma sull'uso quotidiano basta sciacquare e asciugare. Tienilo per la pulizia settimanale o per le incrostazioni.</li>
+<li><strong>L'aceto rovina il silicone e l'alluminio?</strong> Usato di rado e ben risciacquato no. Evita però di lasciarlo a lungo su guarnizioni e profili, e non usarlo su silicone già deteriorato.</li>
+<li><strong>Come pulisco il box doccia in vetro satinato?</strong> Stessi rimedi delicati, ma asciuga tamponando: sul satinato il tergivetro conta meno e il calcare si vede di meno, quindi è più importante una pulizia regolare.</li>
 </ul>
 `,
   },
