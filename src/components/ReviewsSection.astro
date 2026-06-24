@@ -16,7 +16,6 @@ interface ReviewEntry {
 interface ReviewsData {
   rating: number;
   totalReviews: number;
-  placeId: string;
   lastUpdated: string;
   reviews: ReviewEntry[];
 }
@@ -79,7 +78,6 @@ function validateReviews(data: unknown): ReviewsData {
   return {
     rating: d.rating as number,
     totalReviews: d.totalReviews as number,
-    placeId: typeof d.placeId === 'string' ? d.placeId : '',
     lastUpdated: d.lastUpdated as string,
     reviews,
   };

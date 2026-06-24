@@ -56,7 +56,7 @@ export const services: Service[] = [
   {
     slug: 'blindati',
     name: 'Vetri blindati',
-    description: 'Vetri blindati antieffrazione per massima sicurezza.',
+    description: 'Vetri blindati antisfondamento e antiproiettile per massima sicurezza.',
     category: 'vetri',
     image: '/images/services/blindati.webp',
   },
@@ -129,7 +129,7 @@ export const services: Service[] = [
   {
     slug: 'molature',
     name: 'Molature',
-    description: 'Molatura bordi vetro a filo lucido, filo opaco e bisello.',
+    description: 'Molatura bordi vetro a filo lucido, filo grezzo e bisello su richiesta.',
     category: 'lavorazioni',
     image: '/images/services/molature.webp',
   },
