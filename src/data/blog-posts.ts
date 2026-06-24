@@ -17,6 +17,7 @@ export const blogPosts: BlogPost[] = [
     date: '2026-03-26',
     image: '/images/blog/come-scegliere-vetro-box-doccia.webp',
     related: [
+      'montare-siliconare-box-doccia',
       'come-pulire-box-doccia-incrostato',
       'vetrocamera-doppio-o-triplo',
       'vetro-temperato-vs-stratificato',
@@ -197,7 +198,11 @@ export const blogPosts: BlogPost[] = [
       'Guida pratica per togliere calcare e incrostazioni dal box doccia in vetro: rimedi che funzionano, errori da evitare e come prevenire gli aloni.',
     date: '2026-06-23',
     image: '/images/blog/come-pulire-box-doccia-incrostato.webp',
-    related: ['come-scegliere-vetro-box-doccia', 'come-pulire-mantenere-vetri'],
+    related: [
+      'come-scegliere-vetro-box-doccia',
+      'montare-siliconare-box-doccia',
+      'come-pulire-mantenere-vetri',
+    ],
     content: `
 <h2>Come pulire un box doccia molto incrostato</h2>
 <p>Sul box doccia il calcare è il nemico numero uno: si deposita a ogni doccia e, se trascurato, forma una patina opaca difficile da togliere. La buona notizia è che nella maggior parte dei casi si rimuove con prodotti che hai già in casa, un po' di pazienza e il gesto giusto. Vediamo come, partendo dalle incrostazioni più ostinate.</p>
@@ -228,7 +233,7 @@ export const blogPosts: BlogPost[] = [
 <p>Prevenire costa molto meno che recuperare. Bastano tre abitudini: passare il tergivetro dopo ogni doccia, arieggiare il bagno per far asciugare le superfici, e una pulizia leggera una volta a settimana. Su un vetro con <a href="/servizi/box-doccia">trattamento anticalcare</a> il mantenimento è ancora più semplice, perché l'acqua scivola via senza lasciare depositi. Per la cura di tutti i vetri di casa trovi altri consigli nella nostra <a href="/blog/come-pulire-mantenere-vetri">guida alla pulizia dei vetri</a>.</p>
 
 <h2>Silicone annerito: quando pulirlo e quando rifarlo</h2>
-<p>Il silicone che diventa nero ai bordi è muffa, non sporco normale. Se è superficiale, si pulisce con una pasta di bicarbonato lasciata agire e poi rimossa. Ma quando il silicone si stacca, si screpola o la muffa è penetrata, l'unica soluzione è rifare la sigillatura: si rimuove il vecchio cordolo, si pulisce e si asciuga bene la sede e si stende un silicone nuovo specifico per il bagno. Un box ben sigillato protegge anche la parete dietro la doccia.</p>
+<p>Il silicone che diventa nero ai bordi è muffa, non sporco normale. Se è superficiale, si pulisce con una pasta di bicarbonato lasciata agire e poi rimossa. Ma quando il silicone si stacca, si screpola o la muffa è penetrata, l'unica soluzione è <a href="/blog/montare-siliconare-box-doccia">rifare la sigillatura</a>: si rimuove il vecchio cordolo, si pulisce e si asciuga bene la sede e si stende un silicone nuovo specifico per il bagno. Un box ben sigillato protegge anche la parete dietro la doccia.</p>
 
 <h2>Quando il vetro non torna più pulito</h2>
 <p>A volte, dopo anni di calcare trascurato, il vetro resta opaco anche dopo una pulizia accurata: il deposito ha ormai inciso la superficie e l'alone è permanente. In quei casi non è una questione di prodotto. Si può valutare un <a href="/servizi/box-doccia">box doccia nuovo su misura</a>, magari con trattamento anticalcare di serie, così la pulizia torna a essere questione di pochi minuti. Se stai scegliendo, ti aiuta la nostra guida su <a href="/blog/come-scegliere-vetro-box-doccia">come scegliere il vetro per il box doccia</a>.</p>
@@ -276,6 +281,77 @@ export const blogPosts: BlogPost[] = [
 <li><strong>Cosa significa "vetro temperato"?</strong> È vetro sottoposto a un trattamento termico che lo rende molto più resistente e, in caso di rottura, lo fa frantumare in piccoli frammenti non taglienti. Per questo è richiesto dove serve sicurezza.</li>
 <li><strong>Posso fare un foro in un vetro temperato già pronto?</strong> No: forare un temperato lo rompe. Fori e asole vanno eseguiti prima della tempera.</li>
 <li><strong>Come faccio a sapere se un vetro è temperato?</strong> Spesso porta un piccolo marchio inciso in un angolo. Nel dubbio, chiedici una verifica prima di tentare qualsiasi lavorazione.</li>
+</ul>
+`,
+  },
+  {
+    slug: 'montare-siliconare-box-doccia',
+    title: 'Come montare e siliconare un box doccia in vetro',
+    description:
+      'Guida passo passo per montare e siliconare un box doccia in vetro: misure, profili, ante e il punto chiave silicone interno o esterno contro le infiltrazioni.',
+    date: '2026-06-24',
+    image: '/images/blog/montare-siliconare-box-doccia.webp',
+    related: [
+      'come-scegliere-vetro-box-doccia',
+      'come-pulire-box-doccia-incrostato',
+      'come-tagliare-vetro-temperato',
+    ],
+    content: `
+<h2>Si può montare un box doccia da soli?</h2>
+<p>Sì, montare un box doccia in vetro è alla portata di chi ha un minimo di manualità, a patto di lavorare con calma e nell'ordine giusto. Due passaggi fanno la differenza tra una doccia che dura anni e una che inizia a perdere dopo pochi mesi: prendere le misure con la lastra a piombo e <strong>siliconare nel verso corretto</strong>. Su quest'ultimo punto si sbaglia quasi sempre, e qui sotto ti spieghiamo come si fa davvero. Se il bagno ha pareti fuori squadra o misure irregolari, però, un <a href="/servizi/box-doccia">box doccia su misura</a> ti evita gran parte dei problemi: parti già da un pezzo che combacia.</p>
+
+<h2>Cosa ti serve</h2>
+<p>Prepara tutto prima di iniziare, così non ti fermi a metà:</p>
+<ul>
+<li><strong>Trapano</strong> con punte adatte alla parete (muro, piastrelle con punta da vetro/ceramica).</li>
+<li><strong>Livella a bolla</strong> e metro: sono gli strumenti più importanti di tutta l'operazione.</li>
+<li><strong>Cacciaviti</strong>, tasselli e viti (di solito forniti con il box).</li>
+<li><strong>Silicone neutro</strong> per sanitari, antimuffa, e una pistola per silicone.</li>
+<li><strong>Nastro di carta</strong>, panno pulito e un cutter per rifinire i cordoli.</li>
+</ul>
+<p>Usa sempre silicone <strong>neutro</strong> e specifico per il bagno: quello acetico (odore di aceto) può corrodere alluminio e alcune superfici, e regge peggio nel tempo in ambiente umido.</p>
+
+<h2>Prima di iniziare: misure e verifiche</h2>
+<p>La fase più trascurata è anche la più importante. Prima di forare qualsiasi cosa, controlla tre cose. Che il <strong>piatto doccia sia in bolla</strong>: se pende, il vetro non chiuderà mai bene. Che le <strong>pareti siano a piombo</strong>: nei bagni vecchi capita spesso che non lo siano, e i profili di regolazione del box servono proprio a recuperare questi scarti. E che le misure dello spazio corrispondano a quelle del box: appoggia i profili a secco, senza fissarli, e verifica che tutto torni prima di prendere il trapano.</p>
+
+<h2>Come montare un box doccia passo passo</h2>
+<p>Una volta verificato tutto, si procede dall'alto verso il basso, partendo dalle parti fisse:</p>
+<ul>
+<li><strong>Profili a parete</strong> — segna i fori con la livella, fora, inserisci i tasselli e fissa i montanti verticali perfettamente a piombo. È da qui che dipende tutta la squadratura.</li>
+<li><strong>Profilo a terra (soglia)</strong> — appoggialo sul piatto seguendo la linea dei montanti. Non forarlo nel piatto doccia: si fissa con il silicone, mai con viti che bucherebbero l'impermeabilizzazione.</li>
+<li><strong>Vetri e ante</strong> — inserisci le lastre fisse nei profili, poi monta le ante (scorrevoli o a battente) e regola cerniere o carrelli finché la chiusura è uniforme e l'anta scorre senza forzare.</li>
+<li><strong>Guarnizioni</strong> — applica le guarnizioni di battuta e quelle paraspruzzi sui bordi delle ante: completano la tenuta e proteggono il vetro.</li>
+</ul>
+<p>Lavora senza stringere a fondo le viti finché non hai verificato che tutto è in squadra: una volta sicuro, serri e passi alla siliconatura.</p>
+
+<h2>Siliconare il box doccia: interno o esterno?</h2>
+<p>Questo è il punto che fa la differenza, e dove quasi tutti sbagliano. La regola corretta è semplice: <strong>i giunti verticali e quelli con la parete si sigillano sia dentro sia fuori</strong>, mentre il <strong>profilo a terra si silicona solo all'esterno</strong>. Sul profilo basso, all'interno della doccia, <strong>non stendere un cordolo continuo</strong>: lascia liberi i piccoli fori o gli spazi di drenaggio.</p>
+<p>Il motivo è idraulico. Un po' d'acqua si infiltra sempre tra vetro e profilo: se sigilli completamente anche l'interno del profilo a terra, quell'acqua resta intrappolata, ristagna e crea muffa e cattivi odori impossibili da togliere. Lasciando il drenaggio aperto verso l'interno, invece, l'acqua rientra da sola nel piatto doccia. Il cordolo esterno serve a un'altra cosa: impedire che l'acqua coli sul pavimento del bagno.</p>
+<p>Per un cordolo pulito, applica il nastro di carta ai due lati della fuga, stendi il silicone in modo continuo, liscialo con il dito bagnato (o un'apposita spatolina) in un solo passaggio e rimuovi subito il nastro prima che inizi a tirare.</p>
+
+<h2>Quanto far asciugare prima di usare la doccia</h2>
+<p>Il silicone ha bisogno di tempo per fare presa. Aspetta <strong>almeno 24 ore</strong> prima di usare la doccia: le superfici devono essere asciutte al momento dell'applicazione e devono restare asciutte mentre il silicone reticola. Usare la doccia troppo presto è il modo più rapido per ritrovarsi con una sigillatura che si stacca e infiltra.</p>
+
+<h2>Gli errori più comuni</h2>
+<p>Quasi tutti i problemi nascono da pochi gesti sbagliati. Da evitare:</p>
+<ul>
+<li><strong>Sigillare anche l'interno del profilo a terra</strong> — intrappola l'acqua e fa nascere la muffa.</li>
+<li><strong>Forare il piatto doccia per fissare la soglia</strong> — rovini l'impermeabilizzazione e crei un'infiltrazione sicura.</li>
+<li><strong>Montare i profili non a piombo</strong> — l'anta non chiude e il box "lavora" male.</li>
+<li><strong>Usare silicone acetico o non specifico</strong> — corrode i profili e dura poco in ambiente umido.</li>
+<li><strong>Usare la doccia prima delle 24 ore</strong> — il silicone non fa presa e si stacca.</li>
+</ul>
+
+<h2>Quando conviene affidarsi a un professionista</h2>
+<p>Il fai da te funziona bene su box di misura standard e pareti regolari. Quando lo spazio è irregolare, le pareti sono fuori squadra o servono lastre grandi e pesanti, montare da soli diventa rischioso: una lastra mal sostenuta è pericolosa, e gli errori di misura sul vetro non si correggono (il temperato non si ritaglia, come spiegato nella guida su <a href="/blog/come-tagliare-vetro-temperato">come tagliare il vetro temperato</a>). In questi casi un <a href="/servizi/box-doccia">box doccia su misura</a> con posa professionale ti dà un risultato a tenuta e senza sorprese. Se stai ancora scegliendo le lastre, parti dalla nostra guida su <a href="/blog/come-scegliere-vetro-box-doccia">come scegliere il vetro per il box doccia</a>.</p>
+
+<h2>Domande frequenti</h2>
+<ul>
+<li><strong>Il silicone va dentro o fuori la doccia?</strong> I giunti verticali e con la parete si sigillano da entrambi i lati; il profilo a terra solo all'esterno, lasciando aperti i fori di drenaggio interni così l'acqua rientra nel piatto.</li>
+<li><strong>Quanto deve asciugare il silicone prima di usare la doccia?</strong> Almeno 24 ore, con le superfici asciutte durante l'applicazione e la reticolazione.</li>
+<li><strong>Quale silicone usare per il box doccia?</strong> Silicone neutro per sanitari, antimuffa. Evita quello acetico, che corrode l'alluminio dei profili.</li>
+<li><strong>Posso fissare la soglia con le viti nel piatto doccia?</strong> No: si fissa con il silicone. Forare il piatto comprometterebbe l'impermeabilizzazione.</li>
+<li><strong>Come faccio se le pareti non sono dritte?</strong> I box hanno profili di regolazione che recuperano qualche millimetro di scarto. Per scarti maggiori o spazi irregolari conviene un box su misura.</li>
 </ul>
 `,
   },
