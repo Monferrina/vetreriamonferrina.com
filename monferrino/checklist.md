@@ -24,9 +24,11 @@ Il controllo continuo resta alle CI (questa è la passata strategica mensile).
 
 ## 3. Concorrenza (Firecrawl)
 
-- [ ] Scrape della **lista curata** di concorrenti (vedi sotto) → Monferrino legge snapshot
-      precedente + nuovo e **riassume lui** i cambiamenti (niente macchina di diffing) →
-      scrive in Notion. Solo pagine pubbliche, robots.txt/ToS rispettati.
+- [ ] Scrape della **lista curata** di concorrenti col formato **`changeTracking`** di Firecrawl
+      (`formats: ["markdown", "changeTracking"]`): Firecrawl conserva lui gli snapshot lato server e
+      restituisce `changeStatus` (`new`/`same`/`changed`/`removed`) + diff. Monferrino **riassume solo
+      quando `changeStatus === "changed"`** e scrive in Notion. Solo pagine pubbliche, robots.txt/ToS
+      rispettati.
 - [ ] Usare come trova-buchi / ispirazione, **mai copiare**.
 
 > **Cadenza decisa (24/6)**: **mensile**, lista curata **5-8 concorrenti veri**
@@ -34,6 +36,11 @@ Il controllo continuo resta alle CI (questa è la passata strategica mensile).
 > Concorrente locale confermato: `vetrariacasalese.it`.
 > `vetreria.piemonte.it` = aggregatore geo, **non** un concorrente di servizio → escluso.
 > ⚙️ **DA FORNIRE da Giuseppe**: gli altri ~4-7 domini concorrenti da mettere in lista.
+>
+> **Metodo (review docs 24/6)**: `changeTracking` risolve da solo il rumore cookie-banner (resta
+> `same`, fuori dal diff). ❌ **NO** Firecrawl Monitoring (doppio scheduler, possibile piano a pagamento;
+> lo scheduler è Actions cron). ❌ **NO** MCP Firecrawl (Monferrino gira headless in Actions; bastano CLI
+> o `POST api.firecrawl.dev/v2/scrape`). Budget free tier abbondante (~pochi crediti/mese).
 
 ## 4. Sicurezza / manutenzione
 
