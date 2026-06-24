@@ -1,3 +1,5 @@
+@import 'tailwindcss';
+
 @font-face {
   font-family: 'DM Serif Display';
   src: url('/fonts/dm-serif-display-latin.woff2') format('woff2');
@@ -13,8 +15,6 @@
   font-style: normal;
   font-display: swap;
 }
-
-@import 'tailwindcss';
 
 @theme {
   --color-primary: #1b4965;
