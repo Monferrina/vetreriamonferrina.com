@@ -15,7 +15,7 @@ export const blogPosts: BlogPost[] = [
     description:
       'Guida alla scelta del vetro giusto per il box doccia: temperato o stratificato, spessori, finiture e trattamenti.',
     date: '2026-03-26',
-    image: '/images/services/box-doccia.webp',
+    image: '/images/blog/come-scegliere-vetro-box-doccia.webp',
     related: [
       'come-pulire-box-doccia-incrostato',
       'vetrocamera-doppio-o-triplo',
@@ -57,7 +57,7 @@ export const blogPosts: BlogPost[] = [
     description:
       "Differenze tra vetrocamera doppio e triplo: isolamento termico, acustico, costi e quando conviene uno o l'altro.",
     date: '2026-03-26',
-    image: '/images/gallery/vetri-grande-vetrata.webp',
+    image: '/images/blog/vetrocamera-doppio-o-triplo.webp',
     related: ['come-scegliere-vetro-box-doccia', 'vetro-temperato-vs-stratificato'],
     content: `
 <h2>Come funziona il vetrocamera</h2>
@@ -105,7 +105,7 @@ export const blogPosts: BlogPost[] = [
     description:
       'Guida completa alle differenze tra vetro temperato e stratificato: sicurezza, usi, normative e quale scegliere.',
     date: '2026-03-26',
-    image: '/images/services/stratificati.webp',
+    image: '/images/blog/vetro-temperato-vs-stratificato.webp',
     related: ['come-scegliere-vetro-box-doccia', 'come-pulire-mantenere-vetri'],
     content: `
 <h2>Due vetri di sicurezza, due comportamenti diversi</h2>
@@ -143,7 +143,7 @@ export const blogPosts: BlogPost[] = [
     description:
       'Consigli pratici per la pulizia e la manutenzione di box doccia, vetrate, parapetti e specchi.',
     date: '2026-03-26',
-    image: '/images/services/specchi.webp',
+    image: '/images/blog/come-pulire-mantenere-vetri.webp',
     related: ['come-scegliere-vetro-box-doccia', 'vetro-temperato-vs-stratificato'],
     content: `
 <h2>La regola d'oro: semplicità</h2>
@@ -196,7 +196,7 @@ export const blogPosts: BlogPost[] = [
     description:
       'Guida pratica per togliere calcare e incrostazioni dal box doccia in vetro: rimedi che funzionano, errori da evitare e come prevenire gli aloni.',
     date: '2026-06-23',
-    image: '/images/services/box-doccia.webp',
+    image: '/images/blog/come-pulire-box-doccia-incrostato.webp',
     related: ['come-scegliere-vetro-box-doccia', 'come-pulire-mantenere-vetri'],
     content: `
 <h2>Come pulire un box doccia molto incrostato</h2>
@@ -247,7 +247,7 @@ export const blogPosts: BlogPost[] = [
     description:
       'Si può tagliare il vetro temperato? No: una volta temperato non si taglia né si fora. Ecco perché e come si lavora correttamente, prima della tempera.',
     date: '2026-06-23',
-    image: '/images/services/box-doccia.webp',
+    image: '/images/blog/come-tagliare-vetro-temperato.webp',
     related: ['vetro-temperato-vs-stratificato', 'come-scegliere-vetro-box-doccia'],
     content: `
 <h2>Si può tagliare il vetro temperato?</h2>
