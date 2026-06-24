@@ -58,13 +58,11 @@ function isActive(href: string): boolean {
           href={tab.href}
           class:list={[
             'relative flex flex-col items-center justify-center gap-0.5 px-2 py-1.5 text-[10px] font-medium transition-colors min-w-0 w-full min-h-[44px]',
-            tab.cta && isActive(tab.href)
+            tab.cta
               ? 'text-secondary-dark'
-              : tab.cta
-                ? 'text-secondary-dark'
-                : isActive(tab.href)
-                  ? 'text-primary'
-                  : 'text-neutral-600',
+              : isActive(tab.href)
+                ? 'text-primary'
+                : 'text-neutral-600',
           ]}
           aria-current={isActive(tab.href) ? 'page' : undefined}
         >

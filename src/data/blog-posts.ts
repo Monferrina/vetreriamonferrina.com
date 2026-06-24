@@ -16,7 +16,11 @@ export const blogPosts: BlogPost[] = [
       'Guida alla scelta del vetro giusto per il box doccia: temperato o stratificato, spessori, finiture e trattamenti.',
     date: '2026-03-26',
     image: '/images/services/box-doccia.webp',
-    related: ['vetrocamera-doppio-o-triplo', 'vetro-temperato-vs-stratificato'],
+    related: [
+      'come-pulire-box-doccia-incrostato',
+      'vetrocamera-doppio-o-triplo',
+      'vetro-temperato-vs-stratificato',
+    ],
     content: `
 <h2>Vetro temperato: lo standard per il box doccia</h2>
 <p>Il vetro temperato è la scelta più diffusa per i box doccia, e per buone ragioni. Sottoposto a un trattamento termico che ne aumenta la resistenza meccanica di 4-5 volte rispetto al vetro comune, in caso di rottura si frantuma in piccoli frammenti a bordi smussati, riducendo al minimo il rischio di tagli.</p>
@@ -183,6 +187,95 @@ export const blogPosts: BlogPost[] = [
 <li>Non usate prodotti a base di acido fluoridrico o muriatico.</li>
 <li>Non pulite il vetro sotto il sole diretto: il detergente si asciuga troppo in fretta e lascia aloni.</li>
 <li>Non forzate mai le ante del box doccia se incontrano resistenza: controllate guide e cerniere.</li>
+</ul>
+`,
+  },
+  {
+    slug: 'come-pulire-box-doccia-incrostato',
+    title: 'Come pulire un box doccia molto incrostato',
+    description:
+      'Guida pratica per togliere calcare e incrostazioni dal box doccia in vetro: rimedi che funzionano, errori da evitare e come prevenire gli aloni.',
+    date: '2026-06-23',
+    image: '/images/services/box-doccia.webp',
+    related: ['come-scegliere-vetro-box-doccia', 'come-pulire-mantenere-vetri'],
+    content: `
+<h2>Come pulire un box doccia molto incrostato</h2>
+<p>Sul box doccia il calcare è il nemico numero uno: si deposita a ogni doccia e, se trascurato, forma una patina opaca difficile da togliere. La buona notizia è che nella maggior parte dei casi si rimuove con prodotti che hai già in casa, un po' di pazienza e il gesto giusto. Vediamo come, partendo dalle incrostazioni più ostinate.</p>
+<p>Il rimedio veloce: scalda dell'aceto bianco (tiepido agisce meglio), passalo sul vetro con un panno morbido o uno spruzzino e lascialo agire 15-20 minuti. Poi strofina con delicatezza e risciacqua con acqua tiepida. Per le incrostazioni più dure va benissimo anche l'acido citrico sciolto in acqua calda. Niente spugne abrasive: sul vetro lasciano micro-graffi.</p>
+
+<h2>Calcare ostinato: i rimedi che funzionano davvero</h2>
+<p>Quando la patina è spessa, servono tempo di posa e un pizzico di metodo. Tre soluzioni semplici:</p>
+<ul>
+<li><strong>Aceto bianco caldo</strong> — il più versatile. Imbevi un panno, appoggialo sul vetro come un impacco e lascialo aderire mezz'ora.</li>
+<li><strong>Acido citrico</strong> — un paio di cucchiai in mezzo litro d'acqua calda. Inodore e delicato sul vetro, ottimo sui depositi più tenaci.</li>
+<li><strong>Bicarbonato in pasta</strong> — mescolato con poca acqua, aiuta meccanicamente sulle macchie localizzate. Applica, attendi, poi rimuovi con un panno umido.</li>
+</ul>
+<p>Ripeti l'impacco invece di aumentare la forza: è il tempo, non l'attrito, a sciogliere il calcare.</p>
+
+<h2>Pulire il box doccia in vetro trasparente senza aloni</h2>
+<p>Sul vetro trasparente ogni alone si nota, perciò conta più l'asciugatura che il detergente. Dopo aver risciacquato, passa un tergivetro dall'alto verso il basso, poi una microfibra asciutta. Se l'acqua di casa è molto dura, un ultimo passaggio con acqua demineralizzata evita le tracce bianche quando asciuga.</p>
+
+<h2>Gli errori da evitare</h2>
+<p>Qualche gesto fa più male che bene. Da evitare:</p>
+<ul>
+<li><strong>Spugne abrasive, pagliette e lamette</strong> — graffiano il vetro in modo permanente.</li>
+<li><strong>Prodotti troppo aggressivi su alluminio e silicone</strong> — acidi forti e candeggina rovinano profili e guarnizioni.</li>
+<li><strong>Lasciare asciugare i prodotti al sole</strong> — possono lasciare aloni difficili da togliere.</li>
+</ul>
+<p>Sul vetro vale sempre la regola della delicatezza: meno aggredisci, più dura nel tempo.</p>
+
+<h2>Come evitare che il calcare torni</h2>
+<p>Prevenire costa molto meno che recuperare. Bastano tre abitudini: passare il tergivetro dopo ogni doccia, arieggiare il bagno per far asciugare le superfici, e una pulizia leggera una volta a settimana. Su un vetro con <a href="/servizi/box-doccia">trattamento anticalcare</a> il mantenimento è ancora più semplice, perché l'acqua scivola via senza lasciare depositi. Per la cura di tutti i vetri di casa trovi altri consigli nella nostra <a href="/blog/come-pulire-mantenere-vetri">guida alla pulizia dei vetri</a>.</p>
+
+<h2>Silicone annerito: quando pulirlo e quando rifarlo</h2>
+<p>Il silicone che diventa nero ai bordi è muffa, non sporco normale. Se è superficiale, si pulisce con una pasta di bicarbonato lasciata agire e poi rimossa. Ma quando il silicone si stacca, si screpola o la muffa è penetrata, l'unica soluzione è rifare la sigillatura: si rimuove il vecchio cordolo, si pulisce e si asciuga bene la sede e si stende un silicone nuovo specifico per il bagno. Un box ben sigillato protegge anche la parete dietro la doccia.</p>
+
+<h2>Quando il vetro non torna più pulito</h2>
+<p>A volte, dopo anni di calcare trascurato, il vetro resta opaco anche dopo una pulizia accurata: il deposito ha ormai inciso la superficie e l'alone è permanente. In quei casi non è una questione di prodotto. Si può valutare un <a href="/servizi/box-doccia">box doccia nuovo su misura</a>, magari con trattamento anticalcare di serie, così la pulizia torna a essere questione di pochi minuti. Se stai scegliendo, ti aiuta la nostra guida su <a href="/blog/come-scegliere-vetro-box-doccia">come scegliere il vetro per il box doccia</a>.</p>
+
+<h2>Domande frequenti</h2>
+<ul>
+<li><strong>Posso usare l'aceto sul box doccia tutti i giorni?</strong> Meglio di no: l'aceto è ottimo per il calcare, ma sull'uso quotidiano basta sciacquare e asciugare. Tienilo per la pulizia settimanale o per le incrostazioni.</li>
+<li><strong>L'aceto rovina il silicone e l'alluminio?</strong> Usato di rado e ben risciacquato no. Evita però di lasciarlo a lungo su guarnizioni e profili, e non usarlo su silicone già deteriorato.</li>
+<li><strong>Come pulisco il box doccia in vetro satinato?</strong> Stessi rimedi delicati, ma asciuga tamponando: sul satinato il tergivetro conta meno e il calcare si vede di meno, quindi è più importante una pulizia regolare.</li>
+</ul>
+`,
+  },
+  {
+    slug: 'come-tagliare-vetro-temperato',
+    title: 'Come tagliare il vetro temperato',
+    description:
+      'Si può tagliare il vetro temperato? No: una volta temperato non si taglia né si fora. Ecco perché e come si lavora correttamente, prima della tempera.',
+    date: '2026-06-23',
+    image: '/images/services/box-doccia.webp',
+    related: ['vetro-temperato-vs-stratificato', 'come-scegliere-vetro-box-doccia'],
+    content: `
+<h2>Si può tagliare il vetro temperato?</h2>
+<p>No. Una volta temperato, il vetro non si può più tagliare né forare: qualsiasi incisione ne rompe l'equilibrio interno e lo fa frantumare in un istante in migliaia di piccoli frammenti. Il vetro temperato va quindi tagliato, molato e forato <strong>prima</strong> della tempera, mai dopo. È il punto più importante da sapere prima di ordinare o modificare una lastra.</p>
+
+<h2>Perché il temperato non si taglia dopo la tempera</h2>
+<p>La tempera è un trattamento termico: il vetro viene scaldato a circa 600 °C e poi raffreddato in fretta. Così la superficie resta in compressione e il cuore in tensione, ed è questo equilibrio a renderlo fino a cinque volte più resistente del vetro normale. Un taglio o un foro spezzano quell'equilibrio di colpo: la lastra non si "scheggia", esplode tutta insieme. È lo stesso motivo per cui è così sicuro in caso di rottura.</p>
+
+<h2>Come si lavora correttamente: prima si dimensiona, poi si tempra</h2>
+<p>Con il temperato l'ordine è tutto. Ogni lavorazione va decisa e fatta sulla lastra ancora "cruda":</p>
+<ul>
+<li><strong>Taglio su misura</strong> — la lastra si porta alle dimensioni esatte richieste.</li>
+<li><strong>Lavorazione dei bordi</strong> — molatura a filo lucido o filo grezzo.</li>
+<li><strong>Fori e sagomature</strong> — per cerniere, maniglie, prese e forme particolari.</li>
+</ul>
+<p>Solo quando il pezzo è completo in ogni dettaglio si passa al forno di tempera. Dopo, la lastra è definitiva: non si tocca più.</p>
+
+<h2>Mi serve una misura diversa: si può ridurre?</h2>
+<p>Purtroppo no: un vetro temperato non si può rifilare nemmeno di pochi millimetri. Se la misura non va, la lastra va rifatta da capo su misura. Per questo conta molto prendere le quote giuste fin dall'inizio — nel dubbio, un sopralluogo evita errori costosi. Se l'applicazione lo permette, in alcuni casi si valuta il vetro stratificato, che offre sicurezza con un'altra logica di lavorazione: ne parliamo nella guida su <a href="/blog/vetro-temperato-vs-stratificato">temperato e stratificato a confronto</a>.</p>
+
+<h2>Il vetro normale invece si taglia?</h2>
+<p>Sì, ed è proprio qui la differenza. Il vetro float (non temperato) si incide e si taglia su misura senza problemi, e infatti è la base di partenza di quasi ogni lavorazione. Il temperato è un prodotto "finito": nasce già nella forma definitiva. Quando ti serve un pezzo robusto e sicuro — un <a href="/servizi/box-doccia">box doccia</a>, un <a href="/servizi/parapetti">parapetto</a> o una <a href="/servizi/porte-interne">porta in vetro</a> — partiamo dalle tue misure e prepariamo tutto prima della tempera.</p>
+
+<h2>Domande frequenti</h2>
+<ul>
+<li><strong>Cosa significa "vetro temperato"?</strong> È vetro sottoposto a un trattamento termico che lo rende molto più resistente e, in caso di rottura, lo fa frantumare in piccoli frammenti non taglienti. Per questo è richiesto dove serve sicurezza.</li>
+<li><strong>Posso fare un foro in un vetro temperato già pronto?</strong> No: forare un temperato lo rompe. Fori e asole vanno eseguiti prima della tempera.</li>
+<li><strong>Come faccio a sapere se un vetro è temperato?</strong> Spesso porta un piccolo marchio inciso in un angolo. Nel dubbio, chiedici una verifica prima di tentare qualsiasi lavorazione.</li>
 </ul>
 `,
   },

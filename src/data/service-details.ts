@@ -243,11 +243,11 @@ export const serviceDetails: Record<string, ServiceDetail> = {
 
   blindati: {
     intro:
-      'Forniamo e installiamo vetri blindati antieffrazione per abitazioni, uffici e attività commerciali. Protezione reale contro tentativi di intrusione, senza rinunciare alla trasparenza.',
+      'Forniamo e installiamo vetri blindati antisfondamento e antiproiettile per abitazioni, uffici e attività commerciali. Protezione reale contro tentativi di intrusione, senza rinunciare alla trasparenza.',
     features: [
       {
         title: 'Classi di resistenza',
-        text: "Vetri disponibili nelle classi da P1A a P8B, certificate secondo la norma EN 356 contro l'effrazione.",
+        text: 'Vetri disponibili nelle classi da P1A a P8B, certificate secondo la norma EN 356 contro lo sfondamento.',
       },
       {
         title: 'Composizione multistrato',
@@ -263,7 +263,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       },
     ],
     seoDescription:
-      'Vetri blindati antieffrazione a Casale Monferrato. Classi di resistenza certificate EN 356, installazione professionale.',
+      'Vetri blindati antisfondamento e antiproiettile a Casale Monferrato. Classi di resistenza certificate EN 356, installazione professionale.',
     related: ['stratificati', 'vetrine', 'sostituzione-vetri'],
     whenToChoose:
       'I vetri blindati sono la scelta giusta quando la sicurezza viene prima di tutto: abitazioni al piano terra, vetrine di negozi, uffici con beni o dati sensibili, o semplicemente per dormire sonni tranquilli. A differenza di un’inferriata proteggono senza chiudere la vista e senza rinunciare alla luce. In sopralluogo valutiamo insieme la classe di resistenza più adatta al livello di protezione che cerchi.',
@@ -279,6 +279,14 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       {
         q: 'Posso montarlo su finestre esistenti?',
         a: 'Spesso sì, con ferramenta rinforzata. Valutiamo in sopralluogo la compatibilità con il serramento.',
+      },
+      {
+        q: 'Cosa significa vetro antisfondamento?',
+        a: 'È un vetro stratificato multistrato che resiste a urti e tentativi di sfondamento: anche se colpito ripetutamente, le lastre restano unite e l’apertura non cede. Le classi EN 356 (da P1A a P8B) misurano proprio questo livello di resistenza.',
+      },
+      {
+        q: 'Fate anche vetri antiproiettile?',
+        a: 'Sì. Oltre all’antisfondamento (norma EN 356), forniamo vetro antiproiettile certificato EN 1063, dimensionato per fermare colpi d’arma da fuoco. In sopralluogo scegliamo la classe adatta al livello di rischio.',
       },
     ],
   },
@@ -327,7 +335,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
 
   stratificati: {
     intro:
-      'I vetri stratificati sono composti da due o più lastre unite da un intercalare plastico (PVB). In caso di rottura il vetro resta unito, garantendo sicurezza. Disponibili trasparenti, satinati e colorati.',
+      'I vetri stratificati sono il vetro di sicurezza per eccellenza: due o più lastre unite da un intercalare plastico (PVB) che, in caso di rottura, trattiene i frammenti. Un vetro antinfortunistico che protegge dalle cadute e dai tagli. Disponibili trasparenti, satinati e colorati.',
     features: [
       {
         title: 'Sicurezza passiva',
@@ -370,12 +378,16 @@ export const serviceDetails: Record<string, ServiceDetail> = {
         q: 'Protegge dai raggi solari?',
         a: 'Filtra fino al 99% dei raggi UV, proteggendo mobili, tende e pavimenti dallo scolorimento.',
       },
+      {
+        q: 'Dove è obbligatorio il vetro di sicurezza?',
+        a: 'La norma UNI 7697 indica dove serve il vetro stratificato o temperato: parapetti, vetrate a tutta altezza, porte, lucernari e superfici a rischio di urto o caduta. Ti aiutiamo a scegliere il vetro a norma per ogni applicazione.',
+      },
     ],
   },
 
   monolitici: {
     intro:
-      'I vetri monolitici sono lastre singole di vetro float, la base di ogni lavorazione vetraria. Li forniamo trasparenti e satinati, tagliati su misura e con lavorazioni di bordo a richiesta.',
+      'I vetri monolitici sono lastre singole di vetro float, la base di ogni lavorazione del vetro. Forniamo vetro su misura — trasparente, satinato o extra-chiaro — tagliato nello spessore giusto e rifinito sui bordi a richiesta.',
     features: [
       {
         title: 'Taglio su misura',
@@ -383,7 +395,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       },
       {
         title: 'Lavorazioni di bordo',
-        text: 'Molatura a filo lucido, filo opaco o bisello per una finitura curata e sicura.',
+        text: 'Molatura a filo lucido o filo grezzo per una finitura curata e sicura.',
       },
       {
         title: 'Spessori disponibili',
@@ -407,18 +419,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       },
       {
         q: 'Posso averlo sagomato?',
-        a: 'Sì, tagliamo su misura qualsiasi forma e rifiniamo i bordi con molatura a filo lucido, opaco o bisello.',
+        a: 'Sì, tagliamo qualsiasi forma su disegno: angoli smussati, curve, fori e sagome particolari.',
       },
       {
         q: 'Che differenza c’è con lo stratificato?',
         a: 'Il monolitico è una lastra singola; lo stratificato unisce più lastre per maggiore sicurezza. Il monolitico è spesso la base di partenza.',
+      },
+      {
+        q: 'Tagliate il vetro su misura?',
+        a: 'Sì: tagliamo ogni lastra sulle tue dimensioni, anche sagomata, e rifiniamo i bordi con molatura a filo lucido o filo grezzo. Portaci le misure o un disegno e pensiamo noi al resto.',
       },
     ],
   },
 
   vetrocamera: {
     intro:
-      "Il vetrocamera è composto da due lastre di vetro separate da un'intercapedine d'aria o gas nobile. È la soluzione standard per l'isolamento termico e acustico di finestre e vetrate.",
+      "Il vetrocamera — il classico doppio vetro — è composto da due lastre separate da un'intercapedine d'aria o gas nobile. È il vetro isolante standard per l'isolamento termico e acustico di finestre e vetrate.",
     features: [
       {
         title: 'Isolamento termico',
@@ -434,7 +450,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       },
       {
         title: 'Vetri basso-emissivi',
-        text: 'Disponibili con trattamento basso-emissivo per prestazioni termiche ancora superiori.',
+        text: 'Disponibili con trattamento basso-emissivo e selettivo (controllo solare) per prestazioni termiche ancora superiori.',
       },
     ],
     materials: ['Vetrocamera 4/16/4', 'Vetrocamera basso-emissivo', 'Vetrocamera con gas argon'],
@@ -545,7 +561,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
 
   'porte-interne': {
     intro:
-      "Installiamo porte interne in vetro, scorrevoli e a battente, per portare luce e leggerezza negli ambienti. Il vetro temperato di sicurezza garantisce resistenza e tranquillità nell'uso quotidiano.",
+      "Installiamo porte interne in vetro — la porta scorrevole in vetro, a vista o a scomparsa nel muro, e il modello a battente — per portare luce e leggerezza negli ambienti. Il vetro temperato di sicurezza garantisce resistenza e tranquillità nell'uso quotidiano.",
     features: [
       {
         title: 'Scorrevoli e a battente',
@@ -580,6 +596,10 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       {
         q: 'Posso avere privacy con una porta in vetro?',
         a: 'Sì, con vetro satinato o decorato come il Madras: lascia passare la luce ma scherma la vista.',
+      },
+      {
+        q: 'La porta scorrevole in vetro si può nascondere nel muro?',
+        a: 'Sì: con un controtelaio a scomparsa la porta scorre dentro la parete e sparisce alla vista, liberando spazio. In alternativa lo scorrevole a vista monta un binario a parete, senza opere murarie.',
       },
     ],
     related: ['madras', 'specchi', 'box-doccia'],
@@ -671,15 +691,15 @@ export const serviceDetails: Record<string, ServiceDetail> = {
 
   molature: {
     intro:
-      'La molatura è la lavorazione dei bordi del vetro che li rende lisci, sicuri ed esteticamente curati. Offriamo filo lucido, filo opaco e bisello per ogni esigenza funzionale e decorativa.',
+      'La molatura è la lavorazione dei bordi del vetro che li rende lisci, sicuri ed esteticamente curati. Offriamo filo lucido e filo grezzo, oltre al bisello su richiesta, per ogni esigenza funzionale e decorativa.',
     features: [
       {
         title: 'Filo lucido',
         text: 'Bordo lavorato e lucidato a specchio. La finitura più elegante per piani tavolo, mensole e specchi.',
       },
       {
-        title: 'Filo opaco',
-        text: 'Bordo lavorato con finitura satinata. Ideale per vetri da incassare in telai o profili.',
+        title: 'Filo grezzo',
+        text: 'Bordo molato per eliminare il taglio vivo, senza lucidatura. La finitura essenziale per vetri da incassare in telai o profili, dove il bordo non resta a vista.',
       },
       {
         title: 'Bisello',
@@ -691,10 +711,10 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       },
     ],
     seoDescription:
-      'Molatura bordi vetro a Casale Monferrato. Filo lucido, filo opaco e bisello. Lavorazione professionale su misura.',
+      'Molatura bordi vetro a Casale Monferrato. Filo lucido, filo grezzo e bisello su richiesta. Lavorazione professionale su misura.',
     related: ['specchi', 'sagomature', 'fori'],
     whenToChoose:
-      'La molatura serve ogni volta che un bordo di vetro resta a vista o a portata di mano: piani tavolo, mensole, specchi, ripiani. Trasforma un bordo grezzo e tagliente in una finitura liscia, sicura ed elegante. La scelta tra filo lucido, filo opaco e bisello dipende dall’uso e dall’effetto estetico desiderato: ti consigliamo la lavorazione giusta in base al pezzo.',
+      'La molatura serve ogni volta che un bordo di vetro resta a vista o a portata di mano: piani tavolo, mensole, specchi, ripiani. Trasforma un bordo grezzo e tagliente in una finitura liscia, sicura ed elegante. La scelta tra filo lucido, filo grezzo e bisello dipende dall’uso e dall’effetto estetico desiderato: ti consigliamo la lavorazione giusta in base al pezzo.',
     faq: [
       {
         q: 'A cosa serve la molatura?',

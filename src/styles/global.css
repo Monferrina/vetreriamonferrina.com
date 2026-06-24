@@ -1,3 +1,5 @@
+@import 'tailwindcss';
+
 @font-face {
   font-family: 'DM Serif Display';
   src: url('/fonts/dm-serif-display-latin.woff2') format('woff2');
@@ -13,8 +15,6 @@
   font-style: normal;
   font-display: swap;
 }
-
-@import 'tailwindcss';
 
 @theme {
   --color-primary: #1b4965;
@@ -425,6 +425,11 @@ html {
 
 .social-icon:hover > svg {
   animation: social-bounce 0.6s ease;
+}
+
+/* GitHub icon: il nero brand (#181717) è invisibile sul footer scuro → schiarisci in dark mode */
+[data-theme='dark'] .github-icon {
+  color: #f0f6fc;
 }
 
 @keyframes social-bounce {
