@@ -16,6 +16,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "astro check",
+    "check:links": "node scripts/check-internal-links.mjs dist/client",
     "prepare": "husky"
   },
   "lint-staged": {

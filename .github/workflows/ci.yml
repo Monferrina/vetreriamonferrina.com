@@ -54,6 +54,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Check internal links
+        run: npm run check:links
+
       - name: SonarCloud Scan
         if: env.SONAR_TOKEN != ''
         uses: SonarSource/sonarqube-scan-action@v6
