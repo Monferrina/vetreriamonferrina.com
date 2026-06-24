@@ -45,6 +45,20 @@ Il controllo continuo resta alle CI (questa è la passata strategica mensile).
 - [ ] **Non duplicare** il workflow recensioni (gira in CI). Segnalare solo nel digest
       "nuove recensioni Google a cui rispondere".
 
+## Dove vanno i log (deciso 24/6)
+
+Due cose, due posti:
+
+- **Log di esecuzione** (run ok/fallito, durata, stacktrace) → **GitHub Actions** (storico run,
+  re-run, cancel; nativo e gratis, retention 90gg). È il cruscotto tecnico.
+- **Log risultati / digest** (cambi concorrenti, esito check, idee-topic) → **database Notion**
+  (una riga per run: data, esito sintetico, link a PR/Action). È la dashboard umana web+mobile.
+- ❌ **Mai** log committati nel repo (pubblico → churn inutile). Git tiene solo il "cervello"
+  (`brief.md` / `content-backlog.json` / `checklist.md`), non l'output dei run.
+
+> ⚙️ **Prossimo step cablaggio** (dopo Astro 7): creare il DB Notion + mettere il **token
+> integrazione Notion** nei GitHub Actions secrets (least privilege, sola scrittura sul DB).
+
 ## In pausa / non disponibile
 
 - ❌ **Google Search Console**: gestita da Debora, nessun accesso → niente dati di ricerca
