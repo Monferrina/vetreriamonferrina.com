@@ -13,29 +13,27 @@ export function getStaticPaths() {
 const { slug } = Astro.params;
 const post = blogPosts.find((p) => p.slug === slug)!;
 
+// Slugify h2 text into a stable anchor id (shared by the TOC and the injected ids)
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/[^a-zà-ú0-9\s]/g, '')
+    .replace(/\s+/g, '-')
+    .slice(0, 50);
+
 // Extract h2 headings for sidebar TOC
-const headingRegex = /<h2>(.*?)<\/h2>/g;
 const headings: { id: string; text: string }[] = [];
 let match;
+const headingRegex = /<h2>(.*?)<\/h2>/g;
 while ((match = headingRegex.exec(post.content)) !== null) {
-  const text = match[1];
-  const id = text
-    .toLowerCase()
-    .replace(/[^a-zà-ú0-9\s]/g, '')
-    .replace(/\s+/g, '-')
-    .slice(0, 50);
-  headings.push({ id, text });
+  headings.push({ id: slugify(match[1]), text: match[1] });
 }
 
-// Inject IDs into h2 tags for anchor links
-const contentWithIds = post.content.replace(/<h2>(.*?)<\/h2>/g, (_full, text) => {
-  const id = text
-    .toLowerCase()
-    .replace(/[^a-zà-ú0-9\s]/g, '')
-    .replace(/\s+/g, '-')
-    .slice(0, 50);
-  return `<h2 id="${id}">${text}</h2>`;
-});
+// Inject the same IDs into h2 tags for anchor links
+const contentWithIds = post.content.replace(
+  /<h2>(.*?)<\/h2>/g,
+  (_full, text) => `<h2 id="${slugify(text)}">${text}</h2>`
+);
 
 // Related posts
 const related = post.related
