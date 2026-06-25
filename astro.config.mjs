@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { defineConfig, envField } from 'astro/config';
 import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
