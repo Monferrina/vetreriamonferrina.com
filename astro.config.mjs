@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { defineConfig, envField } from 'astro/config';
 import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
@@ -23,6 +24,10 @@ export default defineConfig({
     prefetchAll: true,
     defaultStrategy: 'hover',
   },
+
+  // Astro 7: la dev toolbar inietta markup (h1 "Audit", overlay in basso) che gli e2e
+  // Playwright intercettano. Disattivata negli e2e via ASTRO_DEV_TOOLBAR=0; attiva nel dev normale.
+  devToolbar: { enabled: process.env.ASTRO_DEV_TOOLBAR !== '0' },
 
   vite: {
     plugins: [tailwindcss()],
