@@ -21,5 +21,10 @@ export default defineConfig({
     url: 'http://localhost:4321',
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,
+    // Astro 7: in presenza di un AI agent `astro dev` parte in background (--background
+    // automatico) e il processo foreground esce subito → Playwright vede "webServer exited
+    // early". ASTRO_DEV_BACKGROUND=0 forza il foreground (opt-out ufficiale). In CI, senza
+    // agent, resta foreground di suo. ASTRO_DEV_TOOLBAR=0 evita che la toolbar inietti markup.
+    env: { ASTRO_DEV_TOOLBAR: '0', ASTRO_DEV_BACKGROUND: '0' },
   },
 });

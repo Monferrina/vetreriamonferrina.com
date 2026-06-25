@@ -1,5 +1,15 @@
 {
   "hooks": {
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx --no-install astro dev stop >/dev/null 2>&1; pkill -f 'astro preview' 2>/dev/null; pkill -f 'astro dev' 2>/dev/null; pkill -f 'playwright.*test' 2>/dev/null; true"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
