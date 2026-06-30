@@ -1,4 +1,5 @@
 import { Frequency, UrlAssertionBuilder, UrlMonitor } from 'checkly/constructs';
+import { websiteGroup } from './groups.check';
 
 // Monitoraggio errori: verifica che le pagine chiave rispondano 200.
 // Se una pagina inizia a restituire 4xx/5xx, Checkly invia un alert.
@@ -20,6 +21,7 @@ const keyPages = [
 for (const page of keyPages) {
   new UrlMonitor(`page-${page.id}`, {
     name: `Pagina: ${page.name}`,
+    group: websiteGroup,
     activated: true,
     frequency: Frequency.EVERY_1H,
     maxResponseTime: 10000,
@@ -37,6 +39,7 @@ for (const page of keyPages) {
 // così un'eventuale regressione SEO/AEO viene rilevata.
 new UrlMonitor('sitemap-availability', {
   name: 'Sitemap raggiungibile',
+  group: websiteGroup,
   activated: true,
   frequency: Frequency.EVERY_1H,
   maxResponseTime: 10000,
