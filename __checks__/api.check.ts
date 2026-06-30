@@ -1,4 +1,5 @@
 import { ApiCheck, AssertionBuilder } from 'checkly/constructs';
+import { websiteGroup } from './groups.check';
 
 // Liveness check dell'API preventivi — SILENZIOSO (niente mail reali) e affidabile.
 //
@@ -13,6 +14,7 @@ import { ApiCheck, AssertionBuilder } from 'checkly/constructs';
 // Bypassandolo, il body arriva integro e `dryRun` viene rispettato.
 new ApiCheck('send-quote-api', {
   name: 'Send Quote API',
+  group: websiteGroup,
   activated: true,
   degradedResponseTime: 5000,
   maxResponseTime: 10000,
