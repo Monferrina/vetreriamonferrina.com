@@ -70,7 +70,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
 
   parapetti: {
     intro:
-      'Installiamo parapetti in vetro per balconi, terrazze, scale interne ed esterne. Il vetro stratificato di sicurezza garantisce protezione senza rinunciare alla trasparenza e alla luce naturale.',
+      'Installiamo parapetti in vetro — chiamati anche balaustre o ringhiere in vetro — per balconi, terrazze, scale interne ed esterne. Il vetro stratificato di sicurezza garantisce protezione senza rinunciare alla trasparenza e alla luce naturale.',
     features: [
       {
         title: 'Sicurezza certificata',
@@ -95,10 +95,10 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       'Vetro extra-chiaro',
     ],
     seoDescription:
-      'Parapetti in vetro per balconi, scale e terrazze a Casale Monferrato. Installazione certificata con vetro stratificato di sicurezza.',
+      'Parapetti e balaustre in vetro — ringhiere per balconi, scale e terrazze a Casale Monferrato. Installazione certificata in vetro stratificato di sicurezza.',
     related: ['stratificati', 'pensiline', 'vetrine'],
     whenToChoose:
-      'Un parapetto in vetro mette in sicurezza balconi, scale e terrazze senza togliere luce né visuale. È la soluzione ideale quando vuoi proteggere senza chiudere: il vetro stratificato di sicurezza garantisce resistenza e, in caso di rottura, trattiene i frammenti restando in posizione. Scegliamo insieme il sistema di fissaggio — a pinza, a pavimento o a muro — in base al contesto architettonico e alle normative vigenti.',
+      'Un parapetto in vetro — o balaustra — mette in sicurezza balconi, scale e terrazze senza togliere luce né visuale. È la soluzione ideale quando vuoi proteggere senza chiudere: che si tratti della ringhiera in vetro di un balcone o della balaustra di una scala interna, il vetro stratificato di sicurezza garantisce resistenza e, in caso di rottura, trattiene i frammenti restando in posizione. Scegliamo insieme il sistema di fissaggio — a pinza, a pavimento o a muro — in base al contesto architettonico e alle normative vigenti.',
     faq: [
       {
         q: 'Un parapetto in vetro è sicuro come uno tradizionale?',
@@ -111,6 +111,14 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       {
         q: 'Il vetro resiste a pioggia, vento e sole?',
         a: 'Sì, i materiali sono pensati per l’esterno e resistono ad agenti atmosferici e sbalzi termici senza alterarsi nel tempo.',
+      },
+      {
+        q: 'Quanto costa un parapetto in vetro?',
+        a: 'Il prezzo dipende dai metri lineari, dal tipo di vetro e dal sistema di fissaggio. Facciamo un sopralluogo gratuito e ti diamo un preventivo chiaro e senza impegno, posa compresa.',
+      },
+      {
+        q: 'Come si pulisce un parapetto in vetro?',
+        a: 'Basta un panno morbido con acqua e un detergente neutro, o un prodotto specifico per vetri. Evita spugne abrasive e prodotti aggressivi: così la trasparenza dura nel tempo senza rigature.',
       },
     ],
   },
