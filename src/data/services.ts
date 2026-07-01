@@ -46,6 +46,14 @@ export const services: Service[] = [
     image: '/images/gallery/vetri-facciata-commerciale.webp',
   },
   {
+    slug: 'espositori',
+    name: 'Espositori e vetrinette',
+    description:
+      'Espositori e vetrinette espositive su misura in vetro per negozi, collezioni ed esposizioni.',
+    category: 'installazioni',
+    image: '/images/gallery/installazioni-espositori.webp',
+  },
+  {
     slug: 'sostituzione-vetri',
     name: 'Sostituzione vetri finestre',
     description: 'Sostituzione vetri per finestre esistenti. Servizio su disponibilità.',
