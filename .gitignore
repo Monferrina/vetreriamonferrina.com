@@ -54,3 +54,6 @@ sanity/.sanity/
 .DS_Store
 Thumbs.db
 .vercel
+
+# MCP config locale
+.mcp.json
