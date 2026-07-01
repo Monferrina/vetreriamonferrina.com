@@ -15,3 +15,12 @@ sanity/node_modules/
 
 # Cache e log
 .wrangler/
+
+# Artefatti CI/test — rigenerati a ogni run, nessun valore nel grafo
+playwright-report/
+test-results/
+.lighthouseci/
+sanity/.sanity/
+.claude/
+.husky/
+.vscode/
