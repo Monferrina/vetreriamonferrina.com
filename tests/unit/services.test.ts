@@ -23,7 +23,7 @@ describe('Dati servizi', () => {
     expect(parapetti.length).toBe(1);
 
     const installazioni = services.filter((s) => s.category === 'installazioni');
-    expect(installazioni.length).toBe(3);
+    expect(installazioni.length).toBe(4);
     expect(installazioni.every((s) => s.category === 'installazioni')).toBe(true);
 
     const vetri = services.filter((s) => s.category === 'vetri');

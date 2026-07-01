@@ -204,7 +204,49 @@ export const serviceDetails: Record<string, ServiceDetail> = {
         a: 'Sì, abbiamo esperienza e attrezzature professionali per la posa di vetrate commerciali anche di grande formato.',
       },
     ],
-    related: ['blindati', 'vetrocamera', 'sostituzione-vetri'],
+    related: ['blindati', 'vetrocamera', 'espositori'],
+  },
+
+  espositori: {
+    intro:
+      'Progettiamo e realizziamo espositori e vetrinette espositive su misura in vetro, per negozi, showroom, collezioni private ed esposizioni. Ogni espositore è tagliato, molato e assemblato sulle dimensioni esatte dello spazio e del prodotto da valorizzare.',
+    features: [
+      {
+        title: 'Su misura',
+        text: 'Vetrinette ed espositori realizzati sulle misure precise del tuo spazio e di ciò che devi esporre — nessun formato standard.',
+      },
+      {
+        title: 'Vetro di qualità',
+        text: 'Vetro temperato o extra-chiaro per massima trasparenza e sicurezza, con ripiani in vetro su misura.',
+      },
+      {
+        title: 'Per ogni contesto',
+        text: 'Espositori per negozi e vetrine da esposizione, vetrinette per collezioni e collezionismo, soluzioni per attività come gelaterie e pasticcerie.',
+      },
+      {
+        title: 'Illuminazione integrabile',
+        text: 'Predisposizione per illuminazione LED per mettere in risalto i prodotti in esposizione.',
+      },
+    ],
+    seoDescription:
+      'Espositori e vetrinette espositive su misura in vetro a Casale Monferrato: per negozi, collezioni ed esposizioni. Vetro temperato, ripiani su misura.',
+    whenToChoose:
+      'Un espositore in vetro mette in risalto ciò che conta di più: un prodotto in negozio, una collezione, un pezzo unico. Realizziamo vetrinette espositive e vetrine da esposizione su misura — dal singolo espositore da banco alla vetrinetta a colonna con più ripiani — scegliendo insieme vetro, finiture e illuminazione in base a cosa devi esporre e allo spazio disponibile. Che si tratti di una vetrinetta per collezionismo o di un espositore per la tua attività, il vetro su misura fa la differenza tra un oggetto “messo lì” e uno valorizzato.',
+    faq: [
+      {
+        q: 'Realizzate espositori e vetrinette su misura?',
+        a: 'Sì: ogni espositore è progettato e costruito sulle dimensioni esatte dello spazio e del prodotto da esporre, con ripiani in vetro tagliati su misura.',
+      },
+      {
+        q: 'Fate vetrinette per collezioni e collezionismo?',
+        a: 'Sì, realizziamo vetrinette espositive per collezioni private e collezionismo, con vetro trasparente che valorizza gli oggetti e li protegge dalla polvere.',
+      },
+      {
+        q: 'Gli espositori sono adatti a negozi e attività?',
+        a: 'Sì, produciamo espositori e vetrine da esposizione per negozi, showroom e attività come gelaterie e pasticcerie, anche con predisposizione per l’illuminazione.',
+      },
+    ],
+    related: ['vetrine', 'specchi', 'molature'],
   },
 
   'sostituzione-vetri': {
@@ -548,7 +590,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       "Specchi su misura a Casale Monferrato. Taglio, molatura e installazione professionale per bagni, armadi e complementi d'arredo.",
-    related: ['box-doccia', 'molature', 'porte-interne'],
+    related: ['box-doccia', 'molature', 'espositori'],
     whenToChoose:
       'Uno specchio su misura risolve tutti i casi in cui i modelli standard non bastano: pareti irregolari, spazi sopra il lavabo, ante di armadi, palestre e studi di danza. Possiamo tagliare qualsiasi forma e rifinire i bordi con molatura a filo lucido o bisello, per un risultato sicuro ed elegante. In fase di sopralluogo valutiamo insieme dimensioni, tipo di fissaggio e finitura più adatti all’ambiente.',
     faq: [
