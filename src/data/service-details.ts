@@ -44,10 +44,10 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       'Vetro trasparente extra-chiaro',
     ],
     seoDescription:
-      'Box doccia su misura in vetro temperato a Casale Monferrato. Progettazione, realizzazione e montaggio professionale. Sopralluogo gratuito.',
+      'Box doccia su misura in vetro temperato a Casale Monferrato, anche modelli walk-in. Progettazione, realizzazione e montaggio professionale. Sopralluogo gratuito.',
     related: ['specchi', 'porte-interne', 'madras'],
     whenToChoose:
-      'La maggior parte dei box doccia in commercio ha misure standard, che raramente combaciano con lo spazio reale del bagno. Con un box su misura non sei tu a dover adattare il bagno al box: è il box ad adattarsi al bagno. È la scelta giusta quando hai una nicchia, un sottotetto in pendenza o una parete non perfettamente dritta, oppure quando cerchi semplicemente un risultato pulito, senza profili e ingombri inutili. Durante il sopralluogo prendiamo le misure esatte e ti consigliamo apertura, spessore del vetro e finiture più adatte al tuo spazio.',
+      'La maggior parte dei box doccia in commercio ha misure standard, che raramente combaciano con lo spazio reale del bagno. Con un box su misura non sei tu a dover adattare il bagno al box: è il box ad adattarsi al bagno. È la scelta giusta quando hai una nicchia, un sottotetto in pendenza o una parete non perfettamente dritta, oppure quando cerchi semplicemente un risultato pulito, senza profili e ingombri inutili. Realizziamo tutte le tipologie, dall’anta battente o scorrevole alla doccia walk-in senza porta — la soluzione più richiesta per le docce moderne a filo pavimento. Durante il sopralluogo prendiamo le misure esatte e ti consigliamo apertura, spessore del vetro e finiture più adatte al tuo spazio.',
     faq: [
       {
         q: 'È difficile pulire il vetro del box doccia?',
@@ -64,6 +64,10 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       {
         q: 'Il montaggio del box doccia è compreso?',
         a: 'Sì, ci occupiamo noi dell’installazione. Mettiamo il box in bolla e sigilliamo i giunti con cura: la tenuta all’acqua dipende proprio da una posa fatta a regola d’arte.',
+      },
+      {
+        q: 'Come si rimuove il silicone vecchio dal box doccia?',
+        a: 'Si ammorbidisce il silicone con un prodotto specifico o con alcol, poi si stacca delicatamente con una spatola o un taglierino, facendo attenzione a non rigare il vetro. Si pulisce e si asciuga bene la superficie prima di applicare il nuovo sigillante. Se preferisci, durante la manutenzione ce ne occupiamo noi.',
       },
     ],
   },
