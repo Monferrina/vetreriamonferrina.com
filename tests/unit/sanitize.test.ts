@@ -161,12 +161,13 @@ describe('sanitizeFormData', () => {
   });
 
   it('filtra chiavi pericolose per prototype pollution', () => {
-    const result = sanitizeFormData({
-      __proto__: '{"isAdmin": true}',
-      constructor: 'Object',
-      prototype: 'evil',
-      name: 'Mario',
-    });
+    // Costruito con JSON.parse: crea vere own-property "__proto__"/"constructor"/
+    // "prototype" — il object literal `{ __proto__: ... }` imposterebbe invece il
+    // prototipo, senza mai esercitare il filtro (e CodeQL lo segnala come invalido).
+    const malicious = JSON.parse(
+      '{"__proto__":{"isAdmin":true},"constructor":"Object","prototype":"evil","name":"Mario"}'
+    ) as Record<string, unknown>;
+    const result = sanitizeFormData(malicious);
     expect(result).not.toHaveProperty('__proto__');
     expect(result).not.toHaveProperty('constructor');
     expect(result).not.toHaveProperty('prototype');
