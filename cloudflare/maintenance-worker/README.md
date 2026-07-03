@@ -6,13 +6,15 @@ Cloudflare Worker che gestisce la modalità manutenzione per vetreriamonferrina.
 
 Il worker intercetta tutte le richieste prima che arrivino a Vercel. Quando la manutenzione è attiva, serve la pagina `/maintenance` con status 503. Quando è disattiva, fa un semplice passthrough.
 
-## Setup iniziale
+## Deploy
 
-```bash
-cd cloudflare/maintenance-worker
-npx wrangler login
-npx wrangler deploy
-```
+Il Worker è **collegato a GitHub** (Cloudflare Workers Builds): ogni push su `main`
+che tocca `cloudflare/maintenance-worker/` fa partire build + deploy automatici.
+Niente più `wrangler deploy` a mano.
+
+- `keep_vars = true` nel `wrangler.toml` preserva le variabili impostate da dashboard
+  (es. `MAINTENANCE_ENABLED`) a ogni deploy; i secret non vengono mai toccati.
+- Setup una-tantum (se serve rideployare a mano): `npx wrangler login && npx wrangler deploy`.
 
 ## Toggle manutenzione
 
