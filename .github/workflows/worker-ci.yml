@@ -1,0 +1,41 @@
+name: Worker CI
+
+# Valida il maintenance-worker (compile esbuild + wrangler.toml: route, keep_vars,
+# compat-date) su ogni PR che lo tocca. Colma il buco della CI principale, che lint+
+# typecheck il worker ma non valida il wrangler.toml. `--dry-run` gira in locale: nessun
+# segreto, non contatta Cloudflare. Path-filtered → gira solo quando cambia il worker.
+
+on:
+  pull_request:
+    paths:
+      - 'cloudflare/maintenance-worker/**'
+      - '.github/workflows/worker-ci.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: worker-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  worker:
+    name: Worker Build (dry-run)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: cloudflare/maintenance-worker
+    env:
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Validate worker (compile + wrangler.toml)
+        run: npx --yes wrangler@4 deploy --dry-run --outdir /tmp/worker-build
