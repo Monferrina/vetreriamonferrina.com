@@ -2,13 +2,20 @@ name = "maintenance-mode"
 main = "src/index.ts"
 compatibility_date = "2026-03-25"
 
+# Preserva le variabili impostate da dashboard tra i deploy collegati a Git.
+# Senza questo, `wrangler deploy` cancella tutte le vars e le riporta a quelle del toml →
+# il toggle manutenzione impostato da dashboard verrebbe resettato a ogni push. I secret
+# (es. ORIGIN_VERIFY_SECRET) non vengono mai toccati dai deploy.
+# https://developers.cloudflare.com/workers/wrangler/configuration/#source-of-truth
+keep_vars = true
+
 # Route: intercept ALL requests to the domain
 routes = [
   { pattern = "vetreriamonferrina.com/*", zone_name = "vetreriamonferrina.com" },
   { pattern = "www.vetreriamonferrina.com/*", zone_name = "vetreriamonferrina.com" }
 ]
 
-# Default: maintenance OFF
-# Override in Cloudflare Dashboard → Workers & Pages → maintenance-mode → Settings → Variables
-[vars]
-MAINTENANCE_ENABLED = "false"
+# MAINTENANCE_ENABLED è gestita SOLO da dashboard (fonte di verità), non nel toml, così i
+# deploy collegati a Git non la sovrascrivono (grazie a keep_vars sopra). Default "off":
+# il worker fa passthrough se il valore non è "true".
+# Toggle: Cloudflare Dashboard → Workers & Pages → maintenance-mode → Settings → Variables
