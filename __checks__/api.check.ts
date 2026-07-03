@@ -1,4 +1,4 @@
-import { ApiCheck, AssertionBuilder } from 'checkly/constructs';
+import { ApiCheck, AssertionBuilder, Frequency } from 'checkly/constructs';
 import { websiteGroup } from './groups.check';
 
 // Liveness check dell'API preventivi — SILENZIOSO (niente mail reali) e affidabile.
@@ -16,6 +16,7 @@ new ApiCheck('send-quote-api', {
   name: 'Send Quote API',
   group: websiteGroup,
   activated: true,
+  frequency: Frequency.EVERY_30M,
   degradedResponseTime: 5000,
   maxResponseTime: 10000,
   request: {
