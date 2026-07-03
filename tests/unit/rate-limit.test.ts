@@ -19,7 +19,7 @@ describe('isRateLimited', () => {
     const { isRateLimited } = await import('../../src/lib/rate-limit');
     const ip = '1.2.3.4';
     for (let i = 0; i < MAX_REQUESTS; i++) {
-      expect(isRateLimited(ip)).toBe(false);
+      expect(await isRateLimited(ip)).toBe(false);
     }
   });
 
@@ -27,30 +27,30 @@ describe('isRateLimited', () => {
     const { isRateLimited } = await import('../../src/lib/rate-limit');
     const ip = '1.2.3.5';
     for (let i = 0; i < MAX_REQUESTS; i++) {
-      isRateLimited(ip);
+      await isRateLimited(ip);
     }
-    expect(isRateLimited(ip)).toBe(true);
+    expect(await isRateLimited(ip)).toBe(true);
   });
 
   it('IP diversi sono indipendenti', async () => {
     const { isRateLimited } = await import('../../src/lib/rate-limit');
     for (let i = 0; i < MAX_REQUESTS; i++) {
-      isRateLimited('10.0.0.1');
+      await isRateLimited('10.0.0.1');
     }
-    expect(isRateLimited('10.0.0.2')).toBe(false);
+    expect(await isRateLimited('10.0.0.2')).toBe(false);
   });
 
   it('sblocca le richieste dopo la scadenza della finestra temporale', async () => {
     const { isRateLimited } = await import('../../src/lib/rate-limit');
     const ip = '2.2.2.2';
     for (let i = 0; i < MAX_REQUESTS; i++) {
-      isRateLimited(ip);
+      await isRateLimited(ip);
     }
-    expect(isRateLimited(ip)).toBe(true);
+    expect(await isRateLimited(ip)).toBe(true);
 
     // Avanza di più di WINDOW_MS così i timestamp precedenti scadono
     vi.advanceTimersByTime(WINDOW_MS + 1);
-    expect(isRateLimited(ip)).toBe(false);
+    expect(await isRateLimited(ip)).toBe(false);
   });
 
   it('il cleanup periodico rimuove IP con tutti i timestamp scaduti', async () => {
@@ -59,7 +59,7 @@ describe('isRateLimited', () => {
     // Pre-popola con 5 richieste al tempo t=0
     const staleIp = '3.3.3.3';
     for (let i = 0; i < MAX_REQUESTS; i++) {
-      isRateLimited(staleIp);
+      await isRateLimited(staleIp);
     }
 
     // Avanza oltre CLEANUP_INTERVAL + WINDOW_MS: sia il cleanup sia i timestamp scadono
@@ -68,7 +68,7 @@ describe('isRateLimited', () => {
     // Il cleanup viene triggerato dalla prossima chiamata a isRateLimited
     // I timestamp di staleIp sono fuori dalla finestra → l'IP viene rimosso dalla Map
     // La richiesta viene quindi accettata come se fosse la prima
-    expect(isRateLimited(staleIp)).toBe(false);
+    expect(await isRateLimited(staleIp)).toBe(false);
   });
 
   it('il cleanup non interferisce con richieste registrate subito prima del check', async () => {
@@ -81,10 +81,33 @@ describe('isRateLimited', () => {
     // Ora registra MAX_REQUESTS richieste: passano tutte (cleanup non le tocca perché fresche)
     const ip = '4.4.4.4';
     for (let i = 0; i < MAX_REQUESTS; i++) {
-      expect(isRateLimited(ip)).toBe(false);
+      expect(await isRateLimited(ip)).toBe(false);
     }
 
     // La sesta richiesta, immediatamente dopo, deve essere bloccata
-    expect(isRateLimited(ip)).toBe(true);
+    expect(await isRateLimited(ip)).toBe(true);
+  });
+
+  it('usa il limiter globale iniettato quando presente (path Upstash)', async () => {
+    const { isRateLimited } = await import('../../src/lib/rate-limit');
+    const blocked = { limit: async () => ({ success: false }) };
+    const allowed = { limit: async () => ({ success: true }) };
+    // success === false → limitato; success === true → passa. Nessuna rete: fake iniettato.
+    expect(await isRateLimited('9.9.9.9', blocked)).toBe(true);
+    expect(await isRateLimited('9.9.9.9', allowed)).toBe(false);
+  });
+
+  it('il cleanup conserva gli IP con timestamp ancora validi (ramo else)', async () => {
+    const { isRateLimited } = await import('../../src/lib/rate-limit');
+    const ip = '5.5.5.5';
+
+    // Richiesta a t=270s: sotto CLEANUP_INTERVAL, nessun cleanup ancora
+    vi.advanceTimersByTime(270_000);
+    expect(await isRateLimited(ip)).toBe(false);
+
+    // A t=301s il prossimo check triggera il cleanup, ma il timestamp (31s fa) è
+    // ancora nella finestra → l'IP viene conservato (ramo else di cleanup)
+    vi.advanceTimersByTime(31_000);
+    expect(await isRateLimited(ip)).toBe(false);
   });
 });
