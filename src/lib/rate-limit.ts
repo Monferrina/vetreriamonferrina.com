@@ -1,7 +1,32 @@
-const requests = new Map<string, number[]>();
-const WINDOW_MS = 60_000; // 1 minute
+import process from 'node:process';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
+
 const MAX_REQUESTS = 5; // 5 per minute per IP
-const CLEANUP_INTERVAL = 5 * 60_000; // cleanup every 5 minutes
+const WINDOW = '60 s';
+
+// Global limiter backed by Upstash Redis when configured (production/preview) — shared
+// across all serverless instances. Falls back to the in-memory limiter below when the
+// Upstash env vars are absent (local dev / CI / tests), so those paths need no network.
+// Read from process.env (not astro:env/server) so this module also loads under Vitest.
+const upstashUrl = process.env.UPSTASH_REDIS_REST_URL;
+const upstashToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+
+const ratelimit =
+  upstashUrl && upstashToken
+    ? new Ratelimit({
+        redis: new Redis({ url: upstashUrl, token: upstashToken }),
+        limiter: Ratelimit.slidingWindow(MAX_REQUESTS, WINDOW),
+        prefix: 'rl:quote',
+      })
+    : null;
+
+// --- in-memory fallback ---
+// ponytail: per-instance counter (best-effort). Only the fallback path; production uses
+// Upstash for a global limit. Fine for dev/CI and low-traffic no-Upstash deploys.
+const WINDOW_MS = 60_000;
+const CLEANUP_INTERVAL = 5 * 60_000;
+const requests = new Map<string, number[]>();
 let lastCleanup = Date.now();
 
 function cleanup(now: number): void {
@@ -16,7 +41,7 @@ function cleanup(now: number): void {
   lastCleanup = now;
 }
 
-export function isRateLimited(ip: string): boolean {
+function isRateLimitedInMemory(ip: string): boolean {
   const now = Date.now();
 
   // Periodic cleanup to prevent unbounded Map growth
@@ -24,12 +49,19 @@ export function isRateLimited(ip: string): boolean {
     cleanup(now);
   }
 
-  const timestamps = requests.get(ip) ?? [];
-  const recent = timestamps.filter((t) => now - t < WINDOW_MS);
+  const recent = (requests.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
 
   if (recent.length >= MAX_REQUESTS) return true;
 
   recent.push(now);
   requests.set(ip, recent);
   return false;
+}
+
+export async function isRateLimited(ip: string): Promise<boolean> {
+  if (ratelimit) {
+    const { success } = await ratelimit.limit(ip);
+    return !success;
+  }
+  return isRateLimitedInMemory(ip);
 }

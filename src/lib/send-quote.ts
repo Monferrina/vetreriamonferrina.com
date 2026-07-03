@@ -46,7 +46,7 @@ export async function handleSendQuote(
   }
 
   // 2. Rate limiting
-  if (isRateLimited(req.ip)) {
+  if (await isRateLimited(req.ip)) {
     console.warn('[send-quote] Rate limited IP:', req.ip);
     return json(429, { error: 'Troppe richieste. Riprova tra un minuto.' });
   }

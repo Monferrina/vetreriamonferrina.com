@@ -27,7 +27,13 @@ export async function POST({ request, clientAddress }: APIContext) {
   const result = await handleSendQuote(
     {
       origin: request.headers.get('origin'),
-      ip: clientAddress || request.headers.get('x-forwarded-for') || 'unknown',
+      // Behind Cloudflare, CF-Connecting-IP is the true visitor IP (CF sets it, unspoofable
+      // on the proxied path). Prefer it so the rate limit keys per real visitor, not per CF IP.
+      ip:
+        request.headers.get('cf-connecting-ip') ||
+        clientAddress ||
+        request.headers.get('x-forwarded-for') ||
+        'unknown',
       body,
     },
     {
