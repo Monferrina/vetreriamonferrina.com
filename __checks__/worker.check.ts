@@ -1,4 +1,4 @@
-import { ApiCheck, AssertionBuilder } from 'checkly/constructs';
+import { ApiCheck, AssertionBuilder, Frequency } from 'checkly/constructs';
 import { websiteGroup } from './groups.check';
 
 // Verifica che il Worker Cloudflare sia davanti all'origin. Sul passthrough il worker
@@ -11,6 +11,7 @@ new ApiCheck('cloudflare-worker-active', {
   name: 'Cloudflare Worker Active',
   group: websiteGroup,
   activated: true,
+  frequency: Frequency.EVERY_6H,
   degradedResponseTime: 5000,
   maxResponseTime: 10000,
   request: {

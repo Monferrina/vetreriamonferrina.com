@@ -3,9 +3,9 @@ import { websiteGroup } from './groups.check';
 
 // Monitoraggio errori: verifica che le pagine chiave rispondano 200.
 // Se una pagina inizia a restituire 4xx/5xx, Checkly invia un alert.
-// Frequenza ridotta (1 ora) per contenere i consumi del free tier:
-// la homepage e l'API restano a 10 min (percorsi critici), queste pagine
-// cambiano stato raramente e 1 ora di rilevamento è adeguata.
+// Frequenza a 6 ore per contenere i consumi del free tier: solo i percorsi
+// critici restano brevi (homepage uptime 10m, API preventivi 30m); queste
+// pagine cambiano stato raramente e 6 ore di rilevamento sono adeguate.
 
 const baseUrl = 'https://vetreriamonferrina.com';
 
@@ -23,7 +23,7 @@ for (const page of keyPages) {
     name: `Pagina: ${page.name}`,
     group: websiteGroup,
     activated: true,
-    frequency: Frequency.EVERY_1H,
+    frequency: Frequency.EVERY_6H,
     maxResponseTime: 10000,
     degradedResponseTime: 5000,
     request: {
