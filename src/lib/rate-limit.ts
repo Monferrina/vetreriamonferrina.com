@@ -58,9 +58,14 @@ function isRateLimitedInMemory(ip: string): boolean {
   return false;
 }
 
-export async function isRateLimited(ip: string): Promise<boolean> {
-  if (ratelimit) {
-    const { success } = await ratelimit.limit(ip);
+// `limiter` defaults to the module-level Upstash instance; tests inject a fake to exercise
+// the global path without a network call (same DI pattern as send-quote.ts's EmailSender).
+export async function isRateLimited(
+  ip: string,
+  limiter: { limit: (id: string) => Promise<{ success: boolean }> } | null = ratelimit
+): Promise<boolean> {
+  if (limiter) {
+    const { success } = await limiter.limit(ip);
     return !success;
   }
   return isRateLimitedInMemory(ip);

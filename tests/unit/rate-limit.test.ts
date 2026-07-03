@@ -87,4 +87,27 @@ describe('isRateLimited', () => {
     // La sesta richiesta, immediatamente dopo, deve essere bloccata
     expect(await isRateLimited(ip)).toBe(true);
   });
+
+  it('usa il limiter globale iniettato quando presente (path Upstash)', async () => {
+    const { isRateLimited } = await import('../../src/lib/rate-limit');
+    const blocked = { limit: async () => ({ success: false }) };
+    const allowed = { limit: async () => ({ success: true }) };
+    // success === false → limitato; success === true → passa. Nessuna rete: fake iniettato.
+    expect(await isRateLimited('9.9.9.9', blocked)).toBe(true);
+    expect(await isRateLimited('9.9.9.9', allowed)).toBe(false);
+  });
+
+  it('il cleanup conserva gli IP con timestamp ancora validi (ramo else)', async () => {
+    const { isRateLimited } = await import('../../src/lib/rate-limit');
+    const ip = '5.5.5.5';
+
+    // Richiesta a t=270s: sotto CLEANUP_INTERVAL, nessun cleanup ancora
+    vi.advanceTimersByTime(270_000);
+    expect(await isRateLimited(ip)).toBe(false);
+
+    // A t=301s il prossimo check triggera il cleanup, ma il timestamp (31s fa) è
+    // ancora nella finestra → l'IP viene conservato (ramo else di cleanup)
+    vi.advanceTimersByTime(31_000);
+    expect(await isRateLimited(ip)).toBe(false);
+  });
 });
