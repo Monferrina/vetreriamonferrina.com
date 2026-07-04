@@ -81,6 +81,7 @@ const breadcrumbSchema = {
   title={post.title}
   description={post.description}
   ogImage={post.image ? `https://vetreriamonferrina.com${post.image}` : undefined}
+  ogType="article"
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />

@@ -8,7 +8,6 @@ import BottomNav from '../components/BottomNav.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import Chatbot from '../components/Chatbot.astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
-import reviews from '../data/reviews.json';
 
 export interface Props {
   title: string;
@@ -16,6 +15,8 @@ export interface Props {
   fullTitle?: string;
   description?: string;
   ogImage?: string;
+  /** og:type — 'website' di default, 'article' per i post del blog. */
+  ogType?: string;
   noindex?: boolean;
 }
 
@@ -24,6 +25,7 @@ const {
   fullTitle,
   description = 'Vetreria storica a Casale Monferrato. Box doccia, parapetti, pensiline, vetri camera, specchi e lavorazioni su misura.',
   ogImage,
+  ogType = 'website',
   noindex = false,
 } = Astro.props;
 const pageTitle = fullTitle ?? `${title} | Vetreria Monferrina`;
@@ -71,13 +73,6 @@ const jsonLd = {
   ],
   priceRange: '$$',
   image: 'https://vetreriamonferrina.com/images/og-image.jpg',
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: reviews.rating,
-    reviewCount: reviews.totalReviews,
-    bestRating: 5,
-    worstRating: 1,
-  },
   areaServed: [
     { '@type': 'State', name: 'Piemonte' },
     { '@type': 'State', name: 'Lombardia' },
@@ -111,14 +106,18 @@ const jsonLd = {
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="it_IT" />
     <meta
       property="og:image"
       content={ogImage || 'https://vetreriamonferrina.com/images/og-image.jpg'}
     />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    {
+      /* Dimensioni note solo per l'og-image di default (1200×630). Su ogImage custom
+         (foto servizi/blog, spesso 4:3) le omettiamo invece di dichiarare misure sbagliate. */
+    }
+    {!ogImage && <meta property="og:image:width" content="1200" />}
+    {!ogImage && <meta property="og:image:height" content="630" />}
     <meta property="og:site_name" content="Vetreria Monferrina" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />

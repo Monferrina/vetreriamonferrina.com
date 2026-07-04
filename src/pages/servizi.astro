@@ -4,6 +4,7 @@ import CtaSection from '../components/CtaSection.astro';
 import GlassPanel from '../components/GlassPanel.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import { services as staticServices, categories, type CategoryKey } from '../data/services';
+import { serviceDetails } from '../data/service-details';
 import { fetchWithFallback, queries } from '../lib/sanity';
 export const prerender = true;
 
@@ -16,8 +17,12 @@ type ServiceItem = {
   image?: string;
 };
 const sanityServices = await fetchWithFallback<ServiceItem[] | null>(queries.services, null);
-const servicesData: ServiceItem[] =
+const rawServices: ServiceItem[] =
   sanityServices && sanityServices.length > 0 ? sanityServices : staticServices;
+// Le card linkano a /servizi/{slug}, ma quelle pagine esistono solo per gli slug in
+// serviceDetails (stessa fonte di getStaticPaths in [slug].astro). Uno slug Sanity senza
+// dettaglio produrrebbe un link → 404 che check:links non vede: lo filtriamo qui.
+const servicesData: ServiceItem[] = rawServices.filter((s) => serviceDetails[s.slug]);
 
 const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
 ---

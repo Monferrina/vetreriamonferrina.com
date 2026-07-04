@@ -46,4 +46,4 @@ jobs:
             --title "chore: aggiorna recensioni Google $(date +%Y-%m-%d)" \
             --body "Aggiornamento automatico recensioni, orari e foto da Google Places API." \
             --base main
-          gh pr merge "$BRANCH" --squash --auto
+          # Nessun merge automatico: la PR resta aperta per revisione umana (gate AI Act).
