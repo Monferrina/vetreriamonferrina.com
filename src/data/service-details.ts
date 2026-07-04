@@ -615,7 +615,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
 
   'porte-interne': {
     intro:
-      "Installiamo porte interne in vetro — la porta scorrevole in vetro, a vista o a scomparsa nel muro, e il modello a battente — per portare luce e leggerezza negli ambienti. Il vetro temperato di sicurezza garantisce resistenza e tranquillità nell'uso quotidiano.",
+      "Installiamo porte interne in vetro su misura: porte scorrevoli da interno in vetro — a vista o a scomparsa nel muro — e modelli a battente, per portare luce e leggerezza negli ambienti. Il vetro temperato di sicurezza garantisce resistenza e tranquillità nell'uso quotidiano.",
     features: [
       {
         title: 'Scorrevoli e a battente',
@@ -654,6 +654,18 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       {
         q: 'La porta scorrevole in vetro si può nascondere nel muro?',
         a: 'Sì: con un controtelaio a scomparsa la porta scorre dentro la parete e sparisce alla vista, liberando spazio. In alternativa lo scorrevole a vista monta un binario a parete, senza opere murarie.',
+      },
+      {
+        q: 'Quanto costa una porta scorrevole in vetro?',
+        a: 'Il prezzo dipende dalle misure, dal tipo di vetro (trasparente, satinato o decorato), dal sistema scorrevole (a vista o a scomparsa) e dagli accessori. Non c’è un listino fisso: facciamo un sopralluogo gratuito e ti diamo un preventivo su misura.',
+      },
+      {
+        q: 'Come si monta una porta scorrevole in vetro?',
+        a: 'Al montaggio pensiamo noi. Lo scorrevole a vista si installa con un binario a parete, senza opere murarie; il modello a scomparsa richiede un controtelaio nel muro, da prevedere quando la parete è in costruzione o in ristrutturazione. Valutiamo in sopralluogo la soluzione adatta al tuo spazio.',
+      },
+      {
+        q: 'Come si puliscono le porte in vetro satinato?',
+        a: 'Bastano un panno in microfibra e un detergente per vetri non abrasivo, evitando spugne ruvide che opacizzano la superficie. Sul satinato le impronte si vedono meno che sul trasparente, quindi la manutenzione è ancora più semplice.',
       },
     ],
     related: ['madras', 'specchi', 'box-doccia'],
