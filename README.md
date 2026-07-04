@@ -5,7 +5,7 @@
 
 [![CI](https://github.com/Monferrina/vetreriamonferrina.com/actions/workflows/ci.yml/badge.svg)](https://github.com/Monferrina/vetreriamonferrina.com/actions/workflows/ci.yml)
 [![Vercel](https://img.shields.io/badge/Vercel-deployed-black?logo=vercel)](https://vetreriamonferrina.com)
-[![Astro](https://img.shields.io/badge/Astro-6-FF5D01?logo=astro&logoColor=white)](https://astro.build)
+[![Astro](https://img.shields.io/badge/Astro-7-FF5D01?logo=astro&logoColor=white)](https://astro.build)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![License](https://img.shields.io/badge/License-All_Rights_Reserved-red)](/LICENSE)
 
@@ -13,6 +13,7 @@
 [![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![Sanity](https://img.shields.io/badge/Sanity-v5-F03E2F?logo=sanity&logoColor=white)](https://www.sanity.io)
 [![Resend](https://img.shields.io/badge/Resend-email-000000?logo=resend&logoColor=white)](https://resend.com)
+[![Upstash](https://img.shields.io/badge/Upstash-rate--limit-00E9A3?logo=upstash&logoColor=white)](https://upstash.com)
 
 [![Cloudflare](https://img.shields.io/badge/Cloudflare-DNS%20%7C%20WAF-F38020?logo=cloudflare&logoColor=white)](https://www.cloudflare.com)
 [![Checkly](https://img.shields.io/badge/Checkly-monitoring-3A52EE)](https://www.checklyhq.com)
@@ -30,22 +31,24 @@ Sito vetrina con form preventivi, galleria lavori, blog, 16 pagine servizio, FAQ
 
 ## Tech Stack
 
-| Categoria       | Tecnologia                                            |
-| --------------- | ----------------------------------------------------- |
-| Framework       | Astro 6 (SSG + SSR ibrido)                            |
-| Stile           | Tailwind CSS 4                                        |
-| CMS             | Sanity v5                                             |
-| Email           | Resend (account Proton, TLS enforced)                 |
-| Email templates | HTML brand templates (`src/lib/email-templates/`)     |
-| Hosting         | Vercel (serverless)                                   |
-| CDN / DNS / WAF | Cloudflare (proxy attivo)                             |
-| Monitoring      | Checkly (uptime, API, browser checks)                 |
-| Mappa           | Google Maps Embed API                                 |
-| Meteo           | Open-Meteo (gratis, no API key)                       |
-| Recensioni      | Google Places API (New) — dati scaricati a build-time |
-| Test            | Vitest (unit) + Playwright (E2E)                      |
-| CI              | GitHub Actions                                        |
-| Code quality    | ESLint + Prettier + Husky + lint-staged + SonarCloud  |
+| Categoria       | Tecnologia                                                       |
+| --------------- | ---------------------------------------------------------------- |
+| Framework       | Astro 7 (prerender + SSR ibrido)                                 |
+| Stile           | Tailwind CSS 4                                                   |
+| CMS             | Sanity v5                                                        |
+| Email           | Resend (account Proton, TLS enforced)                            |
+| Email templates | HTML brand templates (`src/lib/email-templates/`)                |
+| Rate-limit      | Upstash Redis (globale su `/api/send-quote`; fallback in-memory) |
+| Hosting         | Vercel (serverless)                                              |
+| CDN / DNS / WAF | Cloudflare (proxy attivo) + Worker `maintenance-mode`            |
+| Origin lockdown | `x-origin-verify` (Worker → middleware): API solo via CF         |
+| Monitoring      | Checkly (uptime, API, worker, pagine — monitoring-as-code)       |
+| Mappa           | Google Maps Embed API                                            |
+| Meteo           | Open-Meteo (gratis, no API key)                                  |
+| Recensioni      | Google Places API (New) — dati scaricati a build-time            |
+| Test            | Vitest (unit) + Playwright (E2E)                                 |
+| CI              | GitHub Actions                                                   |
+| Code quality    | ESLint + Prettier + Husky + lint-staged + SonarCloud             |
 
 ## Requisiti
 
@@ -113,10 +116,12 @@ La pipeline GitHub Actions (`.github/workflows/ci.yml`) esegue automaticamente s
 2. **Lint** — ESLint
 3. **Format** — Prettier
 4. **Type check** — `astro check`
-5. **Tests** — Vitest con coverage (13 file, 138 test)
+5. **Tests** — Vitest con coverage (149 test)
 6. **Build** — build di produzione
 7. **SonarCloud** — analisi qualità, sicurezza, coverage
 8. **Lighthouse CI** — soglie: accessibility >= 0.95, best practices >= 0.95, SEO >= 0.9
+
+Workflow aggiuntivi: **CodeQL** (security scanning), **Checkly** (monitoring-as-code: `checkly test` su PR, `checkly deploy` al merge) e **Worker CI** (`wrangler deploy --dry-run` sul `maintenance-worker`, path-filtered).
 
 I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 
@@ -142,7 +147,7 @@ I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 ```
 ├── __checks__/              # Checkly monitoring checks (API, URL, browser)
 ├── .github/workflows/       # CI pipeline
-├── cloudflare/              # Cloudflare Worker (maintenance mode)
+├── cloudflare/              # Cloudflare Worker (maintenance mode + origin lockdown, deploy via Git)
 ├── docs/plans/              # Guide tecniche (Google Reviews)
 ├── sanity/                  # Sanity CMS (schemi, config)
 ├── scripts/                 # Script build-time (Google Places, immagini, logo)
@@ -150,18 +155,18 @@ I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 │   ├── components/          # 18 componenti Astro
 │   ├── data/                # Dati statici JSON (chatbot, recensioni, orari, servizi)
 │   ├── layouts/             # Layout base (dark mode, View Transitions, SEO)
-│   ├── lib/                 # Logica condivisa (Sanity client, validazione, sanitize, rate limit, email templates)
+│   ├── lib/                 # Logica condivisa (Sanity client, validazione, sanitize, rate limit Upstash, email templates)
 │   ├── pages/               # Pagine + API routes
 │   │   ├── api/             # Serverless functions (form preventivo)
 │   │   ├── blog/            # Blog (4 articoli)
 │   │   └── servizi/         # 16 pagine servizio individuali
 │   ├── styles/              # Design system CSS (token, dark mode, transizioni)
-│   └── middleware.ts        # Middleware (maintenance mode)
+│   └── middleware.ts        # Middleware (origin lockdown: valida x-origin-verify in prod)
 ├── public/
 │   ├── fonts/               # Font self-hosted (Inter, DM Serif Display)
 │   └── images/              # Immagini ottimizzate WebP
 ├── tests/
-│   ├── unit/                # Test (Vitest — 13 file, 138 test)
+│   ├── unit/                # Test (Vitest — 149 test)
 │   └── e2e/                 # E2E test (Playwright)
 ├── astro.config.mjs         # Configurazione Astro
 ├── checkly.config.ts        # Configurazione Checkly monitoring
@@ -214,16 +219,27 @@ Il sito è deployato su Vercel con adapter `@astrojs/vercel`. Le pagine statiche
 
 Il dominio `vetreriamonferrina.com` è gestito su Cloudflare (piano Free) con proxy attivo (nuvoletta arancione).
 
-| Configurazione | Dettaglio                                                         |
-| -------------- | ----------------------------------------------------------------- |
-| DNS            | A → `76.76.21.21` + CNAME www → `cname.vercel-dns.com` (Proxied)  |
-| SSL/TLS        | Full (Strict)                                                     |
-| HSTS           | 2 anni (max-age 63072000), includeSubDomains, preload             |
-| WAF            | Bot Fight Mode + AI Bot Blocking                                  |
-| Cache          | Asset statici 1 anno (`/_astro/`, `.webp`, `.woff2`)              |
-| Analytics      | Web Analytics (RUM, zero cookie)                                  |
-| Rocket Loader  | **OFF** (interferisce con Astro)                                  |
-| Worker         | `maintenance-mode` — attivare/disattivare da dashboard Cloudflare |
+| Configurazione | Dettaglio                                                                                   |
+| -------------- | ------------------------------------------------------------------------------------------- |
+| DNS            | A → `76.76.21.21` + CNAME www → `cname.vercel-dns.com` (Proxied)                            |
+| SSL/TLS        | Full (Strict)                                                                               |
+| HSTS           | 2 anni (max-age 63072000), includeSubDomains, preload                                       |
+| WAF            | Bot Fight Mode + AI Bot Blocking                                                            |
+| Cache          | Asset statici 1 anno (`/_astro/`, `.webp`, `.woff2`)                                        |
+| Analytics      | Web Analytics (RUM, zero cookie)                                                            |
+| Rocket Loader  | **OFF** (interferisce con Astro)                                                            |
+| Worker         | `maintenance-mode` (toggle da dashboard) + origin lockdown; deploy via Git (Workers Builds) |
+
+Il Worker `maintenance-mode` (`cloudflare/maintenance-worker/`) è **collegato a GitHub** (Cloudflare Workers Builds): ogni push su `main` che tocca la sua cartella fa build + deploy automatici. `keep_vars = true` nel `wrangler.toml` preserva le variabili di dashboard (es. `MAINTENANCE_ENABLED`) a ogni deploy; i secret non vengono mai toccati.
+
+### Origin lockdown
+
+L'URL `*.vercel.app` è pubblico e bypasserebbe WAF + rate-limit di Cloudflare. Per chiuderlo sull'**API preventivi** (il rischio reale: spam/escalation), un handshake a segreto condiviso:
+
+- il **Worker** timbra l'header segreto `x-origin-verify` (`ORIGIN_VERIFY_SECRET`) su ogni richiesta verso l'origin;
+- il **middleware** (`src/middleware.ts`), in produzione, risponde `403` alle richieste prive dell'header valido. Con le pagine `prerender=true` gira solo sulle rotte SSR (oggi `/api/send-quote`). **Fail-open** se il segreto non è configurato.
+
+Il segreto vive in 3 posti con lo stesso valore: Worker secret (CF), env Vercel (Production), env Checkly (per il monitor API). Chi colpisce `*.vercel.app/api/send-quote` diretto → `403`.
 
 ### Resend
 
@@ -242,13 +258,15 @@ Le email usano template HTML professionali con colori brand (`src/lib/email-temp
 
 ### Checkly (Monitoring)
 
-Monitoring sintetico con 3 check ogni 10 minuti da `eu-central-1` e `eu-west-1`:
+Monitoring-as-code su una sola location (`eu-central-1`, per rientrare nel free tier):
 
-- **Homepage Uptime** — URL monitor, verifica status 200
-- **Send Quote API** — POST con honeypot (non invia email reali), verifica status 200
-- **Homepage Browser** — Playwright check, verifica titolo e rendering
+- **Homepage Uptime** — URL monitor (10 min), status 200
+- **Send Quote API** — POST `dryRun` (30 min, non invia email), status 200; passa `x-origin-verify` per superare l'origin lockdown
+- **Cloudflare Worker Active** — verifica header `x-worker`/`x-maintenance` (6h)
+- **Pagine chiave + sitemap** — status 200 (6h)
+- **Homepage Browser** — Playwright, titolo + rendering (24h)
 
-Configurazione in `checkly.config.ts` e `__checks__/`. Alert su email Proton. Integrazioni attive: Vercel + GitHub.
+Configurazione in `checkly.config.ts` e `__checks__/`; deploy via CI (`checkly deploy`) al merge in `main`. Alert su email Proton. Integrazioni attive: Vercel + GitHub.
 
 ### Sanity
 

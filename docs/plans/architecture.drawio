@@ -4,7 +4,7 @@
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="title" value="Vetreria Monferrina — Architettura (v3.1)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;fontColor=#1B4965;" parent="1" vertex="1">
+                <mxCell id="title" value="Vetreria Monferrina — Architettura (v3.2)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;fontColor=#1B4965;" parent="1" vertex="1">
                     <mxGeometry x="420" y="20" width="450" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="cms_group" value="Content Management" style="swimlane;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
@@ -16,7 +16,7 @@
                 <mxCell id="build_group" value="Build (SSG)" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
                     <mxGeometry x="420" y="90" width="300" height="220" as="geometry"/>
                 </mxCell>
-                <mxCell id="astro" value="Astro 6&#xa;(Static Site Generator)&#xa;&#xa;• Fetch da Sanity a build time&#xa;• Fetch recensioni Google&#xa;• Genera HTML statico (31 pagine)&#xa;• Tailwind CSS 4 + Dark Mode&#xa;• View Transitions (slide+fade)&#xa;• Prefetch viewport" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="build_group" vertex="1">
+                <mxCell id="astro" value="Astro 7&#xa;(SSR + prerender ibrido)&#xa;&#xa;• Fetch da Sanity a build time&#xa;• Fetch recensioni Google&#xa;• Genera HTML statico (31 pagine)&#xa;• Tailwind CSS 4 + Dark Mode&#xa;• View Transitions (slide+fade)&#xa;• Prefetch viewport" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="build_group" vertex="1">
                     <mxGeometry x="20" y="40" width="260" height="170" as="geometry"/>
                 </mxCell>
                 <mxCell id="host_group" value="Hosting &amp; Delivery" style="swimlane;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
@@ -28,7 +28,7 @@
                 <mxCell id="cicd_group" value="CI/CD Pipeline" style="swimlane;startSize=30;fillColor=#d0cee2;strokeColor=#56517e;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
                     <mxGeometry x="1160" y="90" width="300" height="220" as="geometry"/>
                 </mxCell>
-                <mxCell id="cicd" value="GitHub Actions&#xa;&#xa;• ESLint (TS + Astro)&#xa;• Prettier format check&#xa;• astro check (type check)&#xa;• Vitest (138 unit test)&#xa;• Build di produzione&#xa;• Lighthouse CI (9 pagine)&#xa;&#xa;Pre-commit: Husky + lint-staged" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=#56517e;fontSize=11;" parent="cicd_group" vertex="1">
+                <mxCell id="cicd" value="GitHub Actions&#xa;&#xa;• ESLint (TS + Astro)&#xa;• Prettier format check&#xa;• astro check (type check)&#xa;• Vitest (143 unit test)&#xa;• Worker CI (wrangler --dry-run)&#xa;• Build di produzione&#xa;• Lighthouse CI (9 pagine)&#xa;&#xa;Pre-commit: Husky + lint-staged" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=#56517e;fontSize=11;" parent="cicd_group" vertex="1">
                     <mxGeometry x="20" y="35" width="260" height="175" as="geometry"/>
                 </mxCell>
                 <mxCell id="google_group" value="Google Places API (New)" style="swimlane;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
@@ -59,10 +59,10 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="cloudflare_group" value="Cloudflare (DNS + Proxy + Security)" style="swimlane;startSize=30;fillColor=#F4A460;strokeColor=#D2691E;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
-                    <mxGeometry x="670" y="340" width="340" height="200" as="geometry"/>
+                    <mxGeometry x="670" y="340" width="340" height="250" as="geometry"/>
                 </mxCell>
-                <mxCell id="cloudflare" value="vetreriamonferrina.com&#xa;&#xa;• Proxy attivo (nuvoletta arancione)&#xa;• SSL/TLS Full (Strict) + HSTS preload&#xa;• WAF + Bot Fight + AI Bot Blocking&#xa;• Worker: maintenance-mode (503)&#xa;• Cache: /_astro/*, .webp, .woff2 (1y)&#xa;• HTTP/2+3, 0-RTT, Early Hints, Brotli&#xa;• Web Analytics RUM (zero cookie)&#xa;• Redirect www → root (301)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8DC;strokeColor=#D2691E;fontSize=10;align=left;spacingLeft=10;" parent="cloudflare_group" vertex="1">
-                    <mxGeometry x="10" y="35" width="320" height="155" as="geometry"/>
+                <mxCell id="cloudflare" value="vetreriamonferrina.com&#xa;&#xa;• Proxy attivo (nuvoletta arancione)&#xa;• SSL/TLS Full (Strict) + HSTS preload&#xa;• WAF + Bot Fight + AI Bot Blocking&#xa;• Worker maintenance-mode (503) + origin lockdown&#xa;&#160;&#160;(timbra x-origin-verify verso l'origin)&#xa;• Worker deploy via Git (Cloudflare Workers Builds)&#xa;• Cache: /_astro/*, .webp, .woff2 (1y)&#xa;• HTTP/2+3, 0-RTT, Early Hints, Brotli&#xa;• Web Analytics RUM (zero cookie)&#xa;• Redirect www → root (301)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8DC;strokeColor=#D2691E;fontSize=10;align=left;spacingLeft=10;" parent="cloudflare_group" vertex="1">
+                    <mxGeometry x="10" y="35" width="320" height="205" as="geometry"/>
                 </mxCell>
                 <mxCell id="arrow_vercel_cf" value="origin" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#D2691E;" parent="1" source="host_group" target="cloudflare_group" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -166,7 +166,7 @@
                 <mxCell id="form_client" value="1. Validazione client&#xa;(nome, tel, email, tipo,&#xa;descrizione*, misure*,&#xa;consenso privacy)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" parent="form_group" vertex="1">
                     <mxGeometry x="20" y="40" width="140" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="form_edge" value="2. Serverless Function&#xa;(validazione server,&#xa;rate limit 5/min/IP,&#xa;honeypot, CSRF)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" parent="form_group" vertex="1">
+                <mxCell id="form_edge" value="2. Serverless Function&#xa;(validazione server,&#xa;rate limit 5/min/IP globale,&#xa;honeypot, CSRF)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" parent="form_group" vertex="1">
                     <mxGeometry x="180" y="40" width="140" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="form_resend" value="3. Resend API&#xa;(email HTML template brand&#xa;a vetreriamonferrina&#xa;@gmail.com | TLS enforced)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" parent="form_group" vertex="1">
@@ -190,7 +190,7 @@
                 <mxCell id="test_group" value="Test Suite" style="swimlane;startSize=25;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" parent="1" vertex="1">
                     <mxGeometry x="440" y="970" width="340" height="110" as="geometry"/>
                 </mxCell>
-                <mxCell id="test_unit" value="Vitest — 13 file, 138 test&#xa;Layout, Footer, Header, Chatbot, Validation,&#xa;Sanitize, Services, Sanity, SendQuote,&#xa;Rate-limit, API SendQuote, API Env, Smoke" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="test_group" vertex="1">
+                <mxCell id="test_unit" value="Vitest — 149 test&#xa;Layout, Footer, Header, Chatbot, Validation,&#xa;Sanitize, Services, Sanity, SendQuote,&#xa;Rate-limit, API SendQuote, API Env, Middleware, Smoke" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="test_group" vertex="1">
                     <mxGeometry x="10" y="30" width="155" height="70" as="geometry"/>
                 </mxCell>
                 <mxCell id="test_e2e" value="Playwright — E2E&#xa;Home, Pages, Navigation,&#xa;A11y, SEO, Services, Chatbot,&#xa;Quote Form, Legal, Smoke" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="test_group" vertex="1">
@@ -205,7 +205,7 @@
                 <mxCell id="checkly_group" value="Checkly (Monitoring)" style="swimlane;startSize=25;fillColor=#E8EAF6;strokeColor=#3F51B5;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" parent="1" vertex="1">
                     <mxGeometry x="840" y="970" width="340" height="130" as="geometry"/>
                 </mxCell>
-                <mxCell id="checkly_checks" value="3 check ogni 10 min (eu-central-1, eu-west-1)&#xa;&#xa;• Homepage Uptime (URL monitor, status 200)&#xa;• Send Quote API (POST honeypot, status 200)&#xa;• Homepage Browser (Playwright, titolo + rendering)&#xa;&#xa;Alert: email Proton | Integrazioni: Vercel + GitHub" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8EAF6;strokeColor=#3F51B5;fontSize=10;align=left;spacingLeft=10;" parent="checkly_group" vertex="1">
+                <mxCell id="checkly_checks" value="Monitoring-as-code — 1 location (eu-central-1), free-tier&#xa;&#xa;• Homepage Uptime (10m) | Send Quote API dryRun (30m)&#xa;• Cloudflare Worker Active (6h, header x-worker/x-maintenance)&#xa;• Pagine chiave + sitemap (6h) | Browser homepage (24h)&#xa;&#xa;Deploy via CI al merge | Alert: email Proton | Vercel + GitHub" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8EAF6;strokeColor=#3F51B5;fontSize=10;align=left;spacingLeft=10;" parent="checkly_group" vertex="1">
                     <mxGeometry x="10" y="30" width="320" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="arrow_checkly" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#3F51B5;dashed=1;" parent="1" source="checkly_group" target="cloudflare_group" edge="1">
@@ -213,6 +213,15 @@
                 </mxCell>
                 <mxCell id="components_box" value="18 Componenti Astro&#xa;&#xa;Header | Footer | BottomNav | HeroSection | ServiceCard | ServiceHighlight&#xa;StatsSection | PartnersSection | ReviewsSection (carousel) | GalleryGrid (masonry)&#xa;Lightbox | QuoteForm | Chatbot | ContactMap | WeatherWidget&#xa;CookieBanner | CtaSection | ProtectedImage" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
                     <mxGeometry x="40" y="1280" width="540" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="upstash_group" value="Upstash Redis (Rate-limit)" style="swimlane;startSize=25;fillColor=#d5e8d4;strokeColor=#00A67E;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" parent="1" vertex="1">
+                    <mxGeometry x="820" y="750" width="330" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="upstash_node" value="REST API (edge-friendly, no TCP)&#xa;&#xa;• Sliding window 5 / 60s, prefix rl:quote&#xa;• Contatore GLOBALE tra tutte le istanze&#xa;&#160;&#160;serverless (non piu 5×N per-istanza)&#xa;• Chiave = IP reale (cf-connecting-ip)&#xa;• Fallback in-memory se env UPSTASH_* assenti&#xa;&#160;&#160;(dev / CI / test) — nessuna rete" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#00A67E;fontSize=10;align=left;spacingLeft=10;" parent="upstash_group" vertex="1">
+                    <mxGeometry x="10" y="30" width="310" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow_upstash" value="rate-limit check&#xa;(sliding window)" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#00A67E;dashed=1;" parent="1" source="form_group" target="upstash_group" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
