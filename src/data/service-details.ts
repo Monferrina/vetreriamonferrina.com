@@ -297,50 +297,52 @@ export const serviceDetails: Record<string, ServiceDetail> = {
 
   blindati: {
     intro:
-      'Forniamo e installiamo vetri blindati antisfondamento e antiproiettile per abitazioni, uffici e attività commerciali. Protezione reale contro tentativi di intrusione, senza rinunciare alla trasparenza.',
+      'Realizziamo e installiamo vetri blindati antisfondamento e antiproiettile per abitazioni, uffici e attività commerciali a Casale Monferrato e dintorni. Sono vetri di sicurezza stratificati, composti da più lastre unite da intercalari in PVB: in caso di urto o tentativo di effrazione il vetro si crepa ma resta integro, senza cedere e senza frammenti taglienti. La stessa tecnologia protegge finestre, portefinestre e vetrine dove serve una barriera reale contro intrusioni e sfondamenti.',
     features: [
       {
-        title: 'Classi di resistenza',
-        text: 'Vetri disponibili nelle classi da P1A a P8B, certificate secondo la norma EN 356 contro lo sfondamento.',
+        title: 'Antisfondamento certificato',
+        text: 'Vetro stratificato di sicurezza con classi di resistenza secondo EN 356 (antieffrazione, da P1A a P8B): più lastre e più intercalari PVB, più alto il livello di protezione contro urti e tentativi di sfondamento.',
       },
       {
-        title: 'Composizione multistrato',
-        text: 'Più lastre di vetro unite da intercalari in PVB ad alta resistenza. Anche in caso di rottura il vetro resta in posizione.',
+        title: 'Versione antiproiettile',
+        text: 'Per esigenze di massima sicurezza — banche, gioiellerie, uffici sensibili — forniamo vetri antiproiettile certificati EN 1063, dimensionati in base al livello di minaccia.',
       },
       {
-        title: 'Trasparenza preservata',
-        text: "Nonostante lo spessore maggiore, il vetro blindato mantiene un'ottima trasparenza e luminosità.",
+        title: 'Su misura per porte e finestre',
+        text: 'Vetri antisfondamento tagliati su misura per finestre, portefinestre e vetrine, nuove o esistenti, compatibili con i principali serramenti e infissi.',
       },
       {
-        title: 'Installazione dedicata',
-        text: "Posa con ferramenta rinforzata e sistemi di fissaggio specifici per garantire l'efficacia della protezione.",
+        title: 'Sicurezza senza rinunciare alla luce',
+        text: 'A parità di protezione il vetro resta trasparente: proteggi casa o attività senza sacrificare luminosità e visibilità, a differenza di grate e serrande.',
       },
     ],
+    materials: [
+      'Vetro stratificato antisfondamento (PVB multi-lastra)',
+      'Vetro antiproiettile certificato EN 1063',
+      'Vetrocamera con lastra stratificata di sicurezza',
+      'Vetro extra-chiaro stratificato',
+    ],
     seoDescription:
-      'Vetri blindati antisfondamento e antiproiettile a Casale Monferrato. Classi di resistenza certificate EN 356, installazione professionale.',
-    related: ['stratificati', 'vetrine', 'sostituzione-vetri'],
+      'Vetri blindati antisfondamento e antiproiettile a Casale Monferrato: vetro stratificato di sicurezza per finestre, portefinestre e vetrine. Certificati EN 356 / EN 1063. Sopralluogo gratuito.',
+    related: ['stratificati', 'vetrocamera', 'porte-interne'],
     whenToChoose:
-      'I vetri blindati sono la scelta giusta quando la sicurezza viene prima di tutto: abitazioni al piano terra, vetrine di negozi, uffici con beni o dati sensibili, o semplicemente per dormire sonni tranquilli. A differenza di un’inferriata proteggono senza chiudere la vista e senza rinunciare alla luce. In sopralluogo valutiamo insieme la classe di resistenza più adatta al livello di protezione che cerchi.',
+      'Il vetro blindato è la scelta giusta quando la sicurezza è una priorità concreta: abitazioni al piano terra, ville isolate, uffici, negozi e vetrine esposte, o attività che custodiscono valori. A differenza di inferriate e serrande, il vetro antisfondamento protegge senza chiudere la visuale né togliere luce agli ambienti. Per le finestre e le portefinestre più esposte si può combinare il vetro stratificato di sicurezza con un serramento robusto, ottenendo una porta finestra antisfondamento che resiste ai tentativi di effrazione. Durante il sopralluogo valutiamo il livello di protezione adatto — dall’antisfondamento domestico all’antiproiettile — e la compatibilità con i tuoi infissi.',
     faq: [
       {
-        q: 'Quanto resiste un vetro blindato?',
-        a: 'Dipende dalla classe (da P1A a P8B, norma EN 356): si va dalla resistenza al lancio di oggetti fino a quella contro attacchi ripetuti con corpi contundenti.',
+        q: 'Che differenza c’è tra vetro blindato, antisfondamento e antiproiettile?',
+        a: 'Sono livelli crescenti dello stesso principio, il vetro stratificato di sicurezza. L’antisfondamento (EN 356) resiste a urti e tentativi di effrazione; l’antiproiettile (EN 1063) è dimensionato per fermare colpi d’arma da fuoco. “Blindato” è il termine generico per i vetri ad alta resistenza.',
       },
       {
-        q: 'Si vede che è un vetro blindato?',
-        a: 'No: nonostante lo spessore maggiore mantiene un’ottima trasparenza ed è praticamente indistinguibile da un vetro normale.',
+        q: 'Il vetro antisfondamento si può mettere sulle finestre esistenti?',
+        a: 'Sì, nella maggior parte dei casi sostituiamo il vetro esistente con uno stratificato di sicurezza, verificando che lo spessore sia compatibile con il serramento. Dove serve, consigliamo l’abbinamento con un infisso più robusto.',
       },
       {
-        q: 'Posso montarlo su finestre esistenti?',
-        a: 'Spesso sì, con ferramenta rinforzata. Valutiamo in sopralluogo la compatibilità con il serramento.',
+        q: 'Il vetro blindato è trasparente come un vetro normale?',
+        a: 'Sì. È otticamente trasparente: la protezione arriva dalla stratificazione interna, non da una riduzione della visibilità. Resta luminoso e pulito come un vetro tradizionale.',
       },
       {
-        q: 'Cosa significa vetro antisfondamento?',
-        a: 'È un vetro stratificato multistrato che resiste a urti e tentativi di sfondamento: anche se colpito ripetutamente, le lastre restano unite e l’apertura non cede. Le classi EN 356 (da P1A a P8B) misurano proprio questo livello di resistenza.',
-      },
-      {
-        q: 'Fate anche vetri antiproiettile?',
-        a: 'Sì. Oltre all’antisfondamento (norma EN 356), forniamo vetro antiproiettile certificato EN 1063, dimensionato per fermare colpi d’arma da fuoco. In sopralluogo scegliamo la classe adatta al livello di rischio.',
+        q: 'Conviene il vetro antisfondamento per una casa?',
+        a: 'Per abitazioni esposte — piano terra, ville, tavernette — è una delle protezioni più efficaci in rapporto a costo e impatto estetico: non altera l’aspetto delle finestre e non richiede grate. Valutiamo insieme le aperture più a rischio.',
       },
     ],
   },
