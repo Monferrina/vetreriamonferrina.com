@@ -425,16 +425,20 @@
     const tooltipClose = document.getElementById('chatbot-tooltip-close');
 
     let engine: ChatbotEngine | null = null;
-    async function ensureEngine(): Promise<ChatbotEngine> {
-      if (!engine) {
-        const [mod, flow] = await Promise.all([
-          import('../lib/chatbot-engine'),
-          import('../data/chatbot-flow.json'),
-        ]);
+    let enginePromise: Promise<ChatbotEngine> | null = null;
+    function ensureEngine(): Promise<ChatbotEngine> {
+      // Memoizza la PROMISE (non l'istanza): apri→chiudi→riapri rapido con
+      // l'import in volo non deve creare due engine né due init in parallelo.
+      enginePromise ??= Promise.all([
+        import('../lib/chatbot-engine'),
+        import('../data/chatbot-flow.json'),
+      ]).then(([mod, flow]) => {
         engine = new mod.ChatbotEngine(flow.default as unknown as ChatFlow);
-      }
-      return engine;
+        return engine;
+      });
+      return enginePromise;
     }
+    let initPending = false;
 
     function getStartNode(): string {
       const path = window.location.pathname.replace(/\/$/, '') || '/';
@@ -698,10 +702,14 @@
       document.addEventListener('keydown', chatTrapFocus);
       closeBtn.focus();
 
-      if (messagesArea.children.length === 0) {
-        // Prima apertura: carica engine + flow (import dinamico, poi cache del browser)
+      if (messagesArea.children.length === 0 && !initPending) {
+        // Prima apertura: carica engine + flow (import dinamico, poi cache del
+        // browser). initPending evita il doppio benvenuto se il pannello viene
+        // richiuso e riaperto mentre l'import è ancora in volo.
+        initPending = true;
         void ensureEngine().then(() => {
           requestAnimationFrame(() => {
+            initPending = false;
             const restored = restoreSession();
             if (restored) {
               const history = engine!.getHistory();
