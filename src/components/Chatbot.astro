@@ -378,9 +378,9 @@
 </style>
 
 <script>
-  import type { ChatFlow, ChatOption } from '../lib/chatbot-engine';
-  import { ChatbotEngine } from '../lib/chatbot-engine';
-  import chatFlowData from '../data/chatbot-flow.json';
+  // Engine e decision-tree (≈19KB) caricati con import() alla prima apertura:
+  // fuori dal critical path di ogni pagina, il toggle resta leggero.
+  import type { ChatbotEngine, ChatFlow, ChatOption } from '../lib/chatbot-engine';
 
   let chatbotAbort: AbortController | null = null;
 
@@ -424,8 +424,17 @@
     const tooltip = document.getElementById('chatbot-tooltip');
     const tooltipClose = document.getElementById('chatbot-tooltip-close');
 
-    const flow = chatFlowData as ChatFlow;
-    const engine = new ChatbotEngine(flow);
+    let engine: ChatbotEngine | null = null;
+    async function ensureEngine(): Promise<ChatbotEngine> {
+      if (!engine) {
+        const [mod, flow] = await Promise.all([
+          import('../lib/chatbot-engine'),
+          import('../data/chatbot-flow.json'),
+        ]);
+        engine = new mod.ChatbotEngine(flow.default as unknown as ChatFlow);
+      }
+      return engine;
+    }
 
     function getStartNode(): string {
       const path = window.location.pathname.replace(/\/$/, '') || '/';
@@ -449,7 +458,7 @@
     // --- Session persistence ---
     function saveSession(): void {
       try {
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(engine.getHistory()));
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(engine!.getHistory()));
       } catch {
         // sessionStorage might be unavailable (private mode, quota)
       }
@@ -462,8 +471,8 @@
           const parsed: unknown = JSON.parse(saved);
           // Validate: must be an array of strings
           if (Array.isArray(parsed) && parsed.every((item) => typeof item === 'string')) {
-            engine.restoreHistory(parsed as string[]);
-            return engine.getHistory().length > 0;
+            engine!.restoreHistory(parsed as string[]);
+            return engine!.getHistory().length > 0;
           }
         }
       } catch {
@@ -553,7 +562,7 @@
 
     // --- Navigation ---
     async function showNode(nodeId: string, skipTyping = false): Promise<void> {
-      const node = engine.navigate(nodeId);
+      const node = engine!.navigate(nodeId);
       if (!node) return;
 
       saveSession();
@@ -690,21 +699,24 @@
       closeBtn.focus();
 
       if (messagesArea.children.length === 0) {
-        requestAnimationFrame(() => {
-          const restored = restoreSession();
-          if (restored) {
-            const history = engine.getHistory();
-            const lastNodeId = history[history.length - 1];
-            if (lastNodeId) {
-              const node = engine.getNode(lastNodeId);
-              if (node) {
-                addBotMessage(node.message);
-                if (node.options) renderOptions(node.options);
+        // Prima apertura: carica engine + flow (import dinamico, poi cache del browser)
+        void ensureEngine().then(() => {
+          requestAnimationFrame(() => {
+            const restored = restoreSession();
+            if (restored) {
+              const history = engine!.getHistory();
+              const lastNodeId = history[history.length - 1];
+              if (lastNodeId) {
+                const node = engine!.getNode(lastNodeId);
+                if (node) {
+                  addBotMessage(node.message);
+                  if (node.options) renderOptions(node.options);
+                }
               }
+            } else {
+              showNode(getStartNode());
             }
-          } else {
-            showNode(getStartNode());
-          }
+          });
         });
       }
     }
