@@ -45,11 +45,19 @@ async function passthrough(request: Request, env: Env): Promise<Response> {
   const response = await fetch(originRequest);
   const headers = new Headers(response.headers);
 
-  // Le Location assolute dell'origin (*.vercel.app) non devono trapelare:
-  // riscritte sullo host pubblico richiesto dal client.
+  // Le Location dell'origin (*.vercel.app, o relative) non devono trapelare:
+  // riscritte sullo host pubblico richiesto dal client. Confronto sull'origin
+  // parsato, non startsWith (che matcherebbe anche vercel.app.evil.com).
   const location = headers.get('location');
-  if (location && location.startsWith(ORIGIN)) {
-    headers.set('location', `${url.origin}${location.slice(ORIGIN.length) || '/'}`);
+  if (location) {
+    try {
+      const locUrl = new URL(location, originUrl);
+      if (locUrl.origin === ORIGIN) {
+        headers.set('location', `${url.origin}${locUrl.pathname}${locUrl.search}${locUrl.hash}`);
+      }
+    } catch {
+      // Location non parsabile: lasciata invariata
+    }
   }
 
   // HSTS su ogni risposta in uscita dal worker (Vercel lo mette sulle sue,
