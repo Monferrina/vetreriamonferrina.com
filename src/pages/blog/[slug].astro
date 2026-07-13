@@ -48,9 +48,9 @@ const articleSchema = {
   description: post.description,
   datePublished: post.date,
   author: {
-    '@type': 'Organization',
-    name: 'Vetreria Monferrina',
-    url: 'https://vetreriamonferrina.com',
+    '@type': 'Person',
+    name: post.author ?? 'Giuseppe Fioravanti',
+    url: 'https://vetreriamonferrina.com/chi-siamo',
   },
   publisher: {
     '@type': 'Organization',

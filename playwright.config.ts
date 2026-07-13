@@ -11,6 +11,17 @@ export default defineConfig({
     baseURL: 'http://localhost:4321',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    // Banner cookie gia visto: evita che intercetti i click (chatbot/bottom nav
+    // su mobile). legal.spec fa opt-out per testare il banner stesso.
+    storageState: {
+      cookies: [],
+      origins: [
+        {
+          origin: 'http://localhost:4321',
+          localStorage: [{ name: 'cookie_notice_seen', value: 'true' }],
+        },
+      ],
+    },
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },

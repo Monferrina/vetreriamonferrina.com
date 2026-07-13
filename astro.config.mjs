@@ -4,6 +4,16 @@ import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 
 import sitemap from '@astrojs/sitemap';
+import { blogPosts } from './src/data/blog-posts';
+
+// lastmod solo per i post del blog (date reali) — le altre pagine non hanno una
+// data di modifica affidabile, meglio ometterla che dichiararne una falsa.
+const blogLastmod = new Map(
+  blogPosts.map((p) => [
+    `https://vetreriamonferrina.com/blog/${p.slug}`,
+    new Date(p.date).toISOString(),
+  ])
+);
 
 export default defineConfig({
   output: 'server',
@@ -37,6 +47,11 @@ export default defineConfig({
     sitemap({
       // Esclude la pagina di manutenzione (503 servita dal Worker Cloudflare): non navigabile né indicizzabile.
       filter: (page) => !page.endsWith('/maintenance') && !page.endsWith('/maintenance/'),
+      serialize(item) {
+        const lastmod = blogLastmod.get(item.url.replace(/\/$/, ''));
+        if (lastmod) item.lastmod = lastmod;
+        return item;
+      },
     }),
   ],
 });
