@@ -84,9 +84,8 @@ const serviceSchema = {
     { '@type': 'State', name: 'Liguria' },
     { '@type': 'State', name: "Valle d'Aosta" },
   ],
-  // image volutamente omessa: con #249 le immagini lasciano public/ e l'URL
-  // /images/services/* 404erebbe. Post-merge si riaggiunge puntando alla
-  // variante ottimizzata (stesso ogImageUrl usato per og:image).
+  // Stessa variante ottimizzata (URL assoluto) usata per og:image.
+  ...(ogImageUrl && { image: ogImageUrl }),
 };
 
 // Structured data BreadcrumbList: Home > Servizi > servizio corrente.
