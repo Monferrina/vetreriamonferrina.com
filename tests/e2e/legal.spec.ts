@@ -1,5 +1,9 @@
 import { test, expect } from '@playwright/test';
 
+// Opt-out dallo storageState globale: questi test verificano il banner cookie
+// al primo accesso, quindi partono con localStorage vuoto.
+test.use({ storageState: { cookies: [], origins: [] } });
+
 test("privacy policy e' accessibile e contiene GDPR", async ({ page }) => {
   await page.goto('/privacy');
   await expect(page.locator('main h1')).toContainText(/privacy/i);
