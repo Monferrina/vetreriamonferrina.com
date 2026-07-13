@@ -17,10 +17,16 @@ test('pagina servizi mostra i servizi specifici', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Molature' })).toBeVisible();
 });
 
-test('CTA preventivo ha il parametro servizio', async ({ page }) => {
-  await page.goto('/servizi');
-  const firstCta = page.locator('a[href*="/preventivo?servizio="]').first();
-  await expect(firstCta).toBeVisible();
-  const href = await firstCta.getAttribute('href');
-  expect(href).toMatch(/\/preventivo\?servizio=[\w-]+/);
+// Il link con ?servizio= vive ormai solo nel flusso chatbot; la feature reale
+// è la preselezione del servizio nel form → si testa quella direttamente.
+test('?servizio= preseleziona il servizio nel form preventivo', async ({ page }) => {
+  await page.goto('/preventivo?servizio=box-doccia');
+  const select = page.locator('select[name="serviceType"]');
+  await expect(select).toBeVisible();
+  await expect(select).toHaveValue('box-doccia');
+});
+
+test('pagina servizio ha CTA verso il preventivo', async ({ page }) => {
+  await page.goto('/servizi/box-doccia');
+  await expect(page.locator('main a[href="/preventivo"]').first()).toBeVisible();
 });

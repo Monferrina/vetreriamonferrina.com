@@ -31,8 +31,12 @@ test('contatti ha link email cliccabile', async ({ page }) => {
   await expect(page.locator('main a[href^="mailto:"]')).toBeVisible();
 });
 
-test('contatti ha mappa Google', async ({ page }) => {
+test('contatti ha mappa Google (facade click-to-load)', async ({ page }) => {
   await page.goto('/contatti');
+  // La mappa è dietro una facade: placeholder leggero, iframe solo al click (INP + GDPR)
+  const facade = page.locator('#map-facade');
+  await expect(facade).toBeVisible();
+  await facade.click();
   const mapIframe = page.locator('iframe[src*="google.com/maps"]');
   await expect(mapIframe).toBeVisible();
 });
@@ -146,6 +150,11 @@ test('galleria lightbox si apre al click e si chiude con ESC', async ({ page }) 
 });
 
 test('galleria lightbox navigazione frecce', async ({ page }) => {
+  // Le frecce sono hidden sotto sm (640px): su mobile si naviga con lo swipe
+  const viewport = page.viewportSize();
+  if (viewport && viewport.width < 640) {
+    test.skip();
+  }
   await page.goto('/galleria');
 
   // Open lightbox on first item
