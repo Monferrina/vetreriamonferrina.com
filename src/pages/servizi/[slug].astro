@@ -63,6 +63,32 @@ const faqSchema = hasFaq
     }
   : null;
 
+// Structured data Service: descrive il servizio offerto, con provider collegato
+// (@id) alla LocalBusiness dichiarata nel BaseLayout.
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: service.name,
+  description: details.seoDescription,
+  serviceType: service.name,
+  url: `https://vetreriamonferrina.com/servizi/${slug}`,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'Vetreria Monferrina di Fioravanti Giuseppe',
+    '@id': 'https://vetreriamonferrina.com',
+    url: 'https://vetreriamonferrina.com',
+  },
+  areaServed: [
+    { '@type': 'State', name: 'Piemonte' },
+    { '@type': 'State', name: 'Lombardia' },
+    { '@type': 'State', name: 'Liguria' },
+    { '@type': 'State', name: "Valle d'Aosta" },
+  ],
+  // image volutamente omessa: con #249 le immagini lasciano public/ e l'URL
+  // /images/services/* 404erebbe. Post-merge si riaggiunge puntando alla
+  // variante ottimizzata (stesso ogImageUrl usato per og:image).
+};
+
 // Structured data BreadcrumbList: Home > Servizi > servizio corrente.
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -90,6 +116,7 @@ const breadcrumbSchema = {
   description={details.seoDescription}
   ogImage={ogImageUrl}
 >
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
   <section class="bg-primary py-16 sm:py-20">
