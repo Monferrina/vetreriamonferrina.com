@@ -2,6 +2,10 @@
 // src/components/ProtectedImage.astro
 // Wrapper that prevents casual image saving/downloading.
 // Layers: transparent shield div + CSS disable drag/select + JS context-menu block.
+// I path '/images/gallery|services/*' vengono risolti in asset ottimizzati
+// (srcset responsive via astro:assets); gli altri src (es. URL Sanity) passano invariati.
+import { getImage } from 'astro:assets';
+import { siteImage } from '../lib/site-images';
 
 interface Props {
   src: string;
@@ -26,19 +30,38 @@ const {
   height,
   sizes,
 } = Astro.props;
+
+const asset = siteImage(src);
+let resolvedSrc = src;
+let srcset: string | undefined;
+let resolvedWidth = width;
+let resolvedHeight = height;
+
+if (asset) {
+  const optimized = await getImage({
+    src: asset,
+    widths: [400, 800, 1200].filter((w) => w <= asset.width),
+    format: 'webp',
+  });
+  resolvedSrc = optimized.src;
+  srcset = optimized.srcSet.attribute || undefined;
+  resolvedWidth = width ?? asset.width;
+  resolvedHeight = height ?? asset.height;
+}
 ---
 
 <div class:list={['protected-img-wrap', wrapperClass]}>
   <img
-    src={src}
+    src={resolvedSrc}
+    srcset={srcset}
     alt={alt}
     class:list={['protected-img', imgClass]}
     loading={loading}
     decoding="async"
-    width={width}
-    height={height}
+    width={resolvedWidth}
+    height={resolvedHeight}
     fetchpriority={fetchpriority}
-    sizes={sizes}
+    sizes={srcset ? (sizes ?? '100vw') : sizes}
   />
   <div class="protected-img-shield" aria-hidden="true"></div>
 </div>

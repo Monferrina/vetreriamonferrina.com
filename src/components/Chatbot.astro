@@ -378,9 +378,9 @@
 </style>
 
 <script>
-  import type { ChatFlow, ChatOption } from '../lib/chatbot-engine';
-  import { ChatbotEngine } from '../lib/chatbot-engine';
-  import chatFlowData from '../data/chatbot-flow.json';
+  // Engine e decision-tree (≈19KB) caricati con import() alla prima apertura:
+  // fuori dal critical path di ogni pagina, il toggle resta leggero.
+  import type { ChatbotEngine, ChatFlow, ChatOption } from '../lib/chatbot-engine';
 
   let chatbotAbort: AbortController | null = null;
 
@@ -424,8 +424,21 @@
     const tooltip = document.getElementById('chatbot-tooltip');
     const tooltipClose = document.getElementById('chatbot-tooltip-close');
 
-    const flow = chatFlowData as ChatFlow;
-    const engine = new ChatbotEngine(flow);
+    let engine: ChatbotEngine | null = null;
+    let enginePromise: Promise<ChatbotEngine> | null = null;
+    function ensureEngine(): Promise<ChatbotEngine> {
+      // Memoizza la PROMISE (non l'istanza): apri→chiudi→riapri rapido con
+      // l'import in volo non deve creare due engine né due init in parallelo.
+      enginePromise ??= Promise.all([
+        import('../lib/chatbot-engine'),
+        import('../data/chatbot-flow.json'),
+      ]).then(([mod, flow]) => {
+        engine = new mod.ChatbotEngine(flow.default as unknown as ChatFlow);
+        return engine;
+      });
+      return enginePromise;
+    }
+    let initPending = false;
 
     function getStartNode(): string {
       const path = window.location.pathname.replace(/\/$/, '') || '/';
@@ -449,7 +462,7 @@
     // --- Session persistence ---
     function saveSession(): void {
       try {
-        sessionStorage.setItem(SESSION_KEY, JSON.stringify(engine.getHistory()));
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(engine!.getHistory()));
       } catch {
         // sessionStorage might be unavailable (private mode, quota)
       }
@@ -462,8 +475,8 @@
           const parsed: unknown = JSON.parse(saved);
           // Validate: must be an array of strings
           if (Array.isArray(parsed) && parsed.every((item) => typeof item === 'string')) {
-            engine.restoreHistory(parsed as string[]);
-            return engine.getHistory().length > 0;
+            engine!.restoreHistory(parsed as string[]);
+            return engine!.getHistory().length > 0;
           }
         }
       } catch {
@@ -553,7 +566,7 @@
 
     // --- Navigation ---
     async function showNode(nodeId: string, skipTyping = false): Promise<void> {
-      const node = engine.navigate(nodeId);
+      const node = engine!.navigate(nodeId);
       if (!node) return;
 
       saveSession();
@@ -689,22 +702,29 @@
       document.addEventListener('keydown', chatTrapFocus);
       closeBtn.focus();
 
-      if (messagesArea.children.length === 0) {
-        requestAnimationFrame(() => {
-          const restored = restoreSession();
-          if (restored) {
-            const history = engine.getHistory();
-            const lastNodeId = history[history.length - 1];
-            if (lastNodeId) {
-              const node = engine.getNode(lastNodeId);
-              if (node) {
-                addBotMessage(node.message);
-                if (node.options) renderOptions(node.options);
+      if (messagesArea.children.length === 0 && !initPending) {
+        // Prima apertura: carica engine + flow (import dinamico, poi cache del
+        // browser). initPending evita il doppio benvenuto se il pannello viene
+        // richiuso e riaperto mentre l'import è ancora in volo.
+        initPending = true;
+        void ensureEngine().then(() => {
+          requestAnimationFrame(() => {
+            initPending = false;
+            const restored = restoreSession();
+            if (restored) {
+              const history = engine!.getHistory();
+              const lastNodeId = history[history.length - 1];
+              if (lastNodeId) {
+                const node = engine!.getNode(lastNodeId);
+                if (node) {
+                  addBotMessage(node.message);
+                  if (node.options) renderOptions(node.options);
+                }
               }
+            } else {
+              showNode(getStartNode());
             }
-          } else {
-            showNode(getStartNode());
-          }
+          });
         });
       }
     }

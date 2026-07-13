@@ -32,8 +32,10 @@ blob-report/
 # Build-time generated data (contains API references)
 src/data/place-photos.json
 
-# Graphify knowledge graph
+# Graphify knowledge graph (+ hook husky locali con path assoluti della macchina)
 graphify-out/
+.husky/post-commit
+.husky/post-checkout
 
 # Claude Code local settings
 .claude/settings.local.json
