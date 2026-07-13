@@ -138,11 +138,9 @@ const galleryItems =
     const galleryItems = document.querySelectorAll<HTMLElement>('[data-gallery-item]');
     const grid = galleryItems[0]?.parentElement;
     const liveRegion = document.getElementById('gallery-live');
-    let transitioning = false;
 
     filterButtons.forEach((btn) => {
       btn.addEventListener('click', () => {
-        if (transitioning) return;
         const filter = btn.dataset.filter;
 
         // Update button styles
@@ -154,7 +152,11 @@ const galleryItems =
         });
 
         if (!grid) return;
-        transitioning = true;
+
+        // Click rapidi durante la transizione: cancella le animazioni in corso
+        // (onfinish delle vecchie non scatta → nessuno swap stantio) e riparti.
+        // L'ultimo click vince, mai click scartati.
+        grid.getAnimations().forEach((a) => a.cancel());
 
         // Fade out entire grid, swap content, fade in
         const fadeOut = grid.animate([{ opacity: 1 }, { opacity: 0 }], {
@@ -175,9 +177,7 @@ const galleryItems =
             duration: 250,
             easing: 'ease-out',
             fill: 'forwards',
-          }).onfinish = () => {
-            transitioning = false;
-          };
+          });
 
           if (liveRegion) {
             const label = btn.textContent?.trim() || filter;
@@ -306,6 +306,9 @@ const galleryItems =
       clone.removeAttribute('loading');
       clone.removeAttribute('width');
       clone.removeAttribute('height');
+      // A schermo intero il browser deve ripescare la variante srcset piu grande
+      // (nel grid sizes e ~33vw e selezionerebbe la 400px, sfocata in lightbox).
+      if (clone.srcset) clone.sizes = '100vw';
       clone.style.pointerEvents = 'none';
 
       if (animate) {
