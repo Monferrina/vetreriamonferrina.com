@@ -67,6 +67,14 @@ async function fetchPlaceData() {
     );
   }
 
+  // Zero periods = anomalia (la vetreria ha sempre orari su Google): senza
+  // questa guardia lo schedule diventerebbe 7 giorni "Chiuso" e vincerebbe
+  // sul dato buono committato. Validato QUI, prima di scrivere qualunque file.
+  const periods = place.regularOpeningHours?.periods || [];
+  if (periods.length === 0) {
+    throw new Error('Risposta Places senza regularOpeningHours.periods: run abortito.');
+  }
+
   // --- Reviews ---
   const allReviews = place.reviews || [];
   const positiveReviews = allReviews
@@ -92,14 +100,6 @@ async function fetchPlaceData() {
 
   // --- Opening Hours ---
   const dayNames = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
-  const periods = place.regularOpeningHours?.periods || [];
-
-  // Zero periods = anomalia (la vetreria ha sempre orari su Google): senza
-  // questa guardia lo schedule diventerebbe 7 giorni "Chiuso" e vincerebbe
-  // sul dato buono committato.
-  if (periods.length === 0) {
-    throw new Error('Risposta Places senza regularOpeningHours.periods: run abortito.');
-  }
 
   // Group periods by day
   const dayMap = new Map();
