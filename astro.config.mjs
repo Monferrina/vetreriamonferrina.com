@@ -9,7 +9,10 @@ import { blogPosts } from './src/data/blog-posts';
 // lastmod solo per i post del blog (date reali) — le altre pagine non hanno una
 // data di modifica affidabile, meglio ometterla che dichiararne una falsa.
 const blogLastmod = new Map(
-  blogPosts.map((p) => [`https://vetreriamonferrina.com/blog/${p.slug}`, new Date(p.date).toISOString()])
+  blogPosts.map((p) => [
+    `https://vetreriamonferrina.com/blog/${p.slug}`,
+    new Date(p.date).toISOString(),
+  ])
 );
 
 export default defineConfig({
