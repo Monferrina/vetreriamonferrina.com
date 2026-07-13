@@ -14,6 +14,12 @@ function escapeAttr(value: string): string {
   return value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 }
 
+// Escape per contenuto testuale HTML. L'IP arriva da cf-connecting-ip (header, non
+// passa da sanitizeFormData): va escapato prima di finire nel markup dell'email.
+function escapeHtml(value: string): string {
+  return value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+}
+
 function row(label: string, value: string): string {
   return `
     <tr>
@@ -45,7 +51,7 @@ export function quoteRequestEmail(data: QuoteEmailData): string {
     </table>
 
     <p style="margin:24px 0 0;font-size:11px;color:#a3a3a3;text-align:right;">
-      IP: ${data.ip}
+      IP: ${escapeHtml(data.ip)}
     </p>`;
 
   return baseLayout('Nuova richiesta di preventivo', content);

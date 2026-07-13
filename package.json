@@ -62,6 +62,9 @@
     "vitest": "^4.1.9"
   },
   "overrides": {
+    "@vercel/routing-utils": {
+      "path-to-regexp": "^6.3.0"
+    },
     "@vercel/functions": {
       "ws": "^8.21.0"
     },

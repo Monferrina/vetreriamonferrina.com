@@ -110,7 +110,9 @@ describe('vercel.json security headers', () => {
   test('contiene tutti gli header di sicurezza', () => {
     const vercelPath = resolve(__dirname, '../../vercel.json');
     const vercelConfig = JSON.parse(readFileSync(vercelPath, 'utf-8'));
-    const headers = vercelConfig.headers[0].headers;
+    const headers = vercelConfig.headers.find(
+      (h: { source: string }) => h.source === '/(.*)'
+    ).headers;
     const headerKeys = headers.map((h: { key: string }) => h.key);
 
     expect(headerKeys).toContain('X-Content-Type-Options');
@@ -124,7 +126,9 @@ describe('vercel.json security headers', () => {
   test('CSP consente solo risorse necessarie', () => {
     const vercelPath = resolve(__dirname, '../../vercel.json');
     const vercelConfig = JSON.parse(readFileSync(vercelPath, 'utf-8'));
-    const headers = vercelConfig.headers[0].headers;
+    const headers = vercelConfig.headers.find(
+      (h: { source: string }) => h.source === '/(.*)'
+    ).headers;
     const csp = headers.find((h: { key: string }) => h.key === 'Content-Security-Policy');
 
     expect(csp.value).toContain("default-src 'self'");
@@ -139,7 +143,9 @@ describe('vercel.json security headers', () => {
   test('HSTS con max-age lungo e preload', () => {
     const vercelPath = resolve(__dirname, '../../vercel.json');
     const vercelConfig = JSON.parse(readFileSync(vercelPath, 'utf-8'));
-    const headers = vercelConfig.headers[0].headers;
+    const headers = vercelConfig.headers.find(
+      (h: { source: string }) => h.source === '/(.*)'
+    ).headers;
     const hsts = headers.find((h: { key: string }) => h.key === 'Strict-Transport-Security');
 
     expect(hsts.value).toContain('max-age=63072000');
