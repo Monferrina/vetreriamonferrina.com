@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Fetch all Google Place data for Vetreria Monferrina at build time.
- * Single API call → reviews, opening hours, photos.
+ * Single API call → reviews, opening hours.
  *
  * Usage:
  *   GOOGLE_PLACES_API_KEY=xxx GOOGLE_PLACE_ID=yyy node scripts/fetch-place-data.mjs
@@ -9,14 +9,11 @@
  * Outputs:
  *   - src/data/reviews.json     (recensioni >= 4 stelle)
  *   - src/data/opening-hours.json (orari da Google)
- *   - src/data/place-photos.json  (URLs foto Google)
  */
 
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { pipeline } from 'node:stream/promises';
-import { createWriteStream } from 'node:fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = resolve(__dirname, '../src/data');
@@ -43,7 +40,6 @@ async function fetchPlaceData() {
     'reviews',
     'regularOpeningHours',
     'currentOpeningHours',
-    'photos',
   ].join(',');
 
   console.log('Fetching place data from Places API (New)...');
@@ -61,6 +57,23 @@ async function fetchPlaceData() {
   }
 
   const place = await res.json();
+
+  // Guardie anti-garbage: una risposta 200 ma vuota/parziale (anomalia API)
+  // produrrebbe file plausibili ma sbagliati (es. 7 giorni "Chiuso") che il
+  // cron committerebbe. Meglio fallire il run che scrivere dati falsi.
+  if (typeof place.rating !== 'number' || !place.userRatingCount) {
+    throw new Error(
+      'Risposta Places senza rating/userRatingCount: run abortito, file non toccati.'
+    );
+  }
+
+  // Zero periods = anomalia (la vetreria ha sempre orari su Google): senza
+  // questa guardia lo schedule diventerebbe 7 giorni "Chiuso" e vincerebbe
+  // sul dato buono committato. Validato QUI, prima di scrivere qualunque file.
+  const periods = place.regularOpeningHours?.periods || [];
+  if (periods.length === 0) {
+    throw new Error('Risposta Places senza regularOpeningHours.periods: run abortito.');
+  }
 
   // --- Reviews ---
   const allReviews = place.reviews || [];
@@ -87,7 +100,6 @@ async function fetchPlaceData() {
 
   // --- Opening Hours ---
   const dayNames = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'];
-  const periods = place.regularOpeningHours?.periods || [];
 
   // Group periods by day
   const dayMap = new Map();
@@ -141,46 +153,8 @@ async function fetchPlaceData() {
   );
   console.log(`  Hours: ${schedule.length} time slots`);
 
-  // --- Photos (download locally — no API key in output files) ---
-  const PHOTOS_DIR = resolve(__dirname, '../public/images/google-photos');
-  mkdirSync(PHOTOS_DIR, { recursive: true });
-
-  const rawPhotos = place.photos || [];
-  const photos = [];
-
-  for (let idx = 0; idx < rawPhotos.length; idx++) {
-    const p = rawPhotos[idx];
-    const filename = `place-photo-${idx + 1}.jpg`;
-    const localPath = resolve(PHOTOS_DIR, filename);
-    const photoUrl = `https://places.googleapis.com/v1/${p.name}/media?maxWidthPx=800&key=${API_KEY}`;
-
-    try {
-      const photoRes = await fetch(photoUrl, { redirect: 'follow' });
-      if (photoRes.ok && photoRes.body) {
-        await pipeline(photoRes.body, createWriteStream(localPath));
-        photos.push({
-          src: `/images/google-photos/${filename}`,
-          width: p.widthPx,
-          height: p.heightPx,
-          author: p.authorAttributions?.[0]?.displayName || '',
-        });
-      }
-    } catch {
-      console.warn(`  Warning: failed to download photo ${idx + 1}`);
-    }
-  }
-
-  const photosOutput = {
-    lastUpdated: new Date().toISOString().split('T')[0],
-    placeId: PLACE_ID,
-    photos,
-  };
-
-  writeFileSync(
-    resolve(DATA_DIR, 'place-photos.json'),
-    JSON.stringify(photosOutput, null, 2) + '\n'
-  );
-  console.log(`  Photos: ${photos.length} downloaded to public/images/google-photos/`);
+  // Foto Places rimosse: nessun componente le consumava, il cron riscaricava
+  // e ricommittava ~850KB di JPG morti ogni mese.
 
   console.log(`\nDone! Rating: ${place.rating}/5 (${place.userRatingCount} reviews)`);
 }

@@ -33,7 +33,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/reviews.json src/data/opening-hours.json public/images/google-photos/
+          git add src/data/reviews.json src/data/opening-hours.json
           if git diff --staged --quiet; then
             echo "Nessun aggiornamento"
             exit 0
@@ -44,6 +44,6 @@ jobs:
           git push -u origin "$BRANCH"
           gh pr create \
             --title "chore: aggiorna recensioni Google $(date +%Y-%m-%d)" \
-            --body "Aggiornamento automatico recensioni, orari e foto da Google Places API." \
+            --body "Aggiornamento automatico recensioni e orari da Google Places API." \
             --base main
           # Nessun merge automatico: la PR resta aperta per revisione umana (gate AI Act).

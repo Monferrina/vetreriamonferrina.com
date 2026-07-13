@@ -6,6 +6,8 @@ export interface BlogPost {
   image?: string;
   content: string;
   related?: string[];
+  /** Autore reale del post (E-E-A-T). Default: Giuseppe Fioravanti. */
+  author?: string;
 }
 
 export const blogPosts: BlogPost[] = [
