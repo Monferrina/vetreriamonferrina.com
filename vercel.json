@@ -1,6 +1,8 @@
 {
   "redirects": [
-    { "source": "/sitemap.xml", "destination": "/sitemap-index.xml", "statusCode": 301 }
+    { "source": "/sitemap.xml", "destination": "/sitemap-index.xml", "statusCode": 301 },
+    { "source": "/images/gallery/(.*)", "destination": "/galleria", "statusCode": 301 },
+    { "source": "/images/services/(.*)", "destination": "/servizi", "statusCode": 301 }
   ],
   "headers": [
     {
