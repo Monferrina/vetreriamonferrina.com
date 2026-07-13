@@ -8,6 +8,7 @@ import BottomNav from '../components/BottomNav.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import Chatbot from '../components/Chatbot.astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
+import openingHours from '../data/opening-hours.json';
 
 export interface Props {
   title: string;
@@ -33,6 +34,23 @@ const canonicalURL = Astro.site
   ? new URL(Astro.url.pathname, Astro.site)
   : new URL(Astro.url.pathname, Astro.url.origin);
 
+// openingHoursSpecification derivato da opening-hours.json (unica fonte di verità:
+// stessi period consumati dalla pagina contatti → niente drift schema/pagina).
+const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const specsByTime = new Map<string, { opens: string; closes: string; days: string[] }>();
+for (const p of openingHours.periods) {
+  const key = `${p.open}-${p.close}`;
+  const spec = specsByTime.get(key) ?? { opens: p.open, closes: p.close, days: [] };
+  spec.days.push(DAY_NAMES[p.day % 7]);
+  specsByTime.set(key, spec);
+}
+const openingHoursSpecification = [...specsByTime.values()].map((s) => ({
+  '@type': 'OpeningHoursSpecification',
+  dayOfWeek: s.days,
+  opens: s.opens,
+  closes: s.closes,
+}));
+
 // JSON-LD structured data for LocalBusiness
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -54,25 +72,17 @@ const jsonLd = {
   },
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: 45.134,
-    longitude: 8.449,
+    latitude: 45.1334,
+    longitude: 8.4525,
   },
-  openingHoursSpecification: [
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      opens: '08:00',
-      closes: '12:00',
-    },
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      opens: '13:30',
-      closes: '17:30',
-    },
-  ],
+  openingHoursSpecification,
   priceRange: '$$',
   image: 'https://vetreriamonferrina.com/images/og-image.jpg',
+  logo: 'https://vetreriamonferrina.com/favicon-192x192.png',
+  sameAs: [
+    'https://www.facebook.com/p/Vetreria-Monferrina-100054607712479/',
+    'https://www.instagram.com/vetreriamonferrina/',
+  ],
   areaServed: [
     { '@type': 'State', name: 'Piemonte' },
     { '@type': 'State', name: 'Lombardia' },
