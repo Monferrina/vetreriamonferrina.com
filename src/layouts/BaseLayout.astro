@@ -39,6 +39,11 @@ const canonicalURL = Astro.site
 const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const specsByTime = new Map<string, { opens: string; closes: string; days: string[] }>();
 for (const p of openingHours.periods) {
+  // Period malformato = build failure rumorosa (JSON.stringify dropperebbe
+  // opens/closes undefined producendo schema invalido in silenzio).
+  if (!p.open || !p.close) {
+    throw new Error(`opening-hours.json: period malformato per day ${p.day}`);
+  }
   const key = `${p.open}-${p.close}`;
   const spec = specsByTime.get(key) ?? { opens: p.open, closes: p.close, days: [] };
   spec.days.push(DAY_NAMES[p.day % 7]);
