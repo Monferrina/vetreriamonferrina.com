@@ -71,7 +71,9 @@ const serviceSchema = {
     { '@type': 'State', name: 'Liguria' },
     { '@type': 'State', name: "Valle d'Aosta" },
   ],
-  ...(service.image && { image: `https://vetreriamonferrina.com${service.image}` }),
+  // image volutamente omessa: con #249 le immagini lasciano public/ e l'URL
+  // /images/services/* 404erebbe. Post-merge si riaggiunge puntando alla
+  // variante ottimizzata (stesso ogImageUrl usato per og:image).
 };
 
 // Structured data BreadcrumbList: Home > Servizi > servizio corrente.
