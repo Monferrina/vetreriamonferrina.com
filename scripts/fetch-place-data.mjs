@@ -62,7 +62,9 @@ async function fetchPlaceData() {
   // produrrebbe file plausibili ma sbagliati (es. 7 giorni "Chiuso") che il
   // cron committerebbe. Meglio fallire il run che scrivere dati falsi.
   if (typeof place.rating !== 'number' || !place.userRatingCount) {
-    throw new Error('Risposta Places senza rating/userRatingCount: run abortito, file non toccati.');
+    throw new Error(
+      'Risposta Places senza rating/userRatingCount: run abortito, file non toccati.'
+    );
   }
 
   // --- Reviews ---
