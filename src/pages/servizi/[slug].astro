@@ -1,10 +1,12 @@
 ---
 // src/pages/servizi/[slug].astro — Pagina servizio individuale con caratteristiche, materiali e servizi correlati.
+import { Image, getImage } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CtaSection from '../../components/CtaSection.astro';
 import GlassPanel from '../../components/GlassPanel.astro';
 import { services, type Service } from '../../data/services';
 import { serviceDetails } from '../../data/service-details';
+import { siteImage } from '../../lib/site-images';
 export const prerender = true;
 
 export function getStaticPaths() {
@@ -14,6 +16,17 @@ export function getStaticPaths() {
 const { slug } = Astro.params;
 const service = services.find((s) => s.slug === slug)!;
 const details = serviceDetails[slug!]!;
+
+// Immagine hero risolta da src/assets (srcset + width/height automatici).
+// og:image vuole un URL assoluto → si usa la variante ottimizzata a 1200px.
+const heroImage = service.image ? siteImage(service.image) : undefined;
+const ogImageUrl = heroImage
+  ? new URL(
+      (await getImage({ src: heroImage, width: Math.min(1200, heroImage.width), format: 'webp' }))
+        .src,
+      Astro.site ?? Astro.url.origin
+    ).href
+  : undefined;
 
 // Related services: curated list when defined, otherwise same category (excluding current)
 const related: Service[] = details.related
@@ -75,7 +88,7 @@ const breadcrumbSchema = {
 <BaseLayout
   title={`${service.name} a Casale Monferrato`}
   description={details.seoDescription}
-  ogImage={service.image ? `https://vetreriamonferrina.com${service.image}` : undefined}
+  ogImage={ogImageUrl}
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
@@ -98,13 +111,16 @@ const breadcrumbSchema = {
   <section class="bg-neutral-50 py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       {
-        service.image && (
+        heroImage && (
           <div class="mx-auto mb-12 max-w-sm sm:max-w-md" data-reveal>
-            <img
-              src={service.image}
+            <Image
+              src={heroImage}
               alt={service.description}
               class="w-full rounded-2xl shadow-md"
               loading="eager"
+              fetchpriority="high"
+              widths={[400, 800].filter((w) => w <= heroImage.width)}
+              sizes="(min-width: 640px) 28rem, 24rem"
             />
           </div>
         )

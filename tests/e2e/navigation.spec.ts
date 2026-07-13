@@ -35,7 +35,8 @@ test.describe('Navigazione', () => {
     await expect(footer).toContainText('Cookie Policy');
   });
 
-  test('menu mobile si apre e chiude', async ({ page }) => {
+  // La nav mobile è la BottomNav fissa in basso (il menu hamburger non esiste più).
+  test('bottom nav mobile visibile con i tab principali', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/');
 
@@ -43,43 +44,29 @@ test.describe('Navigazione', () => {
     const desktopNav = page.locator('nav[aria-label="Navigazione principale"]');
     await expect(desktopNav).toBeHidden();
 
-    // Hamburger button should be visible
-    const burger = page.getByRole('button', { name: /apri menu/i });
-    await expect(burger).toBeVisible();
-
-    // Open menu
-    await burger.click();
-    const mobileMenu = page.locator('[data-mobile-menu]');
-    await expect(mobileMenu).toBeVisible();
-
-    // Wait for slide-in transition (300ms) to stabilize before clicking close
-    await page.waitForTimeout(350);
-    const closeBtn = page.getByRole('button', { name: /chiudi menu/i });
-    await closeBtn.click();
-
-    // Wait for close transition
-    await page.waitForTimeout(400);
-    await expect(mobileMenu).toBeHidden();
+    const bottomNav = page.locator('[data-bottom-nav]');
+    await expect(bottomNav).toBeVisible();
+    await expect(bottomNav.getByRole('link', { name: /servizi/i })).toBeVisible();
+    await expect(bottomNav.getByRole('link', { name: /preventivo/i })).toBeVisible();
   });
 
-  test('menu mobile si chiude cliccando overlay', async ({ page }) => {
+  test('bottom nav mobile naviga ai servizi', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/');
 
-    const burger = page.getByRole('button', { name: /apri menu/i });
-    await burger.click();
+    await page
+      .locator('[data-bottom-nav]')
+      .getByRole('link', { name: /servizi/i })
+      .click();
+    await expect(page).toHaveURL(/\/servizi/, { timeout: 10000 });
+  });
 
-    const mobileMenu = page.locator('[data-mobile-menu]');
-    await expect(mobileMenu).toBeVisible();
-
-    // Wait for slide-in transition (300ms) to stabilize
-    await page.waitForTimeout(350);
-
-    // Click overlay to close
-    const overlay = page.locator('[data-menu-overlay]');
-    await overlay.click({ position: { x: 10, y: 10 } });
-
-    await page.waitForTimeout(400);
-    await expect(mobileMenu).toBeHidden();
+  test('bottom nav nascosta su desktop', async ({ page }) => {
+    const viewport = page.viewportSize();
+    if (viewport && viewport.width < 768) {
+      test.skip();
+    }
+    await page.goto('/');
+    await expect(page.locator('[data-bottom-nav]')).toBeHidden();
   });
 });

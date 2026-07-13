@@ -306,6 +306,9 @@ const galleryItems =
       clone.removeAttribute('loading');
       clone.removeAttribute('width');
       clone.removeAttribute('height');
+      // A schermo intero il browser deve ripescare la variante srcset piu grande
+      // (nel grid sizes e ~33vw e selezionerebbe la 400px, sfocata in lightbox).
+      if (clone.srcset) clone.sizes = '100vw';
       clone.style.pointerEvents = 'none';
 
       if (animate) {
