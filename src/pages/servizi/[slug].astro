@@ -50,6 +50,30 @@ const faqSchema = hasFaq
     }
   : null;
 
+// Structured data Service: descrive il servizio offerto, con provider collegato
+// (@id) alla LocalBusiness dichiarata nel BaseLayout.
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: service.name,
+  description: details.seoDescription,
+  serviceType: service.name,
+  url: `https://vetreriamonferrina.com/servizi/${slug}`,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'Vetreria Monferrina di Fioravanti Giuseppe',
+    '@id': 'https://vetreriamonferrina.com',
+    url: 'https://vetreriamonferrina.com',
+  },
+  areaServed: [
+    { '@type': 'State', name: 'Piemonte' },
+    { '@type': 'State', name: 'Lombardia' },
+    { '@type': 'State', name: 'Liguria' },
+    { '@type': 'State', name: "Valle d'Aosta" },
+  ],
+  ...(service.image && { image: `https://vetreriamonferrina.com${service.image}` }),
+};
+
 // Structured data BreadcrumbList: Home > Servizi > servizio corrente.
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -77,6 +101,7 @@ const breadcrumbSchema = {
   description={details.seoDescription}
   ogImage={service.image ? `https://vetreriamonferrina.com${service.image}` : undefined}
 >
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
   <section class="bg-primary py-16 sm:py-20">
