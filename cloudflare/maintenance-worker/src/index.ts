@@ -23,6 +23,19 @@ interface Env {
 
 const ORIGIN = 'https://vetreriamonferrina.vercel.app';
 
+// Security header per le risposte generate DAL worker (503 manutenzione, 502):
+// le risposte dell'origin li hanno già da vercel.json, queste no (finding Low
+// audit 13/7). CSP allineata a quella del sito (la pagina manutenzione usa gli
+// stessi asset/_astro e stili inline).
+const SECURITY_HEADERS: Record<string, string> = {
+  'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Content-Security-Policy':
+    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
+};
+
 async function passthrough(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url);
   const originUrl = `${ORIGIN}${url.pathname}${url.search}`;
@@ -104,6 +117,7 @@ export default {
         return new Response(JSON.stringify({ error: 'Sito in manutenzione. Riprova più tardi.' }), {
           status: 503,
           headers: {
+            ...SECURITY_HEADERS,
             'Content-Type': 'application/json',
             'Retry-After': '3600',
           },
@@ -118,6 +132,7 @@ export default {
       return new Response(maintenanceResponse.body, {
         status: 503,
         headers: {
+          ...SECURITY_HEADERS,
           'Content-Type': 'text/html;charset=UTF-8',
           'Retry-After': '3600',
           'Cache-Control': 'no-store',
@@ -129,6 +144,7 @@ export default {
       return new Response('Servizio temporaneamente non disponibile.', {
         status: 502,
         headers: {
+          ...SECURITY_HEADERS,
           'Content-Type': 'text/plain;charset=UTF-8',
           'Retry-After': '60',
         },
