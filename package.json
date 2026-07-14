@@ -31,7 +31,7 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
     "@astrojs/vercel": "^11.0.0",
-    "@sanity/client": "^7.23.0",
+    "@sanity/client": "^7.23.1",
     "@sanity/image-url": "^2.1.1",
     "@tailwindcss/vite": "^4.3.2",
     "@upstash/ratelimit": "^2.0.8",
