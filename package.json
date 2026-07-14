@@ -48,7 +48,7 @@
     "@playwright/test": "^1.61.1",
     "@vitest/coverage-v8": "^4.1.9",
     "checkly": "^8.12.0",
-    "eslint": "^10.6.0",
+    "eslint": "^10.7.0",
     "eslint-plugin-astro": "^2.1.1",
     "happy-dom": "^20.10.4",
     "husky": "^9.1.7",
