@@ -32,14 +32,40 @@ async function passthrough(request: Request, env: Env): Promise<Response> {
   const originHeaders = new Headers(request.headers);
   originHeaders.set('x-origin-verify', env.ORIGIN_VERIFY_SECRET);
 
+  // redirect: 'manual' — i 3xx dell'origin (trailing-slash, sitemap, vecchi
+  // /images/*) devono arrivare al client come redirect veri. Con 'follow' il
+  // worker li seguiva e li mascherava da 200 (duplicate content + header
+  // sensibili inoltrati alla destinazione, sconsigliato dalla doc CF).
   const originRequest = new Request(originUrl, {
     method: request.method,
     headers: originHeaders,
     body: request.body,
-    redirect: 'follow',
+    redirect: 'manual',
   });
   const response = await fetch(originRequest);
   const headers = new Headers(response.headers);
+
+  // Le Location dell'origin (*.vercel.app, o relative) non devono trapelare:
+  // riscritte sullo host pubblico richiesto dal client. Confronto sull'origin
+  // parsato, non startsWith (che matcherebbe anche vercel.app.evil.com).
+  const location = headers.get('location');
+  if (location) {
+    try {
+      const locUrl = new URL(location, originUrl);
+      if (locUrl.origin === ORIGIN) {
+        headers.set('location', `${url.origin}${locUrl.pathname}${locUrl.search}${locUrl.hash}`);
+      }
+    } catch {
+      // Location non parsabile: lasciata invariata
+    }
+  }
+
+  // HSTS su ogni risposta in uscita dal worker (Vercel lo mette sulle sue,
+  // ma non su tutte le 3xx; copre anche www, segnalato da CF come senza HSTS).
+  if (!headers.has('strict-transport-security')) {
+    headers.set('strict-transport-security', 'max-age=63072000; includeSubDomains; preload');
+  }
+
   headers.set('x-maintenance', 'off');
   headers.set('x-worker', 'active');
   return new Response(response.body, {
