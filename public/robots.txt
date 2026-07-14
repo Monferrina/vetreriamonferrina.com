@@ -1,1 +1,41 @@
+# vetreriamonferrina.com — policy crawler (versionata nel repo, sostituisce il
+# managed robots.txt di Cloudflare disabilitato il 14/7/2026).
+#
+# Strategia AEO: consentiti i motori di ricerca e i bot AI che portano
+# citazioni/risposte con link (search, assistant, indici degli assistenti);
+# bloccati i crawler solo-training/scraping senza valore di citazione.
+# Il Content-Signal dichiara: ricerca sì, AI-input (citazioni) sì, training no.
+
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
+# --- Crawler solo training/dataset: bloccati ---
+User-agent: Bytespider
+Disallow: /
+
+User-agent: TikTokSpider
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: Timpibot
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+# --- Tutti gli altri (Googlebot, Bingbot, ClaudeBot, GPTBot, Google-Extended,
+# --- PerplexityBot, OAI-SearchBot, assistant-fetcher, archivi): consentiti ---
+User-agent: *
+Allow: /
+
 Sitemap: https://vetreriamonferrina.com/sitemap-index.xml
