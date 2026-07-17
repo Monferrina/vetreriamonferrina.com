@@ -13,6 +13,8 @@ describe('isRateLimited', () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    vi.restoreAllMocks();
+    vi.unstubAllEnvs();
   });
 
   it('permette le prime 5 richieste dallo stesso IP', async () => {
@@ -95,6 +97,28 @@ describe('isRateLimited', () => {
     // success === false → limitato; success === true → passa. Nessuna rete: fake iniettato.
     expect(await isRateLimited('9.9.9.9', blocked)).toBe(true);
     expect(await isRateLimited('9.9.9.9', allowed)).toBe(false);
+  });
+
+  // Env stubbata esplicitamente (anche a '') così i test non dipendono da variabili
+  // esportate nella shell (es. UPSTASH_* da `vercel env pull` o NODE_ENV in CI).
+  it('in produzione senza Upstash segnala il fallback in-memory su console.error', async () => {
+    vi.stubEnv('NODE_ENV', 'production');
+    vi.stubEnv('VERCEL_ENV', 'production');
+    vi.stubEnv('UPSTASH_REDIS_REST_URL', '');
+    vi.stubEnv('UPSTASH_REDIS_REST_TOKEN', '');
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    await import('../../src/lib/rate-limit');
+    expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('[rate-limit]'));
+  });
+
+  it('fuori produzione (preview/dev/test) il fallback in-memory è silenzioso', async () => {
+    vi.stubEnv('NODE_ENV', 'test');
+    vi.stubEnv('VERCEL_ENV', '');
+    vi.stubEnv('UPSTASH_REDIS_REST_URL', '');
+    vi.stubEnv('UPSTASH_REDIS_REST_TOKEN', '');
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    await import('../../src/lib/rate-limit');
+    expect(errorSpy).not.toHaveBeenCalled();
   });
 
   it('il cleanup conserva gli IP con timestamp ancora validi (ramo else)', async () => {

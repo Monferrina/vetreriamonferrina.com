@@ -21,6 +21,16 @@ const ratelimit =
       })
     : null;
 
+// Fail-open dichiarato: senza Upstash in produzione il limite torna per-istanza
+// (5/min × N lambda), lo stato pre-#223. Il fallback resta, ma deve urlare nei log.
+// VERCEL_ENV distingue production da preview (NODE_ENV è 'production' su entrambi).
+if (!ratelimit && (process.env.VERCEL_ENV || process.env.NODE_ENV) === 'production') {
+  console.error(
+    '[rate-limit] UPSTASH_REDIS_REST_URL/TOKEN assenti in produzione: ' +
+      'fallback in-memory per-istanza, il limite globale NON è attivo.'
+  );
+}
+
 // --- in-memory fallback ---
 // ponytail: per-instance counter (best-effort). Only the fallback path; production uses
 // Upstash for a global limit. Fine for dev/CI and low-traffic no-Upstash deploys.
