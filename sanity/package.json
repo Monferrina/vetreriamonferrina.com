@@ -8,10 +8,10 @@
     "deploy": "sanity deploy"
   },
   "dependencies": {
-    "@sanity/vision": "^5",
+    "@sanity/vision": "^6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "sanity": "^5",
+    "sanity": "^6",
     "styled-components": "^6.3.11"
   },
   "overrides": {
