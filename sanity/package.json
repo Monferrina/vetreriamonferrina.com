@@ -26,6 +26,14 @@
     },
     "vite": {
       "esbuild": "^0.28.1"
-    }
+    },
+    "minimatch": {
+      "brace-expansion": "^5.0.8"
+    },
+    "adm-zip": "^0.6.0",
+    "dompurify": "^3.4.12",
+    "linkify-it": "^5.0.2",
+    "postcss": "^8.5.18",
+    "tar": "^7.5.21"
   }
 }
