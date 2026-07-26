@@ -53,10 +53,19 @@ export const prerender = true;
             <li>Indirizzo email</li>
             <li>Descrizione del lavoro richiesto</li>
             <li>Misure (quando applicabile)</li>
+            <li>
+              <strong>Indirizzo IP</strong> del dispositivo da cui viene inviata la richiesta, rilevato
+              automaticamente al momento dell'invio
+            </li>
           </ul>
           <p class="mt-3">
-            Non vengono raccolti dati personali con altre modalità. La navigazione sul sito non
-            comporta la raccolta di dati personali dell'utente.
+            L'indirizzo IP non viene chiesto all'utente: serve a limitare il numero di invii dal
+            medesimo dispositivo (protezione anti-abuso del modulo) ed è riportato nell'email di
+            notifica per consentire di riconoscere eventuali invii automatici.
+          </p>
+          <p class="mt-3">
+            Non vengono raccolti dati personali con altre modalità. La semplice navigazione sul sito
+            non comporta la raccolta di dati personali dell'utente.
           </p>
         </div>
 
@@ -97,13 +106,22 @@ export const prerender = true;
         <div>
           <h2 class="font-heading text-2xl text-primary sm:text-3xl">5. Conservazione dei dati</h2>
           <p class="mt-3">
-            I dati personali transitano esclusivamente come email. <strong
-              >Non viene utilizzato alcun database</strong
-            > per la memorizzazione dei dati.
+            I dati del modulo (nome, telefono, email, descrizione, misure) <strong
+              >non vengono salvati in alcun database</strong
+            >: transitano come email e restano nella casella di posta aziendale.
           </p>
           <p class="mt-3">
-            I dati restano nella casella email aziendale per il tempo strettamente necessario alla
-            gestione della richiesta di preventivo, dopodiché vengono eliminati.
+            Li conserviamo per un massimo di <strong>24 mesi</strong> dall'ultimo contatto relativo alla
+            richiesta, dopodiché l'email viene eliminata. Il termine tiene conto del fatto che un preventivo
+            per un lavoro su misura può essere ripreso a distanza di mesi; se preferisci che i tuoi dati
+            siano cancellati prima, è sufficiente scriverci (v. punto 7).
+          </p>
+          <p class="mt-3">
+            L'<strong>indirizzo IP</strong> segue un percorso diverso ed è l'unico dato che tocca un archivio
+            temporaneo: viene registrato per <strong>60 secondi</strong> in un servizio di memoria volatile
+            (<strong>Upstash</strong>), il tempo necessario a contare gli invii ravvicinati dallo
+            stesso dispositivo, e scade automaticamente. Una copia dell'IP resta nell'email di
+            notifica e segue quindi la conservazione dei 24 mesi.
           </p>
         </div>
 
@@ -122,7 +140,15 @@ export const prerender = true;
             (SCC) e il Data Privacy Framework (DPF).
           </p>
           <p class="mt-3">
-            I dati personali non vengono ceduti, venduti o comunicati ad altri soggetti terzi.
+            Nel percorso della richiesta intervengono, come responsabili del trattamento, anche i
+            fornitori che ospitano e proteggono il sito: <strong>Vercel</strong> (esecuzione del modulo),
+            <strong>Cloudflare</strong> (rete e protezione anti-abuso) e <strong>Upstash</strong> (il
+            conteggio temporaneo degli invii descritto al punto 5). Ciascuno tratta i dati solo per far
+            funzionare il servizio, su nostra istruzione.
+          </p>
+          <p class="mt-3">
+            I dati personali non vengono ceduti, venduti o comunicati ad altri soggetti terzi, né
+            utilizzati per addestrare sistemi di intelligenza artificiale.
           </p>
         </div>
 
