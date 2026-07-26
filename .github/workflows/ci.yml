@@ -38,6 +38,11 @@ jobs:
       - name: Security audit
         run: npm audit --omit=dev --audit-level=high
 
+      # Lo Studio e' deployato con "sanity deploy": va gattato come il sito.
+      # npm audit legge dal solo lockfile, quindi non serve installarlo.
+      - name: Security audit (Sanity Studio)
+        run: npm --prefix sanity audit --audit-level=high
+
       - name: Lint
         run: npm run lint
 
