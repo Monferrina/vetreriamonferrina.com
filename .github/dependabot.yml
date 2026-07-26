@@ -1,5 +1,13 @@
+# Dependabot version updates.
+#
+# Nota su cosa copre cosa: gli *alert di sicurezza* girano su tutto il repository
+# a prescindere da questo file — è il motivo per cui arrivavano PR su `sanity/`
+# anche quando qui c'era solo l'ecosistema npm di root. Gli *aggiornamenti di
+# versione*, invece, seguono solo quello che è dichiarato qui: prima di questo
+# file `sanity/` riceveva solo patch di sicurezza e le GitHub Actions nulla.
 version: 2
 updates:
+  # Dipendenze del sito.
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
@@ -7,3 +15,42 @@ updates:
     open-pull-requests-limit: 10
     labels:
       - 'dependencies'
+    # Minor e patch in un'unica PR: meno rumore e meno run CI. Le major restano
+    # separate, perché vanno valutate a mano (v. typescript 6→7).
+    groups:
+      npm-minor-patch:
+        update-types:
+          - minor
+          - patch
+
+  # Studio Sanity: progetto npm separato, con il suo lockfile. È buildato e
+  # deployato con `sanity deploy`, quindi è superficie di produzione a tutti gli
+  # effetti — ed è gattato in CI come il sito.
+  - package-ecosystem: 'npm'
+    directory: '/sanity'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 5
+    labels:
+      - 'dependencies'
+    groups:
+      sanity-minor-patch:
+        update-types:
+          - minor
+          - patch
+
+  # GitHub Actions. Necessario perché i workflow sono pinnati per SHA: senza
+  # questo blocco i pin non verrebbero mai aggiornati e il repo resterebbe
+  # fermo a versioni vecchie per sempre — peggio dei tag mobili.
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 5
+    labels:
+      - 'dependencies'
+      - 'github-actions'
+    groups:
+      actions-all:
+        patterns:
+          - '*'
