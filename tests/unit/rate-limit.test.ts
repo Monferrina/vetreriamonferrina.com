@@ -134,4 +134,15 @@ describe('isRateLimited', () => {
     vi.advanceTimersByTime(31_000);
     expect(await isRateLimited(ip)).toBe(false);
   });
+
+  it('degrada sul fallback in-memory se il limiter globale lancia', async () => {
+    // Upstash irraggiungibile (outage, token invalido, DNS): l'eccezione non deve
+    // risalire fino alla route, o il form preventivo — unico canale di lead — muore.
+    const { isRateLimited } = await import('../../src/lib/rate-limit');
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const rotto = { limit: () => Promise.reject(new Error('UpstashError')) };
+
+    expect(await isRateLimited('7.7.7.7', rotto)).toBe(false);
+    expect(errorSpy).toHaveBeenCalled();
+  });
 });

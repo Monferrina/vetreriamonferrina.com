@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { validateQuoteForm, VALID_SERVICE_TYPES } from '../../src/lib/validation';
+import { sanitizeFormData } from '../../src/lib/sanitize';
 import { services } from '../../src/data/services';
 
 describe('validateQuoteForm', () => {
@@ -16,6 +17,28 @@ describe('validateQuoteForm', () => {
 
   it('dati validi: nessun errore', () => {
     expect(validateQuoteForm(validData)).toHaveLength(0);
+  });
+
+  // I due percorsi sanitize → validate che rompevano in produzione.
+  describe('passando prima da sanitizeFormData (come fa la route)', () => {
+    const sanificato = (over: Record<string, unknown>) =>
+      sanitizeFormData({ ...validData, ...over }) as unknown as typeof validData;
+
+    it('accetta una descrizione italiana di 1900 caratteri piena di apostrofi', () => {
+      // Con l'escape in ingresso ogni ' diventava &#x27; (5 caratteri): il testo
+      // superava i 2000 e l'utente prendeva un 422 mentre il contatore del browser
+      // ne mostrava meno di 2000, senza modo di capire cosa togliere.
+      const description = "Sostituzione dell'anta e dell'infisso. ".repeat(50).slice(0, 1900);
+      expect(description).toHaveLength(1900);
+      expect(validateQuoteForm(sanificato({ description }))).toHaveLength(0);
+    });
+
+    it('un campo numerico produce un 422, non un TypeError', () => {
+      // name: 123 arrivava intatto e validateQuoteForm chiamava .trim() su un numero →
+      // eccezione non gestita → 500 HTML al posto del 422 JSON, e preventivo perso.
+      const errors = validateQuoteForm(sanificato({ name: 123 }));
+      expect(errors.some((e) => e.field === 'name')).toBe(true);
+    });
   });
 
   it('honeypot compilato: bot detected', () => {

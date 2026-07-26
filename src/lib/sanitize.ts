@@ -19,7 +19,12 @@ export function sanitizeString(input: string): string {
     sanitized = sanitized.replaceAll(/javascript:|data:|vbscript:/gi, '');
   }
 
-  return escapeHtml(sanitized);
+  // Niente escapeHtml qui: l'escape appartiene al render, non al confine d'ingresso.
+  // Escapando in ingresso, un apostrofo diventava 5 caratteri (&#x27;) e i limiti di
+  // lunghezza misuravano il testo gonfiato: una descrizione italiana legittima sotto i
+  // 2000 caratteri veniva rifiutata con 422 mentre il contatore del browser ne mostrava
+  // meno di 2000. Chi renderizza escapa (v. email-templates/quote-request.ts).
+  return sanitized;
 }
 
 export function sanitizeEmail(email: string): string {
@@ -38,7 +43,11 @@ export function sanitizeFormData(data: Record<string, unknown>): Record<string, 
     if (DANGEROUS_KEYS.has(key)) continue;
     if (typeof value === 'string') {
       sanitized[key] = key === 'email' ? sanitizeEmail(value) : sanitizeString(value);
-    } else {
+    } else if (typeof value === 'boolean') {
+      // Solo i booleani passano intatti (privacy, honeypot). Numeri, oggetti e null
+      // venivano lasciati passare cosi' com'erano e poi validateQuoteForm chiamava
+      // .trim() su di loro: TypeError non gestito → 500 HTML invece del 422 JSON.
+      // Scartandoli qui, il campo risulta mancante e la validazione risponde 422.
       sanitized[key] = value;
     }
   }

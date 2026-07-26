@@ -75,8 +75,16 @@ export async function isRateLimited(
   limiter: { limit: (id: string) => Promise<{ success: boolean }> } | null = ratelimit
 ): Promise<boolean> {
   if (limiter) {
-    const { success } = await limiter.limit(ip);
-    return !success;
+    // Upstash rilancia (rete, token invalido, outage) e @upstash/ratelimit non cattura:
+    // senza questo catch l'eccezione risaliva fino alla route e abbatteva il form, che e'
+    // l'unico canale di lead del sito. Degradare sul contatore in-memory e' la scelta
+    // giusta: peggiora la precisione del limite, non la disponibilita' del preventivo.
+    try {
+      const { success } = await limiter.limit(ip);
+      return !success;
+    } catch (err) {
+      console.error('[rate-limit] Upstash non raggiungibile, fallback in-memory:', err);
+    }
   }
   return isRateLimitedInMemory(ip);
 }

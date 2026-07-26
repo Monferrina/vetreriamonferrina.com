@@ -10,12 +10,21 @@ interface QuoteEmailData {
   ip: string;
 }
 
+// Escape per valori dentro un attributo. Le virgolette bastano a impedire il breakout,
+// ma angolari inclusi: nessun costo e nessun markup grezzo che sopravvive nell'href.
 function escapeAttr(value: string): string {
-  return value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
 }
 
-// Escape per contenuto testuale HTML. L'IP arriva da cf-connecting-ip (header, non
-// passa da sanitizeFormData): va escapato prima di finire nel markup dell'email.
+// Escape per contenuto testuale HTML. Va applicato a OGNI valore che finisce nel markup:
+// sanitizeFormData toglie i newline e gli schemi pericolosi ma non escapa piu' (l'escape
+// in ingresso gonfiava i conteggi di lunghezza), e l'IP arriva da cf-connecting-ip senza
+// passare di li'. Per gli attributi si usa escapeAttr.
 function escapeHtml(value: string): string {
   return value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 }
@@ -36,17 +45,17 @@ export function quoteRequestEmail(data: QuoteEmailData): string {
   const content = `
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e5e5;border-radius:8px;overflow:hidden;">
       <tbody>
-        ${row('Nome', data.name)}
+        ${row('Nome', escapeHtml(data.name))}
         <tr><td colspan="2" style="border-bottom:1px solid #f5f5f5;"></td></tr>
-        ${row('Telefono', `<a href="tel:${escapeAttr(data.phone)}" style="color:#1b4965;text-decoration:none;">${data.phone}</a>`)}
+        ${row('Telefono', `<a href="tel:${escapeAttr(data.phone)}" style="color:#1b4965;text-decoration:none;">${escapeHtml(data.phone)}</a>`)}
         <tr><td colspan="2" style="border-bottom:1px solid #f5f5f5;"></td></tr>
-        ${row('Email', `<a href="mailto:${escapeAttr(data.email)}" style="color:#1b4965;text-decoration:none;">${data.email}</a>`)}
+        ${row('Email', `<a href="mailto:${escapeAttr(data.email)}" style="color:#1b4965;text-decoration:none;">${escapeHtml(data.email)}</a>`)}
         <tr><td colspan="2" style="border-bottom:1px solid #f5f5f5;"></td></tr>
-        ${row('Tipo di lavoro', data.serviceType)}
+        ${row('Tipo di lavoro', escapeHtml(data.serviceType))}
         <tr><td colspan="2" style="border-bottom:1px solid #f5f5f5;"></td></tr>
-        ${row('Descrizione', data.description)}
+        ${row('Descrizione', escapeHtml(data.description))}
         <tr><td colspan="2" style="border-bottom:1px solid #f5f5f5;"></td></tr>
-        ${row('Misure', data.measurements)}
+        ${row('Misure', escapeHtml(data.measurements))}
       </tbody>
     </table>
 

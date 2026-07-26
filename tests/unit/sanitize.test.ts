@@ -23,14 +23,14 @@ describe('sanitizeString', () => {
     expect(sanitizeString('test\ninjection')).toBe('test injection');
   });
 
-  it('escapa tag HTML con entity encoding', () => {
-    expect(sanitizeString('<script>alert(1)</script>')).toBe(
-      '&lt;script&gt;alert(1)&lt;/script&gt;'
-    );
+  // L'escape HTML e' passato al render (email-templates/quote-request.ts): qui il testo
+  // resta grezzo, cosi' i limiti di lunghezza misurano i caratteri veri e non le entity.
+  it("non escapa piu' i tag: l'escape appartiene al render", () => {
+    expect(sanitizeString('<script>alert(1)</script>')).toBe('<script>alert(1)</script>');
   });
 
-  it('escapa angolari da input misti', () => {
-    expect(sanitizeString('hello <b>world</b>')).toBe('hello &lt;b&gt;world&lt;/b&gt;');
+  it('lascia grezzi gli angolari da input misti', () => {
+    expect(sanitizeString('hello <b>world</b>')).toBe('hello <b>world</b>');
   });
 
   it('rimuove javascript: protocol', () => {
@@ -75,9 +75,8 @@ describe('sanitizeString', () => {
     expect(result).not.toContain('javascript:');
     expect(result).not.toContain('\r');
     expect(result).not.toContain('\n');
-    // HTML entities are used instead of raw angle brackets
-    expect(result).toContain('&lt;');
-    expect(result).toContain('&gt;');
+    // Gli angolari restano grezzi: a neutralizzarli e' l'escape al render.
+    expect(result).toContain('<script>');
   });
 });
 
@@ -120,12 +119,15 @@ describe('sanitizeFormData', () => {
       email: 'TEST@Example.COM',
       privacy: true,
     });
-    expect(result.name).not.toContain('<');
+    expect(result.name).toBe('<script>alert(1)</script>');
     expect(result.email).toBe('test@example.com');
     expect(result.privacy).toBe(true);
   });
 
-  it('preserva valori non-stringa', () => {
+  it('scarta i valori non-stringa e non-booleani', () => {
+    // Numeri, oggetti e null arrivavano intatti a validateQuoteForm, che chiamava .trim()
+    // su di loro: TypeError non gestito → 500 HTML invece del 422 JSON, e lead perso.
+    // Scartandoli qui il campo risulta mancante e la validazione risponde 422.
     const result = sanitizeFormData({
       name: 'Mario',
       count: 42,
@@ -133,9 +135,9 @@ describe('sanitizeFormData', () => {
       nothing: null,
     });
     expect(result.name).toBe('Mario');
-    expect(result.count).toBe(42);
     expect(result.flag).toBe(false);
-    expect(result.nothing).toBe(null);
+    expect(result).not.toHaveProperty('count');
+    expect(result).not.toHaveProperty('nothing');
   });
 
   it('applica sanitizeEmail al campo email', () => {
@@ -150,7 +152,7 @@ describe('sanitizeFormData', () => {
       name: '  Mario <script>  ',
       description: 'test\r\ninjection',
     });
-    expect((result.name as string).includes('<')).toBe(false);
+    expect(result.name).toBe('Mario <script>');
     expect((result.description as string).includes('\r')).toBe(false);
     expect((result.description as string).includes('\n')).toBe(false);
   });
