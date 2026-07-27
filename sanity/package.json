@@ -11,7 +11,7 @@
     "@sanity/vision": "^5",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "sanity": "^5",
+    "sanity": "^6",
     "styled-components": "^6.4.4"
   },
   "overrides": {
