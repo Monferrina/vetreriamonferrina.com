@@ -8,6 +8,17 @@ export interface BlogPost {
   related?: string[];
   /** Autore reale del post (E-E-A-T). Default: Giuseppe Fioravanti. */
   author?: string;
+  /**
+   * true se la stesura è stata assistita dall'IA. Mostra una riga di trasparenza in
+   * fondo al pezzo.
+   *
+   * È una scelta di prudenza, NON un obbligo: l'art. 50(4) dell'AI Act si applica ai
+   * testi «published with the purpose of informing the public on matters of public
+   * interest», e prevede comunque un'esenzione per i contenuti sottoposti a revisione
+   * umana con responsabilità editoriale — che è il caso di ogni articolo qui.
+   * Motivazione estesa: monferrinoAI → docs/ai-act.md §8.2.
+   */
+  aiAssisted?: boolean;
 }
 
 export const blogPosts: BlogPost[] = [

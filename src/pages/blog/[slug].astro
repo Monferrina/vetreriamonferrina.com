@@ -150,6 +150,19 @@ const breadcrumbSchema = {
           }
 
           <article class="blog-content" data-reveal set:html={contentWithIds} />
+
+          {
+            post.aiAssisted && (
+              <p
+                class="mt-8 border-t border-neutral-200 pt-4 text-sm text-neutral-500"
+                data-ai-disclosure
+              >
+                La stesura di questo articolo è stata assistita da strumenti di intelligenza
+                artificiale. I contenuti tecnici sono verificati e approvati da{' '}
+                {post.author ?? 'Giuseppe Fioravanti'} prima della pubblicazione.
+              </p>
+            )
+          }
         </div>
       </div>
     </div>
