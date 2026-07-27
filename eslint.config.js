@@ -8,7 +8,17 @@ export default [
   },
   eslintJs.configs.recommended,
   ...tseslint.configs.recommended,
-  ...eslintPluginAstro.configs.recommended,
+  // eslint-plugin-astro 3: `recommended` è tornata al formato eslintrc, la variante flat
+  // va nominata. E il plugin non collega più da solo @typescript-eslint/parser al
+  // frontmatter — in v2 lo faceva, in v3 lo deve fornire chi lo usa. Senza il blocco
+  // qui sotto ogni pagina .astro con TypeScript nel frontmatter dà "Parsing error".
+  ...eslintPluginAstro.configs['flat/recommended'],
+  {
+    files: ['**/*.astro'],
+    languageOptions: {
+      parserOptions: { parser: tseslint.parser },
+    },
+  },
   {
     files: ['**/*.ts', '**/*.astro'],
     rules: {
