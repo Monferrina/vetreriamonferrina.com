@@ -18,8 +18,12 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = resolve(__dirname, '../src/data');
 
-const API_KEY = process.env.GOOGLE_PLACES_API_KEY;
-const PLACE_ID = process.env.GOOGLE_PLACE_ID;
+// trim(): il secret GOOGLE_PLACE_ID contiene uno spazio finale, finito nell'URL della
+// richiesta e ricopiato in reviews.json a ogni run. Google lo tollera, ma un secret con
+// spazi invisibili è una trappola che prima o poi scatta — e correggere solo il JSON
+// non servirebbe, verrebbe riscritto dal run successivo.
+const API_KEY = process.env.GOOGLE_PLACES_API_KEY?.trim();
+const PLACE_ID = process.env.GOOGLE_PLACE_ID?.trim();
 const MIN_RATING = 4;
 
 if (!API_KEY || !PLACE_ID) {
