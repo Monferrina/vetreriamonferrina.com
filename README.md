@@ -88,7 +88,7 @@ In locale si parte da `.env.example` copiato in `.env.local`. Su Vercel si confi
 | `UPSTASH_REDIS_REST_URL`   | Endpoint REST del database Redis per il rate-limit | [console.upstash.com](https://console.upstash.com) |
 | `UPSTASH_REDIS_REST_TOKEN` | Token REST corrispondente                          | [console.upstash.com](https://console.upstash.com) |
 | `GOOGLE_PLACES_API_KEY`    | Chiave Places API, solo per lo script build-time   | Google Cloud Console                               |
-| `GOOGLE_PLACE_ID`          | Place ID della vetreria, solo per lo script        | Google Cloud Console                               |
+| `GOOGLE_PLACE_ID`          | Place ID della vetreria, solo per lo script        | Place ID Finder o Google Maps                      |
 
 Le due variabili Upstash sono opzionali in locale: se mancano, il rate-limit di `/api/send-quote` ricade su un contatore in memoria.
 

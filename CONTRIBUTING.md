@@ -62,7 +62,7 @@ Il job E2E non è fra i check obbligatori, ma un suo fallimento va comunque riso
 
 ## Convenzioni
 
-I messaggi di commit seguono [Conventional Commits](https://www.conventionalcommits.org/) nella forma `tipo(scope): descrizione`, con la descrizione in italiano. I tipi in uso nella storia del repo sono `feat`, `fix`, `chore`, `docs`, `refactor`, `perf`, `test`, `ci`, oltre a `seo` e `content` per le modifiche ai contenuti. Non c'è un commitlint automatico: la convenzione è tenuta a mano.
+I messaggi di commit seguono [Conventional Commits](https://www.conventionalcommits.org/) nella forma `tipo(scope): descrizione`, con la descrizione in italiano. I tipi in uso nella storia del repo sono `feat`, `fix`, `chore`, `docs`, `refactor`, `perf`, `test`, `ci`, `harden`, oltre a `seo` e `content` per le modifiche ai contenuti. Non c'è un commitlint automatico: la convenzione è tenuta a mano.
 
 I contenuti rivolti agli utenti sono in italiano. Nei commenti al codice convivono italiano e inglese; il criterio è spiegare il perché di una scelta, non ripetere cosa fa la riga sotto.
 

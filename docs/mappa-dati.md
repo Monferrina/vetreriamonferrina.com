@@ -42,12 +42,12 @@ Il contenuto editoriale del sito arriva da Sanity e segue il percorso opposto: e
 | ----------------- | ------------------------- | ------------------------------------------------------- | -------------------------------------------- | ----------------------------- |
 | Cloudflare        | IP, metadati di richiesta | rete globale                                            | log di piattaforma, a breve termine          | DNS, TLS, WAF                 |
 | Vercel            | il payload, in transito   | region impostata sul progetto (dashboard, non nel repo) | nulla di persistente: la funzione non scrive | esecuzione del modulo         |
-| Upstash           | solo l'IP                 | region scelta in dashboard, non dichiarata nel repo     | 60 secondi, scadenza automatica              | contare gli invii ravvicinati |
+| Upstash           | solo l'IP                 | AWS `eu-central-1` (Francoforte), resta in UE           | 60 secondi, scadenza automatica              | contare gli invii ravvicinati |
 | Resend            | l'email completa          | USA, con SCC e Data Privacy Framework                   | secondo la sua retention di invio            | consegna dell'email           |
 | Casella aziendale | l'email completa          | provider di posta                                       | 24 mesi dall'ultimo contatto                 | gestire il preventivo         |
 | Sanity            | nessun dato di cliente    | CDN                                                     | non applicabile                              | contenuti del sito            |
 
-Nel repo di Upstash e Vercel compaiono solo endpoint e token letti da variabili d'ambiente: la region è una configurazione di piattaforma e va verificata nelle rispettive dashboard, non è deducibile dal codice.
+La region Upstash è dichiarata anche ai visitatori, in `src/pages/privacy.astro`: è stata verificata in console il 2026-07-27 e spostare il database fuori dall'UE significherebbe correggere la privacy policy, non solo un'impostazione. La region Vercel invece è solo una configurazione di piattaforma, da verificare in dashboard: nel repo compaiono soltanto endpoint e token letti da variabili d'ambiente.
 
 Non esiste un database applicativo. I dati del modulo esistono come email e nient'altro. L'unica eccezione è l'IP in Upstash, che scade da solo.
 
