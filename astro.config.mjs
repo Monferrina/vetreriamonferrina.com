@@ -21,6 +21,12 @@ export default defineConfig({
   site: 'https://vetreriamonferrina.com',
   trailingSlash: 'never',
 
+  // Il compressore di Astro (default true) elimina anche lo spazio significativo
+  // quando un testo finisce a fine riga e la riga dopo apre un tag inline:
+  // "...da oltre 40 anni.\n<strong>Sopralluoghi" diventava "anni.<strong>Sopralluoghi",
+  // cioe' due parole attaccate nel testo visibile. Succedeva su ogni pagina.
+  compressHTML: false,
+
   env: {
     schema: {
       RESEND_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
