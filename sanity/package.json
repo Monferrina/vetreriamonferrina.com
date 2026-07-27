@@ -8,7 +8,7 @@
     "deploy": "sanity deploy"
   },
   "dependencies": {
-    "@sanity/vision": "^5",
+    "@sanity/vision": "^6",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "sanity": "^5",
