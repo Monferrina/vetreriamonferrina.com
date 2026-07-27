@@ -59,3 +59,10 @@ Thumbs.db
 
 # MCP config locale
 .mcp.json
+
+# Skill installate localmente (npx skills): strumenti dell'ambiente di sviluppo,
+# non artefatti del progetto. Girano con permessi pieni dell'agente: restano fuori
+# dal repo pubblico e si reinstallano con `npx skills add`.
+.agents/
+.claude/skills/
+skills-lock.json
