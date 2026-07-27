@@ -1,8 +1,9 @@
 /**
  * Verifica il sito buildato: (1) ogni link interno risolve a una pagina o asset
- * realmente generato; (2) ogni blocco JSON-LD fa parse ed espone un @type.
+ * realmente generato; (2) ogni blocco JSON-LD fa parse ed espone un @type;
+ * (3) nessuna parola risulta attaccata a un tag inline nel testo visibile.
  * Va eseguito dopo `astro build`, sull'output statico (default: `dist/client`).
- * Esce con codice 1 se trova link rotti o JSON-LD non valido, cosi fa da gate in CI.
+ * Esce con codice 1 se trova un problema, cosi fa da gate in CI.
  *
  * Uso: node scripts/check-internal-links.mjs [dist/client]
  */
@@ -44,9 +45,37 @@ if (!resolves('/') || resolves('/__link_checker_self_test__')) {
   process.exit(1);
 }
 
+// Parole attaccate a un tag inline: e' il danno che fa `compressHTML: true`, che
+// elimina il ritorno a capo fra un testo e il tag della riga dopo invece di
+// ridurlo a uno spazio ("...40 anni." + "<strong>Sopralluoghi" → "anni.Sopralluoghi").
+// Il markup resta HTML valido, quindi non lo prende nessun altro gate: lint, type
+// check, unit, e2e e Lighthouse passano tutti. Lo vede solo chi legge la pagina.
+const INLINE = 'strong|em|b|i|a|span|code|small|abbr';
+const gluedOpenRe = new RegExp(`[\\p{L}\\p{N}.,;:!?]<(?:${INLINE})[\\s>]`, 'gu');
+const gluedCloseRe = new RegExp(`</(?:${INLINE})>[\\p{L}\\p{N}]`, 'gu');
+
+/** Conta i punti in cui una parola tocca l'apertura o la chiusura di un tag inline. */
+function findGlued(html) {
+  const body = html.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, ' ');
+  return [...body.matchAll(gluedOpenRe), ...body.matchAll(gluedCloseRe)].map((m) =>
+    body.slice(Math.max(0, m.index - 30), m.index + m[0].length + 20).replace(/\s+/g, ' ')
+  );
+}
+
+// Auto-validazione: la regex deve distinguere il testo incollato da quello sano,
+// altrimenti darebbe zero su tutto e sembrerebbe che vada bene.
+if (
+  findGlued('<p>anni.<strong>Sopralluoghi</strong></p>').length !== 1 ||
+  findGlued('<p>anni. <strong>Sopralluoghi</strong> in Piemonte.</p>').length !== 0
+) {
+  console.error('✗ Auto-test degli spazi fallito: la regex non distingue i casi.');
+  process.exit(1);
+}
+
 const htmlFiles = collectHtml(ROOT);
 const broken = new Map(); // href -> Set(pagine che lo contengono)
 const badLd = []; // { page, error } per ogni blocco JSON-LD non valido
+const glued = []; // { page, sample } per ogni parola attaccata a un tag inline
 let checked = 0;
 let ldChecked = 0;
 const attrRe = /(?:href|src)\s*=\s*["']([^"']+)["']/gi;
@@ -78,6 +107,9 @@ for (const file of htmlFiles) {
       badLd.push({ page: page || '/', error: e.message });
     }
   }
+  for (const sample of findGlued(html)) {
+    glued.push({ page: page || '/', sample });
+  }
 }
 
 // Auto-validazione: il sito genera JSON-LD su ogni pagina (LocalBusiness nel
@@ -91,8 +123,8 @@ console.log(
   `Pagine: ${htmlFiles.length} | link interni: ${checked} | blocchi JSON-LD: ${ldChecked}`
 );
 
-if (broken.size === 0 && badLd.length === 0) {
-  console.log('✓ Nessun link interno rotto, JSON-LD tutto valido.');
+if (broken.size === 0 && badLd.length === 0 && glued.length === 0) {
+  console.log('✓ Nessun link interno rotto, JSON-LD valido, nessuna parola attaccata.');
   process.exit(0);
 }
 
@@ -111,6 +143,16 @@ if (badLd.length > 0) {
   for (const { page, error } of badLd) {
     console.error(`  ${page}  →  ${error}`);
   }
+}
+
+if (glued.length > 0) {
+  const pagine = new Set(glued.map((g) => g.page)).size;
+  console.error(`✗ ${glued.length} parole attaccate a un tag inline, su ${pagine} pagine:`);
+  for (const { page, sample } of glued.slice(0, 10)) {
+    console.error(`  ${page}  →  ${sample}`);
+  }
+  if (glued.length > 10) console.error(`  (+${glued.length - 10} altri)`);
+  console.error('  Causa tipica: "compressHTML" riattivato in astro.config.mjs.');
 }
 
 process.exit(1);
