@@ -43,9 +43,9 @@ export const blogPosts: BlogPost[] = [
 <h2>Trasparente, satinato o extra-chiaro?</h2>
 <p>La finitura del vetro cambia radicalmente l'aspetto del bagno:</p>
 <ul>
-<li><strong>Trasparente</strong> — massima luminosità, effetto di ampiezza. Ideale per bagni piccoli.</li>
-<li><strong>Satinato</strong> — garantisce privacy mantenendo il passaggio della luce. La soluzione più richiesta per bagni condivisi.</li>
-<li><strong>Extra-chiaro</strong> — vetro trasparente senza la leggera tonalità verde del vetro standard. Resa estetica superiore, perfetto per ambienti di design.</li>
+<li><strong>Trasparente</strong>: massima luminosità, effetto di ampiezza. Ideale per bagni piccoli.</li>
+<li><strong>Satinato</strong>: garantisce privacy mantenendo il passaggio della luce. La soluzione più richiesta per bagni condivisi.</li>
+<li><strong>Extra-chiaro</strong>: vetro trasparente senza la leggera tonalità verde del vetro standard. Resa estetica superiore, perfetto per ambienti di design.</li>
 </ul>
 
 <h2>Il trattamento anticalcare</h2>
@@ -55,9 +55,9 @@ export const blogPosts: BlogPost[] = [
 <h2>Profili e ferramenta</h2>
 <p>La scelta dei profili completa il design del box doccia. Le opzioni più comuni:</p>
 <ul>
-<li><strong>Cromato lucido</strong> — classico e versatile, si abbina a qualsiasi rubinetteria.</li>
-<li><strong>Satinato (acciaio spazzolato)</strong> — moderno, nasconde meglio le impronte.</li>
-<li><strong>Nero opaco</strong> — tendenza contemporanea, ideale per bagni in stile industriale o minimal.</li>
+<li><strong>Cromato lucido</strong>: classico e versatile, si abbina a qualsiasi rubinetteria.</li>
+<li><strong>Satinato (acciaio spazzolato)</strong>: moderno, nasconde meglio le impronte.</li>
+<li><strong>Nero opaco</strong>: tendenza contemporanea, ideale per bagni in stile industriale o minimal.</li>
 </ul>
 
 <h2>Su misura è meglio</h2>
@@ -80,18 +80,18 @@ export const blogPosts: BlogPost[] = [
 <h2>Vetrocamera doppio</h2>
 <p>La configurazione classica prevede due lastre di vetro (tipicamente 4 mm ciascuna) separate da un'intercapedine di 16 mm. I vantaggi principali:</p>
 <ul>
-<li><strong>Isolamento termico</strong> — riduce la dispersione di calore del 50-60% rispetto al vetro singolo.</li>
-<li><strong>Isolamento acustico</strong> — abbattimento significativo del rumore esterno.</li>
-<li><strong>Costo contenuto</strong> — il miglior rapporto qualità-prezzo per la maggior parte delle situazioni.</li>
-<li><strong>Peso ridotto</strong> — compatibile con la maggior parte dei serramenti esistenti.</li>
+<li><strong>Isolamento termico</strong>: riduce la dispersione di calore del 50-60% rispetto al vetro singolo.</li>
+<li><strong>Isolamento acustico</strong>: abbattimento significativo del rumore esterno.</li>
+<li><strong>Costo contenuto</strong>: il miglior rapporto qualità-prezzo per la maggior parte delle situazioni.</li>
+<li><strong>Peso ridotto</strong>: compatibile con la maggior parte dei serramenti esistenti.</li>
 </ul>
 
 <h2>Vetrocamera triplo</h2>
 <p>Tre lastre con due intercapedini offrono prestazioni nettamente superiori:</p>
 <ul>
-<li><strong>Trasmittanza termica (Ug)</strong> — fino a 0,5 W/m²K contro 1,1 W/m²K del doppio. Praticamente il doppio dell'isolamento.</li>
-<li><strong>Comfort superiore</strong> — elimina la sensazione di freddo vicino alle finestre e riduce la condensa.</li>
-<li><strong>Abbattimento acustico</strong> — con lastre di spessori differenziati, il triplo vetro offre il massimo isolamento dal rumore.</li>
+<li><strong>Trasmittanza termica (Ug)</strong>: fino a 0,5 W/m²K contro 1,1 W/m²K del doppio. Praticamente il doppio dell'isolamento.</li>
+<li><strong>Comfort superiore</strong>: elimina la sensazione di freddo vicino alle finestre e riduce la condensa.</li>
+<li><strong>Abbattimento acustico</strong>: con lastre di spessori differenziati, il triplo vetro offre il massimo isolamento dal rumore.</li>
 </ul>
 
 <h2>Quando scegliere il triplo</h2>
@@ -107,8 +107,8 @@ export const blogPosts: BlogPost[] = [
 <h2>Gas argon e trattamento basso-emissivo</h2>
 <p>Due accorgimenti che migliorano le prestazioni di qualsiasi vetrocamera:</p>
 <ul>
-<li><strong>Gas argon</strong> — riempie l'intercapedine al posto dell'aria, migliorando l'isolamento termico del 15-20%.</li>
-<li><strong>Trattamento basso-emissivo</strong> — un rivestimento invisibile sulla superficie interna del vetro che riflette il calore verso l'interno d'inverno e lo respinge d'estate.</li>
+<li><strong>Gas argon</strong>: riempie l'intercapedine al posto dell'aria, migliorando l'isolamento termico del 15-20%.</li>
+<li><strong>Trattamento basso-emissivo</strong>: un rivestimento invisibile sulla superficie interna del vetro che riflette il calore verso l'interno d'inverno e lo respinge d'estate.</li>
 </ul>
 <p>Entrambi sono disponibili sia sul doppio che sul triplo vetrocamera.</p>
 `,
@@ -140,10 +140,10 @@ export const blogPosts: BlogPost[] = [
 <h2>La normativa UNI 7697</h2>
 <p>La norma italiana UNI 7697 stabilisce quando è obbligatorio l'uso di vetro di sicurezza (temperato o stratificato) in base alla posizione e all'altezza dell'installazione. In sintesi:</p>
 <ul>
-<li><strong>Parapetti e balaustre</strong> — vetro stratificato obbligatorio (deve restare in posizione).</li>
-<li><strong>Porte interne</strong> — vetro temperato o stratificato.</li>
-<li><strong>Box doccia</strong> — vetro temperato.</li>
-<li><strong>Pensiline e coperture</strong> — vetro stratificato (protezione da caduta).</li>
+<li><strong>Parapetti e balaustre</strong>: vetro stratificato obbligatorio (deve restare in posizione).</li>
+<li><strong>Porte interne</strong>: vetro temperato o stratificato.</li>
+<li><strong>Box doccia</strong>: vetro temperato.</li>
+<li><strong>Pensiline e coperture</strong>: vetro stratificato (protezione da caduta).</li>
 </ul>
 
 <h2>Quale scegliere</h2>
@@ -166,33 +166,33 @@ export const blogPosts: BlogPost[] = [
 <h2>Box doccia</h2>
 <p>Il <a href="/servizi/box-doccia">box doccia</a> è la superficie vetrata più esposta al calcare. Pochi accorgimenti fanno la differenza:</p>
 <ul>
-<li><strong>Dopo ogni utilizzo</strong> — passate una spatola o un panno asciutto sulle pareti. Trenta secondi che prevengono ore di pulizia.</li>
-<li><strong>Pulizia settimanale</strong> — acqua tiepida con un goccio di detersivo per piatti. Risciacquate e asciugate.</li>
-<li><strong>Calcare ostinato</strong> — una soluzione di acqua e aceto bianco (50/50) lasciata agire 10 minuti, poi risciacquo. Evitate prodotti a base di acido muriatico.</li>
-<li><strong>Guarnizioni</strong> — pulitele regolarmente con uno spazzolino morbido per evitare la formazione di muffa.</li>
+<li><strong>Dopo ogni utilizzo</strong>: passate una spatola o un panno asciutto sulle pareti. Trenta secondi che prevengono ore di pulizia.</li>
+<li><strong>Pulizia settimanale</strong>: acqua tiepida con un goccio di detersivo per piatti. Risciacquate e asciugate.</li>
+<li><strong>Calcare ostinato</strong>: una soluzione di acqua e aceto bianco (50/50) lasciata agire 10 minuti, poi risciacquo. Evitate prodotti a base di acido muriatico.</li>
+<li><strong>Guarnizioni</strong>: pulitele regolarmente con uno spazzolino morbido per evitare la formazione di muffa.</li>
 </ul>
 
 <h2>Vetrate e finestre</h2>
 <p>Le vetrate esterne si sporcano per polvere, pioggia e smog. La pulizia periodica mantiene la trasparenza e l'estetica:</p>
 <ul>
-<li><strong>Frequenza</strong> — ogni 2-3 mesi è sufficiente per la maggior parte delle situazioni.</li>
-<li><strong>Metodo</strong> — acqua con un goccio di detersivo neutro, panno in microfibra o lavavetri professionale. Asciugate con panno asciutto o carta di giornale.</li>
-<li><strong>Da evitare</strong> — spugne abrasive, pagliette, prodotti con ammoniaca su vetri con trattamento basso-emissivo.</li>
+<li><strong>Frequenza</strong>: ogni 2-3 mesi è sufficiente per la maggior parte delle situazioni.</li>
+<li><strong>Metodo</strong>: acqua con un goccio di detersivo neutro, panno in microfibra o lavavetri professionale. Asciugate con panno asciutto o carta di giornale.</li>
+<li><strong>Da evitare</strong>: spugne abrasive, pagliette, prodotti con ammoniaca su vetri con trattamento basso-emissivo.</li>
 </ul>
 
 <h2>Parapetti in vetro</h2>
 <p>I <a href="/servizi/parapetti">parapetti</a> esterni sono esposti alle intemperie ma richiedono poca manutenzione:</p>
 <ul>
-<li><strong>Pulizia</strong> — acqua e detergente neutro, come per le vetrate.</li>
-<li><strong>Fissaggi</strong> — controllate una volta all'anno che pinze, morsetti e viti siano ben serrati.</li>
-<li><strong>Guarnizioni perimetrali</strong> — verificate che non siano deteriorate o staccate.</li>
+<li><strong>Pulizia</strong>: acqua e detergente neutro, come per le vetrate.</li>
+<li><strong>Fissaggi</strong>: controllate una volta all'anno che pinze, morsetti e viti siano ben serrati.</li>
+<li><strong>Guarnizioni perimetrali</strong>: verificate che non siano deteriorate o staccate.</li>
 </ul>
 
 <h2>Specchi</h2>
 <p>Gli <a href="/servizi/specchi">specchi</a> sono più delicati dei vetri normali perché hanno un rivestimento posteriore sensibile all'umidità:</p>
 <ul>
-<li><strong>Pulizia</strong> — spray specifico per specchi o acqua con poco aceto. Spruzzate sul panno, mai direttamente sullo specchio (l'umidità può infiltrarsi dai bordi).</li>
-<li><strong>Bordi</strong> — mantenete asciutti i bordi inferiori, soprattutto negli specchi da bagno. L'umidità persistente può causare macchie scure nel tempo.</li>
+<li><strong>Pulizia</strong>: spray specifico per specchi o acqua con poco aceto. Spruzzate sul panno, mai direttamente sullo specchio (l'umidità può infiltrarsi dai bordi).</li>
+<li><strong>Bordi</strong>: mantenete asciutti i bordi inferiori, soprattutto negli specchi da bagno. L'umidità persistente può causare macchie scure nel tempo.</li>
 </ul>
 
 <h2>Cosa non fare mai</h2>
@@ -224,9 +224,9 @@ export const blogPosts: BlogPost[] = [
 <h2>Calcare ostinato: i rimedi che funzionano davvero</h2>
 <p>Quando la patina è spessa, servono tempo di posa e un pizzico di metodo. Tre soluzioni semplici:</p>
 <ul>
-<li><strong>Aceto bianco caldo</strong> — il più versatile. Imbevi un panno, appoggialo sul vetro come un impacco e lascialo aderire mezz'ora.</li>
-<li><strong>Acido citrico</strong> — un paio di cucchiai in mezzo litro d'acqua calda. Inodore e delicato sul vetro, ottimo sui depositi più tenaci.</li>
-<li><strong>Bicarbonato in pasta</strong> — mescolato con poca acqua, aiuta meccanicamente sulle macchie localizzate. Applica, attendi, poi rimuovi con un panno umido.</li>
+<li><strong>Aceto bianco caldo</strong>: il più versatile. Imbevi un panno, appoggialo sul vetro come un impacco e lascialo aderire mezz'ora.</li>
+<li><strong>Acido citrico</strong>: un paio di cucchiai in mezzo litro d'acqua calda. Inodore e delicato sul vetro, ottimo sui depositi più tenaci.</li>
+<li><strong>Bicarbonato in pasta</strong>: mescolato con poca acqua, aiuta meccanicamente sulle macchie localizzate. Applica, attendi, poi rimuovi con un panno umido.</li>
 </ul>
 <p>Ripeti l'impacco invece di aumentare la forza: è il tempo, non l'attrito, a sciogliere il calcare.</p>
 
@@ -236,9 +236,9 @@ export const blogPosts: BlogPost[] = [
 <h2>Gli errori da evitare</h2>
 <p>Qualche gesto fa più male che bene. Da evitare:</p>
 <ul>
-<li><strong>Spugne abrasive, pagliette e lamette</strong> — graffiano il vetro in modo permanente.</li>
-<li><strong>Prodotti troppo aggressivi su alluminio e silicone</strong> — acidi forti e candeggina rovinano profili e guarnizioni.</li>
-<li><strong>Lasciare asciugare i prodotti al sole</strong> — possono lasciare aloni difficili da togliere.</li>
+<li><strong>Spugne abrasive, pagliette e lamette</strong>: graffiano il vetro in modo permanente.</li>
+<li><strong>Prodotti troppo aggressivi su alluminio e silicone</strong>: acidi forti e candeggina rovinano profili e guarnizioni.</li>
+<li><strong>Lasciare asciugare i prodotti al sole</strong>: possono lasciare aloni difficili da togliere.</li>
 </ul>
 <p>Sul vetro vale sempre la regola della delicatezza: meno aggredisci, più dura nel tempo.</p>
 
@@ -277,9 +277,9 @@ export const blogPosts: BlogPost[] = [
 <h2>Come si lavora correttamente: prima si dimensiona, poi si tempra</h2>
 <p>Con il temperato l'ordine è tutto. Ogni lavorazione va decisa e fatta sulla lastra ancora "cruda":</p>
 <ul>
-<li><strong>Taglio su misura</strong> — la lastra si porta alle dimensioni esatte richieste.</li>
-<li><strong>Lavorazione dei bordi</strong> — molatura a filo lucido o filo grezzo.</li>
-<li><strong>Fori e sagomature</strong> — per cerniere, maniglie, prese e forme particolari.</li>
+<li><strong>Taglio su misura</strong>: la lastra si porta alle dimensioni esatte richieste.</li>
+<li><strong>Lavorazione dei bordi</strong>: molatura a filo lucido o filo grezzo.</li>
+<li><strong>Fori e sagomature</strong>: per cerniere, maniglie, prese e forme particolari.</li>
 </ul>
 <p>Solo quando il pezzo è completo in ogni dettaglio si passa al forno di tempera. Dopo, la lastra è definitiva: non si tocca più.</p>
 
@@ -330,10 +330,10 @@ export const blogPosts: BlogPost[] = [
 <h2>Come montare un box doccia passo passo</h2>
 <p>Una volta verificato tutto, si procede dall'alto verso il basso, partendo dalle parti fisse:</p>
 <ul>
-<li><strong>Profili a parete</strong> — segna i fori con la livella, fora, inserisci i tasselli e fissa i montanti verticali perfettamente a piombo. È da qui che dipende tutta la squadratura.</li>
-<li><strong>Profilo a terra (soglia)</strong> — appoggialo sul piatto seguendo la linea dei montanti. Non forarlo nel piatto doccia: si fissa con il silicone, mai con viti che bucherebbero l'impermeabilizzazione.</li>
-<li><strong>Vetri e ante</strong> — inserisci le lastre fisse nei profili, poi monta le ante (scorrevoli o a battente) e regola cerniere o carrelli finché la chiusura è uniforme e l'anta scorre senza forzare.</li>
-<li><strong>Guarnizioni</strong> — applica le guarnizioni di battuta e quelle paraspruzzi sui bordi delle ante: completano la tenuta e proteggono il vetro.</li>
+<li><strong>Profili a parete</strong>: segna i fori con la livella, fora, inserisci i tasselli e fissa i montanti verticali perfettamente a piombo. È da qui che dipende tutta la squadratura.</li>
+<li><strong>Profilo a terra (soglia)</strong>: appoggialo sul piatto seguendo la linea dei montanti. Non forarlo nel piatto doccia: si fissa con il silicone, mai con viti che bucherebbero l'impermeabilizzazione.</li>
+<li><strong>Vetri e ante</strong>: inserisci le lastre fisse nei profili, poi monta le ante (scorrevoli o a battente) e regola cerniere o carrelli finché la chiusura è uniforme e l'anta scorre senza forzare.</li>
+<li><strong>Guarnizioni</strong>: applica le guarnizioni di battuta e quelle paraspruzzi sui bordi delle ante: completano la tenuta e proteggono il vetro.</li>
 </ul>
 <p>Lavora senza stringere a fondo le viti finché non hai verificato che tutto è in squadra: una volta sicuro, serri e passi alla siliconatura.</p>
 
@@ -348,11 +348,11 @@ export const blogPosts: BlogPost[] = [
 <h2>Gli errori più comuni</h2>
 <p>Quasi tutti i problemi nascono da pochi gesti sbagliati. Da evitare:</p>
 <ul>
-<li><strong>Sigillare anche l'interno del profilo a terra</strong> — intrappola l'acqua e fa nascere la muffa.</li>
-<li><strong>Forare il piatto doccia per fissare la soglia</strong> — rovini l'impermeabilizzazione e crei un'infiltrazione sicura.</li>
-<li><strong>Montare i profili non a piombo</strong> — l'anta non chiude e il box "lavora" male.</li>
-<li><strong>Usare silicone acetico o non specifico</strong> — corrode i profili e dura poco in ambiente umido.</li>
-<li><strong>Usare la doccia prima delle 24 ore</strong> — il silicone non fa presa e si stacca.</li>
+<li><strong>Sigillare anche l'interno del profilo a terra</strong>: intrappola l'acqua e fa nascere la muffa.</li>
+<li><strong>Forare il piatto doccia per fissare la soglia</strong>: rovini l'impermeabilizzazione e crei un'infiltrazione sicura.</li>
+<li><strong>Montare i profili non a piombo</strong>: l'anta non chiude e il box "lavora" male.</li>
+<li><strong>Usare silicone acetico o non specifico</strong>: corrode i profili e dura poco in ambiente umido.</li>
+<li><strong>Usare la doccia prima delle 24 ore</strong>: il silicone non fa presa e si stacca.</li>
 </ul>
 
 <h2>Quando conviene affidarsi a un professionista</h2>
