@@ -22,7 +22,13 @@ describe('disclosure IA sugli articoli', () => {
     'l\'articolo "%s", scritto da una persona, NON dichiara assistenza IA',
     async (slug) => {
       const container = await AstroContainer.create();
-      const html = await container.renderToString(BlogPost, { params: { slug } });
+      // Una pagina con getStaticPaths ha firma `(_props: never) => any`, non
+      // AstroComponentFactory come un componente: il container la renderizza lo stesso,
+      // ma senza questo assestamento `astro check` si ferma (ts2345).
+      const html = await container.renderToString(
+        BlogPost as unknown as Parameters<typeof container.renderToString>[0],
+        { params: { slug } }
+      );
 
       expect(html).not.toContain('data-ai-disclosure');
       expect(html).not.toContain('intelligenza artificiale');
