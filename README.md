@@ -1,4 +1,4 @@
-# Vetreria Monferrina — Sito Web
+# Vetreria Monferrina, sito web
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Monferrina_vetreriamonferrina.com&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Monferrina_vetreriamonferrina.com)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Monferrina_vetreriamonferrina.com&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Monferrina_vetreriamonferrina.com)
@@ -11,7 +11,7 @@
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org)
-[![Sanity](https://img.shields.io/badge/Sanity-v5-F03E2F?logo=sanity&logoColor=white)](https://www.sanity.io)
+[![Sanity](https://img.shields.io/badge/Sanity-v6-F03E2F?logo=sanity&logoColor=white)](https://www.sanity.io)
 [![Resend](https://img.shields.io/badge/Resend-email-000000?logo=resend&logoColor=white)](https://resend.com)
 [![Upstash](https://img.shields.io/badge/Upstash-rate--limit-00E9A3?logo=upstash&logoColor=white)](https://upstash.com)
 
@@ -23,37 +23,36 @@
 
 ---
 
-Sito web ufficiale della **Vetreria Monferrina di Fioravanti Giuseppe** — Casale Monferrato (AL).
+Sito ufficiale della Vetreria Monferrina di Fioravanti Giuseppe, Casale Monferrato (AL).
 
-Sito vetrina con form preventivi, galleria lavori, blog, 16 pagine servizio, FAQ e integrazione Google Places.
+Sito vetrina con form preventivi, galleria lavori, blog, 18 pagine servizio, FAQ e recensioni da Google Places.
 
 **[vetreriamonferrina.com](https://vetreriamonferrina.com)**
 
-## Tech Stack
+## Stack
 
-| Categoria       | Tecnologia                                                       |
-| --------------- | ---------------------------------------------------------------- |
-| Framework       | Astro 7 (prerender + SSR ibrido)                                 |
-| Stile           | Tailwind CSS 4                                                   |
-| CMS             | Sanity v5                                                        |
-| Email           | Resend (account Proton, TLS enforced)                            |
-| Email templates | HTML brand templates (`src/lib/email-templates/`)                |
-| Rate-limit      | Upstash Redis (globale su `/api/send-quote`; fallback in-memory) |
-| Hosting         | Vercel (serverless)                                              |
-| CDN / DNS / WAF | Cloudflare (proxy attivo) + Worker `maintenance-mode`            |
-| Origin lockdown | `x-origin-verify` (Worker → middleware): API solo via CF         |
-| Monitoring      | Checkly (uptime, API, worker, pagine — monitoring-as-code)       |
-| Mappa           | Google Maps Embed API                                            |
-| Meteo           | Open-Meteo (gratis, no API key)                                  |
-| Recensioni      | Google Places API (New) — dati scaricati a build-time            |
-| Test            | Vitest (unit) + Playwright (E2E)                                 |
-| CI              | GitHub Actions                                                   |
-| Code quality    | ESLint + Prettier + Husky + lint-staged + SonarCloud             |
+| Categoria       | Tecnologia                                                  |
+| --------------- | ----------------------------------------------------------- |
+| Framework       | Astro 7 (prerender con SSR ibrido)                          |
+| Stile           | Tailwind CSS 4                                              |
+| CMS             | Sanity v6                                                   |
+| Email           | Resend (account Proton, TLS enforced)                       |
+| Template email  | HTML con i colori del brand (`src/lib/email-templates/`)    |
+| Rate-limit      | Upstash Redis su `/api/send-quote`, con fallback in memoria |
+| Hosting         | Vercel (serverless)                                         |
+| CDN, DNS, WAF   | Cloudflare con proxy attivo e Worker `maintenance-mode`     |
+| Origin lockdown | `x-origin-verify` dal Worker al middleware: API solo via CF |
+| Monitoring      | Checkly, monitoring-as-code su uptime, API, worker e pagine |
+| Mappa           | Google Maps Embed API                                       |
+| Meteo           | Open-Meteo, gratuito e senza API key                        |
+| Recensioni      | Google Places API (New), dati scaricati a build-time        |
+| Test            | Vitest per gli unit, Playwright per gli end-to-end          |
+| CI              | GitHub Actions                                              |
+| Qualità codice  | ESLint, Prettier, Husky, lint-staged, SonarCloud            |
 
 ## Requisiti
 
-- **Node.js** >= 22 (vedi `.nvmrc`)
-- **npm** >= 10
+Node.js 22 o superiore (vedi `.nvmrc`) e npm 10 o superiore.
 
 ## Setup locale
 
@@ -67,7 +66,7 @@ npm install
 # 3. Copia le variabili d'ambiente
 cp .env.example .env.local
 
-# 4. Compila le variabili in .env.local (vedi sezione "Variabili d'ambiente")
+# 4. Compila le variabili in .env.local (vedi "Variabili d'ambiente")
 
 # 5. Avvia il dev server
 npm run dev
@@ -76,24 +75,24 @@ npm run dev
 
 ## Variabili d'ambiente
 
-Copia `.env.example` in `.env.local` per lo sviluppo locale. Su Vercel, configura nelle Settings > Environment Variables.
+In locale si parte da `.env.example` copiato in `.env.local`. Su Vercel si configurano in Settings, Environment Variables.
 
-| Variabile           | Descrizione                                   | Dove ottenerla                                     |
-| ------------------- | --------------------------------------------- | -------------------------------------------------- |
-| `RESEND_API_KEY`    | API key Resend per invio email                | [resend.com/api-keys](https://resend.com/api-keys) |
-| `RESEND_FROM_EMAIL` | Mittente email (dominio verificato su Resend) | Es. `preventivi@vetreriamonferrina.com`            |
-| `VETRERIA_EMAIL`    | Casella che riceve i preventivi               | `vetreriamonferrina@gmail.com`                     |
-| `SANITY_PROJECT_ID` | ID progetto Sanity                            | [sanity.io/manage](https://sanity.io/manage)       |
-| `SANITY_DATASET`    | Dataset Sanity                                | `production`                                       |
-| `SITE_URL`          | URL del sito in produzione                    | `https://vetreriamonferrina.com`                   |
+| Variabile           | Descrizione                               | Dove ottenerla                                     |
+| ------------------- | ----------------------------------------- | -------------------------------------------------- |
+| `RESEND_API_KEY`    | API key Resend per l'invio email          | [resend.com/api-keys](https://resend.com/api-keys) |
+| `RESEND_FROM_EMAIL` | Mittente, su dominio verificato su Resend | Es. `preventivi@vetreriamonferrina.com`            |
+| `VETRERIA_EMAIL`    | Casella che riceve i preventivi           | `vetreriamonferrina@gmail.com`                     |
+| `SANITY_PROJECT_ID` | ID progetto Sanity                        | [sanity.io/manage](https://sanity.io/manage)       |
+| `SANITY_DATASET`    | Dataset Sanity                            | `production`                                       |
+| `SITE_URL`          | URL del sito in produzione                | `https://vetreriamonferrina.com`                   |
 
-**Google Places API** (opzionale, per aggiornare recensioni/orari):
+La chiave Google Places serve solo per rigenerare recensioni e orari, non a runtime:
 
 ```bash
 GOOGLE_PLACES_API_KEY=xxx node scripts/fetch-place-data.mjs
 ```
 
-La chiave Google non serve a runtime — i dati vengono scaricati una tantum e committati come JSON statico.
+I dati vengono scaricati una tantum e committati come JSON statico.
 
 ## Comandi principali
 
@@ -102,7 +101,7 @@ npm run dev          # Dev server (http://localhost:4321)
 npm run build        # Build di produzione
 npm run preview      # Anteprima build locale
 npm test             # Unit test (Vitest)
-npm run test:e2e     # E2E test (Playwright)
+npm run test:e2e     # Test end-to-end (Playwright)
 npm run lint         # ESLint
 npm run format:check # Prettier check
 npm run check        # Type check (astro check)
@@ -110,24 +109,24 @@ npm run check        # Type check (astro check)
 
 ## CI/CD
 
-La pipeline GitHub Actions (`.github/workflows/ci.yml`) esegue automaticamente su push e PR:
+La pipeline in `.github/workflows/ci.yml` gira su ogni push e su ogni PR:
 
-1. **Security audit** — `npm audit` (produzione)
-2. **Lint** — ESLint
-3. **Format** — Prettier
-4. **Type check** — `astro check`
-5. **Tests** — Vitest con coverage (149 test)
-6. **Build** — build di produzione
-7. **SonarCloud** — analisi qualità, sicurezza, coverage
-8. **Lighthouse CI** — soglie: accessibility >= 0.95, best practices >= 0.95, SEO >= 0.9
+1. Security audit con `npm audit` sulle dipendenze di produzione
+2. Lint con ESLint
+3. Format check con Prettier
+4. Type check con `astro check`
+5. Test con Vitest e coverage (179 test)
+6. Build di produzione
+7. SonarCloud per qualità, sicurezza e coverage
+8. Lighthouse CI con soglie: accessibility 0.95, best practices 0.95, SEO 0.9
 
-Workflow aggiuntivi: **CodeQL** (security scanning), **Checkly** (monitoring-as-code: `checkly test` su PR, `checkly deploy` al merge) e **Worker CI** (`wrangler deploy --dry-run` sul `maintenance-worker`, path-filtered).
+Ci sono poi CodeQL per lo scanning di sicurezza, Checkly che valida i monitor sulle PR e li deploya al merge, e la CI del Worker che gira `wrangler deploy --dry-run` sul `maintenance-worker` solo quando cambia quella cartella.
 
-I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
+I pre-commit hook (Husky con lint-staged) eseguono lint e format a ogni commit.
 
-**Deploy:** Vercel deploya automaticamente ad ogni push su `main` (production) e su branch/PR (preview).
+Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro branch o PR ottiene un preview URL.
 
-### Flusso di lavoro (dev → production)
+### Dal branch alla produzione
 
 ```
 1. Crea un branch        →  git checkout -b fix/qualcosa
@@ -135,119 +134,109 @@ I pre-commit hooks (Husky + lint-staged) eseguono lint e format ad ogni commit.
 3. Pusha                 →  git push -u origin fix/qualcosa
 4. Vercel fa preview     →  URL temporaneo per verificare le modifiche
 5. Apri PR su main       →  CI gira (lint, test, build, Lighthouse)
-6. Mergia la PR          →  Vercel deploya in produzione su vetreriamonferrina.com
+6. Mergia la PR          →  Vercel deploya su vetreriamonferrina.com
 ```
 
-- **`main` = produzione (live)** — branch protetto, non si pusha direttamente
-- **Qualsiasi altro branch = dev** — Vercel genera un preview URL per ogni push/PR
-- Le environment variables possono essere diverse tra Production e Preview (Vercel > Settings > Environment Variables)
+`main` è la produzione live ed è protetto: non ci si pusha direttamente. Le variabili d'ambiente possono differire tra Production e Preview, si impostano in Vercel sotto Settings, Environment Variables.
 
 ## Struttura progetto
 
 ```
-├── __checks__/              # Checkly monitoring checks (API, URL, browser)
+├── __checks__/              # Monitor Checkly (API, URL, browser)
 ├── .github/workflows/       # CI pipeline
-├── cloudflare/              # Cloudflare Worker (maintenance mode + origin lockdown, deploy via Git)
+├── cloudflare/              # Worker (maintenance mode + origin lockdown), deploy via Git
 ├── docs/plans/              # Guide tecniche (Google Reviews)
 ├── sanity/                  # Sanity CMS (schemi, config)
 ├── scripts/                 # Script build-time (Google Places, immagini, logo)
 ├── src/
-│   ├── components/          # 18 componenti Astro
-│   ├── data/                # Dati statici JSON (chatbot, recensioni, orari, servizi)
+│   ├── components/          # 19 componenti Astro
+│   ├── data/                # Dati statici (chatbot, recensioni, orari, servizi, blog)
 │   ├── layouts/             # Layout base (dark mode, View Transitions, SEO)
-│   ├── lib/                 # Logica condivisa (Sanity client, validazione, sanitize, rate limit Upstash, email templates)
-│   ├── pages/               # Pagine + API routes
-│   │   ├── api/             # Serverless functions (form preventivo)
-│   │   ├── blog/            # Blog (4 articoli)
-│   │   └── servizi/         # 16 pagine servizio individuali
+│   ├── lib/                 # Logica condivisa (Sanity, validazione, sanitize, rate limit, email)
+│   ├── pages/               # Pagine e API routes
+│   │   ├── api/             # Serverless function del form preventivo
+│   │   ├── blog/            # Blog (8 articoli)
+│   │   └── servizi/         # Pagine servizio generate da [slug].astro
 │   ├── styles/              # Design system CSS (token, dark mode, transizioni)
-│   └── middleware.ts        # Middleware (origin lockdown: valida x-origin-verify in prod)
+│   └── middleware.ts        # Origin lockdown: valida x-origin-verify in produzione
 ├── public/
 │   ├── fonts/               # Font self-hosted (Inter, DM Serif Display)
 │   └── images/              # Immagini ottimizzate WebP
 ├── tests/
-│   ├── unit/                # Test (Vitest — 149 test)
-│   └── e2e/                 # E2E test (Playwright)
-├── astro.config.mjs         # Configurazione Astro
-├── checkly.config.ts        # Configurazione Checkly monitoring
-├── vercel.json              # Security headers (CSP, HSTS, etc.)
+│   ├── unit/                # Unit test (Vitest, 179 test)
+│   └── e2e/                 # Test end-to-end (Playwright)
+├── astro.config.mjs
+├── checkly.config.ts
+├── vercel.json              # Security header (CSP, HSTS, e altri)
 └── package.json
 ```
 
 ## Pagine
 
-| Route                    | Descrizione                                                                  | Rendering |
-| ------------------------ | ---------------------------------------------------------------------------- | --------- |
-| `/`                      | Homepage (hero, servizi, stats, recensioni, partner)                         | SSG       |
-| `/servizi`               | Catalogo servizi con filtri per categoria                                    | SSG       |
-| `/servizi/[slug]`        | 16 pagine servizio individuali                                               | SSG       |
-| `/galleria`              | Galleria masonry con lightbox                                                | SSG       |
-| `/chi-siamo`             | Storia, team, timeline, sezione memoriale                                    | SSG       |
-| `/contatti`              | Mappa Google, orari, meteo, contatti                                         | SSG       |
-| `/preventivo`            | Form richiesta preventivo                                                    | SSG       |
-| `/faq`                   | FAQ (7 categorie, Schema.org FAQPage)                                        | SSG       |
-| `/blog`                  | Blog (4 articoli sempreverdi con TOC)                                        | SSG       |
-| `/blog/[slug]`           | Articoli blog individuali                                                    | SSG       |
-| `/trasporto-e-montaggio` | Servizio trasporto e montaggio                                               | SSG       |
-| `/privacy`               | Informativa privacy                                                          | SSG       |
-| `/cookie`                | Policy cookie                                                                | SSG       |
-| `/api/send-quote`        | API invio email preventivo (Resend, campi obbligatori: descrizione + misure) | SSR       |
-| `/404`                   | Pagina errore 404                                                            | SSG       |
-| `/500`                   | Pagina errore 500                                                            | SSG       |
-| `/maintenance`           | Pagina manutenzione 503                                                      | SSG       |
+| Route                    | Descrizione                                            | Rendering |
+| ------------------------ | ------------------------------------------------------ | --------- |
+| `/`                      | Homepage con hero, servizi, stats, recensioni, partner | SSG       |
+| `/servizi`               | Catalogo servizi con filtri per categoria              | SSG       |
+| `/servizi/[slug]`        | 18 pagine servizio                                     | SSG       |
+| `/galleria`              | Galleria masonry con lightbox                          | SSG       |
+| `/chi-siamo`             | Storia, team, timeline, sezione memoriale              | SSG       |
+| `/contatti`              | Mappa Google, orari, meteo, contatti                   | SSG       |
+| `/preventivo`            | Form richiesta preventivo                              | SSG       |
+| `/faq`                   | FAQ su 7 categorie, con Schema.org FAQPage             | SSG       |
+| `/blog`                  | Blog, 8 articoli sempreverdi con indice                | SSG       |
+| `/blog/[slug]`           | Articoli blog                                          | SSG       |
+| `/trasporto-e-montaggio` | Servizio trasporto e montaggio                         | SSG       |
+| `/privacy`               | Informativa privacy                                    | SSG       |
+| `/cookie`                | Policy cookie                                          | SSG       |
+| `/api/send-quote`        | Invio email preventivo, richiede descrizione e misure  | SSR       |
+| `/404`                   | Pagina errore 404                                      | SSG       |
+| `/500`                   | Pagina errore 500                                      | SSG       |
+| `/maintenance`           | Pagina manutenzione 503                                | SSG       |
 
 ## SEO e dati strutturati
 
-Il sito è ottimizzato per la ricerca locale e organica:
+Il sito punta alla ricerca locale prima che a quella generica.
 
-- **Dati strutturati JSON-LD** — `LocalBusiness` su ogni pagina e `FAQPage` sulle pagine servizio con FAQ (idoneo ai rich snippet di Google).
-- **Pagine servizio ricche** — ogni servizio include intro, caratteristiche, materiali, una sezione "Quando scegliere" e domande frequenti, con località e keyword integrate in modo naturale.
-- **Link interni curati** — la sezione "Servizi correlati" usa abbinamenti curati (non solo per categoria) per distribuire il valore tra le pagine e dare contesto a Google.
-- **Meta description per pagina** ottimizzate per il local (con "Casale Monferrato").
-- **Sitemap** generata automaticamente (`@astrojs/sitemap`); la pagina `/maintenance` è esclusa e in `noindex`.
-- **robots.txt** gestito da Cloudflare con Content Signals: ricerca consentita, crawler di training AI esclusi.
+Ogni pagina espone dati strutturati JSON-LD `LocalBusiness`, e le pagine servizio con FAQ aggiungono `FAQPage`, che è ciò che le rende idonee ai rich snippet di Google. Ogni servizio ha intro, caratteristiche, materiali, una sezione "Quando scegliere" e le domande frequenti, con località e keyword scritte dentro il testo invece che appiccicate.
+
+La sezione "Servizi correlati" usa abbinamenti scelti a mano e non il semplice raggruppamento per categoria, così i link interni danno contesto invece di rumore. Le meta description sono scritte pagina per pagina e includono "Casale Monferrato".
+
+La sitemap è generata da `@astrojs/sitemap` e la pagina `/maintenance` ne è esclusa, oltre a essere in `noindex`. Il `robots.txt` è gestito da Cloudflare con i Content Signals: la ricerca è consentita, i crawler di training AI no.
 
 ## Infrastruttura
 
 ### Vercel
 
-Il sito è deployato su Vercel con adapter `@astrojs/vercel`. Le pagine statiche (SSG) sono pre-renderizzate, l'API route `/api/send-quote` è una serverless function.
-
-**Environment variables:** configurare su Vercel > Settings > Environment Variables (Production + Preview).
+Il sito gira con l'adapter `@astrojs/vercel`. Le pagine sono pre-renderizzate, mentre `/api/send-quote` è una serverless function. Le variabili d'ambiente si configurano su Vercel per Production e Preview.
 
 ### Cloudflare
 
-Il dominio `vetreriamonferrina.com` è gestito su Cloudflare (piano Free) con proxy attivo (nuvoletta arancione).
+Il dominio è su Cloudflare, piano Free, con proxy attivo.
 
-| Configurazione | Dettaglio                                                                                   |
-| -------------- | ------------------------------------------------------------------------------------------- |
-| DNS            | A → `76.76.21.21` + CNAME www → `cname.vercel-dns.com` (Proxied)                            |
-| SSL/TLS        | Full (Strict)                                                                               |
-| HSTS           | 2 anni (max-age 63072000), includeSubDomains, preload                                       |
-| WAF            | Bot Fight Mode + AI Bot Blocking                                                            |
-| Cache          | Asset statici 1 anno (`/_astro/`, `.webp`, `.woff2`)                                        |
-| Analytics      | Web Analytics (RUM, zero cookie)                                                            |
-| Rocket Loader  | **OFF** (interferisce con Astro)                                                            |
-| Worker         | `maintenance-mode` (toggle da dashboard) + origin lockdown; deploy via Git (Workers Builds) |
+| Configurazione | Dettaglio                                                                               |
+| -------------- | --------------------------------------------------------------------------------------- |
+| DNS            | A verso `76.76.21.21` e CNAME www verso `cname.vercel-dns.com`, entrambi proxied        |
+| SSL/TLS        | Full (Strict)                                                                           |
+| HSTS           | 2 anni (max-age 63072000), includeSubDomains, preload                                   |
+| WAF            | Bot Fight Mode e AI Bot Blocking                                                        |
+| Cache          | Asset statici 1 anno (`/_astro/`, `.webp`, `.woff2`)                                    |
+| Analytics      | Web Analytics (RUM, zero cookie)                                                        |
+| Rocket Loader  | Disattivato, interferisce con Astro                                                     |
+| Worker         | `maintenance-mode` con toggle da dashboard e origin lockdown, deploy via Workers Builds |
 
-Il Worker `maintenance-mode` (`cloudflare/maintenance-worker/`) è **collegato a GitHub** (Cloudflare Workers Builds): ogni push su `main` che tocca la sua cartella fa build + deploy automatici. `keep_vars = true` nel `wrangler.toml` preserva le variabili di dashboard (es. `MAINTENANCE_ENABLED`) a ogni deploy; i secret non vengono mai toccati.
+Il Worker in `cloudflare/maintenance-worker/` è collegato a GitHub: ogni push su `main` che tocca quella cartella fa build e deploy da solo. `keep_vars = true` nel `wrangler.toml` preserva le variabili impostate da dashboard, come `MAINTENANCE_ENABLED`, e i secret non vengono mai toccati.
 
 ### Origin lockdown
 
-L'URL `*.vercel.app` è pubblico e bypasserebbe WAF + rate-limit di Cloudflare. Per chiuderlo sull'**API preventivi** (il rischio reale: spam/escalation), un handshake a segreto condiviso:
+L'URL `*.vercel.app` è pubblico e bypasserebbe WAF e rate-limit di Cloudflare. Per chiuderlo sull'API preventivi, che è il rischio concreto fra spam ed escalation, c'è un handshake a segreto condiviso: il Worker timbra l'header `x-origin-verify` (da `ORIGIN_VERIFY_SECRET`) su ogni richiesta verso l'origin, e il middleware in `src/middleware.ts` risponde `403` in produzione a chi non ce l'ha.
 
-- il **Worker** timbra l'header segreto `x-origin-verify` (`ORIGIN_VERIFY_SECRET`) su ogni richiesta verso l'origin;
-- il **middleware** (`src/middleware.ts`), in produzione, risponde `403` alle richieste prive dell'header valido. Con le pagine `prerender=true` gira solo sulle rotte SSR (oggi `/api/send-quote`). **Fail-open** se il segreto non è configurato.
+Con le pagine a `prerender=true` il middleware gira solo sulle rotte SSR, che oggi è solo `/api/send-quote`. Se il segreto non è configurato il comportamento è fail-open, per non spegnere il form in caso di errore di configurazione.
 
-Il segreto vive in 3 posti con lo stesso valore: Worker secret (CF), env Vercel (Production), env Checkly (per il monitor API). Chi colpisce `*.vercel.app/api/send-quote` diretto → `403`.
+Il segreto vive in tre posti con lo stesso valore: secret del Worker su Cloudflare, env di Vercel in Production, env di Checkly per il monitor dell'API. Chi colpisce `*.vercel.app/api/send-quote` direttamente riceve `403`.
 
 ### Resend
 
-Per l'invio email dal form preventivo. Account su `giuseppefioravanti@proton.me`. Il dominio mittente (`vetreriamonferrina.com`) è verificato su Resend con record DNS (MX, SPF, DKIM). TLS enforced, click/open tracking disattivati.
-
-Le email usano template HTML professionali con colori brand (`src/lib/email-templates/`).
-
-### DNS Email (Cloudflare)
+Gestisce l'invio email dal form preventivo, su account `giuseppefioravanti@proton.me`. Il dominio mittente è verificato con record DNS (MX, SPF, DKIM), il TLS è enforced e il tracking di click e aperture è disattivato. Le email usano i template HTML in `src/lib/email-templates/`.
 
 | Record | Nome                | Valore                                                            |
 | ------ | ------------------- | ----------------------------------------------------------------- |
@@ -256,23 +245,21 @@ Le email usano template HTML professionali con colori brand (`src/lib/email-temp
 | TXT    | `send`              | `v=spf1 include:amazonses.com ~all`                               |
 | TXT    | `_dmarc`            | `v=DMARC1; p=quarantine; rua=mailto:giuseppefioravanti@proton.me` |
 
-### Checkly (Monitoring)
+### Checkly
 
-Monitoring-as-code su una sola location (`eu-central-1`, per rientrare nel free tier):
+Monitoring-as-code su una sola location (`eu-central-1`) per rientrare nel free tier:
 
-- **Homepage Uptime** — URL monitor (10 min), status 200
-- **Send Quote API** — POST `dryRun` (30 min, non invia email), status 200; passa `x-origin-verify` per superare l'origin lockdown
-- **Cloudflare Worker Active** — verifica header `x-worker`/`x-maintenance` (6h)
-- **Pagine chiave + sitemap** — status 200 (6h)
-- **Homepage Browser** — Playwright, titolo + rendering (24h)
+- Homepage uptime, URL monitor ogni 10 minuti, attende 200
+- Send Quote API, POST in `dryRun` ogni 30 minuti che non invia email, e passa `x-origin-verify` per superare l'origin lockdown
+- Cloudflare Worker attivo, verifica gli header `x-worker` e `x-maintenance` ogni 6 ore
+- Pagine chiave e sitemap, status 200 ogni 6 ore
+- Homepage browser, Playwright su titolo e rendering, una volta al giorno
 
-Configurazione in `checkly.config.ts` e `__checks__/`; deploy via CI (`checkly deploy`) al merge in `main`. Alert su email Proton. Integrazioni attive: Vercel + GitHub.
+La configurazione sta in `checkly.config.ts` e `__checks__/`, il deploy avviene in CI al merge su `main`. Gli alert vanno sulla casella Proton, con integrazioni attive verso Vercel e GitHub.
 
 ### Sanity
 
-CMS headless per contenuti dinamici (foto famiglia, orari, testi pagina Chi Siamo). Lo studio Sanity e in `sanity/`.
-
-**Studio in produzione:** [vetreriamonferrina.sanity.studio](https://vetreriamonferrina.sanity.studio/)
+CMS headless per i contenuti che cambiano senza deploy: foto di famiglia, orari, testi della pagina Chi Siamo. Lo studio è in `sanity/` e in produzione sta su [vetreriamonferrina.sanity.studio](https://vetreriamonferrina.sanity.studio/).
 
 ```bash
 # Dev locale (opzionale)
@@ -280,44 +267,33 @@ cd sanity && npm install && npm run dev
 # → http://localhost:3333
 ```
 
-## Aggiornare dati Google
+Il deploy dello studio è manuale, quindi un merge su `main` non lo tocca.
 
-Recensioni, orari e foto vengono scaricati da Google Places API e salvati come JSON statico.
+## Aggiornare i dati Google
+
+Recensioni, orari e foto arrivano da Google Places API e vengono salvati come JSON statico.
 
 ```bash
 GOOGLE_PLACES_API_KEY=xxx node scripts/fetch-place-data.mjs
 ```
 
-Genera: `src/data/reviews.json`, `src/data/opening-hours.json` + foto in `public/images/google-photos/`.
+Lo script genera `src/data/reviews.json`, `src/data/opening-hours.json` e le foto in `public/images/google-photos/`. La guida completa è in `docs/plans/google-reviews-setup.md`.
 
-Guida completa: `docs/plans/google-reviews-setup.md`
-
-**Sicurezza:** la chiave Google non va mai committata. Limitarla a "Places API" e "Places API (New)" nella Google Cloud Console.
+La chiave non va mai committata e va limitata a "Places API" e "Places API (New)" nella Google Cloud Console.
 
 ## Manutenzione
 
-### Attivare la manutenzione
+Per attivare la modalità manutenzione si va su [Cloudflare Dashboard](https://dash.cloudflare.com), Workers & Pages, `maintenance-mode`, poi Settings, Variables and Secrets, e si porta `MAINTENANCE_ENABLED` a `true`. L'effetto è immediato e non serve alcun deploy. Per disattivarla si rimette a `false`, stessa pagina.
 
-1. Andare su [Cloudflare Dashboard](https://dash.cloudflare.com) → Workers & Pages → `maintenance-mode`
-2. Settings → Variables and Secrets → impostare `MAINTENANCE_ENABLED` a `true`
-3. Effetto immediato, nessun deploy necessario
-
-### Disattivare la manutenzione
-
-1. Stessa pagina, impostare `MAINTENANCE_ENABLED` a `false`
-2. Effetto immediato
-
-### Come funziona
-
-Un [Cloudflare Worker](https://developers.cloudflare.com/workers/) intercetta tutte le richieste **prima** che arrivino a Vercel. Quando la manutenzione è attiva, il worker recupera la pagina `/maintenance` da Vercel e la serve con status 503. Quando è disattiva, il worker fa un semplice passthrough al sito. Il codice del worker è in `cloudflare/maintenance-worker/`.
+Sotto c'è un [Cloudflare Worker](https://developers.cloudflare.com/workers/) che intercetta le richieste prima che arrivino a Vercel. Con la manutenzione attiva recupera la pagina `/maintenance` da Vercel e la serve con status 503; altrimenti fa da semplice passthrough. Il codice sta in `cloudflare/maintenance-worker/`.
 
 ## Documentazione tecnica
 
-- `docs/plans/google-reviews-setup.md` — Guida Google Places API
-- `docs/plans/architecture.drawio` — Diagramma architettura (draw.io)
+- `docs/plans/google-reviews-setup.md`, guida a Google Places API
+- `docs/plans/architecture.drawio`, diagramma architettura per draw.io
 
 ## Licenza
 
-Progetto proprietario — Vetreria Monferrina di Fioravanti Giuseppe. Tutti i diritti riservati.
+Progetto proprietario, Vetreria Monferrina di Fioravanti Giuseppe. Tutti i diritti riservati.
 
 Sviluppato da [Marco Bellingeri](https://github.com/MK023).
