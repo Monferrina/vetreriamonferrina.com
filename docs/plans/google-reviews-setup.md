@@ -1,182 +1,122 @@
-# Google Places — Guida Configurazione
+# Google Places, recensioni e orari
 
-> Questa guida spiega come collegare i dati Google (recensioni, orari, foto)
-> alla Vetreria Monferrina. Tutto viene scaricato a build-time.
+Recensioni e orari di apertura arrivano da Google Places API (New) e finiscono nel repo come JSON statico. Il sito non chiama Google a runtime: legge i file committati.
 
-## Soglie consigliate (IMPORTANTE)
+Il setup descritto nella sezione "Configurazione una tantum" è già stato fatto (progetto Google Cloud, chiave API, Place ID nei secret, workflow schedulato). Resta documentato per poterlo rifare o verificare, non è una lista di cose da fare.
 
-| Azione                 | Dove in Google Cloud Console   | Valore             |
-| ---------------------- | ------------------------------ | ------------------ |
-| Quota Places API (New) | IAM e amministrazione → Quote  | 50 req/giorno      |
-| Quota Places API       | IAM e amministrazione → Quote  | 50 req/giorno      |
-| Budget alert           | Fatturazione → Budget e avvisi | Attivare notifiche |
+## Lo script
 
-Queste soglie proteggono da usi accidentali o abusi. Docs: https://docs.cloud.google.com/docs/quotas/view-manage
+Un solo script, `scripts/fetch-place-data.mjs`, una sola chiamata API.
 
----
+| Voce                | Valore                                                                                              |
+| ------------------- | --------------------------------------------------------------------------------------------------- |
+| Variabili richieste | `GOOGLE_PLACES_API_KEY` e `GOOGLE_PLACE_ID`, entrambe obbligatorie                                  |
+| Endpoint            | `GET https://places.googleapis.com/v1/places/{placeId}`                                             |
+| Autenticazione      | header `X-Goog-Api-Key` e `X-Goog-FieldMask`                                                        |
+| Campi richiesti     | `displayName`, `rating`, `userRatingCount`, `reviews`, `regularOpeningHours`, `currentOpeningHours` |
+| Filtro recensioni   | rating maggiore o uguale a 4 e testo non vuoto (`MIN_RATING = 4`)                                   |
+| File scritti        | `src/data/reviews.json` e `src/data/opening-hours.json`                                             |
 
-## Step 1: Creare un progetto Google Cloud
+Non scarica foto e non scrive altri file. Le foto Places sono state rimosse perché nessun componente le consumava e il cron ricommittava immagini morte a ogni run. In `.gitignore` resta la voce `src/data/place-photos.json`, residuo di quella versione.
 
-1. Vai su [Google Cloud Console](https://console.cloud.google.com/)
-2. Clicca **"Crea progetto"** (o "Select a project" → "New Project")
-3. Nome progetto: `vetreria-monferrina` (qualsiasi nome va bene)
-4. Clicca **"Crea"**
+I nomi degli autori sono abbreviati prima di essere scritti: "Mario Rossi" diventa "Mario R.". L'API restituisce al massimo 5 recensioni per richiesta, mentre rating complessivo e numero totale di recensioni sono sempre quelli aggiornati.
 
-## Step 2: Abilitare le API
+Lo script fallisce senza toccare i file se la risposta arriva senza `rating`, senza `userRatingCount` o senza `regularOpeningHours.periods`. Una risposta 200 ma vuota produrrebbe file plausibili e sbagliati, per esempio sette giorni "Chiuso", che il cron committerebbe.
 
-1. Nel progetto appena creato, vai su **API e servizi → Libreria**
-2. Cerca e abilita **"Places API (New)"** — versione moderna, singola chiamata per tutto
-3. Cerca e abilita **"Places API"** — versione legacy (backup)
-
-## Step 3: Creare una API Key
-
-1. Vai su **API e servizi → Credenziali**
-2. Clicca **"+ Crea credenziali" → "Chiave API"**
-3. Copia la chiave (simile a: `AIzaSyD...xxxxx`)
-4. **IMPORTANTE — Limita la chiave:**
-   - Clicca sulla chiave appena creata
-   - In "Restrizioni API" seleziona **"Limita chiave"**
-   - Seleziona **"Places API"** e **"Places API (New)"**
-   - In "Restrizioni applicazione" seleziona **"Nessuna"** (uso server-side a build time)
-   - Salva
-
-## Step 4: Trovare il Place ID della Vetreria
-
-1. Vai su [Place ID Finder](https://developers.google.com/maps/documentation/places/web-service/place-id)
-2. Cerca **"Vetreria Monferrina Casale Monferrato"**
-3. Copia il Place ID che appare (formato: `ChIJ...`)
-4. Se non trovi nulla, prova a cercare l'indirizzo esatto: **Strada Statale 31, 98/C, Casale Monferrato**
-
-> **Alternativa**: cerca direttamente su Google Maps, clicca sull'attivita', e nell'URL troverai il Place ID.
-
-## Step 5: Testare il fetch dei dati
+## Esecuzione manuale
 
 ```bash
-# Dal terminale, nella root del progetto:
-GOOGLE_PLACES_API_KEY=AIzaSy... node scripts/fetch-place-data.mjs
+GOOGLE_PLACES_API_KEY=xxx GOOGLE_PLACE_ID=yyy node scripts/fetch-place-data.mjs
 ```
 
-Output atteso:
+Output di un run riuscito:
 
 ```
 Fetching place data from Places API (New)...
   Reviews: 3 positive (of 5 total)
   Hours: 3 time slots
-  Photos: 10 downloaded to public/images/google-photos/
 
-Done! Rating: 4.4/5 (34 reviews)
+Done! Rating: 4.4/5 (35 reviews)
 ```
 
-File generati:
-
-- `src/data/reviews.json` — recensioni filtrate
-- `src/data/opening-hours.json` — orari di apertura
-- `src/data/place-photos.json` — metadata foto (gitignored)
-- `public/images/google-photos/` — 10 foto scaricate localmente
-
-## Step 6: Verificare e buildare
+Dopo il run si verificano i due JSON e si builda:
 
 ```bash
-# Controlla i JSON generati
 cat src/data/reviews.json
 cat src/data/opening-hours.json
-
-# Build del sito (i dati verranno inclusi)
 npm run build
 ```
 
-## Step 7: Automatizzare (opzionale)
+## Aggiornamento automatico
 
-### Con GitHub Actions (consigliato)
+Il workflow `.github/workflows/update-reviews.yml` gira con cron `0 6 1 * *`, quindi il primo giorno di ogni mese alle 6:00 UTC, ed è avviabile a mano con `workflow_dispatch`. Usa Node 22 e i secret `GOOGLE_PLACES_API_KEY`, `GOOGLE_PLACE_ID` e `REVIEWS_PAT`.
 
-Aggiungi i secrets nel repository GitHub:
+Non committa su `main`. Se i due JSON sono cambiati crea un branch `chore/update-reviews-YYYYMMDD`, lo pusha e apre una PR con `gh pr create` verso `main`. Il merge automatico non c'è di proposito, la PR resta aperta per revisione umana. Se i file sono identici il job esce senza fare nulla.
 
-- `GOOGLE_PLACES_API_KEY` → la chiave API
-- `GOOGLE_PLACE_ID` → il Place ID
-
-Poi crea un workflow che ogni giorno:
-
-1. Esegue `scripts/fetch-reviews.mjs`
-2. Committa se ci sono cambiamenti
-3. Triggera il rebuild su Vercel
-
-Esempio `.github/workflows/update-reviews.yml`:
-
-```yaml
-name: Aggiorna Recensioni Google
-on:
-  schedule:
-    - cron: '0 6 * * *' # Ogni giorno alle 6:00 UTC
-  workflow_dispatch: {} # Permette esecuzione manuale
-
-jobs:
-  update-reviews:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-
-      - name: Fetch dati Google Places
-        env:
-          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
-        run: node scripts/fetch-place-data.mjs
-
-      - name: Commit e push se cambiate
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/reviews.json src/data/opening-hours.json public/images/google-photos/
-          git diff --staged --quiet || git commit -m "chore: aggiorna dati Google Places" && git push
+```mermaid
+flowchart TD
+    A["cron 0 6 1 * *<br/>oppure avvio manuale"] --> B["checkout con REVIEWS_PAT"]
+    B --> C["node scripts/fetch-place-data.mjs"]
+    C --> D{"reviews.json od<br/>opening-hours.json<br/>cambiati?"}
+    D -->|"no"| E["esce, nessuna PR"]
+    D -->|"sì"| F["branch chore/update-reviews-YYYYMMDD"]
+    F --> G["gh pr create verso main"]
+    G --> H["revisione umana"]
+    H --> I["merge su main"]
+    I --> J["Vercel ricostruisce e pubblica"]
 ```
 
-### Manualmente
+## Configurazione una tantum
 
-Basta eseguire:
+Il progetto Google Cloud si crea da [Google Cloud Console](https://console.cloud.google.com/) con "Crea progetto", il nome è libero.
 
-```bash
-GOOGLE_PLACES_API_KEY=xxx node scripts/fetch-place-data.mjs
-git add src/data/reviews.json src/data/opening-hours.json public/images/google-photos/
-git commit -m "chore: aggiorna dati Google Places"
-git push
-```
+Le API da abilitare in "API e servizi", "Libreria" sono "Places API (New)", quella usata dallo script, e "Places API" legacy come riserva.
 
-Vercel fara' il rebuild automatico dopo il push.
+La chiave API si genera da "API e servizi", "Credenziali", "Crea credenziali", "Chiave API", e va limitata subito. In "Restrizioni API" si sceglie "Limita chiave" e si selezionano "Places API" e "Places API (New)". In "Restrizioni applicazione" si lascia "Nessuna", perché l'uso è server-side a build time e non c'è un referrer da dichiarare.
 
----
+Il Place ID si trova col [Place ID Finder](https://developers.google.com/maps/documentation/places/web-service/place-id) cercando "Vetreria Monferrina Casale Monferrato", oppure l'indirizzo "Strada Statale 31, 98/C, Casale Monferrato". Ha formato `ChIJ...`, è un identificatore pubblico e viene ricopiato nel campo `placeId` di `reviews.json`.
 
-## Note tecniche
+I secret del repository si impostano in GitHub sotto Settings, Secrets and variables, Actions. Servono `GOOGLE_PLACES_API_KEY`, `GOOGLE_PLACE_ID` e `REVIEWS_PAT`, il token che apre la PR. Lo script fa `.trim()` su entrambe le variabili Google, perché uno spazio finale in un secret finisce nell'URL della richiesta e viene ricopiato nei JSON.
 
-- **Script unificato** `fetch-place-data.mjs` — una sola chiamata API per tutto
-- **Places API (New)** — endpoint moderno, headers `X-Goog-Api-Key` e `X-Goog-FieldMask`
-- **Solo recensioni >= 4 stelle** vengono incluse (filtro nello script)
-- **Nomi abbreviati** per privacy GDPR: "Mario Rossi" → "Mario R."
-- **Google Places API** restituisce al massimo 5 recensioni per richiesta (limite dell'API)
-- **Foto scaricate localmente** — nessun URL con API key nei file committati
-- **Orari di apertura** — usati nella pagina contatti con fallback chain (Sanity → Google → statico)
-- **Place ID**: `ChIJcx_Q1ESwh0cRqv3FdLTrU1w` (hardcoded come default nello script)
-- Il rating complessivo e il numero totale di recensioni vengono sempre aggiornati
+Quote e budget in Google Cloud limitano il danno di un uso accidentale o di un abuso.
+
+| Impostazione           | Dove                          | Valore consigliato  |
+| ---------------------- | ----------------------------- | ------------------- |
+| Quota Places API (New) | IAM e amministrazione, Quote  | 50 richieste/giorno |
+| Quota Places API       | IAM e amministrazione, Quote  | 50 richieste/giorno |
+| Budget alert           | Fatturazione, Budget e avvisi | notifiche attive    |
+
+Riferimento: https://docs.cloud.google.com/docs/quotas/view-manage
+
+## Ruotare o revocare la chiave
+
+Nella Google Cloud Console, sotto "API e servizi", "Credenziali", si crea una nuova chiave con le stesse restrizioni, si aggiorna il secret `GOOGLE_PLACES_API_KEY` su GitHub, si lancia il workflow a mano con `workflow_dispatch` per verificare che il run passi, e solo dopo si elimina la chiave vecchia. La chiave non compare mai nel browser, lo script gira solo in CI o in locale.
+
+Se la chiave è stata esposta si elimina subito, senza aspettare la verifica. Senza chiave valida il workflow fallisce, ma il sito continua a servire i JSON già committati.
+
+## Quando la PR mensile non arriva
+
+Il caso più probabile è la scadenza di `REVIEWS_PAT`: il job fallisce al checkout o al `gh pr create` e non compare alcuna PR. Si rigenera il token con permessi di scrittura su contenuti e pull request, si aggiorna il secret e si rilancia il workflow a mano.
+
+Se invece il job passa senza aprire PR, i dati Google non sono cambiati rispetto all'ultimo commit. È il comportamento previsto, non un errore.
+
+Finché la PR non viene mergiata il sito resta sui dati precedenti, che restano validi. Non essendoci chiamate a Google a runtime, un workflow rotto non degrada le pagine pubbliche.
 
 ## Troubleshooting
 
-| Problema                                   | Soluzione                                                                  |
-| ------------------------------------------ | -------------------------------------------------------------------------- |
-| `Error: GOOGLE_PLACES_API_KEY is required` | Imposta la variabile d'ambiente                                            |
-| `Error: GOOGLE_PLACE_ID is required`       | Trova il Place ID (vedi Step 4)                                            |
-| `Google API error: REQUEST_DENIED`         | La chiave API non ha Places API abilitata (vedi Step 2)                    |
-| `Google API error: INVALID_REQUEST`        | Place ID non valido — verificalo su Place ID Finder                        |
-| `0 positive reviews`                       | Tutte le recensioni sono sotto 4 stelle, oppure il place non ha recensioni |
-| Il sito non si aggiorna                    | Dopo il push, Vercel fa il rebuild. Aspetta 1-2 minuti                     |
+| Messaggio o sintomo                                                                    | Causa e rimedio                                                                      |
+| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `Error: GOOGLE_PLACES_API_KEY and GOOGLE_PLACE_ID environment variables are required.` | Manca almeno una delle due variabili. Lo script non distingue quale.                 |
+| `Google API returned <status>: <messaggio>`                                            | Errore HTTP da Google. Lo status e il messaggio dicono se è la chiave o il Place ID. |
+| `Risposta Places senza rating/userRatingCount: run abortito, file non toccati.`        | Risposta 200 ma incompleta. Guardia dello script, i file restano quelli di prima.    |
+| `Risposta Places senza regularOpeningHours.periods: run abortito.`                     | Come sopra, per gli orari.                                                           |
+| `Reviews: 0 positive`                                                                  | Nessuna recensione da 4 stelle in su con testo, oppure nessuna recensione.           |
+| Il sito non si aggiorna                                                                | La PR mensile va mergiata: è il merge su `main` a far ripartire la build su Vercel.  |
 
 ## Sicurezza
 
-- La API key **non va mai committata** nel repository
-- Usare variabili d'ambiente o GitHub Secrets
-- La chiave e' limitata a Places API + Places API (New) nella Google Cloud Console
-- Lo script gira solo a build-time (server-side), la chiave non finisce mai nel browser
-- `place-photos.json` e' in `.gitignore` per cautela
-- I file JSON committati contengono solo dati pubblici (visibili a chiunque su Google)
-- **Impostare quote GCP**: 50 req/giorno + budget alert attivo
-- **Futuro**: quando si usa Google Maps JS lato client, aggiungere Firebase App Check
-  - Docs: https://developers.google.com/maps/documentation/javascript/places-app-check
+La chiave API non va mai committata: variabili d'ambiente in locale, GitHub Secrets in CI. Le restrizioni sulla chiave sono limitate a Places API e Places API (New).
+
+Lo script gira solo server-side, a build time o in CI, quindi la chiave non finisce mai nel browser. I file JSON committati contengono solo dati già pubblici su Google: rating, nome abbreviato dell'autore, data, testo della recensione e orari.
+
+Se in futuro si userà Google Maps JavaScript lato client, quella chiave sarà esposta e andrà protetta con Firebase App Check. Riferimento: https://developers.google.com/maps/documentation/javascript/places-app-check

@@ -9,7 +9,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![License](https://img.shields.io/badge/License-All_Rights_Reserved-red)](/LICENSE)
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![Sanity](https://img.shields.io/badge/Sanity-v6-F03E2F?logo=sanity&logoColor=white)](https://www.sanity.io)
 [![Resend](https://img.shields.io/badge/Resend-email-000000?logo=resend&logoColor=white)](https://resend.com)
@@ -25,7 +25,7 @@
 
 Sito ufficiale della Vetreria Monferrina di Fioravanti Giuseppe, Casale Monferrato (AL).
 
-Sito vetrina con form preventivi, galleria lavori, blog, 18 pagine servizio, FAQ e recensioni da Google Places.
+Sito vetrina con form preventivi, galleria lavori, blog, 17 pagine servizio, FAQ e recensioni da Google Places.
 
 **[vetreriamonferrina.com](https://vetreriamonferrina.com)**
 
@@ -52,7 +52,7 @@ Sito vetrina con form preventivi, galleria lavori, blog, 18 pagine servizio, FAQ
 
 ## Requisiti
 
-Node.js 22 o superiore (vedi `.nvmrc`) e npm 10 o superiore.
+Node.js 22 (vedi `.nvmrc`) e npm, che arriva con Node.
 
 ## Setup locale
 
@@ -77,22 +77,28 @@ npm run dev
 
 In locale si parte da `.env.example` copiato in `.env.local`. Su Vercel si configurano in Settings, Environment Variables.
 
-| Variabile           | Descrizione                               | Dove ottenerla                                     |
-| ------------------- | ----------------------------------------- | -------------------------------------------------- |
-| `RESEND_API_KEY`    | API key Resend per l'invio email          | [resend.com/api-keys](https://resend.com/api-keys) |
-| `RESEND_FROM_EMAIL` | Mittente, su dominio verificato su Resend | Es. `preventivi@vetreriamonferrina.com`            |
-| `VETRERIA_EMAIL`    | Casella che riceve i preventivi           | `vetreriamonferrina@gmail.com`                     |
-| `SANITY_PROJECT_ID` | ID progetto Sanity                        | [sanity.io/manage](https://sanity.io/manage)       |
-| `SANITY_DATASET`    | Dataset Sanity                            | `production`                                       |
-| `SITE_URL`          | URL del sito in produzione                | `https://vetreriamonferrina.com`                   |
+| Variabile                  | Descrizione                                        | Dove ottenerla                                     |
+| -------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| `RESEND_API_KEY`           | API key Resend per l'invio email                   | [resend.com/api-keys](https://resend.com/api-keys) |
+| `RESEND_FROM_EMAIL`        | Mittente, su dominio verificato su Resend          | Es. `preventivi@vetreriamonferrina.com`            |
+| `VETRERIA_EMAIL`           | Casella che riceve i preventivi                    | Casella aziendale                                  |
+| `SANITY_PROJECT_ID`        | ID progetto Sanity                                 | [sanity.io/manage](https://sanity.io/manage)       |
+| `SANITY_DATASET`           | Dataset Sanity                                     | `production`                                       |
+| `SITE_URL`                 | URL del sito in produzione                         | `https://vetreriamonferrina.com`                   |
+| `UPSTASH_REDIS_REST_URL`   | Endpoint REST del database Redis per il rate-limit | [console.upstash.com](https://console.upstash.com) |
+| `UPSTASH_REDIS_REST_TOKEN` | Token REST corrispondente                          | [console.upstash.com](https://console.upstash.com) |
+| `GOOGLE_PLACES_API_KEY`    | Chiave Places API, solo per lo script build-time   | Google Cloud Console                               |
+| `GOOGLE_PLACE_ID`          | Place ID della vetreria, solo per lo script        | Google Cloud Console                               |
 
-La chiave Google Places serve solo per rigenerare recensioni e orari, non a runtime:
+Le due variabili Upstash sono opzionali in locale: se mancano, il rate-limit di `/api/send-quote` ricade su un contatore in memoria.
+
+Le due variabili Google servono solo per rigenerare recensioni e orari, non a runtime:
 
 ```bash
-GOOGLE_PLACES_API_KEY=xxx node scripts/fetch-place-data.mjs
+GOOGLE_PLACES_API_KEY=xxx GOOGLE_PLACE_ID=yyy node scripts/fetch-place-data.mjs
 ```
 
-I dati vengono scaricati una tantum e committati come JSON statico.
+I dati vengono scaricati e committati come JSON statico.
 
 ## Comandi principali
 
@@ -109,18 +115,21 @@ npm run check        # Type check (astro check)
 
 ## CI/CD
 
-La pipeline in `.github/workflows/ci.yml` gira su ogni push e su ogni PR:
+In `.github/workflows/` ci sono cinque workflow.
 
-1. Security audit con `npm audit` sulle dipendenze di produzione
-2. Lint con ESLint
-3. Format check con Prettier
-4. Type check con `astro check`
-5. Test con Vitest e coverage (179 test)
-6. Build di produzione
-7. SonarCloud per qualità, sicurezza e coverage
-8. Lighthouse CI con soglie: accessibility 0.95, best practices 0.95, SEO 0.9
+| Workflow             | Quando gira                                     | Blocca il merge          |
+| -------------------- | ----------------------------------------------- | ------------------------ |
+| `ci.yml`             | push su `main` e `feat/**`, PR verso `main`     | sì, è il gate principale |
+| `lighthouse.yml`     | push su `main` e PR verso `main`                | no, è advisory           |
+| `worker-ci.yml`      | PR che toccano `cloudflare/maintenance-worker/` | no                       |
+| `checkly.yml`        | PR e push su `main` che toccano `__checks__/`   | no                       |
+| `update-reviews.yml` | cron mensile e avvio manuale                    | no                       |
 
-Ci sono poi CodeQL per lo scanning di sicurezza, Checkly che valida i monitor sulle PR e li deploya al merge, e la CI del Worker che gira `wrangler deploy --dry-run` sul `maintenance-worker` solo quando cambia quella cartella.
+Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza `npm audit --omit=dev` sulle dipendenze di produzione, `npm --prefix sanity audit` sullo Studio, ESLint, Prettier in modalità check, `astro check`, Vitest con coverage (179 test su 19 file), la build di produzione, il controllo dei link interni (`npm run check:links`) e infine la scansione SonarCloud. Il job `e2e` installa Chromium e WebKit ed esegue i test Playwright.
+
+Il workflow `lighthouse.yml` è separato per non rallentare il gate veloce e non è un required check. Le soglie in `lighthouserc.cjs` sono accessibility 0.95 come errore, performance 0.85, best practices 0.8 e SEO 0.9 come warning.
+
+Fuori dai workflow del repo c'è CodeQL, configurato lato GitHub per lo scanning di sicurezza.
 
 I pre-commit hook (Husky con lint-staged) eseguono lint e format a ogni commit.
 
@@ -145,9 +154,9 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 ├── __checks__/              # Monitor Checkly (API, URL, browser)
 ├── .github/workflows/       # CI pipeline
 ├── cloudflare/              # Worker (maintenance mode + origin lockdown), deploy via Git
-├── docs/plans/              # Guide tecniche (Google Reviews)
+├── docs/                    # Documentazione tecnica (mappa dati, guide)
 ├── sanity/                  # Sanity CMS (schemi, config)
-├── scripts/                 # Script build-time (Google Places, immagini, logo)
+├── scripts/                 # Script Node (Google Places, check link interni)
 ├── src/
 │   ├── components/          # 19 componenti Astro
 │   ├── data/                # Dati statici (chatbot, recensioni, orari, servizi, blog)
@@ -155,7 +164,7 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 │   ├── lib/                 # Logica condivisa (Sanity, validazione, sanitize, rate limit, email)
 │   ├── pages/               # Pagine e API routes
 │   │   ├── api/             # Serverless function del form preventivo
-│   │   ├── blog/            # Blog (8 articoli)
+│   │   ├── blog/            # Blog (7 articoli)
 │   │   └── servizi/         # Pagine servizio generate da [slug].astro
 │   ├── styles/              # Design system CSS (token, dark mode, transizioni)
 │   └── middleware.ts        # Origin lockdown: valida x-origin-verify in produzione
@@ -177,13 +186,13 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 | ------------------------ | ------------------------------------------------------ | --------- |
 | `/`                      | Homepage con hero, servizi, stats, recensioni, partner | SSG       |
 | `/servizi`               | Catalogo servizi con filtri per categoria              | SSG       |
-| `/servizi/[slug]`        | 18 pagine servizio                                     | SSG       |
+| `/servizi/[slug]`        | 17 pagine servizio                                     | SSG       |
 | `/galleria`              | Galleria masonry con lightbox                          | SSG       |
 | `/chi-siamo`             | Storia, team, timeline, sezione memoriale              | SSG       |
 | `/contatti`              | Mappa Google, orari, meteo, contatti                   | SSG       |
 | `/preventivo`            | Form richiesta preventivo                              | SSG       |
 | `/faq`                   | FAQ su 7 categorie, con Schema.org FAQPage             | SSG       |
-| `/blog`                  | Blog, 8 articoli sempreverdi con indice                | SSG       |
+| `/blog`                  | Blog, 7 articoli sempreverdi con indice                | SSG       |
 | `/blog/[slug]`           | Articoli blog                                          | SSG       |
 | `/trasporto-e-montaggio` | Servizio trasporto e montaggio                         | SSG       |
 | `/privacy`               | Informativa privacy                                    | SSG       |
@@ -252,7 +261,8 @@ Monitoring-as-code su una sola location (`eu-central-1`) per rientrare nel free 
 - Homepage uptime, URL monitor ogni 10 minuti, attende 200
 - Send Quote API, POST in `dryRun` ogni 30 minuti che non invia email, e passa `x-origin-verify` per superare l'origin lockdown
 - Cloudflare Worker attivo, verifica gli header `x-worker` e `x-maintenance` ogni 6 ore
-- Pagine chiave e sitemap, status 200 ogni 6 ore
+- Pagine chiave (servizi, preventivo, contatti, chi siamo, galleria, FAQ), status 200 ogni 6 ore
+- Sitemap raggiungibile, status 200 ogni ora, seguendo il redirect verso `/sitemap-index.xml`
 - Homepage browser, Playwright su titolo e rendering, una volta al giorno
 
 La configurazione sta in `checkly.config.ts` e `__checks__/`, il deploy avviene in CI al merge su `main`. Gli alert vanno sulla casella Proton, con integrazioni attive verso Vercel e GitHub.
@@ -271,13 +281,13 @@ Il deploy dello studio è manuale, quindi un merge su `main` non lo tocca.
 
 ## Aggiornare i dati Google
 
-Recensioni, orari e foto arrivano da Google Places API e vengono salvati come JSON statico.
+Recensioni e orari arrivano da Google Places API (New) e vengono salvati come JSON statico.
 
 ```bash
-GOOGLE_PLACES_API_KEY=xxx node scripts/fetch-place-data.mjs
+GOOGLE_PLACES_API_KEY=xxx GOOGLE_PLACE_ID=yyy node scripts/fetch-place-data.mjs
 ```
 
-Lo script genera `src/data/reviews.json`, `src/data/opening-hours.json` e le foto in `public/images/google-photos/`. La guida completa è in `docs/plans/google-reviews-setup.md`.
+Lo script genera due soli file, `src/data/reviews.json` e `src/data/opening-hours.json`, e tiene solo le recensioni da 4 stelle in su. Il workflow `update-reviews.yml` lo esegue il primo del mese e apre una PR se i dati sono cambiati. La guida completa è in `docs/plans/google-reviews-setup.md`.
 
 La chiave non va mai committata e va limitata a "Places API" e "Places API (New)" nella Google Cloud Console.
 
@@ -289,8 +299,10 @@ Sotto c'è un [Cloudflare Worker](https://developers.cloudflare.com/workers/) ch
 
 ## Documentazione tecnica
 
+- `docs/mappa-dati.md`, dove passano e dove si fermano i dati raccolti dal form preventivo
 - `docs/plans/google-reviews-setup.md`, guida a Google Places API
 - `docs/plans/architecture.drawio`, diagramma architettura per draw.io
+- `cloudflare/maintenance-worker/README.md`, modalità manutenzione e origin lockdown
 
 ## Licenza
 
