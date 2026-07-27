@@ -36,6 +36,7 @@ Browser del cliente
   ├─► Vercel ............. esegue /api/send-quote. Nessuna scrittura su disco.
   │     │
   │     ├─► Upstash ...... SOLO l'IP, come chiave di conteggio. TTL 60 s.
+  │     │                  AWS eu-central-1 (Francoforte) — resta in UE.
   │     │                  src/lib/rate-limit.ts — slidingWindow(5, '60 s')
   │     │
   │     └─► Resend ....... corpo dell'email (tutti i campi + IP) → casella aziendale.
@@ -53,7 +54,7 @@ CMS verso il visitatore, non contiene dati di clienti.
 | --------------------- | ------------------------- | ------------------------------------------------------- | -------------------------------------------- | ----------------------------- |
 | **Cloudflare**        | IP, metadati di richiesta | rete globale                                            | log di piattaforma, a breve termine          | DNS, TLS, WAF                 |
 | **Vercel**            | il payload, in transito   | region impostata sul progetto (dashboard, non nel repo) | nulla di persistente: la funzione non scrive | esecuzione del modulo         |
-| **Upstash**           | **solo l'IP**             | Redis serverless                                        | **60 secondi**, scadenza automatica          | contare gli invii ravvicinati |
+| **Upstash**           | **solo l'IP**             | Redis serverless — AWS `eu-central-1` (Francoforte)     | **60 secondi**, scadenza automatica          | contare gli invii ravvicinati |
 | **Resend**            | l'email completa          | USA — SCC + Data Privacy Framework                      | secondo la sua retention di invio            | consegna dell'email           |
 | **Casella aziendale** | l'email completa          | provider di posta                                       | **24 mesi** dall'ultimo contatto             | gestire il preventivo         |
 | **Sanity**            | nessun dato di cliente    | CDN                                                     | n/a                                          | contenuti del sito            |
