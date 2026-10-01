@@ -125,7 +125,7 @@ In `.github/workflows/` ci sono cinque workflow.
 | `checkly.yml`        | PR e push su `main` che toccano `__checks__/`   | no                       |
 | `update-reviews.yml` | cron mensile e avvio manuale                    | no                       |
 
-Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza `npm audit --omit=dev` sulle dipendenze di produzione, `npm --prefix sanity audit` sullo Studio, ESLint, Prettier in modalità check, `astro check`, Vitest con coverage (179 test su 19 file), la build di produzione, il controllo dei link interni (`npm run check:links`) e infine la scansione SonarCloud. Il job `e2e` installa Chromium e WebKit ed esegue i test Playwright.
+Il workflow `ci.yml` ha tre job. Il job `audit` esegue `npm audit --omit=dev` sulle dipendenze di produzione e `npm --prefix sanity audit` sullo Studio; sta a parte perché un audit rosso non faccia saltare gli altri controlli. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage (182 test su 20 file), la build di produzione, il controllo dei link interni (`npm run check:links`) e infine la scansione SonarCloud. Il job `e2e` installa Chromium e WebKit ed esegue i test Playwright.
 
 Il workflow `lighthouse.yml` è separato per non rallentare il gate veloce e non è un required check. Le soglie in `lighthouserc.cjs` sono accessibility 0.95 come errore, performance 0.85, best practices 0.8 e SEO 0.9 come warning.
 
@@ -172,7 +172,7 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 │   ├── fonts/               # Font self-hosted (Inter, DM Serif Display)
 │   └── images/              # Immagini ottimizzate WebP
 ├── tests/
-│   ├── unit/                # Unit test (Vitest, 179 test)
+│   ├── unit/                # Unit test (Vitest, 182 test)
 │   └── e2e/                 # Test end-to-end (Playwright)
 ├── astro.config.mjs
 ├── checkly.config.ts
