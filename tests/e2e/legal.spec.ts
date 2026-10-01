@@ -18,6 +18,12 @@ test('privacy policy menziona Resend come processore dati', async ({ page }) => 
   expect(text).toContain('Resend');
 });
 
+test('privacy policy menziona Sentry come processore dati', async ({ page }) => {
+  await page.goto('/privacy');
+  const text = await page.textContent('main');
+  expect(text).toContain('Sentry');
+});
+
 test('privacy policy menziona il Garante', async ({ page }) => {
   await page.goto('/privacy');
   const text = await page.textContent('main');

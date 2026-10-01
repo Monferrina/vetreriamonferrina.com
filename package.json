@@ -33,6 +33,7 @@
     "@astrojs/vercel": "^11.0.0",
     "@sanity/client": "^7.23.0",
     "@sanity/image-url": "^2.1.1",
+    "@sentry/astro": "^11.1.0",
     "@tailwindcss/vite": "^4.3.2",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
