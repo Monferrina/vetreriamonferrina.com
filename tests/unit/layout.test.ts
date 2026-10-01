@@ -4,6 +4,7 @@ import { expect, test, describe } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import BaseLayout from '../../src/layouts/BaseLayout.astro';
+import { sentryOptions } from '../../src/lib/sentry-options';
 
 describe('BaseLayout', () => {
   test('contiene meta tag essenziali', async () => {
@@ -138,6 +139,25 @@ describe('vercel.json security headers', () => {
     expect(csp.value).toContain("connect-src 'self' https://api.open-meteo.com");
     expect(csp.value).toContain("frame-ancestors 'none'");
     expect(csp.value).toContain("form-action 'self'");
+  });
+
+  // Senza l'host di ingest nella CSP il browser blocca gli invii a Sentry e gli errori
+  // client-side si perdono senza alcun segnale. Host esatto dell'org, non *.ingest: il
+  // wildcard aprirebbe un canale d'uscita verso qualunque org Sentry. L'host atteso viene
+  // dal DSN, così un cambio di DSN senza la CSP aggiornata fa fallire il test.
+  test('CSP consente gli invii degli errori a Sentry, regione UE', () => {
+    const vercelPath = resolve(__dirname, '../../vercel.json');
+    const vercelConfig = JSON.parse(readFileSync(vercelPath, 'utf-8'));
+    const headers = vercelConfig.headers.find(
+      (h: { source: string }) => h.source === '/(.*)'
+    ).headers;
+    const csp = headers.find((h: { key: string }) => h.key === 'Content-Security-Policy');
+    const connectSrc = csp.value
+      .split(';')
+      .map((d: string) => d.trim())
+      .find((d: string) => d.startsWith('connect-src'));
+
+    expect(connectSrc.split(' ')).toContain(new URL(sentryOptions.dsn).origin);
   });
 
   test('HSTS con max-age lungo e preload', () => {
