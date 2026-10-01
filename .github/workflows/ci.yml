@@ -14,6 +14,32 @@ permissions:
   contents: read
 
 jobs:
+  # Job a parte, senza needs: un audit rosso dentro "quality" faceva saltare
+  # lint, test, build e SonarCloud, e i check obbligatori non arrivavano (#339).
+  audit:
+    name: Security audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      # npm audit legge dal solo lockfile, quindi non serve npm ci.
+      - name: Security audit
+        run: npm audit --omit=dev --audit-level=high
+
+      # Lo Studio e' deployato con "sanity deploy": va gattato come il sito.
+      # !cancelled(): un rosso del sito non deve nascondere quello dello Studio.
+      - name: Security audit (Sanity Studio)
+        if: ${{ !cancelled() }}
+        run: npm --prefix sanity audit --audit-level=high
+
   quality:
     name: Lint, Type Check & Test
     runs-on: ubuntu-latest
@@ -33,14 +59,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Security audit
-        run: npm audit --omit=dev --audit-level=high
-
-      # Lo Studio e' deployato con "sanity deploy": va gattato come il sito.
-      # npm audit legge dal solo lockfile, quindi non serve installarlo.
-      - name: Security audit (Sanity Studio)
-        run: npm --prefix sanity audit --audit-level=high
 
       - name: Lint
         run: npm run lint
