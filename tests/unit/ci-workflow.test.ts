@@ -22,10 +22,15 @@ const workflows: [string, Workflow][] = readdirSync(dir)
   .filter((file) => file.endsWith('.yml'))
   .map((file) => [file, parse(readFileSync(`${dir}/${file}`, 'utf-8')) as Workflow]);
 
-// I check obbligatori di protect-main a regime (C1) che sono job nostri: il ruleset
+// I check obbligatori di protect-main che sono job nostri: il ruleset
 // lega il nome, non il file. Un job rinominato o duplicato lascia il ruleset in
 // attesa di un check che non arriva, o lo fa passare con il job sbagliato.
-const REQUIRED = ['Security audit', 'Lint, Type Check & Test', 'E2E (Playwright)'];
+const REQUIRED = [
+  'Security audit',
+  'Lint, Type Check & Test',
+  'E2E (Playwright)',
+  'Semgrep (regole della repo)',
+];
 
 function jobsNamed(name: string): { file: string; workflow: Workflow; id: string; job: Job }[] {
   return workflows.flatMap(([file, workflow]) =>

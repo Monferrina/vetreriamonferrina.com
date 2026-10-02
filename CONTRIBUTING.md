@@ -49,16 +49,19 @@ Verifica l'esito guardando il codice di uscita dei comandi, non filtrando l'outp
 
 ## Check richiesti al merge
 
-Il ruleset blocca il pulsante di merge finché non passano quattro check:
+Il ruleset blocca il pulsante di merge finché non passano sette check:
 
-| Check                      | Origine                        |
-| -------------------------- | ------------------------------ |
-| `Security audit`           | job `audit` di `sicurezza.yml` |
-| `Lint, Type Check & Test`  | job `quality` di `ci.yml`      |
-| `SonarCloud Code Analysis` | analisi SonarCloud sulla PR    |
-| `CodeQL`                   | scanning di sicurezza GitHub   |
+| Check                         | Origine                                         |
+| ----------------------------- | ----------------------------------------------- |
+| `Security audit`              | job `audit` di `sicurezza.yml`                  |
+| `Lint, Type Check & Test`     | job `quality` di `ci.yml`                       |
+| `E2E (Playwright)`            | job `e2e` di `ci.yml`                           |
+| `CodeQL`                      | job `codeql` di `sicurezza.yml` (code scanning) |
+| `Semgrep (regole della repo)` | job `semgrep` di `sicurezza.yml`                |
+| `SonarCloud Code Analysis`    | analisi SonarCloud sulla PR                     |
+| `Aikido Security: check code` | app Aikido PR Checks                            |
 
-Il job E2E non è fra i check obbligatori, ma un suo fallimento va comunque risolto prima del merge.
+Ogni check è legato alla sua app nel ruleset: un job con lo stesso nome lanciato da un'altra app non lo soddisfa.
 
 ## Convenzioni
 
