@@ -205,7 +205,7 @@ Ogni pagina espone dati strutturati JSON-LD `LocalBusiness`, e le pagine servizi
 
 La sezione "Servizi correlati" usa abbinamenti scelti a mano e non il semplice raggruppamento per categoria, così i link interni danno contesto invece di rumore. Le meta description sono scritte pagina per pagina e includono "Casale Monferrato".
 
-La sitemap è generata da `@astrojs/sitemap` e la pagina `/maintenance` ne è esclusa, oltre a essere in `noindex`. Il `robots.txt` è gestito da Cloudflare con i Content Signals: la ricerca è consentita, i crawler di training AI no.
+La sitemap è generata da `@astrojs/sitemap` e la pagina `/maintenance` ne è esclusa, oltre a essere in `noindex`. Il `robots.txt` è versionato nel repo, in `public/robots.txt`, e ha sostituito quello gestito da Cloudflare, disabilitato il 14/7/2026. Blocca per user-agent otto crawler di solo training o dataset (Bytespider, TikTokSpider, CCBot, Amazonbot, PetalBot, Timpibot, meta-externalagent, FacebookBot) e consente tutti gli altri, compresi GPTBot e Google-Extended. Per questi ultimi il no al training è solo la richiesta del Content-Signal (`search=yes, ai-input=yes, ai-train=no`), non un blocco.
 
 ## Infrastruttura
 
