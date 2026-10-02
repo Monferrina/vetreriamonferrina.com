@@ -1,0 +1,38 @@
+# Auto-merge delle PR Dependabot minor e patch: GitHub le mergia da solo quando
+# tutti i check obbligatori del ruleset sono verdi. Le major restano a mano
+# (decisione 2/10/2026), perché vanno lette le note di rilascio.
+# Schema della doc GitHub "Automating Dependabot with GitHub Actions"; il merge
+# è squash perché la repo non ammette altro.
+# Con una merge queue GITHUB_TOKEN non basta più (stessa doc): servirà un token
+# di app o PAT quando la coda arriverà (C1).
+name: Dependabot auto-merge
+
+on: pull_request
+
+permissions: {}
+
+jobs:
+  auto-merge:
+    name: Auto-merge minor/patch
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'Monferrina/vetreriamonferrina.com'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Metadati Dependabot
+        id: metadata
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # update-type di una PR di gruppo è il salto più alto del gruppo: basta
+      # una major dentro per lasciare tutta la PR a mano.
+      - name: Attiva auto-merge
+        if: steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
