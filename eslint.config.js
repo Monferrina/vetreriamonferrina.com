@@ -4,7 +4,7 @@ import eslintPluginAstro from 'eslint-plugin-astro';
 
 export default [
   {
-    ignores: ['dist/', '.astro/', 'node_modules/', '.vercel/', 'sanity/', '*.cjs'],
+    ignores: ['dist/', '.astro/', 'node_modules/', '.vercel/', '*.cjs'],
   },
   eslintJs.configs.recommended,
   ...tseslint.configs.recommended,

@@ -2,8 +2,8 @@
 // src/components/ProtectedImage.astro
 // Wrapper that prevents casual image saving/downloading.
 // Layers: transparent shield div + CSS disable drag/select + JS context-menu block.
-// I path '/images/gallery|services/*' vengono risolti in asset ottimizzati
-// (srcset responsive via astro:assets); gli altri src (es. URL Sanity) passano invariati.
+// I path '/images/gallery|services|about/*' vengono risolti in asset ottimizzati
+// (srcset responsive via astro:assets); gli altri src passano invariati.
 import { getImage } from 'astro:assets';
 import { siteImage } from '../lib/site-images';
 

@@ -6,13 +6,13 @@ Questo documento esiste in italiano e in inglese. Le due versioni sono equivalen
 
 ## Perimetro
 
-| Ambito                                                | In scope |
-| ----------------------------------------------------- | -------- |
-| Il sito `vetreriamonferrina.com`                      | Sì       |
-| L'endpoint SSR `/api/send-quote`                      | Sì       |
-| Il Worker in `cloudflare/maintenance-worker/`         | Sì       |
-| Il codice di questo repository, Studio Sanity incluso | Sì       |
-| Vercel, Cloudflare, Sanity, Resend, Upstash, GitHub   | No       |
+| Ambito                                        | In scope |
+| --------------------------------------------- | -------- |
+| Il sito `vetreriamonferrina.com`              | Sì       |
+| L'endpoint SSR `/api/send-quote`              | Sì       |
+| Il Worker in `cloudflare/maintenance-worker/` | Sì       |
+| Il codice di questo repository                | Sì       |
+| Vercel, Cloudflare, Resend, Upstash, GitHub   | No       |
 
 Le piattaforme di terze parti hanno programmi di segnalazione propri: una vulnerabilità nel loro prodotto va segnalata a loro, non qui. Restano in scope le configurazioni sbagliate lato nostro su quelle piattaforme, quando sono osservabili dall'esterno.
 
@@ -38,13 +38,13 @@ The project ships no versioned releases: the only supported line is the `main` b
 
 ### Scope
 
-| Area                                                | In scope |
-| --------------------------------------------------- | -------- |
-| The `vetreriamonferrina.com` website                | Yes      |
-| The `/api/send-quote` SSR endpoint                  | Yes      |
-| The Worker in `cloudflare/maintenance-worker/`      | Yes      |
-| The code in this repository, Sanity Studio included | Yes      |
-| Vercel, Cloudflare, Sanity, Resend, Upstash, GitHub | No       |
+| Area                                           | In scope |
+| ---------------------------------------------- | -------- |
+| The `vetreriamonferrina.com` website           | Yes      |
+| The `/api/send-quote` SSR endpoint             | Yes      |
+| The Worker in `cloudflare/maintenance-worker/` | Yes      |
+| The code in this repository                    | Yes      |
+| Vercel, Cloudflare, Resend, Upstash, GitHub    | No       |
 
 Third party platforms run their own disclosure programs: a flaw in their product goes to them, not here. Misconfigurations on our side of those platforms are in scope when they are observable from the outside.
 

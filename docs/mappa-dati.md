@@ -34,8 +34,6 @@ Il rate-limit è in `src/lib/rate-limit.ts`: `slidingWindow(5, '60 s')` con pref
 
 Il corpo dell'email è costruito da `src/lib/email-templates/quote-request.ts` e contiene nome, telefono, email, tipo di lavoro, descrizione, misure e IP. I dati passano prima da `sanitizeFormData` (`src/lib/sanitize.ts`), invocata in `src/lib/send-quote.ts`.
 
-Il contenuto editoriale del sito arriva da Sanity e segue il percorso opposto: esce dal CMS verso il visitatore e non contiene dati di clienti.
-
 ## 3. Chi tocca cosa, e per quanto
 
 | Fornitore         | Cosa vede                 | Dove                                                    | Per quanto                                   | Perché                        |
@@ -45,7 +43,6 @@ Il contenuto editoriale del sito arriva da Sanity e segue il percorso opposto: e
 | Upstash           | solo l'IP                 | AWS `eu-central-1` (Francoforte), resta in UE           | 60 secondi, scadenza automatica              | contare gli invii ravvicinati |
 | Resend            | l'email completa          | USA, con SCC e Data Privacy Framework                   | secondo la sua retention di invio            | consegna dell'email           |
 | Casella aziendale | l'email completa          | provider di posta                                       | 24 mesi dall'ultimo contatto                 | gestire il preventivo         |
-| Sanity            | nessun dato di cliente    | CDN                                                     | non applicabile                              | contenuti del sito            |
 
 La region Upstash è dichiarata anche ai visitatori, in `src/pages/privacy.astro`: è stata verificata in console il 2026-07-27 e spostare il database fuori dall'UE significherebbe correggere la privacy policy, non solo un'impostazione. La region Vercel invece è solo una configurazione di piattaforma, da verificare in dashboard: nel repo compaiono soltanto endpoint e token letti da variabili d'ambiente.
 

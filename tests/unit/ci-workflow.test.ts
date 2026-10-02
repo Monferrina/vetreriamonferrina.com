@@ -30,12 +30,9 @@ function runs(job: Job): string[] {
 // Un audit rosso dentro il job dei check obbligatori faceva saltare lint, test,
 // build e SonarCloud (PR #339): l'audit vive in un job suo, che resta un gate.
 describe('CI — audit di sicurezza in un job separato', () => {
-  it('il job "Security audit" controlla le dipendenze del sito e dello Studio', () => {
+  it('il job "Security audit" controlla le dipendenze del sito', () => {
     const [, audit] = jobNamed('Security audit');
-    expect(runs(audit)).toEqual([
-      'npm audit --omit=dev --audit-level=high',
-      'npm --prefix sanity audit --audit-level=high',
-    ]);
+    expect(runs(audit)).toEqual(['npm audit --omit=dev --audit-level=high']);
   });
 
   it('il job dei check obbligatori non esegue audit', () => {

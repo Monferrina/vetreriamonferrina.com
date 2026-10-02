@@ -1,9 +1,7 @@
 ---
 // src/components/GalleryGrid.astro
 // Professional masonry gallery with blur-up loading and category filtering.
-// Accepts optional Sanity items via props; falls back to static data.
 
-import { urlFor } from '../lib/sanity';
 import ProtectedImage from './ProtectedImage.astro';
 
 interface GalleryItem {
@@ -15,29 +13,7 @@ interface GalleryItem {
   size?: 'featured' | 'tall';
 }
 
-interface SanityGalleryItem {
-  title: string;
-  category: string;
-  image?: unknown;
-}
-
-interface Props {
-  items?: SanityGalleryItem[] | null;
-}
-
-const { items: sanityItems } = Astro.props;
-
-const categoryLabels: Record<string, string> = {
-  'box-doccia': 'Box doccia',
-  installazioni: 'Installazioni',
-  lavorazioni: 'Lavorazioni',
-  parapetti: 'Parapetti',
-  personalizzazioni: 'Personalizzazioni',
-  specchi: 'Specchi',
-  vetri: 'Vetri',
-};
-
-const staticItems: GalleryItem[] = [
+const items: GalleryItem[] = [
   // --- Box doccia (3) ---
   {
     id: 1,
@@ -283,17 +259,6 @@ const staticItems: GalleryItem[] = [
     imageUrl: '/images/gallery/installazioni-arco-mattoni.webp',
   },
 ];
-
-// Use Sanity items if provided, otherwise fall back to static data
-const items: GalleryItem[] = sanityItems
-  ? sanityItems.map((item, index) => ({
-      id: index + 1,
-      title: item.title,
-      category: item.category,
-      categoryLabel: categoryLabels[item.category] || item.category,
-      imageUrl: item.image ? urlFor(item.image).url() : undefined,
-    }))
-  : staticItems;
 ---
 
 <div class="gallery-masonry" data-gallery-grid>
