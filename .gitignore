@@ -43,9 +43,6 @@ graphify-out/
 # Cloudflare
 .wrangler/
 
-# Sanity Studio
-sanity/.sanity/
-
 # IDE
 .idea/
 .vscode/*

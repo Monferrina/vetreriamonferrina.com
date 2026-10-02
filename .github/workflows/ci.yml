@@ -34,12 +34,6 @@ jobs:
       - name: Security audit
         run: npm audit --omit=dev --audit-level=high
 
-      # Lo Studio e' deployato con "sanity deploy": va gattato come il sito.
-      # !cancelled(): un rosso del sito non deve nascondere quello dello Studio.
-      - name: Security audit (Sanity Studio)
-        if: ${{ !cancelled() }}
-        run: npm --prefix sanity audit --audit-level=high
-
   quality:
     name: Lint, Type Check & Test
     runs-on: ubuntu-latest

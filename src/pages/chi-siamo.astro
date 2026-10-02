@@ -3,29 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import CtaSection from '../components/CtaSection.astro';
 import GlassPanel from '../components/GlassPanel.astro';
 import ProtectedImage from '../components/ProtectedImage.astro';
-import { fetchWithFallback, queries, urlFor } from '../lib/sanity';
 export const prerender = true;
 
-// Fetch about page content from Sanity; null means use hardcoded fallback below
-interface SanityImage {
-  _type: 'image';
-  asset: { _ref: string };
-}
-interface SanityAboutPage {
-  title?: string;
-  intro?: string;
-  teamPhotos?: SanityImage[];
-}
-const aboutData = await fetchWithFallback<SanityAboutPage | null>(queries.aboutPage, null);
-
-// Use Sanity data if available, otherwise keep static defaults
-const heroTitle = aboutData?.title || 'Chi siamo';
+const heroTitle = 'Chi siamo';
 const heroIntro =
-  aboutData?.intro ||
   'Giuseppe, Debora e il loro laboratorio: dal cuore di Casale Monferrato, artigiani del vetro da oltre 40 anni.';
-const familyPhoto = aboutData?.teamPhotos?.[0]
-  ? urlFor(aboutData.teamPhotos[0]).width(800).format('webp').url()
-  : '';
 ---
 
 <BaseLayout
@@ -71,23 +53,11 @@ const familyPhoto = aboutData?.teamPhotos?.[0]
           </p>
         </div>
 
-        {
-          familyPhoto ? (
-            <ProtectedImage
-              src={familyPhoto}
-              alt="La famiglia Fioravanti — Giuseppe, Debora, Mirco, Fabiana e Martina"
-              wrapperClass="aspect-video rounded-2xl overflow-hidden"
-            />
-          ) : (
-            <div
-              class="flex aspect-video items-center justify-center rounded-2xl bg-neutral-200 text-neutral-800"
-              role="img"
-              aria-label="Foto della famiglia Fioravanti"
-            >
-              <p class="text-sm font-medium">Foto di famiglia in arrivo</p>
-            </div>
-          )
-        }
+        <ProtectedImage
+          src="/images/about/famiglia-fioravanti.webp"
+          alt="La famiglia Fioravanti — Giuseppe, Debora, Mirco, Fabiana e Martina"
+          wrapperClass="aspect-video rounded-2xl overflow-hidden"
+        />
       </div>
     </div>
   </section>

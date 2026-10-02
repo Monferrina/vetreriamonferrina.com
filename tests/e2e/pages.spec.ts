@@ -64,13 +64,14 @@ test('chi-siamo ha sezione valori', async ({ page }) => {
   await expect(page.getByRole('heading', { name: /territorio/i })).toBeVisible();
 });
 
-test('chi-siamo ha foto o placeholder famiglia', async ({ page }) => {
+// La foto arrivava da cdn.sanity.io: ora la serve il sito con astro:assets, come
+// galleria e servizi (/_image in dev, /_astro nel build), con srcset responsive.
+test('chi-siamo mostra la foto di famiglia servita dal sito', async ({ page }) => {
   await page.goto('/chi-siamo');
   const foto = page.getByAltText(/famiglia fioravanti/i).first();
-  const placeholder = page.getByText(/foto.*famiglia.*in arrivo/i).first();
-  const hasFoto = await foto.isVisible().catch(() => false);
-  const hasPlaceholder = await placeholder.isVisible().catch(() => false);
-  expect(hasFoto || hasPlaceholder).toBeTruthy();
+  await expect(foto).toBeVisible();
+  await expect(foto).toHaveAttribute('src', /^\/_(astro|image)/);
+  await expect(foto).toHaveAttribute('srcset', /\S/);
 });
 
 test('chi-siamo ha timeline con milestone', async ({ page }) => {

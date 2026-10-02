@@ -11,7 +11,6 @@ graphify-out/
 
 # Dipendenze
 node_modules/
-sanity/node_modules/
 
 # Cache e log
 .wrangler/
@@ -20,7 +19,6 @@ sanity/node_modules/
 playwright-report/
 test-results/
 .lighthouseci/
-sanity/.sanity/
 .claude/
 .husky/
 .vscode/
