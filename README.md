@@ -111,19 +111,22 @@ npm run check        # Type check (astro check)
 
 ## CI/CD
 
-In `.github/workflows/` ci sono cinque workflow.
+In `.github/workflows/` ci sono sei workflow.
 
-| Workflow             | Quando gira                                     | Blocca il merge          |
-| -------------------- | ----------------------------------------------- | ------------------------ |
-| `ci.yml`             | push su `main` e `feat/**`, PR verso `main`     | sì, è il gate principale |
-| `lighthouse.yml`     | push su `main` e PR verso `main`                | no, è advisory           |
-| `worker-ci.yml`      | PR che toccano `cloudflare/maintenance-worker/` | no                       |
-| `checkly.yml`        | PR e push su `main` che toccano `__checks__/`   | no                       |
-| `update-reviews.yml` | cron mensile e avvio manuale                    | no                       |
+| Workflow                    | Quando gira                                     | Blocca il merge          |
+| --------------------------- | ----------------------------------------------- | ------------------------ |
+| `ci.yml`                    | push su `main` e `feat/**`, PR verso `main`     | sì, è il gate principale |
+| `lighthouse.yml`            | push su `main` e PR verso `main`                | no, è advisory           |
+| `worker-ci.yml`             | PR che toccano `cloudflare/maintenance-worker/` | no                       |
+| `checkly.yml`               | PR e push su `main` che toccano `__checks__/`   | no                       |
+| `update-reviews.yml`        | cron mensile e avvio manuale                    | no                       |
+| `dependabot-auto-merge.yml` | PR aperte da Dependabot                         | no                       |
 
 Il workflow `ci.yml` ha tre job. Il job `audit` esegue `npm audit --omit=dev` sulle dipendenze di produzione; sta a parte perché un audit rosso non faccia saltare gli altri controlli. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage (170 test su 19 file), la build di produzione, il controllo dei link interni (`npm run check:links`) e infine la scansione SonarCloud. Il job `e2e` installa Chromium e WebKit ed esegue i test Playwright.
 
 Il workflow `lighthouse.yml` è separato per non rallentare il gate veloce e non è un required check. Le soglie in `lighthouserc.cjs` sono accessibility 0.95 come errore, performance 0.85, best practices 0.8 e SEO 0.9 come warning.
+
+Il workflow `dependabot-auto-merge.yml` attiva l'auto-merge (squash) sulle PR Dependabot minor e patch: GitHub le mergia quando tutti i check obbligatori sono verdi. Le major restano a mano. Perché la scansione SonarCloud giri anche sulle PR di Dependabot, che non vedono i secret di Actions, `SONAR_TOKEN` è anche tra i secret Dependabot.
 
 Fuori dai workflow del repo c'è CodeQL, configurato lato GitHub per lo scanning di sicurezza.
 
