@@ -11,6 +11,11 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
+    # Una versione appena pubblicata può essere malevola o rotta: si aspetta una
+    # settimana prima di proporla. Vale solo per gli aggiornamenti di versione, gli
+    # aggiornamenti di sicurezza non aspettano (doc GitHub, opzione cooldown).
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 10
     labels:
       - 'dependencies'
@@ -26,9 +31,15 @@ updates:
   # questo blocco i pin non verrebbero mai aggiornati e il repo resterebbe
   # fermo a versioni vecchie per sempre — peggio dei tag mobili.
   - package-ecosystem: 'github-actions'
-    directory: '/'
+    # Con directory '/' Dependabot legge solo .github/workflows e un action.yml in
+    # radice: i pin della action composita del setup comune resterebbero fermi.
+    directories:
+      - '/'
+      - '/.github/actions/*'
     schedule:
       interval: 'weekly'
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 5
     labels:
       - 'dependencies'

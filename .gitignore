@@ -19,12 +19,11 @@ node_modules/
 # Testing
 playwright-report/
 test-results/
+visuale-results/
+visuale-report/
 .playwright-mcp/
 coverage/
 blob-report/
-
-# Lighthouse CI
-.lighthouseci/
 
 # TypeScript
 *.tsbuildinfo

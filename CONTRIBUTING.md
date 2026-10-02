@@ -43,7 +43,7 @@ La CI in `.github/workflows/ci.yml` esegue questi step in due job paralleli: l'a
 
 I test end-to-end girano in un job separato, `E2E (Playwright)`, sui progetti `chromium` e `mobile` (iPhone 13). In locale si eseguono con `npm run test:e2e`.
 
-Vanno a parte anche Lighthouse CI (su ogni PR verso `main`), la validazione dei monitor Checkly (al merge, quando cambiano `__checks__/` o `checkly.config.ts`) e la CI del Worker (`wrangler deploy --dry-run`, solo sulle PR che toccano `cloudflare/maintenance-worker/`).
+Vanno a parte anche gli screenshot della preview Vercel (`visuale.yml`, su ogni PR verso `main`), la validazione dei monitor Checkly (al merge, quando cambiano `__checks__/` o `checkly.config.ts`) e la CI del Worker (`wrangler deploy --dry-run`, solo sulle PR che toccano `cloudflare/maintenance-worker/`).
 
 Verifica l'esito guardando il codice di uscita dei comandi, non filtrando l'output: un `grep` sui soli warning può nascondere un errore che poi blocca la CI.
 
@@ -51,12 +51,12 @@ Verifica l'esito guardando il codice di uscita dei comandi, non filtrando l'outp
 
 Il ruleset blocca il pulsante di merge finché non passano quattro check:
 
-| Check                      | Origine                      |
-| -------------------------- | ---------------------------- |
-| `Security audit`           | job `audit` di `ci.yml`      |
-| `Lint, Type Check & Test`  | job `quality` di `ci.yml`    |
-| `SonarCloud Code Analysis` | analisi SonarCloud sulla PR  |
-| `CodeQL`                   | scanning di sicurezza GitHub |
+| Check                      | Origine                        |
+| -------------------------- | ------------------------------ |
+| `Security audit`           | job `audit` di `sicurezza.yml` |
+| `Lint, Type Check & Test`  | job `quality` di `ci.yml`      |
+| `SonarCloud Code Analysis` | analisi SonarCloud sulla PR    |
+| `CodeQL`                   | scanning di sicurezza GitHub   |
 
 Il job E2E non è fra i check obbligatori, ma un suo fallimento va comunque risolto prima del merge.
 

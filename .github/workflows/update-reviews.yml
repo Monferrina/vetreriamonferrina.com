@@ -5,9 +5,10 @@ on:
     - cron: '0 6 1 * *'
   workflow_dispatch: {}
 
+# Checkout, push e gh pr create usano REVIEWS_PAT, non GITHUB_TOKEN: al token del
+# workflow basta la lettura. Il permesso di scrittura qui valeva per niente.
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   update-reviews:
