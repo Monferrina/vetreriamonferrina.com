@@ -18,7 +18,6 @@ node_modules/
 # Artefatti CI/test — rigenerati a ogni run, nessun valore nel grafo
 playwright-report/
 test-results/
-.lighthouseci/
 .claude/
 .husky/
 .vscode/

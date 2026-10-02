@@ -1,10 +1,15 @@
 name: CI
 
+# Qualità del codice e test. L'audit, CodeQL e Semgrep stanno in sicurezza.yml;
+# i nomi dei job sono quelli del ruleset protect-main e non si cambiano.
+
 on:
   push:
-    branches: [main, feat/**]
+    branches: [main]
   pull_request:
     branches: [main]
+  # La merge queue aspetta i check obbligatori sul commit di prova della coda.
+  merge_group:
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -14,26 +19,6 @@ permissions:
   contents: read
 
 jobs:
-  # Job a parte, senza needs: un audit rosso dentro "quality" faceva saltare
-  # lint, test, build e SonarCloud, e i check obbligatori non arrivavano (#339).
-  audit:
-    name: Security audit
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Setup Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: 22
-
-      # npm audit legge dal solo lockfile, quindi non serve npm ci.
-      - name: Security audit
-        run: npm audit --omit=dev --audit-level=high
-
   quality:
     name: Lint, Type Check & Test
     runs-on: ubuntu-latest
@@ -44,15 +29,10 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          persist-credentials: false
 
-      - name: Setup Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
+      - name: Setup
+        uses: ./.github/actions/setup
 
       - name: Lint
         run: npm run lint
@@ -72,8 +52,10 @@ jobs:
       - name: Check internal links
         run: npm run check:links
 
+      # Sul piano Free SonarQube Cloud analizza solo main e le PR, non i rami
+      # gh-readonly-queue della coda: lì lo scan fallirebbe e il job diventerebbe rosso.
       - name: SonarCloud Scan
-        if: env.SONAR_TOKEN != ''
+        if: env.SONAR_TOKEN != '' && github.event_name != 'merge_group'
         uses: SonarSource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9 # v8.3.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -86,15 +68,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Setup Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 22
-          cache: npm
+          persist-credentials: false
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Setup
+        uses: ./.github/actions/setup
 
       - name: Cache Playwright browsers
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0

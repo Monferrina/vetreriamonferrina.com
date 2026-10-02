@@ -1,0 +1,17 @@
+rules:
+  - id: sentry-no-pii-collection
+    languages: [typescript]
+    severity: ERROR
+    message: >-
+      $K a true manda a Sentry dati personali: sendDefaultPii e userInfo portano IP e utente,
+      httpHeaders porta X-Forwarded-For e il segreto x-origin-verify del Worker
+      Cloudflare. Deve restare false.
+    metadata:
+      category: security
+      confidence: HIGH
+    patterns:
+      - pattern: '{..., $K: true, ...}'
+      - metavariable-regex:
+          metavariable: $K
+          regex: ^(userInfo|httpHeaders|sendDefaultPii)$
+      - focus-metavariable: $K
