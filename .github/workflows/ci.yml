@@ -78,6 +78,29 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+      # Le PR di Dependabot e dei fork non ricevono SONAR_TOKEN, quindi lo step
+      # sopra salta e il check obbligatorio "SonarCloud Code Analysis" non arriva:
+      # la PR resta bloccata. Lo scan lo fa sonar-pr.yml (workflow_run, contesto
+      # fidato); qui si passano solo la copertura e il numero della PR.
+      - name: Numero PR per Sonar (PR senza secret)
+        if: github.event_name == 'pull_request' && env.SONAR_TOKEN == ''
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: echo "$PR_NUMBER" > coverage/pr-number.txt
+
+      - name: Upload dati per Sonar
+        if: github.event_name == 'pull_request' && env.SONAR_TOKEN == ''
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          name: sonar-pr
+          path: |
+            coverage/lcov.info
+            coverage/pr-number.txt
+          retention-days: 1
+
   e2e:
     name: E2E (Playwright)
     runs-on: ubuntu-latest

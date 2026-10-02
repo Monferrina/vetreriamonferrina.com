@@ -1,0 +1,109 @@
+# Scan SonarCloud per le PR che in ci.yml non vedono SONAR_TOKEN (Dependabot, fork).
+# Senza questo il check obbligatorio "SonarCloud Code Analysis" non arriva mai e la
+# PR non si può mergiare. Schema della doc SonarQube Cloud, "Analyzing pull requests
+# from forked repositories": il workflow_run gira nel contesto della repo, con i
+# secret, e il codice della PR si legge ma non si esegue mai (niente npm, niente build).
+name: Sonar PR senza secret
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  sonar:
+    name: SonarCloud (PR senza secret)
+    # Non "success": un audit o un E2E rosso non devono togliere il check Sonar
+    # (lo stesso accoppiamento che il job audit separato ha tolto in ci.yml).
+    # Se i test falliscono l'artifact non c'è e il job non fa niente.
+    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: read
+
+    steps:
+      # L'artifact c'è solo se ci.yml ha saltato il suo scan: se manca, lo scan
+      # l'ha già fatto ci.yml e qui non c'è niente da fare. Va fuori dalla cartella
+      # di lavoro, che il checkout svuota.
+      - name: Scarica copertura e numero della PR
+        id: artifact
+        continue-on-error: true
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: sonar-pr
+          path: ${{ runner.temp }}/sonar-pr
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      # Numero e ramo vengono dalla PR: si controllano prima di darli allo scanner.
+      # Il numero lo scrive il ci.yml della PR stessa, quindi una fork potrebbe
+      # indicarne un altro e far finire la sua analisi su una PR altrui: vale solo
+      # se quella PR ha come head proprio il commit che si sta analizzando.
+      - name: Valida i dati della PR
+        id: pr
+        if: steps.artifact.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_REF: ${{ github.event.workflow_run.head_branch }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          ARTIFACT_DIR: ${{ runner.temp }}/sonar-pr
+        run: |
+          read -r pr < "$ARTIFACT_DIR/pr-number.txt"
+          [[ $pr =~ ^[0-9]+$ ]] || { echo "numero PR non valido"; exit 1; }
+          [[ $HEAD_REF =~ ^[A-Za-z0-9._/-]+$ ]] || { echo "ramo non valido"; exit 1; }
+          pr_sha=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr" --jq .head.sha)
+          [[ $pr_sha == "$HEAD_SHA" ]] || { echo "la PR $pr non punta a $HEAD_SHA"; exit 1; }
+          { echo "number=$pr"; echo "head-ref=$HEAD_REF"; } >> "$GITHUB_OUTPUT"
+
+      - name: Checkout del codice della PR
+        if: steps.artifact.outcome == 'success'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ github.event.workflow_run.head_repository.full_name }}
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Lo scanner segue i symlink e pubblica come sorgente quello che leggono: un
+      # file della PR che punta a /proc/self/environ renderebbe visibile
+      # SONAR_TOKEN nella vista del codice su SonarCloud. La repo non versiona
+      # symlink (0 il 2/10/2026), quindi una PR che ne porta uno non si analizza.
+      - name: Rifiuta i symlink
+        if: steps.artifact.outcome == 'success'
+        run: |
+          if find . -path ./.git -prune -o -type l -print | grep .; then
+            echo "la PR contiene symlink: scan rifiutato"
+            exit 1
+          fi
+
+      # La configurazione dello scan viene da main, non dalla PR: una PR non deve
+      # poter cambiare progetto, organizzazione o percorsi analizzati.
+      - name: Configurazione Sonar da main
+        if: steps.artifact.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/contents/sonar-project.properties" \
+            -H 'Accept: application/vnd.github.raw' > sonar-project.properties
+
+      # sonar.scm.revision lega l'analisi al commit della PR: senza, la doc dice
+      # che il check e la decorazione non compaiono.
+      - name: SonarCloud Scan
+        if: steps.artifact.outcome == 'success'
+        uses: SonarSource/sonarqube-scan-action@22918119ff8e1ca75a623e15c8296b6ea4fbe28f # v8.2.1
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.pullrequest.key=${{ steps.pr.outputs.number }}
+            -Dsonar.pullrequest.branch=${{ steps.pr.outputs.head-ref }}
+            -Dsonar.pullrequest.base=main
+            -Dsonar.pullrequest.provider=github
+            -Dsonar.pullrequest.github.repository=${{ github.repository }}
+            -Dsonar.scm.revision=${{ github.event.workflow_run.head_sha }}
+            -Dsonar.javascript.lcov.reportPaths=${{ runner.temp }}/sonar-pr/lcov.info
