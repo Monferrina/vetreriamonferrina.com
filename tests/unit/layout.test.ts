@@ -134,7 +134,7 @@ describe('vercel.json security headers', () => {
     expect(csp.value).toContain("default-src 'self'");
     expect(csp.value).toContain("script-src 'self'");
     expect(csp.value).toContain("font-src 'self'");
-    expect(csp.value).toContain("img-src 'self' data: https://cdn.sanity.io");
+    expect(csp.value).toContain("img-src 'self' data:;");
     expect(csp.value).toContain("connect-src 'self' https://api.open-meteo.com");
     expect(csp.value).toContain("frame-ancestors 'none'");
     expect(csp.value).toContain("form-action 'self'");

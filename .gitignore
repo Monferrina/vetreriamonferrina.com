@@ -43,9 +43,6 @@ graphify-out/
 # Cloudflare
 .wrangler/
 
-# Sanity Studio
-sanity/.sanity/
-
 # IDE
 .idea/
 .vscode/*
@@ -64,5 +61,10 @@ Thumbs.db
 # non artefatti del progetto. Girano con permessi pieni dell'agente: restano fuori
 # dal repo pubblico e si reinstallano con `npx skills add`.
 .agents/
-.claude/skills/
+.claude/skills/*
+# Eccezione: la skill Astro è scritta da noi (solo testo, nessuno script) e
+# descrive questo progetto, quindi si versiona e passa dalla revisione delle PR.
+# Il nome non è "astro": un `npx skills add` di una skill di terzi con quel nome
+# finirebbe nella stessa cartella, e quindi nel repo.
+!.claude/skills/astro-vetreria/
 skills-lock.json

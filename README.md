@@ -11,7 +11,6 @@
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org)
-[![Sanity](https://img.shields.io/badge/Sanity-v6-F03E2F?logo=sanity&logoColor=white)](https://www.sanity.io)
 [![Resend](https://img.shields.io/badge/Resend-email-000000?logo=resend&logoColor=white)](https://resend.com)
 [![Upstash](https://img.shields.io/badge/Upstash-rate--limit-00E9A3?logo=upstash&logoColor=white)](https://upstash.com)
 
@@ -35,7 +34,6 @@ Sito vetrina con form preventivi, galleria lavori, blog, 17 pagine servizio, FAQ
 | --------------- | ----------------------------------------------------------- |
 | Framework       | Astro 7 (prerender con SSR ibrido)                          |
 | Stile           | Tailwind CSS 4                                              |
-| CMS             | Sanity v6                                                   |
 | Email           | Resend (account Proton, TLS enforced)                       |
 | Template email  | HTML con i colori del brand (`src/lib/email-templates/`)    |
 | Rate-limit      | Upstash Redis su `/api/send-quote`, con fallback in memoria |
@@ -82,8 +80,6 @@ In locale si parte da `.env.example` copiato in `.env.local`. Su Vercel si confi
 | `RESEND_API_KEY`           | API key Resend per l'invio email                   | [resend.com/api-keys](https://resend.com/api-keys) |
 | `RESEND_FROM_EMAIL`        | Mittente, su dominio verificato su Resend          | Es. `preventivi@vetreriamonferrina.com`            |
 | `VETRERIA_EMAIL`           | Casella che riceve i preventivi                    | Casella aziendale                                  |
-| `SANITY_PROJECT_ID`        | ID progetto Sanity                                 | [sanity.io/manage](https://sanity.io/manage)       |
-| `SANITY_DATASET`           | Dataset Sanity                                     | `production`                                       |
 | `SITE_URL`                 | URL del sito in produzione                         | `https://vetreriamonferrina.com`                   |
 | `UPSTASH_REDIS_REST_URL`   | Endpoint REST del database Redis per il rate-limit | [console.upstash.com](https://console.upstash.com) |
 | `UPSTASH_REDIS_REST_TOKEN` | Token REST corrispondente                          | [console.upstash.com](https://console.upstash.com) |
@@ -125,7 +121,7 @@ In `.github/workflows/` ci sono cinque workflow.
 | `checkly.yml`        | PR e push su `main` che toccano `__checks__/`   | no                       |
 | `update-reviews.yml` | cron mensile e avvio manuale                    | no                       |
 
-Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza `npm audit --omit=dev` sulle dipendenze di produzione, `npm --prefix sanity audit` sullo Studio, ESLint, Prettier in modalità check, `astro check`, Vitest con coverage (179 test su 19 file), la build di produzione, il controllo dei link interni (`npm run check:links`) e infine la scansione SonarCloud. Il job `e2e` installa Chromium e WebKit ed esegue i test Playwright.
+Il workflow `ci.yml` ha tre job. Il job `audit` esegue `npm audit --omit=dev` sulle dipendenze di produzione; sta a parte perché un audit rosso non faccia saltare gli altri controlli. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage (170 test su 19 file), la build di produzione, il controllo dei link interni (`npm run check:links`) e infine la scansione SonarCloud. Il job `e2e` installa Chromium e WebKit ed esegue i test Playwright.
 
 Il workflow `lighthouse.yml` è separato per non rallentare il gate veloce e non è un required check. Le soglie in `lighthouserc.cjs` sono accessibility 0.95 come errore, performance 0.85, best practices 0.8 e SEO 0.9 come warning.
 
@@ -155,13 +151,12 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 ├── .github/workflows/       # CI pipeline
 ├── cloudflare/              # Worker (maintenance mode + origin lockdown), deploy via Git
 ├── docs/                    # Documentazione tecnica (mappa dati, guide)
-├── sanity/                  # Sanity CMS (schemi, config)
 ├── scripts/                 # Script Node (Google Places, check link interni)
 ├── src/
 │   ├── components/          # 19 componenti Astro
 │   ├── data/                # Dati statici (chatbot, recensioni, orari, servizi, blog)
 │   ├── layouts/             # Layout base (dark mode, View Transitions, SEO)
-│   ├── lib/                 # Logica condivisa (Sanity, validazione, sanitize, rate limit, email)
+│   ├── lib/                 # Logica condivisa (immagini, validazione, sanitize, rate limit, email)
 │   ├── pages/               # Pagine e API routes
 │   │   ├── api/             # Serverless function del form preventivo
 │   │   ├── blog/            # Blog (7 articoli)
@@ -172,7 +167,7 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 │   ├── fonts/               # Font self-hosted (Inter, DM Serif Display)
 │   └── images/              # Immagini ottimizzate WebP
 ├── tests/
-│   ├── unit/                # Unit test (Vitest, 179 test)
+│   ├── unit/                # Unit test (Vitest, 170 test)
 │   └── e2e/                 # Test end-to-end (Playwright)
 ├── astro.config.mjs
 ├── checkly.config.ts
@@ -266,18 +261,6 @@ Monitoring-as-code su una sola location (`eu-central-1`) per rientrare nel free 
 - Homepage browser, Playwright su titolo e rendering, una volta al giorno
 
 La configurazione sta in `checkly.config.ts` e `__checks__/`, il deploy avviene in CI al merge su `main`. Gli alert vanno sulla casella Proton, con integrazioni attive verso Vercel e GitHub.
-
-### Sanity
-
-CMS headless per i contenuti che cambiano senza deploy: foto di famiglia, orari, testi della pagina Chi Siamo. Lo studio è in `sanity/` e in produzione sta su [vetreriamonferrina.sanity.studio](https://vetreriamonferrina.sanity.studio/).
-
-```bash
-# Dev locale (opzionale)
-cd sanity && npm install && npm run dev
-# → http://localhost:3333
-```
-
-Il deploy dello studio è manuale, quindi un merge su `main` non lo tocca.
 
 ## Aggiornare i dati Google
 

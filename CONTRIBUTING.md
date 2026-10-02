@@ -27,18 +27,17 @@ Il branch `main` è la produzione live ed è protetto dal ruleset `protect-main`
 
 ## Controlli prima della PR
 
-La CI in `.github/workflows/ci.yml` esegue questi step nel job `Lint, Type Check & Test`, nello stesso ordine. Riprodurli in locale evita di scoprire un rosso a PR aperta.
+La CI in `.github/workflows/ci.yml` esegue questi step in due job paralleli: l'audit nel job `Security audit`, il resto nel job `Lint, Type Check & Test`, nello stesso ordine. L'audit sta in un job suo perché un audit rosso non faccia saltare lint, test, build e SonarCloud. Riprodurli in locale evita di scoprire un rosso a PR aperta.
 
-| Comando locale                                 | Step corrispondente in `ci.yml` |
-| ---------------------------------------------- | ------------------------------- |
-| `npm audit --omit=dev --audit-level=high`      | Security audit                  |
-| `npm --prefix sanity audit --audit-level=high` | Security audit (Sanity Studio)  |
-| `npm run lint`                                 | Lint                            |
-| `npm run format:check`                         | Format check                    |
-| `npm run check`                                | Type check                      |
-| `npm test` (in CI `npm run test:coverage`)     | Tests                           |
-| `npm run build`                                | Build                           |
-| `npm run check:links`                          | Check internal links            |
+| Comando locale                             | Step corrispondente in `ci.yml` |
+| ------------------------------------------ | ------------------------------- |
+| `npm audit --omit=dev --audit-level=high`  | Security audit                  |
+| `npm run lint`                             | Lint                            |
+| `npm run format:check`                     | Format check                    |
+| `npm run check`                            | Type check                      |
+| `npm test` (in CI `npm run test:coverage`) | Tests                           |
+| `npm run build`                            | Build                           |
+| `npm run check:links`                      | Check internal links            |
 
 `npm run check:links` analizza l'output di build in `dist/client`, quindi va lanciato dopo `npm run build` o fallisce subito.
 
@@ -50,10 +49,11 @@ Verifica l'esito guardando il codice di uscita dei comandi, non filtrando l'outp
 
 ## Check richiesti al merge
 
-Il ruleset blocca il pulsante di merge finché non passano tre check:
+Il ruleset blocca il pulsante di merge finché non passano quattro check:
 
 | Check                      | Origine                      |
 | -------------------------- | ---------------------------- |
+| `Security audit`           | job `audit` di `ci.yml`      |
 | `Lint, Type Check & Test`  | job `quality` di `ci.yml`    |
 | `SonarCloud Code Analysis` | analisi SonarCloud sulla PR  |
 | `CodeQL`                   | scanning di sicurezza GitHub |
