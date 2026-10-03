@@ -3,8 +3,9 @@
 # (decisione 2/10/2026), perché vanno lette le note di rilascio.
 # Schema della doc GitHub "Automating Dependabot with GitHub Actions"; il merge
 # è squash perché la repo non ammette altro.
-# Con una merge queue GITHUB_TOKEN non basta più (stessa doc): servirà un token
-# di app o PAT quando la coda arriverà (C1).
+# Con la merge queue su main GITHUB_TOKEN non può accodare la PR (stessa doc):
+# finché non c'è un token di app o PAT (decisione di Marco, C1) le PR Dependabot
+# minor e patch si mettono in coda a mano.
 name: Dependabot auto-merge
 
 on: pull_request
