@@ -12,7 +12,6 @@ interface Job {
   steps?: Step[];
 }
 interface Workflow {
-  on: string | string[] | Record<string, unknown>;
   permissions?: unknown;
   jobs: Record<string, Job>;
 }
@@ -50,23 +49,9 @@ function runs(job: Job): string[] {
   return (job.steps ?? []).flatMap((step) => (step.run ? [step.run] : []));
 }
 
-function triggers(workflow: Workflow): string[] {
-  const on = workflow.on;
-  if (typeof on === 'string') return [on];
-  return Array.isArray(on) ? on : Object.keys(on);
-}
-
 describe('CI — check obbligatori', () => {
   it.each(REQUIRED)('il job "%s" esiste una volta sola', (name) => {
     expect(jobsNamed(name).map(({ file, id }) => `${file}:${id}`)).toHaveLength(1);
-  });
-
-  // La merge queue aspetta i check obbligatori sul merge_group: senza quel
-  // trigger il check non arriva e la PR esce dalla coda per timeout (doc GitHub,
-  // "Managing a merge queue").
-  it.each(REQUIRED)('il workflow di "%s" gira su pull_request e merge_group', (name) => {
-    const { workflow } = jobNamed(name);
-    expect(triggers(workflow)).toEqual(expect.arrayContaining(['pull_request', 'merge_group']));
   });
 });
 

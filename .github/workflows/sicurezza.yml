@@ -9,7 +9,6 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  merge_group:
   schedule:
     - cron: '23 4 * * 1'
 
@@ -44,8 +43,7 @@ jobs:
       - name: Security audit
         run: npm audit --omit=dev --audit-level=high
 
-  # CodeQL in advanced setup: il default setup non gira sul merge_group, e serve
-  # un file nostro per le PR da fork (A4).
+  # CodeQL in advanced setup: serve un file nostro per le PR da fork (A4).
   codeql:
     name: Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest

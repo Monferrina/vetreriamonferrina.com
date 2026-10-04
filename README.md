@@ -113,17 +113,17 @@ npm run check        # Type check (astro check)
 
 In `.github/workflows/` ci sono sette workflow, divisi per tipo. I passi comuni (Node 22 con cache npm e `npm ci`) stanno nella action composita `.github/actions/setup`.
 
-| Workflow                    | Quando gira                                          | Blocca il merge                          |
-| --------------------------- | ---------------------------------------------------- | ---------------------------------------- |
-| `ci.yml`                    | push su `main`, PR verso `main`, merge queue         | sì                                       |
-| `sicurezza.yml`             | push su `main`, PR verso `main`, merge queue, lunedì | sì (`Security audit`, `CodeQL`)          |
-| `visuale.yml`               | PR verso `main`                                      | no, gli screenshot li guarda chi approva |
-| `worker-ci.yml`             | PR che toccano `cloudflare/maintenance-worker/`      | no                                       |
-| `checkly.yml`               | PR e push su `main` che toccano `__checks__/`        | no                                       |
-| `update-reviews.yml`        | cron mensile e avvio manuale                         | no                                       |
-| `dependabot-auto-merge.yml` | PR aperte da Dependabot                              | no                                       |
+| Workflow                    | Quando gira                                     | Blocca il merge                          |
+| --------------------------- | ----------------------------------------------- | ---------------------------------------- |
+| `ci.yml`                    | push su `main`, PR verso `main`                 | sì                                       |
+| `sicurezza.yml`             | push su `main`, PR verso `main`, lunedì         | sì (`Security audit`, `CodeQL`)          |
+| `visuale.yml`               | PR verso `main`                                 | no, gli screenshot li guarda chi approva |
+| `worker-ci.yml`             | PR che toccano `cloudflare/maintenance-worker/` | no                                       |
+| `checkly.yml`               | PR e push su `main` che toccano `__checks__/`   | no                                       |
+| `update-reviews.yml`        | cron mensile e avvio manuale                    | no                                       |
+| `dependabot-auto-merge.yml` | PR aperte da Dependabot                         | no                                       |
 
-Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione, il controllo dei link interni (`npm run check:links`) e infine la scansione SonarCloud, che salta in merge queue perché il piano Free analizza solo `main` e le PR. Il job `e2e` installa Chromium e WebKit ed esegue i test Playwright.
+Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione, il controllo dei link interni (`npm run check:links`) e infine la scansione SonarCloud. Il job `e2e` installa Chromium e WebKit ed esegue i test Playwright.
 
 Il workflow `sicurezza.yml` ha tre job. Il job `audit` esegue `npm audit --omit=dev` sulle dipendenze di produzione; sta a parte perché un audit rosso non faccia saltare gli altri controlli. Il job `codeql` analizza JavaScript/TypeScript e i workflow (CodeQL in advanced setup). Il job `semgrep` prova le regole su misura di `.semgrep/` con `semgrep --test` e poi le applica alla repo: niente IP o dati del form nei `console.*`, niente `userInfo` o `httpHeaders` a `true` nelle opzioni Sentry. La scansione Semgrep della piattaforma (`semgrep-cloud-platform/scan`) e Aikido arrivano dalle loro app GitHub; i segreti li controllano secret scanning e push protection di GitHub.
 
