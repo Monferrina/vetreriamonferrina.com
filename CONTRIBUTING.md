@@ -27,11 +27,10 @@ Il branch `main` è la produzione live ed è protetto dal ruleset `protect-main`
 
 ## Controlli prima della PR
 
-La CI in `.github/workflows/ci.yml` esegue questi step in due job paralleli: l'audit nel job `Security audit`, il resto nel job `Lint, Type Check & Test`, nello stesso ordine. L'audit sta in un job suo perché un audit rosso non faccia saltare lint, test, build e SonarCloud. Riprodurli in locale evita di scoprire un rosso a PR aperta.
+La CI in `.github/workflows/ci.yml` esegue questi step nel job `Lint, Type Check & Test`, nello stesso ordine. Riprodurli in locale evita di scoprire un rosso a PR aperta.
 
 | Comando locale                             | Step corrispondente in `ci.yml` |
 | ------------------------------------------ | ------------------------------- |
-| `npm audit --omit=dev --audit-level=high`  | Security audit                  |
 | `npm run lint`                             | Lint                            |
 | `npm run format:check`                     | Format check                    |
 | `npm run check`                            | Type check                      |
@@ -49,11 +48,10 @@ Verifica l'esito guardando il codice di uscita dei comandi, non filtrando l'outp
 
 ## Check richiesti al merge
 
-Il ruleset blocca il pulsante di merge finché non passano otto check:
+Il ruleset blocca il pulsante di merge finché non passano sette check:
 
 | Check                         | Origine                                                                               |
 | ----------------------------- | ------------------------------------------------------------------------------------- |
-| `Security audit`              | job `audit` di `sicurezza.yml`                                                        |
 | `Lint, Type Check & Test`     | job `quality` di `ci.yml`                                                             |
 | `E2E (Playwright)`            | job `e2e` di `ci.yml`                                                                 |
 | `CodeQL`                      | job `codeql` di `sicurezza.yml` (code scanning)                                       |

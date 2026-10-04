@@ -116,7 +116,7 @@ In `.github/workflows/` ci sono sette workflow, divisi per tipo. I passi comuni 
 | Workflow                    | Quando gira                                     | Blocca il merge                          |
 | --------------------------- | ----------------------------------------------- | ---------------------------------------- |
 | `ci.yml`                    | push su `main`, PR verso `main`                 | sì                                       |
-| `sicurezza.yml`             | push su `main`, PR verso `main`, lunedì         | sì (`Security audit`, `CodeQL`)          |
+| `sicurezza.yml`             | push su `main`, PR verso `main`, lunedì         | sì (`CodeQL`, Semgrep)                   |
 | `visuale.yml`               | PR verso `main`                                 | no, gli screenshot li guarda chi approva |
 | `worker-ci.yml`             | PR che toccano `cloudflare/maintenance-worker/` | no                                       |
 | `checkly.yml`               | PR e push su `main` che toccano `__checks__/`   | no                                       |
@@ -125,7 +125,7 @@ In `.github/workflows/` ci sono sette workflow, divisi per tipo. I passi comuni 
 
 Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione, il controllo dei link interni (`npm run check:links`) e infine la scansione SonarCloud. Il job `e2e` installa Chromium e WebKit ed esegue i test Playwright.
 
-Il workflow `sicurezza.yml` ha tre job. Il job `audit` esegue `npm audit --omit=dev` sulle dipendenze di produzione; sta a parte perché un audit rosso non faccia saltare gli altri controlli. Il job `codeql` analizza JavaScript/TypeScript e i workflow (CodeQL in advanced setup). Il job `semgrep` prova le regole su misura di `.semgrep/` con `semgrep --test` e poi le applica alla repo: niente IP o dati del form nei `console.*`, niente `userInfo` o `httpHeaders` a `true` nelle opzioni Sentry. La scansione Semgrep della piattaforma (`semgrep-cloud-platform/scan`) e Aikido arrivano dalle loro app GitHub; i segreti li controllano secret scanning e push protection di GitHub.
+Il workflow `sicurezza.yml` ha due job. Il job `codeql` analizza JavaScript/TypeScript e i workflow (CodeQL in advanced setup). Il job `semgrep` prova le regole su misura di `.semgrep/` con `semgrep --test` e poi le applica alla repo: niente IP o dati del form nei `console.*`, niente `userInfo` o `httpHeaders` a `true` nelle opzioni Sentry. La scansione Semgrep della piattaforma (`semgrep-cloud-platform/scan`) e Aikido arrivano dalle loro app GitHub; i segreti li controllano secret scanning e push protection di GitHub. Le dipendenze vulnerabili le blocca Aikido sulle PR che le introducono e le corregge Dependabot.
 
 Il workflow `visuale.yml` aspetta la preview Vercel della PR, la apre nel container ufficiale di Playwright e fa gli screenshot desktop e mobile di tutte le pagine della sitemap, fallendo se una risorsa risponde 400 o più o se la CSP blocca qualcosa. Gira sulla preview perché la CSP sta in `vercel.json` e solo Vercel la applica. La preview è protetta da Vercel Authentication: il workflow usa il segreto `VERCEL_AUTOMATION_BYPASS_SECRET` e senza segreto avvisa e non fa niente. Gli screenshot sono nell'artifact `visuale-report` della run.
 
