@@ -1,7 +1,7 @@
 name: CI
 
-# Qualità del codice e test. L'audit, CodeQL e Semgrep stanno in sicurezza.yml;
-# i nomi dei job sono quelli del ruleset protect-main e non si cambiano.
+# Qualità del codice e test. La sicurezza la controllano CodeQL, Semgrep, Aikido e
+# Sonar dalle loro app. I nomi dei job sono quelli del ruleset protect-main.
 
 on:
   push:

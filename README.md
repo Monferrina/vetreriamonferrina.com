@@ -111,27 +111,23 @@ npm run check        # Type check (astro check)
 
 ## CI/CD
 
-In `.github/workflows/` ci sono sette workflow, divisi per tipo. I passi comuni (Node 22 con cache npm e `npm ci`) stanno nella action composita `.github/actions/setup`.
+In `.github/workflows/` ci sono cinque workflow. I passi comuni (Node 22 con cache npm e `npm ci`) stanno nella action composita `.github/actions/setup`.
 
-| Workflow                    | Quando gira                                     | Blocca il merge                          |
-| --------------------------- | ----------------------------------------------- | ---------------------------------------- |
-| `ci.yml`                    | push su `main`, PR verso `main`                 | sì                                       |
-| `sicurezza.yml`             | push su `main`, PR verso `main`, lunedì         | sì (`CodeQL`, Semgrep)                   |
-| `visuale.yml`               | PR verso `main`                                 | no, gli screenshot li guarda chi approva |
-| `worker-ci.yml`             | PR che toccano `cloudflare/maintenance-worker/` | no                                       |
-| `checkly.yml`               | PR e push su `main` che toccano `__checks__/`   | no                                       |
-| `update-reviews.yml`        | cron mensile e avvio manuale                    | no                                       |
-| `dependabot-auto-merge.yml` | PR aperte da Dependabot                         | no                                       |
+| Workflow                    | Quando gira                                     | Blocca il merge |
+| --------------------------- | ----------------------------------------------- | --------------- |
+| `ci.yml`                    | push su `main`, PR verso `main`                 | sì              |
+| `worker-ci.yml`             | PR che toccano `cloudflare/maintenance-worker/` | no              |
+| `checkly.yml`               | PR e push su `main` che toccano `__checks__/`   | no              |
+| `update-reviews.yml`        | cron mensile e avvio manuale                    | no              |
+| `dependabot-auto-merge.yml` | PR aperte da Dependabot                         | no              |
 
 Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione, il controllo dei link interni (`npm run check:links`) e infine la scansione SonarCloud. Il job `e2e` installa Chromium e WebKit ed esegue i test Playwright.
 
-Il workflow `sicurezza.yml` ha due job. Il job `codeql` analizza JavaScript/TypeScript e i workflow (CodeQL in advanced setup). Il job `semgrep` prova le regole su misura di `.semgrep/` con `semgrep --test` e poi le applica alla repo: niente IP o dati del form nei `console.*`, niente `userInfo` o `httpHeaders` a `true` nelle opzioni Sentry. La scansione Semgrep della piattaforma (`semgrep-cloud-platform/scan`) e Aikido arrivano dalle loro app GitHub; i segreti li controllano secret scanning e push protection di GitHub. Le dipendenze vulnerabili le blocca Aikido sulle PR che le introducono e le corregge Dependabot.
-
-Il workflow `visuale.yml` aspetta la preview Vercel della PR, la apre nel container ufficiale di Playwright e fa gli screenshot desktop e mobile di tutte le pagine della sitemap, fallendo se una risorsa risponde 400 o più o se la CSP blocca qualcosa. Gira sulla preview perché la CSP sta in `vercel.json` e solo Vercel la applica. La preview è protetta da Vercel Authentication: il workflow usa il segreto `VERCEL_AUTOMATION_BYPASS_SECRET` e senza segreto avvisa e non fa niente. Gli screenshot sono nell'artifact `visuale-report` della run.
+La sicurezza la controllano gli strumenti, dalle loro app GitHub: CodeQL (impostazione automatica di GitHub), Semgrep (`semgrep-cloud-platform/scan`: blocca i finding high/critical ad alta confidenza, commenta i medium), Aikido (codice e dipendenze introdotte dalla PR) e SonarCloud. I segreti li controllano secret scanning e push protection di GitHub; le dipendenze già presenti le corregge Dependabot.
 
 Il workflow `dependabot-auto-merge.yml` attiva l'auto-merge (squash) sulle PR Dependabot minor e patch: GitHub le mergia quando tutti i check obbligatori sono verdi. Le major restano a mano. Perché la scansione SonarCloud giri anche sulle PR di Dependabot, che non vedono i secret di Actions, `SONAR_TOKEN` è anche tra i secret Dependabot. Dependabot propone una versione nuova solo dopo sette giorni dalla pubblicazione (`cooldown`); gli aggiornamenti di sicurezza non aspettano.
 
-Gli hook Husky anticipano in locale i controlli veloci: a ogni commit lint e format sui file toccati (lint-staged), a ogni push `astro check`, gli unit test e, se `semgrep` è installato, Semgrep sui file cambiati: le regole di `.semgrep/` bloccano, `p/default` avvisa soltanto. Build ed E2E restano alla CI.
+I pre-commit hook (Husky con lint-staged) eseguono lint e format a ogni commit.
 
 Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro branch o PR ottiene un preview URL.
 
