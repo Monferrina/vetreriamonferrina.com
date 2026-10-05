@@ -1,0 +1,25 @@
+# Preview Vercel di una PR: build di produzione con gli header di vercel.json. Sulla
+# Preview RESEND_API_KEY non c'è (vercel env ls, 05/10), quindi il POST non può mandare
+# email e si scansiona. Uso: hawk scan stackhawk.yml stackhawk-preview.yml
+app:
+  env: Preview
+  host: ${APP_HOST}
+  excludePaths: []
+  openApiConf:
+    filePath: stackhawk/openapi.yaml
+  # Il bypass apre la preview a chiunque lo abbia: fuori da alert e log che vanno a StackHawk.
+  redact:
+    headers:
+      - x-vercel-protection-bypass
+    values:
+      - ${VERCEL_AUTOMATION_BYPASS_SECRET}
+
+hawkAddOn:
+  replacer:
+    rules:
+      # Senza il bypass la preview risponde con la pagina di login di Vercel.
+      - matchString: x-vercel-protection-bypass
+        replacement: ${VERCEL_AUTOMATION_BYPASS_SECRET}
+      # Toglie la toolbar che Vercel inietta nelle preview.
+      - matchString: x-vercel-skip-toolbar
+        replacement: '1'

@@ -1,0 +1,29 @@
+# Scritta a mano per HawkScan: l'unica API del sito (src/pages/api/send-quote.ts).
+# Campi da QuoteFormData in src/lib/validation.ts (i limiti stanno solo lì).
+openapi: 3.0.3
+info:
+  title: vetreriamonferrina.com
+  version: '1'
+paths:
+  /api/send-quote:
+    post:
+      summary: Richiesta di preventivo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, phone, email, serviceType, description, measurements, privacy]
+              properties:
+                name: { type: string, example: Mario Rossi }
+                phone: { type: string, example: '+39 0142 123456' }
+                email: { type: string, format: email, example: mario@example.com }
+                serviceType: { type: string, example: box-doccia }
+                description: { type: string, example: Box doccia su misura }
+                measurements: { type: string, example: 120x80 }
+                privacy: { type: boolean, example: true }
+                honeypot: { type: string, example: '' }
+                dryRun: { type: boolean, example: true }
+      responses:
+        '200': { description: OK }
