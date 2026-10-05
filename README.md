@@ -119,7 +119,7 @@ In `.github/workflows/` ci sono sei workflow. I passi comuni (Node 22 con cache 
 | `update-reviews.yml`        | cron mensile e avvio manuale                    | no              |
 | `dependabot-auto-merge.yml` | PR aperte da Dependabot                         | no              |
 
-Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione e il controllo dei link interni (`npm run check:links`). Il job `dependency-review`, solo sulle PR, blocca le dipendenze vulnerabili che la PR introduce, transitive comprese. Il workflow `e2e.yml` parte quando Vercel ha pronta la preview della PR: installa Chromium e WebKit ed esegue i test Playwright su quella preview.
+Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione e il controllo dei link interni (`npm run check:links`). Il job `dependency-review`, solo sulle PR, blocca le dipendenze vulnerabili che la PR introduce, transitive comprese. Il workflow `e2e.yml` parte quando Vercel ha pronta la preview della PR ed esegue i test Playwright su quella preview, nel container ufficiale di Playwright che ha già Chromium e WebKit.
 
 La sicurezza la controllano gli strumenti, dalle loro app GitHub: CodeQL (impostazione automatica di GitHub) e Semgrep (`semgrep-cloud-platform/scan`). I segreti li controllano secret scanning e push protection di GitHub; le dipendenze già presenti le corregge Dependabot.
 
