@@ -33,8 +33,10 @@ jobs:
       contents: read
       pull-requests: write
     timeout-minutes: 10
-    # Due agenti, ognuno sul suo modello: sul piano gratuito i limiti sono per modello
-    # (AI Studio, 05/10/2026: 15 RPM e 500 RPD per ciascuno dei due Flash-Lite).
+    # Due agenti sullo stesso modello. Gemini CLI 0.62.0 riscrive gemini-3.1-flash-lite in
+    # gemini-3.5-flash-lite (config/models.ts, getBackendModelMappings): misurato sul primo run,
+    # quindi si dichiara quello che gira davvero. Il progetto è a pagamento con credito
+    # prepagato e tetto mensile (Marco, 05/10/2026): circa 0,09 $ per PR con due agenti.
     strategy:
       fail-fast: false
       # Uno alla volta: con lo stesso token GitHub ammette una sola review in sospeso per utente e
@@ -46,7 +48,7 @@ jobs:
             modello: gemini-3.5-flash-lite
             istruzioni: none, perform the general review described below.
           - agente: sicurezza
-            modello: gemini-3.1-flash-lite
+            modello: gemini-3.5-flash-lite
             istruzioni: >-
               Security review only. Report only security issues: injection (HTML, script,
               header, command), secrets or keys in code or logs, missing input validation at
