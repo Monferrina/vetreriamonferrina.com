@@ -35,8 +35,6 @@ describe('Header', () => {
 
     expect(html).toContain('<header');
     expect(html).toContain('<nav');
-    expect(html).toContain('<ul');
-    expect(html).toContain('<li');
   });
 
   test('ha il pulsante CTA Preventivo', async () => {
@@ -45,9 +43,7 @@ describe('Header', () => {
       request: new Request('https://vetreriamonferrina.com/'),
     });
 
-    expect(html).toContain('Preventivo');
-    expect(html).toContain('bg-primary');
-    expect(html).toContain('rounded-full');
+    expect(html).toMatch(/<a[^>]*href="\/preventivo"[^>]*>\s*Preventivo\s*<\/a>/);
   });
 
   test('evidenzia il link della pagina corrente', async () => {
@@ -56,6 +52,7 @@ describe('Header', () => {
       request: new Request('https://vetreriamonferrina.com/'),
     });
 
-    expect(html).toContain('aria-current="page"');
+    expect(html).toMatch(/<a[^>]*href="\/"[^>]*aria-current="page"/);
+    expect(html.match(/aria-current="page"/g)).toHaveLength(1);
   });
 });

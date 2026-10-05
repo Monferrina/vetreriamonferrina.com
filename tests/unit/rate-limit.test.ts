@@ -84,18 +84,20 @@ describe('isRateLimited', () => {
     expect(errorSpy).not.toHaveBeenCalled();
   });
 
-  it('il cleanup conserva gli IP con timestamp ancora validi (ramo else)', async () => {
+  it('il cleanup conserva gli IP con timestamp ancora validi', async () => {
     const { isRateLimited } = await import('../../src/lib/rate-limit');
     const ip = '5.5.5.5';
 
-    // Richiesta a t=270s: sotto CLEANUP_INTERVAL, nessun cleanup ancora
+    // 5 richieste a t=270s, prima del primo cleanup (CLEANUP_INTERVAL = 300s)
     vi.advanceTimersByTime(270_000);
-    expect(await isRateLimited(ip)).toBe(false);
+    for (let i = 0; i < MAX_REQUESTS; i++) {
+      await isRateLimited(ip);
+    }
 
-    // A t=301s il prossimo check triggera il cleanup, ma il timestamp (31s fa) è
-    // ancora nella finestra → l'IP viene conservato (ramo else di cleanup)
+    // A t=301s il check fa partire il cleanup; le 5 richieste (31s fa) sono ancora nella
+    // finestra: se il cleanup cancellasse l'IP, la sesta passerebbe.
     vi.advanceTimersByTime(31_000);
-    expect(await isRateLimited(ip)).toBe(false);
+    expect(await isRateLimited(ip)).toBe(true);
   });
 
   it('degrada sul fallback in-memory se il limiter globale lancia', async () => {

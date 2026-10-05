@@ -32,13 +32,20 @@ test('contatti ha link email cliccabile', async ({ page }) => {
 });
 
 test('contatti ha mappa Google (facade click-to-load)', async ({ page }) => {
+  // Terzi simulati: si verifica il nostro iframe, non quello che disegna Google.
+  await page.route('https://www.google.com/maps/**', (route) =>
+    route.fulfill({ contentType: 'text/html', body: '<html></html>' })
+  );
+  await page.route('https://api.open-meteo.com/**', (route) => route.fulfill({ json: {} }));
   await page.goto('/contatti');
   // La mappa è dietro una facade: placeholder leggero, iframe solo al click (INP + GDPR)
-  const facade = page.locator('#map-facade');
+  const facade = page.getByRole('button', { name: /carica la mappa interattiva/i });
   await expect(facade).toBeVisible();
   await facade.click();
-  const mapIframe = page.locator('iframe[src*="google.com/maps"]');
-  await expect(mapIframe).toBeVisible();
+  await expect(page.getByTitle(/mappa posizione/i)).toHaveAttribute(
+    'src',
+    /^https:\/\/www\.google\.com\/maps\/embed\/v1\/place\?/
+  );
 });
 
 test('contatti ha orari di apertura', async ({ page }) => {
@@ -107,9 +114,8 @@ test('galleria lightbox si apre al click e si chiude con ESC', async ({ page }) 
   // Click on the first gallery item
   await page.locator('[data-gallery-item]').first().click();
 
-  // Lightbox should be visible
-  const lightbox = page.locator('[data-lightbox]');
-  await expect(lightbox).not.toHaveClass(/hidden/);
+  const lightbox = page.getByRole('dialog', { name: 'Visualizzatore immagini' });
+  await expect(lightbox).toBeVisible();
 
   // Title should be shown
   const title = page.locator('[data-lightbox-title]');
@@ -117,7 +123,7 @@ test('galleria lightbox si apre al click e si chiude con ESC', async ({ page }) 
 
   // Press Escape to close
   await page.keyboard.press('Escape');
-  await expect(lightbox).toHaveClass(/hidden/);
+  await expect(lightbox).toBeHidden();
 });
 
 test('galleria lightbox navigazione frecce', async ({ page }) => {
