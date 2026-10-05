@@ -109,8 +109,7 @@ Options on the [adapter page](https://docs.astro.build/en/guides/integrations-gu
   logs: `astro dev logs`), or run them in the foreground with `ASTRO_DEV_BACKGROUND=0` /
   `ASTRO_PREVIEW_BACKGROUND=0`
   ([cli reference](https://docs.astro.build/en/reference/cli-reference/#--background)).
-  Stop it once the work needing it is done; `.claude/hooks/ferma-server.sh` stops it
-  anyway at session end.
+  Stop it once the work needing it is done.
 - `astro preview` with the Vercel adapter is not documented (the adapter has no
   `previewEntrypoint`); the documented path is `astro build` then
   `vercel deploy --prebuilt`.
