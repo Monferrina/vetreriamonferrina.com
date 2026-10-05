@@ -1,5 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
+// Valori scritti qui e non importati da src: sono la specifica (5 richieste al minuto).
+// Importati, un limite portato a 500 farebbe passare i test lo stesso.
 const WINDOW_MS = 60_000;
 const MAX_REQUESTS = 5;
 

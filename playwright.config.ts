@@ -6,7 +6,12 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: [['html', { open: 'never' }]],
+  // In CI il reporter github annota i fallimenti e stampa nel log il riepilogo (misurato il
+  // 05/10: "2 passed" + notice "Playwright Run Summary"; i flaky li conta secondo il suo
+  // sorgente, non ancora visto su un caso vero). L'html resta come artefatto.
+  reporter: process.env.CI
+    ? [['github'], ['html', { open: 'never' }]]
+    : [['html', { open: 'never' }]],
   use: {
     baseURL: 'http://localhost:4321',
     trace: 'on-first-retry',

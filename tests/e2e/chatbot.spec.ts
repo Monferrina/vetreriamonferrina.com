@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('Chatbot', () => {
   test('dal servizio scelto porta al form preventivo con il servizio selezionato', async ({
@@ -18,18 +18,19 @@ test.describe('Chatbot', () => {
   test('si chiude con il pulsante chiudi', async ({ page }) => {
     await page.goto('/');
     await page.getByRole('button', { name: /apri glassy/i }).click();
-    await expect(page.locator('[data-chatbot-panel]')).toBeVisible();
-    // Target the close button inside the panel (not the toggle button)
-    await page.locator('#chatbot-close').click();
-    await expect(page.locator('[data-chatbot-panel]')).toBeHidden();
+    const panel = page.getByRole('dialog', { name: 'Assistente virtuale' });
+    await expect(panel).toBeVisible();
+    await panel.getByRole('button', { name: 'Chiudi Glassy', exact: true }).click();
+    await expect(panel).toBeHidden();
   });
 
   test('si chiude con Escape', async ({ page }) => {
     await page.goto('/');
     await page.getByRole('button', { name: /apri glassy/i }).click();
-    await expect(page.locator('[data-chatbot-panel]')).toBeVisible();
+    const panel = page.getByRole('dialog', { name: 'Assistente virtuale' });
+    await expect(panel).toBeVisible();
     await page.keyboard.press('Escape');
-    await expect(page.locator('[data-chatbot-panel]')).toBeHidden();
+    await expect(panel).toBeHidden();
   });
 
   test.describe('mobile', () => {
@@ -39,7 +40,7 @@ test.describe('Chatbot', () => {
     test("e' responsive su mobile", async ({ page }) => {
       await page.goto('/');
       await page.getByRole('button', { name: /apri glassy/i }).click();
-      const panel = page.locator('[data-chatbot-panel]');
+      const panel = page.getByRole('dialog', { name: 'Assistente virtuale' });
       await expect(panel).toBeVisible();
       // expect.poll riprova finché lo slide-in (scale 0.95→1) non è finito: misurato a metà
       // animazione il pannello è largo ~356px.

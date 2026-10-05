@@ -16,7 +16,7 @@ export async function renderPage(
 ): Promise<Document> {
   container ??= AstroContainer.create({ astroConfig: { site: 'https://vetreriamonferrina.com' } });
   // Le pagine con getStaticPaths hanno firma `(_props: never) => any`: il container le
-  // renderizza, ma senza il cast `astro check` si ferma (ts2345, come in ai-disclosure.test).
+  // renderizza, ma senza il cast `astro check` si ferma (ts2345).
   const html = await (
     await container
   ).renderToString(page as Renderable, {

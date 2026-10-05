@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import {
   handleSendQuote,
   type EmailSender,
@@ -49,11 +49,6 @@ function makeReq(overrides: Partial<SendQuoteRequest> = {}): SendQuoteRequest {
     ...overrides,
   };
 }
-
-// Reset rate-limit state between tests (in-memory Map persists)
-beforeEach(async () => {
-  await import('../../src/lib/rate-limit');
-});
 
 let testIpCounter = 0;
 function uniqueIp(): string {

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('Navigazione', () => {
   // Skip a livello di gruppo: decide prima che Playwright apra la pagina.
