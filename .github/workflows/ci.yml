@@ -1,7 +1,7 @@
 name: CI
 
-# Qualità del codice e test. La sicurezza la controllano CodeQL e Aikido dalle loro
-# app. I nomi dei job sono quelli del ruleset protect-main.
+# Qualità del codice, test e dipendenze introdotte dalla PR. SAST: CodeQL e Semgrep
+# dalle loro app. I nomi dei job sono quelli del ruleset protect-main.
 
 on:
   push:
@@ -82,3 +82,15 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+  dependency-review:
+    name: Dependency Review
+    # Blocca le dipendenze vulnerabili che la PR introduce, transitive comprese;
+    # quelle già su main le segnala Dependabot. Lavora sul diff via API, senza checkout.
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Dependency Review
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0

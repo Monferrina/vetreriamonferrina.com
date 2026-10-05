@@ -118,9 +118,9 @@ In `.github/workflows/` ci sono cinque workflow. I passi comuni (Node 22 con cac
 | `update-reviews.yml`        | cron mensile e avvio manuale                    | no              |
 | `dependabot-auto-merge.yml` | PR aperte da Dependabot                         | no              |
 
-Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione e il controllo dei link interni (`npm run check:links`). Il job `e2e` installa Chromium e WebKit ed esegue i test Playwright.
+Il workflow `ci.yml` ha tre job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione e il controllo dei link interni (`npm run check:links`). Il job `e2e` installa Chromium e WebKit ed esegue i test Playwright. Il job `dependency-review`, solo sulle PR, blocca le dipendenze vulnerabili che la PR introduce, transitive comprese.
 
-La sicurezza la controllano gli strumenti, dalle loro app GitHub: CodeQL (impostazione automatica di GitHub) e Aikido (codice e dipendenze introdotte dalla PR). I segreti li controllano secret scanning e push protection di GitHub; le dipendenze già presenti le corregge Dependabot.
+La sicurezza la controllano gli strumenti, dalle loro app GitHub: CodeQL (impostazione automatica di GitHub) e Semgrep (`semgrep-cloud-platform/scan`). I segreti li controllano secret scanning e push protection di GitHub; le dipendenze già presenti le corregge Dependabot.
 
 Il workflow `dependabot-auto-merge.yml` attiva l'auto-merge (squash) sulle PR Dependabot minor e patch: GitHub le mergia quando tutti i check obbligatori sono verdi. Le major restano a mano. Dependabot propone una versione nuova solo dopo sette giorni dalla pubblicazione (`cooldown`); gli aggiornamenti di sicurezza non aspettano.
 
