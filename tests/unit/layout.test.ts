@@ -4,6 +4,7 @@ import { expect, test, describe } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import BaseLayout from '../../src/layouts/BaseLayout.astro';
+import { renderPage } from './render-page';
 
 describe('BaseLayout', () => {
   test('contiene meta tag essenziali', async () => {
@@ -24,6 +25,12 @@ describe('BaseLayout', () => {
     expect(html).toContain('og:title');
     expect(html).toContain('og:locale');
     expect(html).toContain('rel="canonical"');
+  });
+
+  test('collega la favicon SVG', async () => {
+    const d = await renderPage(BaseLayout, '/', { props: { title: 'Test' } });
+    const favicon = d.querySelector('link[rel="icon"][type="image/svg+xml"]');
+    expect(favicon?.getAttribute('href')).toBe('/favicon.svg');
   });
 
   test('include font preload links', async () => {
