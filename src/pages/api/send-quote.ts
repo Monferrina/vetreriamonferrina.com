@@ -6,8 +6,6 @@ import { handleSendQuote } from '../../lib/send-quote';
 export const prerender = false;
 
 export async function POST({ request, clientAddress }: APIContext) {
-  const resend = new Resend(RESEND_API_KEY);
-
   const siteUrl = (SITE_URL || '').trim();
   const allowedOrigins = [
     siteUrl,
@@ -42,7 +40,9 @@ export async function POST({ request, clientAddress }: APIContext) {
       fromEmail: RESEND_FROM_EMAIL ?? '',
       toEmail: VETRERIA_EMAIL ?? '',
     },
-    resend.emails
+    // Client costruito solo all'invio: senza chiave il costruttore lancia, e costruito
+    // qui in cima dava 500 a ogni richiesta, prima del controllo Origin (dev, preview).
+    { send: (params) => new Resend(RESEND_API_KEY).emails.send(params) }
   );
 
   return new Response(JSON.stringify(result.body), {
