@@ -108,7 +108,7 @@ npm run check        # Type check (astro check)
 
 ## CI/CD
 
-In `.github/workflows/` ci sono sei workflow. I passi comuni (Node 22 con cache npm e `npm ci`) stanno nella action composita `.github/actions/setup`.
+In `.github/workflows/` ci sono sette workflow. I passi comuni (Node 22 con cache npm e `npm ci`) stanno nella action composita `.github/actions/setup`.
 
 | Workflow                    | Quando gira                                     | Blocca il merge |
 | --------------------------- | ----------------------------------------------- | --------------- |
@@ -118,8 +118,11 @@ In `.github/workflows/` ci sono sei workflow. I passi comuni (Node 22 con cache 
 | `checkly.yml`               | PR e push su `main` che toccano `__checks__/`   | no              |
 | `update-reviews.yml`        | cron mensile e avvio manuale                    | no              |
 | `dependabot-auto-merge.yml` | PR aperte da Dependabot                         | no              |
+| `agenti.yml`                | PR aperta, o commento `@gemini-cli`             | no              |
 
 Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione e il controllo dei link interni (`npm run check:links`). Il job `dependency-review`, solo sulle PR, blocca le dipendenze vulnerabili che la PR introduce, transitive comprese. Il workflow `e2e.yml` parte quando Vercel ha pronta la preview della PR ed esegue i test Playwright su quella preview, nel container ufficiale di Playwright che ha già Chromium e WebKit.
+
+Il workflow `agenti.yml` fa rivedere la PR a Gemini (`gemini-3.8-flash`, piano gratuito) con l'action ufficiale `run-gemini-cli`: un riassunto e commenti sulle righe cambiate, mai approvazioni né commit. Parte all'apertura di una PR del repo (non da fork, non da Dependabot, non in bozza) o quando un collaboratore scrive un commento che inizia con `@gemini-cli`. Il modello legge la PR solo via GitHub, non ha la shell e non vede i segreti; i vincoli li fissa `tests/unit/agenti-workflow.test.ts`.
 
 La sicurezza la controllano gli strumenti, dalle loro app GitHub: CodeQL (impostazione automatica di GitHub) e Semgrep (`semgrep-cloud-platform/scan`). I segreti li controllano secret scanning e push protection di GitHub; le dipendenze già presenti le corregge Dependabot.
 
