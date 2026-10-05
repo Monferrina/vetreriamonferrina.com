@@ -1,4 +1,4 @@
-name: CI
+name: 'Qualità: lint, tipi, test, build'
 
 # Qualità del codice, test e dipendenze introdotte dalla PR; gli E2E stanno in e2e.yml, sulla
 # preview Vercel. SAST: CodeQL e Semgrep dalle loro app. I nomi dei job sono quelli del ruleset

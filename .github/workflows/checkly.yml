@@ -1,4 +1,4 @@
-name: Checkly
+name: Monitor Checkly
 
 # Monitoring as code: valida i check sulle PR e li deploya su Checkly al merge in main.
 # Gira solo quando cambiano le definizioni dei check (paths filter) per efficienza.

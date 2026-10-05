@@ -3,7 +3,7 @@
 # (decisione 2/10/2026), perché vanno lette le note di rilascio.
 # Schema della doc GitHub "Automating Dependabot with GitHub Actions"; il merge
 # è squash perché la repo non ammette altro.
-name: Dependabot auto-merge
+name: 'Dependabot: merge automatico minor/patch'
 
 on: pull_request
 

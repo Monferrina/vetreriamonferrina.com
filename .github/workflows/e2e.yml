@@ -1,4 +1,4 @@
-name: E2E
+name: E2E sulla preview Vercel
 
 # Gli E2E girano sul build di produzione, cioè sulla preview Vercel della PR: Vercel crea un
 # deployment GitHub con lo SHA della PR e, a build finita, lo stato "success" con l'URL
