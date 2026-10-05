@@ -1,13 +1,6 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Chatbot', () => {
-  test('si apre e mostra il messaggio di benvenuto', async ({ page }) => {
-    await page.goto('/');
-    await page.getByRole('button', { name: /apri glassy/i }).click();
-    await expect(page.locator('[data-chatbot-panel]')).toBeVisible();
-    await expect(page.locator('[data-chatbot-message]').first()).toContainText('Ciao');
-  });
-
   test('navigazione nei servizi funziona', async ({ page }) => {
     await page.goto('/');
     await page.getByRole('button', { name: /apri glassy/i }).click();

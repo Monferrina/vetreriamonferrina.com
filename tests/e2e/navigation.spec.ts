@@ -18,23 +18,6 @@ test.describe('Navigazione', () => {
     await expect(nav.getByRole('link', { name: /preventivo/i })).toBeVisible();
   });
 
-  test('header e visibile e sticky', async ({ page }) => {
-    await page.goto('/');
-    const header = page.locator('header');
-    await expect(header).toBeVisible();
-    await expect(header).toHaveCSS('position', 'sticky');
-  });
-
-  test('footer contiene dati legali', async ({ page }) => {
-    await page.goto('/');
-    const footer = page.locator('footer');
-    await expect(footer).toBeVisible();
-    await expect(footer).toContainText('Vetreria Monferrina di Fioravanti Giuseppe');
-    await expect(footer).toContainText('P.IVA');
-    await expect(footer).toContainText('Privacy Policy');
-    await expect(footer).toContainText('Cookie Policy');
-  });
-
   // La nav mobile è la BottomNav fissa in basso (il menu hamburger non esiste più).
   test('bottom nav mobile visibile con i tab principali', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });

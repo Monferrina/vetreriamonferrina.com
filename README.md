@@ -164,7 +164,7 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 │   ├── fonts/               # Font self-hosted (Inter, DM Serif Display)
 │   └── images/              # Immagini ottimizzate WebP
 ├── tests/
-│   ├── unit/                # Unit test (Vitest, 170 test)
+│   ├── unit/                # Unit test (Vitest)
 │   └── e2e/                 # Test end-to-end (Playwright)
 ├── astro.config.mjs
 ├── checkly.config.ts
