@@ -1,7 +1,7 @@
 name: CI
 
-# Qualità del codice e test. La sicurezza la controllano CodeQL, Semgrep, Aikido e
-# Sonar dalle loro app. I nomi dei job sono quelli del ruleset protect-main.
+# Qualità del codice e test. La sicurezza la controllano CodeQL e Aikido dalle loro
+# app. I nomi dei job sono quelli del ruleset protect-main.
 
 on:
   push:
@@ -26,7 +26,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 0
           persist-credentials: false
 
       - name: Setup
@@ -49,12 +48,6 @@ jobs:
 
       - name: Check internal links
         run: npm run check:links
-
-      - name: SonarCloud Scan
-        if: env.SONAR_TOKEN != ''
-        uses: SonarSource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9 # v8.3.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   e2e:
     name: E2E (Playwright)

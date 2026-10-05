@@ -7,7 +7,7 @@ export default getViteConfig({
     environment: 'happy-dom',
     coverage: {
       provider: 'v8',
-      reporter: ['lcov', 'text'],
+      reporter: ['text'],
       reportsDirectory: './coverage',
       include: ['src/**'],
       // Escluso ciò che non è codice eseguibile: dati statici e fogli di stile
