@@ -1,13 +1,9 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 // --- Contatti page ---
 
 test('contatti ha mappa Google (facade click-to-load)', async ({ page }) => {
-  // Terzi simulati: si verifica il nostro iframe, non quello che disegna Google.
-  await page.route('https://www.google.com/maps/**', (route) =>
-    route.fulfill({ contentType: 'text/html', body: '<html></html>' })
-  );
-  await page.route('https://api.open-meteo.com/**', (route) => route.fulfill({ json: {} }));
+  // Google è bloccato dalla fixture: si verifica il nostro iframe, non quello che disegna Google.
   await page.goto('/contatti');
   // La mappa è dietro una facade: placeholder leggero, iframe solo al click (INP + GDPR)
   const facade = page.getByRole('button', { name: /carica la mappa interattiva/i });
@@ -97,7 +93,7 @@ test('galleria lightbox navigazione frecce', async ({ page }) => {
 
   // Close
   await page.locator('[data-lightbox-close]').click();
-  await expect(page.locator('[data-lightbox]')).toHaveClass(/hidden/);
+  await expect(page.getByRole('dialog', { name: 'Visualizzatore immagini' })).toBeHidden();
 });
 
 test('galleria filtro attivo ha stile evidenziato', async ({ page }) => {

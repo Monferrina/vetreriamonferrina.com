@@ -1,12 +1,9 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
-test('focus visibile su elementi interattivi', async ({ page, browserName: _browserName }) => {
-  // Skip on mobile-like viewports where keyboard Tab may not work
-  const viewport = page.viewportSize();
-  if (viewport && viewport.width < 768) {
-    test.skip();
-    return;
-  }
+// Su mobile non c'è una tastiera con cui navigare col Tab.
+test.skip(({ isMobile }) => isMobile, 'solo nel progetto desktop');
+
+test('focus visibile su elementi interattivi', async ({ page }) => {
   await page.goto('/');
   await page.keyboard.press('Tab');
   const focused = page.locator(':focus');

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 // Opt-out dallo storageState globale: il test verifica il banner cookie al primo
 // accesso, quindi parte con localStorage vuoto.
