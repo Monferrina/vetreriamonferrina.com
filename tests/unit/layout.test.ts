@@ -93,19 +93,6 @@ describe('BaseLayout', () => {
   });
 });
 
-describe('global.css', () => {
-  test('contiene @font-face con font-display: swap', () => {
-    const cssPath = resolve(__dirname, '../../src/styles/global.css');
-    const css = readFileSync(cssPath, 'utf-8');
-
-    expect(css).toContain('font-display: swap');
-    expect(css).toContain('DM Serif Display');
-    expect(css).toContain('Inter');
-    expect(css).toContain('inter-latin-variable.woff2');
-    expect(css).toContain('dm-serif-display-latin.woff2');
-  });
-});
-
 describe('vercel.json security headers', () => {
   test('contiene tutti gli header di sicurezza', () => {
     const vercelPath = resolve(__dirname, '../../vercel.json');

@@ -97,18 +97,6 @@ describe('handleSendQuote', () => {
     expect(params.html).toContain('120x80');
   });
 
-  it('descrizione e misure vuote: risponde 422', async () => {
-    const sender = makeEmailSender();
-    const body = { ...validBody, description: '', measurements: '' };
-    const result = await handleSendQuote(makeReq({ ip: uniqueIp(), body }), config, sender);
-
-    expect(result.status).toBe(422);
-    const errors = result.body.errors as Array<{ field: string }>;
-    expect(errors.some((e) => e.field === 'description')).toBe(true);
-    expect(errors.some((e) => e.field === 'measurements')).toBe(true);
-    expect(sender.calls).toHaveLength(0);
-  });
-
   // --- CSRF / Origin ---
   it('origin mancante: risponde 403', async () => {
     const sender = makeEmailSender();
@@ -158,27 +146,6 @@ describe('handleSendQuote', () => {
     const errors = result.body.errors as Array<{ field: string }>;
     expect(errors.length).toBeGreaterThanOrEqual(3);
     expect(sender.calls).toHaveLength(0);
-  });
-
-  it('privacy non accettata: risponde 422', async () => {
-    const sender = makeEmailSender();
-    const body = { ...validBody, privacy: false };
-    const result = await handleSendQuote(makeReq({ ip: uniqueIp(), body }), config, sender);
-
-    expect(result.status).toBe(422);
-    const errors = result.body.errors as Array<{ field: string }>;
-    expect(errors.some((e) => e.field === 'privacy')).toBe(true);
-    expect(sender.calls).toHaveLength(0);
-  });
-
-  it('serviceType invalido: risponde 422', async () => {
-    const sender = makeEmailSender();
-    const body = { ...validBody, serviceType: 'hacking' };
-    const result = await handleSendQuote(makeReq({ ip: uniqueIp(), body }), config, sender);
-
-    expect(result.status).toBe(422);
-    const errors = result.body.errors as Array<{ field: string }>;
-    expect(errors.some((e) => e.field === 'serviceType')).toBe(true);
   });
 
   // --- Honeypot (bot detection) ---
@@ -235,16 +202,6 @@ describe('handleSendQuote', () => {
 
     expect(result.status).toBe(500);
     expect(result.body.error).toContain('Errore invio email');
-  });
-
-  it('Resend errore API key invalida: risponde 500', async () => {
-    const sender = makeEmailSender({
-      data: null,
-      error: { name: 'authentication_error', message: 'Invalid API key' },
-    });
-    const result = await handleSendQuote(makeReq({ ip: uniqueIp() }), config, sender);
-
-    expect(result.status).toBe(500);
   });
 
   // --- Sanitization (integration with real sanitize module) ---

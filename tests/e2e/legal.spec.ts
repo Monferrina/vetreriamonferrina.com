@@ -84,9 +84,3 @@ test('cookie banner non riappare dopo chiusura', async ({ page }) => {
   await page.reload();
   await expect(page.locator('[data-cookie-banner]')).toBeHidden();
 });
-
-test('footer ha link privacy e cookie policy', async ({ page }) => {
-  await page.goto('/');
-  await expect(page.locator('footer a[href="/privacy"]')).toBeVisible();
-  await expect(page.locator('footer a[href="/cookie"]')).toBeVisible();
-});

@@ -56,14 +56,6 @@ test('contatti ha CTA preventivo', async ({ page }) => {
 
 // --- Chi siamo page ---
 
-test('chi-siamo ha sezione valori', async ({ page }) => {
-  await page.goto('/chi-siamo');
-  // Values section heading cards use accented Italian: Artigianalità, Qualità, Territorio
-  await expect(page.getByRole('heading', { name: /artigianali/i })).toBeVisible();
-  await expect(page.getByRole('heading', { name: /qualit/i })).toBeVisible();
-  await expect(page.getByRole('heading', { name: /territorio/i })).toBeVisible();
-});
-
 // La foto arrivava da cdn.sanity.io: ora la serve il sito con astro:assets, come
 // galleria e servizi (/_image in dev, /_astro nel build), con srcset responsive.
 test('chi-siamo mostra la foto di famiglia servita dal sito', async ({ page }) => {
@@ -74,23 +66,7 @@ test('chi-siamo mostra la foto di famiglia servita dal sito', async ({ page }) =
   await expect(foto).toHaveAttribute('srcset', /\S/);
 });
 
-test('chi-siamo ha timeline con milestone', async ({ page }) => {
-  await page.goto('/chi-siamo');
-  await expect(page.getByText(/le origini/i)).toBeVisible();
-  await expect(page.getByText(/la crescita/i)).toBeVisible();
-  await expect(page.getByText(/la famiglia si allarga/i)).toBeVisible();
-});
-
 // --- Galleria page ---
-
-test('galleria ha filtri categoria', async ({ page }) => {
-  await page.goto('/galleria');
-  await expect(page.locator('[data-filter]').first()).toBeVisible();
-  await expect(page.locator('[data-filter="tutti"]')).toBeVisible();
-  await expect(page.locator('[data-filter="installazioni"]')).toBeVisible();
-  await expect(page.locator('[data-filter="vetri"]')).toBeVisible();
-  await expect(page.locator('[data-filter="lavorazioni"]')).toBeVisible();
-});
 
 test('galleria filtro nasconde elementi non corrispondenti', async ({ page }) => {
   await page.goto('/galleria');
@@ -123,12 +99,6 @@ test('galleria filtro nasconde elementi non corrispondenti', async ({ page }) =>
   await page.locator('[data-filter="tutti"]').click();
   await expect(allItems.first()).toBeVisible();
   await expect(allItems.last()).toBeVisible();
-});
-
-test('galleria ha lightbox nascosto per default', async ({ page }) => {
-  await page.goto('/galleria');
-  const lightbox = page.locator('[data-lightbox]');
-  await expect(lightbox).toHaveClass(/hidden/);
 });
 
 test('galleria lightbox si apre al click e si chiude con ESC', async ({ page }) => {

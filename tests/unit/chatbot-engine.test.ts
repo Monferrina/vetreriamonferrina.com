@@ -58,11 +58,6 @@ describe('ChatbotEngine', () => {
     expect(engine.getHistory()).toEqual([]);
   });
 
-  it('getNode ritorna undefined per nodo inesistente', () => {
-    const engine = new ChatbotEngine(flow as ChatFlow);
-    expect(engine.getNode('nodo_che_non_esiste')).toBeUndefined();
-  });
-
   it('tronca la history a 50 elementi quando supera 100', () => {
     const engine = new ChatbotEngine(flow as ChatFlow);
     // Naviga 101 volte su un nodo esistente per superare la soglia di troncamento

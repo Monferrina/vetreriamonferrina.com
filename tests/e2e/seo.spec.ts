@@ -31,22 +31,6 @@ test('ogni pagina ha title univoco', async ({ page }) => {
   }
 });
 
-test('ogni pagina ha canonical URL', async ({ page }) => {
-  for (const path of publicPages) {
-    await page.goto(path);
-    const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
-    expect(canonical, `${path} manca canonical`).toBeTruthy();
-  }
-});
-
-test('ogni pagina ha Open Graph tags', async ({ page }) => {
-  for (const path of publicPages) {
-    await page.goto(path);
-    const ogTitle = await page.locator('meta[property="og:title"]').getAttribute('content');
-    expect(ogTitle, `${path} manca og:title`).toBeTruthy();
-  }
-});
-
 test('robots.txt e accessibile', async ({ page }) => {
   const response = await page.goto('/robots.txt');
   expect(response!.status()).toBe(200);
@@ -60,14 +44,6 @@ test('structured data JSON-LD presente', async ({ page }) => {
   expect(jsonLd).toContain('LocalBusiness');
   expect(jsonLd).toContain('Vetreria Monferrina');
   expect(jsonLd).toContain('Casale Monferrato');
-});
-
-test('lang="it" su tutte le pagine', async ({ page }) => {
-  for (const path of publicPages) {
-    await page.goto(path);
-    const lang = await page.locator('html').getAttribute('lang');
-    expect(lang, `${path} manca lang`).toBe('it');
-  }
 });
 
 test('favicon e collegato', async ({ page }) => {

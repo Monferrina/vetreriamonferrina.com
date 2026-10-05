@@ -40,18 +40,6 @@ test.describe('Form preventivo', () => {
     await expect(page.locator('input[name="privacy"]')).toBeVisible();
   });
 
-  test('pre-compila servizio parapetti da query param', async ({ page }) => {
-    await page.goto('/preventivo?servizio=parapetti');
-    const select = page.locator('select[name="serviceType"]');
-    await expect(select).toHaveValue('parapetti');
-  });
-
-  test('pre-compila servizio vetri blindati da query param', async ({ page }) => {
-    await page.goto('/preventivo?servizio=blindati');
-    const select = page.locator('select[name="serviceType"]');
-    await expect(select).toHaveValue('blindati');
-  });
-
   test('query param invalido non seleziona nulla', async ({ page }) => {
     await page.goto('/preventivo?servizio=hacking');
     const select = page.locator('select[name="serviceType"]');

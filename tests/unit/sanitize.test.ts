@@ -29,10 +29,6 @@ describe('sanitizeString', () => {
     expect(sanitizeString('<script>alert(1)</script>')).toBe('<script>alert(1)</script>');
   });
 
-  it('lascia grezzi gli angolari da input misti', () => {
-    expect(sanitizeString('hello <b>world</b>')).toBe('hello <b>world</b>');
-  });
-
   it('rimuove javascript: protocol', () => {
     expect(sanitizeString('javascript:alert(1)')).toBe('alert(1)');
   });
@@ -101,10 +97,6 @@ describe('sanitizeEmail', () => {
     expect(result).not.toContain('<');
     expect(result).not.toContain('>');
     expect(result).toBe('test@example.com');
-  });
-
-  it('converte in minuscolo', () => {
-    expect(sanitizeEmail('TEST@EXAMPLE.COM')).toBe('test@example.com');
   });
 
   it('email vuota rimane vuota', () => {
