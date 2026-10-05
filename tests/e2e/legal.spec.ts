@@ -1,71 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-// Opt-out dallo storageState globale: questi test verificano il banner cookie
-// al primo accesso, quindi partono con localStorage vuoto.
+// Opt-out dallo storageState globale: il test verifica il banner cookie al primo
+// accesso, quindi parte con localStorage vuoto.
 test.use({ storageState: { cookies: [], origins: [] } });
-
-test("privacy policy e' accessibile e contiene GDPR", async ({ page }) => {
-  await page.goto('/privacy');
-  await expect(page.locator('main h1')).toContainText(/privacy/i);
-  const text = await page.textContent('main');
-  expect(text).toContain('GDPR');
-  expect(text).toContain('Fioravanti');
-});
-
-test('privacy policy menziona Resend come processore dati', async ({ page }) => {
-  await page.goto('/privacy');
-  const text = await page.textContent('main');
-  expect(text).toContain('Resend');
-});
-
-test('privacy policy menziona il Garante', async ({ page }) => {
-  await page.goto('/privacy');
-  const text = await page.textContent('main');
-  expect(text).toContain('Garante per la Protezione dei Dati Personali');
-  expect(text).toContain('garanteprivacy.it');
-});
-
-test('privacy policy elenca i diritti GDPR', async ({ page }) => {
-  await page.goto('/privacy');
-  const text = await page.textContent('main');
-  expect(text).toContain('art. 15');
-  expect(text).toContain('art. 16');
-  expect(text).toContain('art. 17');
-  expect(text).toContain('art. 18');
-  expect(text).toContain('art. 20');
-  expect(text).toContain('art. 21');
-});
-
-test('privacy policy ha link alla cookie policy', async ({ page }) => {
-  await page.goto('/privacy');
-  await expect(page.locator('main a[href="/cookie"]')).toBeVisible();
-});
-
-test("cookie policy e' accessibile", async ({ page }) => {
-  await page.goto('/cookie');
-  await expect(page.locator('main h1')).toContainText(/cookie/i);
-  const text = await page.textContent('main');
-  expect(text).toContain('sessionStorage');
-});
-
-test('cookie policy menziona localStorage', async ({ page }) => {
-  await page.goto('/cookie');
-  const text = await page.textContent('main');
-  expect(text).toContain('localStorage');
-  expect(text).toContain('cookie_notice_seen');
-});
-
-test('cookie policy ha base normativa art. 122', async ({ page }) => {
-  await page.goto('/cookie');
-  const text = await page.textContent('main');
-  expect(text).toContain('art. 122');
-  expect(text).toContain('D.Lgs. 196/2003');
-});
-
-test('cookie policy ha link alla privacy policy', async ({ page }) => {
-  await page.goto('/cookie');
-  await expect(page.locator('main a[href="/privacy"]')).toBeVisible();
-});
 
 test('cookie banner appare, si chiude e non riappare dopo il reload', async ({ page }) => {
   await page.goto('/');

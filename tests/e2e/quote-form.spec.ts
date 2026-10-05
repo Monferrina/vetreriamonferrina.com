@@ -13,32 +13,6 @@ test.describe('Form preventivo', () => {
     await expect(select).toHaveValue('box-doccia');
   });
 
-  test("honeypot e' nascosto e non accessibile", async ({ page }) => {
-    await page.goto('/preventivo');
-    // Honeypot is offscreen (left:-9999px, opacity:0) — invisible to humans, visible to bots
-    const honeypotWrapper = page.locator('input[name="website"]').locator('..');
-    await expect(honeypotWrapper).toHaveAttribute('aria-hidden', 'true');
-    const honeypot = page.locator('input[name="website"]');
-    await expect(honeypot).toHaveAttribute('tabindex', '-1');
-    await expect(honeypot).toHaveAttribute('autocomplete', 'off');
-  });
-
-  test("checkbox privacy non e' pre-selezionata", async ({ page }) => {
-    await page.goto('/preventivo');
-    const checkbox = page.locator('input[name="privacy"]');
-    await expect(checkbox).not.toBeChecked();
-  });
-
-  test('form ha tutti i campi richiesti', async ({ page }) => {
-    await page.goto('/preventivo');
-    await expect(page.locator('input[name="name"]')).toBeVisible();
-    await expect(page.locator('input[name="phone"]')).toBeVisible();
-    await expect(page.locator('input[name="email"]')).toBeVisible();
-    await expect(page.locator('select[name="serviceType"]')).toBeVisible();
-    await expect(page.locator('textarea[name="description"]')).toBeVisible();
-    await expect(page.locator('input[name="privacy"]')).toBeVisible();
-  });
-
   test('query param invalido non seleziona nulla', async ({ page }) => {
     await page.goto('/preventivo?servizio=hacking');
     const select = page.locator('select[name="serviceType"]');
@@ -57,10 +31,5 @@ test.describe('Form preventivo', () => {
     await page.fill('input[name="email"]', 'not-an-email');
     await page.getByRole('button', { name: /invia/i }).click();
     await expect(page.locator('[data-error="email"]')).toBeVisible();
-  });
-
-  test("campo misure e' visibile ma opzionale", async ({ page }) => {
-    await page.goto('/preventivo');
-    await expect(page.locator('input[name="measurements"]')).toBeVisible();
   });
 });

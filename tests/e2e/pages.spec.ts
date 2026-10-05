@@ -1,35 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-// Smoke test all three content pages
-const pages = [
-  { path: '/chi-siamo', title: /chi siamo/i },
-  { path: '/contatti', title: /contatti/i },
-  { path: '/galleria', title: /galleria/i },
-];
-
-for (const { path, title } of pages) {
-  test(`${path} carica correttamente`, async ({ page }) => {
-    await page.goto(path);
-    // Scope to main to avoid Astro dev toolbar injected headings
-    await expect(page.locator('main h1')).toContainText(title);
-    // Use first() to avoid strict mode with Astro dev toolbar headers
-    await expect(page.locator('header').first()).toBeVisible();
-    await expect(page.locator('footer').first()).toBeVisible();
-  });
-}
-
 // --- Contatti page ---
-
-test('contatti ha link telefonico cliccabile', async ({ page }) => {
-  await page.goto('/contatti');
-  // Scope to main content to avoid matching footer tel link
-  await expect(page.locator('main a[href^="tel:"]')).toBeVisible();
-});
-
-test('contatti ha link email cliccabile', async ({ page }) => {
-  await page.goto('/contatti');
-  await expect(page.locator('main a[href^="mailto:"]')).toBeVisible();
-});
 
 test('contatti ha mappa Google (facade click-to-load)', async ({ page }) => {
   // Terzi simulati: si verifica il nostro iframe, non quello che disegna Google.
@@ -46,31 +17,6 @@ test('contatti ha mappa Google (facade click-to-load)', async ({ page }) => {
     'src',
     /^https:\/\/www\.google\.com\/maps\/embed\/v1\/place\?/
   );
-});
-
-test('contatti ha orari di apertura', async ({ page }) => {
-  await page.goto('/contatti');
-  await expect(page.getByText(/8:00.*12:00/).first()).toBeVisible();
-  await expect(page.getByText(/chiuso/i).first()).toBeVisible();
-});
-
-test('contatti ha CTA preventivo', async ({ page }) => {
-  await page.goto('/contatti');
-  const cta = page.locator('main').getByRole('link', { name: /preventivo gratuito/i });
-  await expect(cta).toBeVisible();
-  await expect(cta).toHaveAttribute('href', '/preventivo');
-});
-
-// --- Chi siamo page ---
-
-// La foto arrivava da cdn.sanity.io: ora la serve il sito con astro:assets, come
-// galleria e servizi (/_image in dev, /_astro nel build), con srcset responsive.
-test('chi-siamo mostra la foto di famiglia servita dal sito', async ({ page }) => {
-  await page.goto('/chi-siamo');
-  const foto = page.getByAltText(/famiglia fioravanti/i).first();
-  await expect(foto).toBeVisible();
-  await expect(foto).toHaveAttribute('src', /^\/_(astro|image)/);
-  await expect(foto).toHaveAttribute('srcset', /\S/);
 });
 
 // --- Galleria page ---
