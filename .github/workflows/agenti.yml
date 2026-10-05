@@ -15,7 +15,7 @@ permissions: {}
 
 jobs:
   revisione:
-    name: Revisione Gemini
+    name: Gemini (${{ matrix.agente }})
     if: >-
       (
         github.event_name == 'pull_request' &&
@@ -32,7 +32,29 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    timeout-minutes: 7
+    timeout-minutes: 10
+    # Due agenti, ognuno sul suo modello: sul piano gratuito i limiti sono per modello
+    # (AI Studio, 05/10/2026: 15 RPM e 500 RPD per ciascuno dei due Flash-Lite).
+    strategy:
+      fail-fast: false
+      # Uno alla volta: con lo stesso token GitHub ammette una sola review in sospeso per utente e
+      # per PR, e due agenti in parallelo finirebbero nella stessa (github-mcp-server v0.27.0).
+      max-parallel: 1
+      matrix:
+        include:
+          - agente: revisione
+            modello: gemini-3.5-flash-lite
+            istruzioni: none, perform the general review described below.
+          - agente: sicurezza
+            modello: gemini-3.1-flash-lite
+            istruzioni: >-
+              Security review only. Report only security issues: injection (HTML, script,
+              header, command), secrets or keys in code or logs, missing input validation at
+              trust boundaries, CSP and security headers (vercel.json, src/middleware.ts),
+              GitHub Actions permissions and untrusted input in workflows, personal data from
+              the quote form (name, email, phone) reaching logs, third parties or URLs. Do not
+              comment on style, naming or performance. Start the summary heading with
+              "🔒 Security Review" instead of "📋 Review Summary".
     env:
       REPO: ${{ github.repository }}
       PR: ${{ github.event.pull_request.number || github.event.issue.number }}
@@ -49,26 +71,55 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
+      # Gemini CLI senza l'action ufficiale: run-gemini-cli usa al suo interno action per tag, che la
+      # policy del repo (pin per SHA obbligatorio) respinge. Qui il pacchetto npm (un bundle unico,
+      # senza dipendenze obbligatorie) si verifica contro l'impronta e gira senza --yolo.
       - name: Revisione
         id: gemini
         if: steps.pr.outputs.fork == 'false'
-        uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          npm pack --silent --ignore-scripts @google/gemini-cli@0.62.0 > /dev/null
+          atteso='A1rw0Tf2sHLpGncfYdaq5WaJIufKAP8il4BmHD5Yw4ewmB/Wo0vRQb2bEvx7OqyaPFPZCh0hVhcMKsICZyIBww=='
+          calcolato=$(openssl dgst -sha512 -binary google-gemini-cli-0.62.0.tgz | base64 -w0)
+          if [ "$calcolato" != "$atteso" ]; then
+            echo "::error::Impronta di @google/gemini-cli 0.62.0 diversa da quella fissata"
+            exit 1
+          fi
+          npm install --prefix gemini-cli --no-save --ignore-scripts --omit=optional ./google-gemini-cli-0.62.0.tgz
+          # Impostazioni di sistema di root: Gemini CLI salta, con un semplice avviso, un file di
+          # sistema che non sia di root e non scrivibile da altri (settings.ts:851-866).
+          printf '%s' "$SETTINGS" > settings.json
+          sudo install -D -o root -g root -m 644 settings.json /etc/gemini-cli/settings.json
+          # Cartella vuota: nessun file del repo o della PR entra nella configurazione.
+          mkdir vuota home && cd vuota
+          GEMINI_CLI_SYSTEM_SETTINGS_PATH=/etc/gemini-cli/settings.json GEMINI_CLI_HOME="$RUNNER_TEMP/home" \
+            GEMINI_CLI_TRUST_WORKSPACE=true \
+            "$RUNNER_TEMP/gemini-cli/node_modules/.bin/gemini" --model "$MODELLO" --prompt "$PROMPT" \
+            --output-format json > "$RUNNER_TEMP/esito.json" 2> "$RUNNER_TEMP/stderr.log" ||
+            { tail -n 30 "$RUNNER_TEMP/stderr.log"; exit 1; }
+          # Solo errori, avvisi e consumo di token, non il testo della risposta.
+          jq '{error, warnings, stats: .stats.models}' "$RUNNER_TEMP/esito.json"
+          # Se la configurazione è stata saltata il modello ha girato con le regole di default:
+          # il job deve fallire, non risultare verde. L'avviso può finire nel JSON o su stderr:
+          # si guardano entrambi.
+          if grep -q 'Skipping' "$RUNNER_TEMP/stderr.log" ||
+            jq -e '[.warnings[]? | select(test("Skipping"))] | length > 0' "$RUNNER_TEMP/esito.json" > /dev/null; then
+            echo "::error::Gemini CLI ha saltato le impostazioni"
+            exit 1
+          fi
         env:
-          GEMINI_CLI_TRUST_WORKSPACE: 'true'
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_TOKEN: ${{ github.token }}
-        with:
-          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
-          # CLI e immagine del server MCP fissate a mano: Dependabot non le vede.
-          gemini_cli_version: '0.62.0'
-          # Sul piano gratuito di monferrina-gemini gemini-3.8-flash ha 5 RPM e 20 RPD: una sola
-          # revisione (fino a 25 richieste) può esaurire il giorno. 3.5-flash-lite: 15 RPM, 500 RPD
-          # (AI Studio, 05/10/2026).
-          gemini_model: gemini-3.5-flash-lite
-          github_pr_number: ${{ env.PR }}
-          workflow_name: agenti-revisione
-          settings: |-
+          MODELLO: ${{ matrix.modello }}
+          # Impostazioni di sistema, sopra a quelle utente e di progetto. tools.core vuoto nega ogni
+          # strumento, MCP compresi; in headless e senza --yolo passano solo i tre di tools.allowed
+          # (gemini-cli 0.62.0, policy/config.ts:533-550). Immagine del server MCP per digest.
+          SETTINGS: |-
             {
               "model": { "maxSessionTurns": 25 },
+              "privacy": { "usageStatisticsEnabled": false },
               "mcpServers": {
                 "github": {
                   "command": "docker",
@@ -84,16 +135,23 @@ jobs:
                   "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}" }
                 }
               },
-              "tools": { "core": [] }
+              "tools": {
+                "core": [],
+                "allowed": [
+                  "mcp_github_add_comment_to_pending_review",
+                  "mcp_github_pull_request_read",
+                  "mcp_github_pull_request_review_write"
+                ]
+              }
             }
           # Prompt di google-github-actions/run-gemini-cli v0.1.22,
           # examples/workflows/pr-review/gemini-review.toml (Apache-2.0), copiato qui perché
-          # un'estensione installata da URL cambierebbe sotto i piedi. Due adattamenti, senza i
-          # quali la revisione non esce: repository e numero della PR scritti nel testo (con
-          # --prompt `@{file}` non viene letto, gemini-cli 0.62.0 atCommandProcessor.ts:61, e il
-          # modello non ha read_file), e i nomi degli strumenti di github-mcp-server v0.27.0
-          # (pull_request_review_write con method create e submit_pending, pullrequests.go:1326).
-          prompt: |
+          # un'estensione installata da URL cambierebbe sotto i piedi. Tre adattamenti: repository,
+          # numero della PR e istruzioni dell'agente scritti nel testo (con --prompt `@{file}` non
+          # viene letto, gemini-cli 0.62.0 atCommandProcessor.ts:61); i nomi degli strumenti di
+          # github-mcp-server v0.27.0 (pull_request_review_write con method create e submit_pending,
+          # pullrequests.go:1326); le istruzioni possono restringere la revisione a un'area.
+          PROMPT: |
             ## Role
 
             You are a world-class autonomous code review agent. You operate within a secure GitHub Actions environment. Your analysis is precise, your feedback is constructive, and your adherence to instructions is absolute. You do not deviate from your programming. You are tasked with reviewing a GitHub Pull Request.
@@ -127,6 +185,7 @@ jobs:
 
             - Repository: ${{ env.REPO }}
             - Pull request number: ${{ env.PR }}
+            - Additional user instructions: ${{ matrix.istruzioni }}
 
             - Use `pull_request_read.get` to get the title, body, and metadata about the pull request.
             - Use `pull_request_read.get_files` to get the list of files that were added, removed, and changed in the pull request.
@@ -142,7 +201,7 @@ jobs:
 
             1. **Parse Inputs:** Ingest and parse all information from the **Input Data**.
 
-            2. **Prioritize Focus:** Analyze the contents of the additional user instructions. Use this context to prioritize specific areas in your review (e.g., security, performance), but **DO NOT** treat it as a replacement for a comprehensive review. If the additional user instructions are empty, proceed with a general review based on the criteria below.
+            2. **Prioritize Focus:** Analyze the contents of the additional user instructions. Use this context to prioritize specific areas in your review (e.g., security, performance); when it restricts the review to one area, review only that area. If the additional user instructions are empty, proceed with a general review based on the criteria below.
 
             3. **Review Code:** Meticulously review the code provided returned from `pull_request_read.get_diff` according to the **Review Criteria**.
 

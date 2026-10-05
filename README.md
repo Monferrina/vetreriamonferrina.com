@@ -118,11 +118,11 @@ In `.github/workflows/` ci sono sette workflow. I passi comuni (Node 22 con cach
 | `checkly.yml`               | PR e push su `main` che toccano `__checks__/`   | no              |
 | `update-reviews.yml`        | cron mensile e avvio manuale                    | no              |
 | `dependabot-auto-merge.yml` | PR aperte da Dependabot                         | no              |
-| `agenti.yml`                | PR aperta, o commento `@gemini-cli`             | no              |
+| `agenti.yml`                | PR aperta, o commento `@gemini-cli` (spento)    | no              |
 
 Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione e il controllo dei link interni (`npm run check:links`). Il job `dependency-review`, solo sulle PR, blocca le dipendenze vulnerabili che la PR introduce, transitive comprese. Il workflow `e2e.yml` parte quando Vercel ha pronta la preview della PR ed esegue i test Playwright su quella preview, nel container ufficiale di Playwright che ha già Chromium e WebKit.
 
-Il workflow `agenti.yml` fa rivedere la PR a Gemini (`gemini-3.5-flash-lite`, piano gratuito) con l'action ufficiale `run-gemini-cli`: un riassunto e commenti sulle righe cambiate, mai approvazioni né commit. Parte all'apertura di una PR del repo (non da fork, non da Dependabot, non in bozza) o quando un collaboratore scrive un commento che inizia con `@gemini-cli`. Il modello legge la PR solo via GitHub, non ha la shell e non vede i segreti; i vincoli li fissa `tests/unit/agenti-workflow.test.ts`.
+Il workflow `agenti.yml` fa rivedere la PR a due agenti Gemini sul piano gratuito: `revisione` (`gemini-3.5-flash-lite`, correttezza e qualità) e `sicurezza` (`gemini-3.1-flash-lite`, solo problemi di sicurezza). Ognuno pubblica un riassunto e commenti sulle righe cambiate, mai approvazioni né commit. Partono all'apertura di una PR del repo (non da fork, non da Dependabot, non in bozza) o quando un collaboratore scrive un commento che inizia con `@gemini-cli`. Gemini CLI è installata da npm a versione e impronta fisse, senza `--yolo`: il modello legge la PR solo via GitHub, ha tre strumenti autorizzati per nome, non ha la shell e non vede i segreti; i vincoli li fissa `tests/unit/agenti-workflow.test.ts`. Il workflow è spento (`gh workflow disable agenti.yml`) fino alla fine dei task in corso.
 
 La sicurezza la controllano gli strumenti, dalle loro app GitHub: CodeQL (impostazione automatica di GitHub) e Semgrep (`semgrep-cloud-platform/scan`). I segreti li controllano secret scanning e push protection di GitHub; le dipendenze già presenti le corregge Dependabot.
 

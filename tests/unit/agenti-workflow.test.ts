@@ -45,17 +45,28 @@ describe('agenti.yml, revisione delle PR con Gemini', () => {
     expect(gemini.if).toBe("steps.pr.outputs.fork == 'false'");
   });
 
-  test('il modello non ha la shell e su GitHub ha solo gli strumenti della revisione', () => {
-    const settings = JSON.parse(gemini.with.settings);
+  // Con tools.core vuoto Gemini CLI nega ogni strumento, MCP compresi; senza --yolo, in headless,
+  // passano solo quelli elencati per nome in tools.allowed (gemini-cli 0.62.0, policy/config.ts).
+  test('il modello non ha la shell e su GitHub ha solo gli strumenti della revisione, senza --yolo', () => {
+    const settings = JSON.parse(gemini.env.SETTINGS);
     expect(settings.tools.core).toEqual([]);
+    expect(settings.tools.allowed).toEqual([
+      'mcp_github_add_comment_to_pending_review',
+      'mcp_github_pull_request_read',
+      'mcp_github_pull_request_review_write',
+    ]);
     expect(settings.mcpServers.github.includeTools).toEqual([
       'add_comment_to_pending_review',
       'pull_request_read',
       'pull_request_review_write',
     ]);
+    expect(gemini.run).not.toContain('--yolo');
   });
 
-  test("l'action di Gemini è pinnata per SHA", () => {
-    expect(gemini.uses).toMatch(/^google-github-actions\/run-gemini-cli@[0-9a-f]{40}$/);
+  test('Gemini CLI è fissata per versione e per impronta del pacchetto', () => {
+    expect(gemini.run).toContain('@google/gemini-cli@0.62.0');
+    expect(gemini.run).toContain(
+      'A1rw0Tf2sHLpGncfYdaq5WaJIufKAP8il4BmHD5Yw4ewmB/Wo0vRQb2bEvx7OqyaPFPZCh0hVhcMKsICZyIBww=='
+    );
   });
 });
