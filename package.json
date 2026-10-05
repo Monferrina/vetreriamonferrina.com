@@ -55,8 +55,7 @@
     "sharp": "^0.35.5",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.0",
-    "vitest": "^4.1.11",
-    "yaml": "2.9.1"
+    "vitest": "^4.1.11"
   },
   "overrides": {
     "@vercel/routing-utils": {
