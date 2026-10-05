@@ -1,4 +1,4 @@
-name: Agenti
+name: Revisione Gemini delle PR
 
 # Revisione delle PR con Gemini (AG1). Gira con GEMINI_API_KEY e un token che scrive sulle
 # PR: per questo parte solo su PR del repo, mai da fork (lì i secret non devono arrivare) né
