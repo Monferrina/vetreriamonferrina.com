@@ -1,8 +1,5 @@
 # Vetreria Monferrina, sito web
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Monferrina_vetreriamonferrina.com&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Monferrina_vetreriamonferrina.com)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Monferrina_vetreriamonferrina.com&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Monferrina_vetreriamonferrina.com)
-
 [![CI](https://github.com/Monferrina/vetreriamonferrina.com/actions/workflows/ci.yml/badge.svg)](https://github.com/Monferrina/vetreriamonferrina.com/actions/workflows/ci.yml)
 [![Vercel](https://img.shields.io/badge/Vercel-deployed-black?logo=vercel)](https://vetreriamonferrina.com)
 [![Astro](https://img.shields.io/badge/Astro-7-FF5D01?logo=astro&logoColor=white)](https://astro.build)
@@ -46,7 +43,7 @@ Sito vetrina con form preventivi, galleria lavori, blog, 17 pagine servizio, FAQ
 | Recensioni      | Google Places API (New), dati scaricati a build-time        |
 | Test            | Vitest per gli unit, Playwright per gli end-to-end          |
 | CI              | GitHub Actions                                              |
-| Qualità codice  | ESLint, Prettier, Husky, lint-staged, SonarCloud            |
+| Qualità codice  | ESLint, Prettier, Husky, lint-staged                        |
 
 ## Requisiti
 
@@ -121,11 +118,11 @@ In `.github/workflows/` ci sono cinque workflow. I passi comuni (Node 22 con cac
 | `update-reviews.yml`        | cron mensile e avvio manuale                    | no              |
 | `dependabot-auto-merge.yml` | PR aperte da Dependabot                         | no              |
 
-Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione, il controllo dei link interni (`npm run check:links`) e infine la scansione SonarCloud. Il job `e2e` installa Chromium e WebKit ed esegue i test Playwright.
+Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione e il controllo dei link interni (`npm run check:links`). Il job `e2e` installa Chromium e WebKit ed esegue i test Playwright.
 
-La sicurezza la controllano gli strumenti, dalle loro app GitHub: CodeQL (impostazione automatica di GitHub), Semgrep (`semgrep-cloud-platform/scan`: blocca i finding high/critical ad alta confidenza, commenta i medium), Aikido (codice e dipendenze introdotte dalla PR) e SonarCloud. I segreti li controllano secret scanning e push protection di GitHub; le dipendenze già presenti le corregge Dependabot.
+La sicurezza la controllano gli strumenti, dalle loro app GitHub: CodeQL (impostazione automatica di GitHub) e Aikido (codice e dipendenze introdotte dalla PR). I segreti li controllano secret scanning e push protection di GitHub; le dipendenze già presenti le corregge Dependabot.
 
-Il workflow `dependabot-auto-merge.yml` attiva l'auto-merge (squash) sulle PR Dependabot minor e patch: GitHub le mergia quando tutti i check obbligatori sono verdi. Le major restano a mano. Perché la scansione SonarCloud giri anche sulle PR di Dependabot, che non vedono i secret di Actions, `SONAR_TOKEN` è anche tra i secret Dependabot. Dependabot propone una versione nuova solo dopo sette giorni dalla pubblicazione (`cooldown`); gli aggiornamenti di sicurezza non aspettano.
+Il workflow `dependabot-auto-merge.yml` attiva l'auto-merge (squash) sulle PR Dependabot minor e patch: GitHub le mergia quando tutti i check obbligatori sono verdi. Le major restano a mano. Dependabot propone una versione nuova solo dopo sette giorni dalla pubblicazione (`cooldown`); gli aggiornamenti di sicurezza non aspettano.
 
 I pre-commit hook (Husky con lint-staged) eseguono lint e format a ogni commit.
 

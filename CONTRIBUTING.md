@@ -48,16 +48,14 @@ Verifica l'esito guardando il codice di uscita dei comandi, non filtrando l'outp
 
 ## Check richiesti al merge
 
-Il ruleset blocca il pulsante di merge finché non passano sei check:
+Il ruleset blocca il pulsante di merge finché non passano quattro check:
 
-| Check                         | Origine                                                                               |
-| ----------------------------- | ------------------------------------------------------------------------------------- |
-| `Lint, Type Check & Test`     | job `quality` di `ci.yml`                                                             |
-| `E2E (Playwright)`            | job `e2e` di `ci.yml`                                                                 |
-| `CodeQL`                      | code scanning di GitHub (impostazione automatica)                                     |
-| `SonarCloud Code Analysis`    | analisi SonarCloud sulla PR                                                           |
-| `Aikido Security: check code` | app Aikido PR Checks                                                                  |
-| `semgrep-cloud-platform/scan` | scansione gestita Semgrep: blocca high/critical ad alta confidenza, commenta i medium |
+| Check                         | Origine                                           |
+| ----------------------------- | ------------------------------------------------- |
+| `Lint, Type Check & Test`     | job `quality` di `ci.yml`                         |
+| `E2E (Playwright)`            | job `e2e` di `ci.yml`                             |
+| `CodeQL`                      | code scanning di GitHub (impostazione automatica) |
+| `Aikido Security: check code` | app Aikido PR Checks                              |
 
 Ogni check è legato alla sua app nel ruleset: un job con lo stesso nome lanciato da un'altra app non lo soddisfa.
 
