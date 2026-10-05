@@ -60,7 +60,10 @@ jobs:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           # CLI e immagine del server MCP fissate a mano: Dependabot non le vede.
           gemini_cli_version: '0.62.0'
-          gemini_model: gemini-3.8-flash
+          # Sul piano gratuito di monferrina-gemini gemini-3.8-flash ha 5 RPM e 20 RPD: una sola
+          # revisione (fino a 25 richieste) può esaurire il giorno. 3.5-flash-lite: 15 RPM, 500 RPD
+          # (AI Studio, 05/10/2026).
+          gemini_model: gemini-3.5-flash-lite
           github_pr_number: ${{ env.PR }}
           workflow_name: agenti-revisione
           settings: |-
