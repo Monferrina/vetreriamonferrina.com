@@ -43,7 +43,7 @@ describe('Footer', () => {
     const html = await container.renderToString(Footer);
     const year = new Date().getFullYear();
 
-    expect(html).toContain(`${year}`);
+    expect(html).toContain(`&copy; ${year}`);
     expect(html).toContain('Vetreria Monferrina');
   });
 

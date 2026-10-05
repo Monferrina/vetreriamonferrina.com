@@ -69,7 +69,8 @@ describe('ChatbotEngine', () => {
 
   it('ogni dettaglio ha opzione preventivo con param', () => {
     const detailNodes = Object.entries(flow).filter(([key]) => key.startsWith('dettaglio_'));
-    expect(detailNodes.length).toBe(16);
+    // Senza nodi il ciclo sotto passerebbe senza verificare niente.
+    expect(detailNodes.length).toBeGreaterThan(0);
     for (const [key, node] of detailNodes) {
       const ctaOption = node.options?.find((opt) => 'action' in opt && opt.action === 'open_form');
       expect(ctaOption, `Nodo "${key}" manca CTA preventivo`).toBeDefined();

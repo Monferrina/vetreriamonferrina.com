@@ -67,20 +67,12 @@ test('cookie policy ha link alla privacy policy', async ({ page }) => {
   await expect(page.locator('main a[href="/privacy"]')).toBeVisible();
 });
 
-test('cookie banner appare e si chiude', async ({ page }) => {
+test('cookie banner appare, si chiude e non riappare dopo il reload', async ({ page }) => {
   await page.goto('/');
   const banner = page.locator('[data-cookie-banner]');
   await expect(banner).toBeVisible();
-  // Dismiss the cookie banner — use dispatchEvent to avoid interception by Astro dev toolbar
-  await page.locator('#cookie-banner-dismiss').dispatchEvent('click');
-  await expect(banner).toBeHidden({ timeout: 2000 });
-});
-
-test('cookie banner non riappare dopo chiusura', async ({ page }) => {
-  await page.goto('/');
-  // Dismiss the cookie banner
-  await page.locator('#cookie-banner-dismiss').dispatchEvent('click');
-  await expect(page.locator('[data-cookie-banner]')).toBeHidden({ timeout: 2000 });
+  await banner.getByRole('button', { name: 'OK' }).click();
+  await expect(banner).toBeHidden();
   await page.reload();
-  await expect(page.locator('[data-cookie-banner]')).toBeHidden();
+  await expect(banner).toBeHidden();
 });

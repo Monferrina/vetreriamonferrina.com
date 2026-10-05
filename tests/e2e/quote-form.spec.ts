@@ -4,8 +4,7 @@ test.describe('Form preventivo', () => {
   test('mostra errori per campi vuoti', async ({ page }) => {
     await page.goto('/preventivo');
     await page.getByRole('button', { name: /invia/i }).click();
-    // Should show validation errors
-    await expect(page.locator('[data-error]').first()).toBeVisible();
+    await expect(page.getByText('Devi accettare la privacy policy')).toBeVisible();
   });
 
   test('pre-compila servizio da query param', async ({ page }) => {
@@ -58,12 +57,6 @@ test.describe('Form preventivo', () => {
     await page.fill('input[name="email"]', 'not-an-email');
     await page.getByRole('button', { name: /invia/i }).click();
     await expect(page.locator('[data-error="email"]')).toBeVisible();
-  });
-
-  test('mostra errore privacy se non accettata', async ({ page }) => {
-    await page.goto('/preventivo');
-    await page.getByRole('button', { name: /invia/i }).click();
-    await expect(page.locator('[data-error="privacy"]')).toBeVisible();
   });
 
   test("campo misure e' visibile ma opzionale", async ({ page }) => {

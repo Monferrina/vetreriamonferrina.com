@@ -204,8 +204,8 @@ describe('handleSendQuote', () => {
     expect(result.body.error).toContain('Errore invio email');
   });
 
-  // --- Sanitization (integration with real sanitize module) ---
-  it("input con HTML viene sanitizzato prima dell'invio", async () => {
+  // --- Escape dell'HTML nell'email ---
+  it("l'HTML inserito dall'utente arriva escapato nell'email", async () => {
     const sender = makeEmailSender();
     const body = {
       ...validBody,
@@ -214,13 +214,13 @@ describe('handleSendQuote', () => {
     };
     const result = await handleSendQuote(makeReq({ ip: uniqueIp(), body }), config, sender);
 
-    // Sanitizer strips < > brackets, neutralizing HTML injection
-    // The text content remains but is harmless without tags
-    if (result.status === 200 && sender.calls.length > 0) {
-      const [params] = sender.calls[0];
-      expect(params.html).not.toContain('<script>');
-      expect(params.html).not.toContain('<img');
-    }
+    expect(result.status).toBe(200);
+    expect(sender.calls).toHaveLength(1);
+    const [params] = sender.calls[0];
+    expect(params.html).not.toContain('<script>');
+    expect(params.html).not.toContain('<img');
+    expect(params.html).toContain('&lt;script&gt;');
+    expect(params.html).toContain('&lt;img src=x onerror=alert(1)&gt;Descrizione');
   });
 
   // --- Dry run (Checkly monitoring) ---
