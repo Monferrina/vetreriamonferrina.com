@@ -40,7 +40,7 @@ La CI in `.github/workflows/ci.yml` esegue questi step nel job `Lint, Type Check
 
 `npm run check:links` analizza l'output di build in `dist/client`, quindi va lanciato dopo `npm run build` o fallisce subito.
 
-I test end-to-end girano in un job separato, `E2E (Playwright)`, sui progetti `chromium` e `mobile` (iPhone 13). In locale si eseguono con `npm run test:e2e`.
+I test end-to-end girano nel workflow `e2e.yml`, job `E2E (Playwright)`, sulla preview Vercel della PR (build di produzione), sui progetti `chromium` e `mobile` (iPhone 13). Il job parte quando Vercel segnala la preview pronta; se il deploy non arriva, il check resta in attesa. In locale si eseguono con `npm run test:e2e` sul dev server; con `BASE_URL` e `VERCEL_AUTOMATION_BYPASS_SECRET` su una preview.
 
 Vanno a parte i monitor Checkly (quando cambiano `__checks__/` o `checkly.config.ts`: `checkly test` sulla PR, `checkly deploy` al merge) e la CI del Worker (`wrangler deploy --dry-run`, solo sulle PR che toccano `cloudflare/maintenance-worker/`).
 
@@ -53,7 +53,7 @@ Il ruleset blocca il pulsante di merge finché non passano cinque check:
 | Check                         | Origine                                            |
 | ----------------------------- | -------------------------------------------------- |
 | `Lint, Type Check & Test`     | job `quality` di `ci.yml`                          |
-| `E2E (Playwright)`            | job `e2e` di `ci.yml`                              |
+| `E2E (Playwright)`            | job `e2e` di `e2e.yml`, sulla preview Vercel       |
 | `CodeQL`                      | code scanning di GitHub (impostazione automatica)  |
 | `semgrep-cloud-platform/scan` | app Semgrep                                        |
 | `Dependency Review`           | job `dependency-review` di `ci.yml`, solo sulle PR |
