@@ -295,69 +295,10 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
 </form>
 
 <script>
-  const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const PHONE_REGEX = /^[\d\s+\-().]{7,20}$/;
-  // Derive valid service types from the DOM select options (single source of truth)
-  const VALID_SERVICE_TYPES = Array.from(
-    document.querySelectorAll<HTMLOptionElement>('#serviceType option[value]')
-  )
-    .map((o) => o.value)
-    .filter(Boolean);
-
-  interface FieldError {
-    field: string;
-    message: string;
-  }
-
-  function validateClient(): FieldError[] {
-    const errors: FieldError[] = [];
-    const form = document.getElementById('quote-form') as HTMLFormElement;
-
-    const name = (form.querySelector('[name="name"]') as HTMLInputElement).value;
-    const phone = (form.querySelector('[name="phone"]') as HTMLInputElement).value;
-    const email = (form.querySelector('[name="email"]') as HTMLInputElement).value;
-    const serviceType = (form.querySelector('[name="serviceType"]') as HTMLSelectElement).value;
-    const description = (form.querySelector('[name="description"]') as HTMLTextAreaElement).value;
-    const measurements = (form.querySelector('[name="measurements"]') as HTMLInputElement).value;
-    const privacy = (form.querySelector('[name="privacy"]') as HTMLInputElement).checked;
-
-    if (!name || name.trim().length < 2 || name.length > 100) {
-      errors.push({ field: 'name', message: 'Nome richiesto (2-100 caratteri)' });
-    }
-    if (!phone || !PHONE_REGEX.test(phone)) {
-      errors.push({ field: 'phone', message: 'Numero di telefono non valido' });
-    }
-    if (!email || !EMAIL_REGEX.test(email)) {
-      errors.push({ field: 'email', message: 'Email non valida' });
-    }
-    if (!serviceType || !VALID_SERVICE_TYPES.includes(serviceType)) {
-      errors.push({ field: 'serviceType', message: 'Seleziona un tipo di lavoro' });
-    }
-    if (!description || description.trim().length < 10) {
-      errors.push({
-        field: 'description',
-        message: 'Descrivi il lavoro di cui hai bisogno (minimo 10 caratteri)',
-      });
-    } else if (description.length > 2000) {
-      errors.push({
-        field: 'description',
-        message: 'Descrizione troppo lunga (max 2000 caratteri)',
-      });
-    }
-    if (!measurements || measurements.trim().length < 3) {
-      errors.push({
-        field: 'measurements',
-        message: 'Inserisci le misure approssimative (es. 120x80 cm)',
-      });
-    } else if (measurements.length > 500) {
-      errors.push({ field: 'measurements', message: 'Misure troppo lunghe (max 500 caratteri)' });
-    }
-    if (!privacy) {
-      errors.push({ field: 'privacy', message: 'Devi accettare la privacy policy' });
-    }
-
-    return errors;
-  }
+  // Le stesse regole del server (src/lib/validation.ts), non una copia che diverge. Il server
+  // valida dopo sanitizeFormData: se toglie qualcosa (es. "javascript:") puo' ancora
+  // rispondere 422, e quegli errori li mostra showErrors.
+  import { validateQuoteForm, VALID_SERVICE_TYPES, type ValidationError } from '../lib/validation';
 
   const KNOWN_FIELDS = [
     'name',
@@ -369,7 +310,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     'privacy',
   ];
 
-  function showErrors(errors: FieldError[]) {
+  function showErrors(errors: ValidationError[]) {
     // Clear all previous errors
     document.querySelectorAll('[data-error]').forEach((el) => {
       el.classList.add('hidden');
@@ -464,17 +405,6 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     const errorDiv = document.getElementById('form-error') as HTMLDivElement;
     errorDiv.classList.add('hidden');
 
-    // Client-side validation
-    const errors = validateClient();
-    showErrors(errors);
-    if (errors.length > 0) {
-      // Focus first error field
-      const firstErrorField = document.querySelector(`[name="${errors[0].field}"]`) as HTMLElement;
-      firstErrorField?.focus();
-      return;
-    }
-
-    // Gather form data
     const formData = {
       name: (form.querySelector('[name="name"]') as HTMLInputElement).value,
       phone: (form.querySelector('[name="phone"]') as HTMLInputElement).value,
@@ -485,6 +415,17 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
       privacy: (form.querySelector('[name="privacy"]') as HTMLInputElement).checked,
       honeypot: (form.querySelector('[name="website"]') as HTMLInputElement).value,
     };
+
+    // L'honeypot qui non si valida: con il campo pieno il server risponde 200 senza inviare,
+    // e il bot deve ricevere la stessa risposta di un invio vero.
+    const errors = validateQuoteForm({ ...formData, honeypot: '' });
+    showErrors(errors);
+    if (errors.length > 0) {
+      // Focus first error field
+      const firstErrorField = document.querySelector(`[name="${errors[0].field}"]`) as HTMLElement;
+      firstErrorField?.focus();
+      return;
+    }
 
     setLoading(true);
 

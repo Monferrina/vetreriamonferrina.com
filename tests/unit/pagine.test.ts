@@ -14,6 +14,8 @@ import Galleria from '../../src/pages/galleria.astro';
 import Preventivo from '../../src/pages/preventivo.astro';
 import Privacy from '../../src/pages/privacy.astro';
 import Cookie from '../../src/pages/cookie.astro';
+import NonTrovata from '../../src/pages/404.astro';
+import ErroreServer from '../../src/pages/500.astro';
 import { categories, services } from '../../src/data/services';
 
 const pagine: Record<string, unknown> = {
@@ -152,6 +154,18 @@ describe('servizi', () => {
       params: { slug: 'box-doccia' },
     });
     expect(d.querySelector('main a[href="/preventivo"]')).not.toBeNull();
+  });
+});
+
+// Seam S5: chi arriva su una pagina d'errore deve capire cosa è successo e poter tornare.
+describe("pagine d'errore", () => {
+  test.each([
+    ['/404', NonTrovata, /pagina non trovata/i],
+    ['/500', ErroreServer, /errore del server/i],
+  ] as const)("%s spiega l'errore e riporta alla home", async (path, page, titolo) => {
+    const d = await renderPage(page, path);
+    expect(text(d.querySelector('main h1'))).toMatch(titolo);
+    expect(d.querySelector('main a[href="/"]')).not.toBeNull();
   });
 });
 
