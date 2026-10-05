@@ -135,7 +135,7 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 2. Fai le modifiche      →  edit, commit
 3. Pusha                 →  git push -u origin fix/qualcosa
 4. Vercel fa preview     →  URL temporaneo per verificare le modifiche
-5. Apri PR su main       →  CI gira (lint, test, build, E2E, sicurezza, screenshot)
+5. Apri PR su main       →  check obbligatori (lint, test, build, E2E, CodeQL, Semgrep, dipendenze)
 6. Mergia la PR          →  Vercel deploya su vetreriamonferrina.com
 ```
 
