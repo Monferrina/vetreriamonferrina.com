@@ -26,6 +26,10 @@ updates:
         update-types:
           - minor
           - patch
+        # PR a parte: va aggiornata a mano anche l'immagine del container in e2e.yml, e
+        # finché non lo si fa il suo E2E è rosso; dentro il gruppo fermerebbe tutto il resto.
+        exclude-patterns:
+          - '@playwright/test'
 
   # GitHub Actions. Necessario perché i workflow sono pinnati per SHA: senza
   # questo blocco i pin non verrebbero mai aggiornati e il repo resterebbe

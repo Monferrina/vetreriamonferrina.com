@@ -11,16 +11,35 @@ on:
 permissions:
   contents: read
 
+# Niente concurrency: il ref del deployment è lo SHA, non il ramo, quindi un run superato da un
+# push nuovo non si cancella. Si accetta: costa un run da ~2 minuti, gratuito su repo pubblica.
+
 jobs:
   e2e:
-    # Un job saltato vale "Success" per un check obbligatorio (doc GitHub): il nome del ruleset
-    # lo prende solo quando gira, così un deploy di produzione o fallito non sblocca la PR.
-    name: ${{ github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Preview' && 'E2E (Playwright)' || 'E2E (non eseguito)' }}
-    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Preview'
+    # Vercel manda un solo stato per deployment, success o failure (misurato su 30 il 05/10).
+    # Il job gira su ogni deployment di Preview e fallisce se la preview non è pronta: una
+    # preview rotta dà un check rosso. Su Production è saltato; un job saltato vale "Success"
+    # per un check obbligatorio (doc GitHub), ma Production è sempre su uno SHA di main, mai
+    # sulla testa di una PR.
+    name: E2E (Playwright)
+    if: github.event.deployment.environment == 'Preview'
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # Browser e librerie di sistema già nell'immagine ufficiale (doc Playwright): niente apt a
+    # ogni run (#367: 14m38s). Tag = versione di @playwright/test, a mano (CONTRIBUTING.md).
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
+      options: --user 1001 --ipc=host
 
     steps:
+      - name: Preview pronta
+        if: github.event.deployment_status.state != 'success'
+        run: |
+          echo "::error::Deployment di Preview in stato '$STATO', niente da testare"
+          exit 1
+        env:
+          STATO: ${{ github.event.deployment_status.state }}
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -28,15 +47,6 @@ jobs:
 
       - name: Setup
         uses: ./.github/actions/setup
-
-      - name: Cache Playwright browsers
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium webkit
 
       - name: Run E2E tests
         run: npm run test:e2e

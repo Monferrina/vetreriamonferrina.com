@@ -9,22 +9,33 @@ type Renderable = Parameters<AstroContainer['renderToString']>[0];
 let container: Promise<AstroContainer> | undefined;
 const parser = new new Window().DOMParser();
 
-export async function renderPage(
-  page: unknown,
-  path: string,
-  opts: { params?: Record<string, string>; props?: Record<string, unknown> } = {}
-): Promise<Document> {
+type RenderOpts = {
+  params?: Record<string, string>;
+  props?: Record<string, unknown>;
+  slots?: Record<string, string>;
+};
+
+// L'HTML come stringa, per i test che cercano frammenti di markup.
+export async function renderHtml(page: unknown, path: string, opts: RenderOpts = {}) {
   container ??= AstroContainer.create({ astroConfig: { site: 'https://vetreriamonferrina.com' } });
   // Le pagine con getStaticPaths hanno firma `(_props: never) => any`: il container le
   // renderizza, ma senza il cast `astro check` si ferma (ts2345).
-  const html = await (
-    await container
-  ).renderToString(page as Renderable, {
+  return (await container).renderToString(page as Renderable, {
     request: new Request(`https://vetreriamonferrina.com${path}`),
     ...opts,
   });
+}
+
+export async function renderPage(
+  page: unknown,
+  path: string,
+  opts: RenderOpts = {}
+): Promise<Document> {
   // DOMParser non esegue gli script inline della pagina.
-  return parser.parseFromString(html, 'text/html') as unknown as Document;
+  return parser.parseFromString(
+    await renderHtml(page, path, opts),
+    'text/html'
+  ) as unknown as Document;
 }
 
 // Testo di un nodo con gli spazi normalizzati (come textContent in Playwright).

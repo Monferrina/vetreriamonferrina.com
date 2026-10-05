@@ -68,12 +68,8 @@ test('galleria lightbox si apre al click e si chiude con ESC', async ({ page }) 
   await expect(lightbox).toBeHidden();
 });
 
-test('galleria lightbox navigazione frecce', async ({ page }) => {
-  // Le frecce sono hidden sotto sm (640px): su mobile si naviga con lo swipe
-  const viewport = page.viewportSize();
-  if (viewport && viewport.width < 640) {
-    test.skip();
-  }
+test('galleria lightbox navigazione frecce', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'frecce nascoste sotto sm (640px): su mobile si naviga con lo swipe');
   await page.goto('/galleria');
 
   // Open lightbox on first item

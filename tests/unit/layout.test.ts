@@ -1,22 +1,15 @@
 // @vitest-environment node
-import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { expect, test, describe } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import BaseLayout from '../../src/layouts/BaseLayout.astro';
-import { renderPage } from './render-page';
+import { renderHtml, renderPage } from './render-page';
 
 describe('BaseLayout', () => {
   test('contiene meta tag essenziali', async () => {
-    const container = await AstroContainer.create({
-      astroConfig: {
-        site: 'https://vetreriamonferrina.com',
-      },
-    });
-    const html = await container.renderToString(BaseLayout, {
+    const html = await renderHtml(BaseLayout, '/', {
       props: { title: 'Test' },
       slots: { default: '<p>Contenuto</p>' },
-      request: new Request('https://vetreriamonferrina.com/'),
     });
 
     expect(html).toContain('lang="it"');
@@ -34,15 +27,9 @@ describe('BaseLayout', () => {
   });
 
   test('include font preload links', async () => {
-    const container = await AstroContainer.create({
-      astroConfig: {
-        site: 'https://vetreriamonferrina.com',
-      },
-    });
-    const html = await container.renderToString(BaseLayout, {
+    const html = await renderHtml(BaseLayout, '/', {
       props: { title: 'Test' },
       slots: { default: '<p>Contenuto</p>' },
-      request: new Request('https://vetreriamonferrina.com/'),
     });
 
     expect(html).toContain('/fonts/inter-latin-variable.woff2');
@@ -52,15 +39,9 @@ describe('BaseLayout', () => {
   });
 
   test('include og:image fallback se non specificato', async () => {
-    const container = await AstroContainer.create({
-      astroConfig: {
-        site: 'https://vetreriamonferrina.com',
-      },
-    });
-    const html = await container.renderToString(BaseLayout, {
+    const html = await renderHtml(BaseLayout, '/', {
       props: { title: 'Test' },
       slots: { default: '<p>Contenuto</p>' },
-      request: new Request('https://vetreriamonferrina.com/'),
     });
 
     expect(html).toContain('og:image');
@@ -68,15 +49,9 @@ describe('BaseLayout', () => {
   });
 
   test('include og:image quando specificato', async () => {
-    const container = await AstroContainer.create({
-      astroConfig: {
-        site: 'https://vetreriamonferrina.com',
-      },
-    });
-    const html = await container.renderToString(BaseLayout, {
+    const html = await renderHtml(BaseLayout, '/', {
       props: { title: 'Test', ogImage: 'https://example.com/image.jpg' },
       slots: { default: '<p>Contenuto</p>' },
-      request: new Request('https://vetreriamonferrina.com/'),
     });
 
     expect(html).toContain('og:image');
@@ -84,15 +59,9 @@ describe('BaseLayout', () => {
   });
 
   test('renderizza il contenuto slot', async () => {
-    const container = await AstroContainer.create({
-      astroConfig: {
-        site: 'https://vetreriamonferrina.com',
-      },
-    });
-    const html = await container.renderToString(BaseLayout, {
+    const html = await renderHtml(BaseLayout, '/', {
       props: { title: 'Test' },
       slots: { default: '<p>Contenuto di test</p>' },
-      request: new Request('https://vetreriamonferrina.com/'),
     });
 
     expect(html).toContain('<p>Contenuto di test</p>');

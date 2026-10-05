@@ -14,7 +14,8 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // Worker di default (metà dei core) anche in CI: la doc consiglia 1 perché server e browser
+  // si contendono il runner, ma qui il server è la preview Vercel.
   // In CI il reporter github annota i fallimenti e stampa nel log il riepilogo (misurato il
   // 05/10: "2 passed" + notice "Playwright Run Summary"; i flaky li conta secondo il suo
   // sorgente, non ancora visto su un caso vero). L'html resta come artefatto.

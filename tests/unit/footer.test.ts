@@ -1,19 +1,17 @@
 // @vitest-environment node
-import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { expect, test, describe } from 'vitest';
+import { renderHtml } from './render-page';
 import Footer from '../../src/components/Footer.astro';
 
 describe('Footer', () => {
   test('contiene la ragione sociale', async () => {
-    const container = await AstroContainer.create();
-    const html = await container.renderToString(Footer);
+    const html = await renderHtml(Footer, '/');
 
     expect(html).toContain('Vetreria Monferrina di Fioravanti Giuseppe');
   });
 
   test('contiene sede legale e P.IVA', async () => {
-    const container = await AstroContainer.create();
-    const html = await container.renderToString(Footer);
+    const html = await renderHtml(Footer, '/');
 
     expect(html).toContain('Strada Statale 31, 98/C');
     expect(html).toContain('15033 Casale Monferrato (AL)');
@@ -21,8 +19,7 @@ describe('Footer', () => {
   });
 
   test('contiene link privacy e cookie policy', async () => {
-    const container = await AstroContainer.create();
-    const html = await container.renderToString(Footer);
+    const html = await renderHtml(Footer, '/');
 
     expect(html).toContain('href="/privacy"');
     expect(html).toContain('href="/cookie"');
@@ -31,16 +28,14 @@ describe('Footer', () => {
   });
 
   test('contiene contatti telefono e email', async () => {
-    const container = await AstroContainer.create();
-    const html = await container.renderToString(Footer);
+    const html = await renderHtml(Footer, '/');
 
     expect(html).toContain('href="tel:');
     expect(html).toContain('href="mailto:');
   });
 
   test('contiene copyright con anno corrente', async () => {
-    const container = await AstroContainer.create();
-    const html = await container.renderToString(Footer);
+    const html = await renderHtml(Footer, '/');
     const year = new Date().getFullYear();
 
     expect(html).toContain(`&copy; ${year}`);
@@ -48,8 +43,7 @@ describe('Footer', () => {
   });
 
   test('usa elemento footer semantico', async () => {
-    const container = await AstroContainer.create();
-    const html = await container.renderToString(Footer);
+    const html = await renderHtml(Footer, '/');
 
     expect(html).toContain('<footer');
   });
