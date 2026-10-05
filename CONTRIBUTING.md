@@ -42,7 +42,7 @@ La CI in `.github/workflows/ci.yml` esegue questi step nel job `Lint, Type Check
 
 I test end-to-end girano in un job separato, `E2E (Playwright)`, sui progetti `chromium` e `mobile` (iPhone 13). In locale si eseguono con `npm run test:e2e`.
 
-Vanno a parte la validazione dei monitor Checkly (al merge, quando cambiano `__checks__/` o `checkly.config.ts`) e la CI del Worker (`wrangler deploy --dry-run`, solo sulle PR che toccano `cloudflare/maintenance-worker/`).
+Vanno a parte i monitor Checkly (quando cambiano `__checks__/` o `checkly.config.ts`: `checkly test` sulla PR, `checkly deploy` al merge) e la CI del Worker (`wrangler deploy --dry-run`, solo sulle PR che toccano `cloudflare/maintenance-worker/`).
 
 Verifica l'esito guardando il codice di uscita dei comandi, non filtrando l'output: un `grep` sui soli warning può nascondere un errore che poi blocca la CI.
 
