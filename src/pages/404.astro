@@ -1,7 +1,10 @@
 ---
 // src/pages/404.astro — Pagina di errore 404 con navigazione di recupero.
 import BaseLayout from '../layouts/BaseLayout.astro';
-export const prerender = true;
+// On demand, non prerenderizzata: il fallback dell'adapter Vercel per gli URL inesistenti
+// serviva 404.html statico senza l'header CSP (HawkScan 10038 su GET /api, scan b0d5de5b);
+// renderizzata a richiesta, l'header con gli hash lo mette Astro come per ogni pagina.
+export const prerender = false;
 ---
 
 <BaseLayout title="Pagina non trovata" description="La pagina richiesta non esiste.">

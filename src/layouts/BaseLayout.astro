@@ -1,7 +1,6 @@
 ---
 // src/layouts/BaseLayout.astro
 import '../styles/global.css';
-import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BottomNav from '../components/BottomNav.astro';
@@ -9,6 +8,7 @@ import CookieBanner from '../components/CookieBanner.astro';
 import Chatbot from '../components/Chatbot.astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
 import openingHours from '../data/opening-hours.json';
+import { themeScript, themeScriptHash } from '../lib/csp';
 
 export interface Props {
   title: string;
@@ -107,6 +107,8 @@ const jsonLd = {
     ],
   },
 };
+// Hash dello script del tema nel CSP della pagina (security.csp): vedi src/lib/csp.ts.
+Astro.csp?.insertScriptHash(themeScriptHash);
 ---
 
 <!doctype html>
@@ -159,16 +161,8 @@ const jsonLd = {
       type="font/woff2"
       crossorigin
     />
-    <ClientRouter />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-
-    <script is:inline>
-      (function () {
-        const h = new Date().getHours();
-        const dark = window.matchMedia('(prefers-color-scheme: dark)').matches || h >= 20 || h < 7;
-        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
-      })();
-    </script>
+    <script is:inline set:html={themeScript} />
   </head>
   <body class="font-body text-neutral-800 bg-neutral-50 antialiased overflow-x-hidden">
     <a
@@ -181,7 +175,7 @@ const jsonLd = {
     <div class="scroll-progress" aria-hidden="true"></div>
 
     <Header />
-    <main id="main-content" style="view-transition-name: main-content;">
+    <main id="main-content" class="[view-transition-name:main-content]">
       <slot />
     </main>
     <Footer />
@@ -298,7 +292,7 @@ const jsonLd = {
         };
       }
 
-      document.addEventListener('astro:page-load', initGlobalUI);
+      initGlobalUI();
     </script>
 
     <script>
@@ -314,20 +308,9 @@ const jsonLd = {
         }
       }
 
-      // One-time setup: system theme listener + interval + view transition handler
-      const win = window as Window & { __themeInit?: boolean };
-      if (!win.__themeInit) {
-        win.__themeInit = true;
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
-        setInterval(applyTheme, 15 * 60 * 1000);
-        document.addEventListener('astro:before-swap', ((e: Event & { newDocument: Document }) => {
-          const theme = document.documentElement.getAttribute('data-theme');
-          if (theme) {
-            e.newDocument.documentElement.setAttribute('data-theme', theme);
-          }
-        }) as EventListener);
-      }
-      document.addEventListener('astro:page-load', applyTheme);
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+      setInterval(applyTheme, 15 * 60 * 1000);
+      applyTheme();
     </script>
   </body>
 </html>

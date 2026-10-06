@@ -337,7 +337,7 @@ const heroIntro =
         role="region"
         aria-label="Foto del laboratorio"
         aria-roledescription="carousel"
-        style="position: relative;"
+        class="relative"
       >
         <button
           type="button"
@@ -557,7 +557,7 @@ const heroIntro =
       };
     }
 
-    document.addEventListener('astro:page-load', initTimelineEffects);
+    initTimelineEffects();
 
     // Lab carousel: measure exact scroll width for seamless loop
     function initLabCarousel(): void {
@@ -596,6 +596,6 @@ const heroIntro =
         );
       });
     }
-    document.addEventListener('astro:page-load', initLabCarousel);
+    initLabCarousel();
   </script>
 </BaseLayout>

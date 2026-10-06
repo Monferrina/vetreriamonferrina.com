@@ -8,8 +8,7 @@
   id="chatbot-toggle"
   type="button"
   aria-label="Apri Glassy"
-  style="view-transition-name: chatbot-toggle;"
-  class="fixed bottom-20 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary/85 text-white shadow-lg backdrop-blur-md transition-transform hover:scale-105 hover:bg-primary-light/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 md:bottom-6"
+  class="[view-transition-name:chatbot-toggle] fixed bottom-20 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary/85 text-white shadow-lg backdrop-blur-md transition-transform hover:scale-105 hover:bg-primary-light/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 md:bottom-6"
 >
   <svg
     id="chatbot-icon-open"
@@ -127,8 +126,7 @@
 
   <div
     id="chatbot-options"
-    class="chatbot-options border-t border-neutral-200 bg-neutral-50 px-3 py-3 overflow-y-auto"
-    style="max-height: 45%;"
+    class="chatbot-options max-h-[45%] border-t border-neutral-200 bg-neutral-50 px-3 py-3 overflow-y-auto"
   >
   </div>
 </div>
@@ -814,6 +812,5 @@
     showTooltipIfNeeded();
   }
 
-  // Initialize on first load and re-initialize after View Transitions navigation
-  document.addEventListener('astro:page-load', () => initChatbot());
+  initChatbot();
 </script>

@@ -151,7 +151,6 @@ const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
   }
 
   initServiceFilters();
-  document.addEventListener('astro:after-swap', initServiceFilters);
 </script>
 
 <style>
@@ -247,5 +246,4 @@ const categoryButtons = Object.entries(categories) as [CategoryKey, string][];
   }
 
   initTransportLink();
-  document.addEventListener('astro:after-swap', initTransportLink);
 </script>

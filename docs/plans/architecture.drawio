@@ -73,7 +73,7 @@
                 <mxCell id="arrow3" value="HTTPS&#xa;cached + protected" style="endArrow=classic;endFill=1;html=1;fontSize=10;strokeWidth=2;strokeColor=#1B4965;" parent="1" source="cloudflare_group" target="browser" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="security_box" value="Security Headers (vercel.json)&#xa;&#xa;• CSP: self + unsafe-inline + Google Maps + Open-Meteo&#xa;• HSTS: max-age=63M, includeSubDomains, preload&#xa;• X-Frame-Options: DENY&#xa;• X-Content-Type-Options: nosniff&#xa;• Referrer-Policy: strict-origin-when-cross-origin&#xa;• Permissions-Policy: camera=(), microphone=(), geolocation=()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
+                <mxCell id="security_box" value="Security Headers (vercel.json + Astro security.csp)&#xa;&#xa;• CSP: self + hash degli script inline (niente unsafe-inline) + Google Maps + Open-Meteo&#xa;• HSTS: max-age=63M, includeSubDomains, preload&#xa;• X-Frame-Options: DENY&#xa;• X-Content-Type-Options: nosniff&#xa;• Referrer-Policy: strict-origin-when-cross-origin&#xa;• Permissions-Policy: camera=(), microphone=(), geolocation=()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
                     <mxGeometry x="1120" y="380" width="340" height="130" as="geometry"/>
                 </mxCell>
                 <mxCell id="arrow_security" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#b85450;dashed=1;" parent="1" source="security_box" target="host_group" edge="1">
@@ -91,7 +91,7 @@
                 <mxCell id="arrow_a11y" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#4CAF50;dashed=1;" parent="1" source="a11y_box" target="browser" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="transitions_box" value="View Transitions&#xa;&#xa;• Slide + fade tra pagine&#xa;• Bottom nav persistente&#xa;• Prefetch viewport (auto)&#xa;• reduced-motion rispettato" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1976D2;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
+                <mxCell id="transitions_box" value="View Transitions native (CSS @view-transition)&#xa;&#xa;• Slide + fade tra pagine&#xa;• Bottom nav con view-transition-name&#xa;• Prefetch viewport (auto)&#xa;• reduced-motion rispettato" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1976D2;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
                     <mxGeometry x="1340" y="540" width="200" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="imgopt_box" value="Ottimizzazione immagini&#xa;&#xa;• WebP quality 80 (sharp)&#xa;• lazy/eager intelligente&#xa;• fetchpriority=high su LCP&#xa;• sizes responsive&#xa;• ProtectedImage (no right-click)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
@@ -157,7 +157,7 @@
                 <mxCell id="lightbox_box" value="Lightbox galleria | z-[9990] | Focus trap | Tastiera (frecce+Esc) | Swipe touch | Counter" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="pages_group" vertex="1">
                     <mxGeometry x="20" y="490" width="305" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="bottomnav_box" value="Bottom Tab Bar mobile | 5 tab | Safe areas | View Transition persistente" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="pages_group" vertex="1">
+                <mxCell id="bottomnav_box" value="Bottom Tab Bar mobile | 5 tab | Safe areas | view-transition-name" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="pages_group" vertex="1">
                     <mxGeometry x="20" y="525" width="305" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="form_group" value="Flusso Preventivo" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;rounded=1;arcSize=8;" parent="1" vertex="1">
