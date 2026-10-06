@@ -2,11 +2,30 @@ import process from 'node:process';
 import type { APIContext } from 'astro';
 import { Resend } from 'resend';
 import { RESEND_API_KEY, RESEND_FROM_EMAIL, VETRERIA_EMAIL, SITE_URL } from 'astro:env/server';
-import { handleSendQuote } from '../../lib/send-quote';
+import { EMAIL_ERROR, handleSendQuote } from '../../lib/send-quote';
+import { report } from '../../lib/sentry-report';
+// L'init di Sentry: l'integrazione non lo porta negli endpoint (astro.config.mjs).
+import '../../../sentry.server.config';
 
 export const prerender = false;
 
-export async function POST({ request, clientAddress }: APIContext) {
+// Ogni errore non previsto del gestore arriva a Sentry e al visitatore torna il 500 JSON del
+// form, non la pagina d'errore di Astro. Anche la lettura di clientAddress sta qui dentro:
+// fuori da una richiesta Vercel l'adapter lancia ClientAddressNotAvailable.
+export async function POST(context: APIContext) {
+  try {
+    return await handle(context);
+  } catch (err) {
+    console.error('[send-quote] Unexpected error:', err);
+    await report(err);
+    return new Response(JSON.stringify({ error: EMAIL_ERROR }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+}
+
+async function handle({ request, clientAddress }: APIContext) {
   const siteUrl = (SITE_URL || '').trim();
   const allowedOrigins = [
     siteUrl,

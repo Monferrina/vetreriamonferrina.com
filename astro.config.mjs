@@ -66,9 +66,10 @@ export default defineConfig({
   integrations: [
     // Solo in produzione: da disabilitata l'integrazione non aggiunge codice al bundle,
     // e gli errori di dev e preview non finiscono nel progetto. Source map in una PR a parte.
-    // Server spento: Astro inietta l'init server solo nelle pagine .astro, tutte prerenderizzate,
-    // quindi nella funzione Vercel (send-quote) arrivava il middleware senza init (misurato
-    // sulla build). Il server va fatto a parte, insieme alla cattura degli errori di send-quote.
+    // Server spento qui, acceso da send-quote che importa sentry.server.config.ts: l'integrazione
+    // inietta l'init solo nelle pagine .astro (injectScript 'page-ssr'), non negli endpoint, e il
+    // suo middleware scrive nell'HTML on demand un <meta name="baggage"> con la chiave pubblica
+    // del DSN (misurato sulla 404: la chiave server, che deve restare non pubblicata).
     sentry({
       enabled: { client: process.env.VERCEL_ENV === 'production', server: false },
       clientInitPath: 'sentry.config.ts',

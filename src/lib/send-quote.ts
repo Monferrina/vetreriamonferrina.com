@@ -2,6 +2,7 @@ import { validateQuoteForm, type QuoteFormData } from './validation';
 import { sanitizeFormData } from './sanitize';
 import { isRateLimited } from './rate-limit';
 import { quoteRequestEmail } from './email-templates/quote-request';
+import { report } from './sentry-report';
 
 export interface SendQuoteConfig {
   allowedOrigins: string[];
@@ -18,6 +19,8 @@ export interface SendQuoteRequest {
   ip: string;
   body: unknown;
 }
+
+export const EMAIL_ERROR = 'Errore invio email. Riprova o chiamaci.';
 
 interface JsonResponse {
   status: number;
@@ -95,13 +98,17 @@ export async function handleSendQuote(
 
     if (emailError) {
       console.error('[send-quote] Resend error:', emailError.name, emailError.message);
-      return json(500, { error: 'Errore invio email. Riprova o chiamaci.' });
+      // Solo il nome (codice dell'errore): il messaggio è testo di Resend che potrebbe citare i
+      // campi dell'email, e l'oggetto contiene il nome del visitatore. Resta nei log Vercel.
+      await report(new Error(`Resend ${emailError.name}`));
+      return json(500, { error: EMAIL_ERROR });
     }
 
     console.log('[send-quote] Email sent successfully, id:', emailData?.id);
   } catch (err) {
     console.error('[send-quote] Unexpected error:', err);
-    return json(500, { error: 'Errore invio email. Riprova o chiamaci.' });
+    await report(err);
+    return json(500, { error: EMAIL_ERROR });
   }
 
   return json(200, { success: true });
