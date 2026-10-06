@@ -1,6 +1,7 @@
 import process from 'node:process';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
+import { report } from './sentry-report';
 
 const MAX_REQUESTS = 5; // 5 per minute per IP
 const WINDOW = '60 s';
@@ -83,7 +84,11 @@ export async function isRateLimited(
       const { success } = await limiter.limit(ip);
       return !success;
     } catch (err) {
-      console.error('[rate-limit] Upstash non raggiungibile, fallback in-memory:', err);
+      // Solo il nome, nel log e verso Sentry: @upstash/redis mette nel messaggio il comando
+      // intero ("command was: …"), e la chiave del limite è l'IP del visitatore.
+      const name = err instanceof Error ? err.name : 'Error';
+      console.error('[rate-limit] Upstash non raggiungibile, fallback in-memory:', name);
+      await report(new Error(`Upstash ${name}`));
     }
   }
   return isRateLimitedInMemory(ip);

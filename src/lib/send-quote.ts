@@ -1,8 +1,8 @@
-import * as Sentry from '@sentry/astro';
 import { validateQuoteForm, type QuoteFormData } from './validation';
 import { sanitizeFormData } from './sanitize';
 import { isRateLimited } from './rate-limit';
 import { quoteRequestEmail } from './email-templates/quote-request';
+import { report } from './sentry-report';
 
 export interface SendQuoteConfig {
   allowedOrigins: string[];
@@ -20,6 +20,8 @@ export interface SendQuoteRequest {
   body: unknown;
 }
 
+export const EMAIL_ERROR = 'Errore invio email. Riprova o chiamaci.';
+
 interface JsonResponse {
   status: number;
   body: Record<string, unknown>;
@@ -36,13 +38,6 @@ export interface EmailSender {
     subject: string;
     html: string;
   }): Promise<{ data: { id: string } | null; error: { name: string; message: string } | null }>;
-}
-
-// Flush prima di rispondere: la funzione Vercel può fermarsi appena la risposta è partita,
-// e senza il middleware dell'integrazione (spento, astro.config.mjs) nessuno lo fa al posto nostro.
-async function report(err: unknown): Promise<void> {
-  Sentry.captureException(err);
-  await Sentry.flush(2000);
 }
 
 export async function handleSendQuote(
@@ -106,14 +101,14 @@ export async function handleSendQuote(
       // Solo il nome (codice dell'errore): il messaggio è testo di Resend che potrebbe citare i
       // campi dell'email, e l'oggetto contiene il nome del visitatore. Resta nei log Vercel.
       await report(new Error(`Resend ${emailError.name}`));
-      return json(500, { error: 'Errore invio email. Riprova o chiamaci.' });
+      return json(500, { error: EMAIL_ERROR });
     }
 
     console.log('[send-quote] Email sent successfully, id:', emailData?.id);
   } catch (err) {
     console.error('[send-quote] Unexpected error:', err);
     await report(err);
-    return json(500, { error: 'Errore invio email. Riprova o chiamaci.' });
+    return json(500, { error: EMAIL_ERROR });
   }
 
   return json(200, { success: true });

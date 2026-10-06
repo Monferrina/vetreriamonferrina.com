@@ -24,9 +24,13 @@ export const sentryOptions = {
   // (il GET del form senza JS porta nome, email e telefono), e il testo dei click; Console i
   // messaggi della console. Le integrazioni vanno tolte, non solo svuotate: con il solo
   // maxBreadcrumbs: 0 intercettano comunque console, fetch e click. BrowserSession
-  // manderebbe una richiesta a Sentry a ogni pagina vista.
+  // manderebbe una richiesta a Sentry a ogni pagina vista, ProcessSession (server) una a ogni
+  // avvio della funzione: su Vercel la release c'è sempre (VERCEL_GIT_COMMIT_SHA), e con la
+  // release l'SDK Node apre una sessione (misurato in CI con GITHUB_SHA).
   integrations: <I extends { name: string }>(defaults: I[]): I[] =>
-    defaults.filter((i) => !['Breadcrumbs', 'Console', 'BrowserSession'].includes(i.name)),
+    defaults.filter(
+      (i) => !['Breadcrumbs', 'Console', 'BrowserSession', 'ProcessSession'].includes(i.name)
+    ),
   maxBreadcrumbs: 0,
   // urlQueryParams non tocca request.url: il browser lo manda con la query string, e il form
   // preventivi senza JS fa un GET con nome, email e telefono nell'URL. Lo stesso URL compare
