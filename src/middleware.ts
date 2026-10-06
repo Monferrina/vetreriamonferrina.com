@@ -8,7 +8,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
   // CSP per le risposte che Astro non copre (/api, _image, 403 di questo middleware). Le pagine
   // HTML lo hanno già da security.csp con gli hash degli script inline (render/page.js, destinazione
   // `adapter`): sovrascriverlo qui le lascerebbe con la sola default-src e gli script bloccati.
-  if (!response.headers.has('Content-Security-Policy')) {
+  // Stessa cosa per un 404/500 a corpo vuoto: Astro lo rimanda alla pagina di errore tenendo gli
+  // header originali (core/routing/handler.js, REROUTABLE_STATUS_CODES), e la pagina porta il suo.
+  const rerouted = response.body === null && [404, 500].includes(response.status);
+  if (!rerouted && !response.headers.has('Content-Security-Policy')) {
     response.headers.set('Content-Security-Policy', cspHeader);
   }
   return response;

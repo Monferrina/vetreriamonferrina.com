@@ -41,7 +41,7 @@ test.describe('CSP senza unsafe-inline', () => {
     expect(csp).not.toContain("script-src 'self' 'unsafe-inline'");
   });
 
-  test('nessuna violazione CSP su /, /contatti, /servizi e navigando tra pagine', async ({
+  test('nessuna violazione CSP su /, /contatti, /servizi, /api/send-quote e navigando', async ({
     page,
   }) => {
     const violazioni: string[] = [];
@@ -50,7 +50,9 @@ test.describe('CSP senza unsafe-inline', () => {
         violazioni.push(m.text());
       }
     });
-    for (const path of ['/', '/contatti', '/servizi']) {
+    // /api/send-quote in GET è un 404 che Astro rimanda alla pagina di errore: aveva il CSP del
+    // middleware senza script-src (7 violazioni sulla preview asqhr6qwk).
+    for (const path of ['/', '/contatti', '/servizi', '/api/send-quote']) {
       await page.goto(path, { waitUntil: 'networkidle' });
     }
     await page.goto('/');
