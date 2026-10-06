@@ -260,6 +260,7 @@ Monitoring-as-code su una sola location (`eu-central-1`) per rientrare nel free 
 
 - Homepage uptime, URL monitor ogni 10 minuti, attende 200
 - Send Quote API, POST in `dryRun` ogni 30 minuti che non invia email, e passa `x-origin-verify` per superare l'origin lockdown
+- Send Quote API lockdown, POST diretto all'origin **senza** `x-origin-verify` una volta al giorno, attende il `403` del middleware (`shouldFail`): vede una regressione a fail-open, che il check positivo non vede
 - Cloudflare Worker attivo, verifica gli header `x-worker` e `x-maintenance` ogni 6 ore
 - Pagine chiave (servizi, preventivo, contatti, chi siamo, galleria, FAQ), status 200 ogni 6 ore
 - Sitemap raggiungibile, status 200 ogni ora, seguendo il redirect verso `/sitemap-index.xml`

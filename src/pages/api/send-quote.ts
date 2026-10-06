@@ -45,8 +45,12 @@ async function handle({ request, clientAddress }: APIContext) {
   const result = await handleSendQuote(
     {
       origin: request.headers.get('origin'),
-      // Behind Cloudflare, CF-Connecting-IP is the true visitor IP (CF sets it, unspoofable
-      // on the proxied path). Prefer it so the rate limit keys per real visitor, not per CF IP.
+      // Behind Cloudflare, CF-Connecting-IP is the true visitor IP: a client that sends its
+      // own cf-connecting-ip gets 403 "error code: 1000" from Cloudflare itself (measured
+      // 2026-10-06, 7 POSTs via vetreriamonferrina.com; the docs do not state it). On the
+      // direct Vercel path the middleware rejects requests without x-origin-verify (M1), so
+      // the header is forgeable only by whoever holds both secrets. Prefer it so the rate
+      // limit keys per real visitor, not per CF IP.
       ip:
         request.headers.get('cf-connecting-ip') ||
         clientAddress ||
