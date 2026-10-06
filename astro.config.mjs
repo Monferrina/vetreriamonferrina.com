@@ -65,7 +65,12 @@ export default defineConfig({
 
   integrations: [
     // Solo in produzione: da disabilitata l'integrazione non aggiunge codice al bundle,
-    // e gli errori di dev e preview non finiscono nel progetto. Source map in una PR a parte.
+    // e gli errori di dev e preview non finiscono nel progetto.
+    // Source map: con l'integrazione accesa il plugin Vite le genera 'hidden', le carica con
+    // SENTRY_AUTH_TOKEN (letto dall'ambiente; su Vercel solo in Production) e le cancella:
+    // nessuna .map in .vercel/output (misurato, E2). Senza token il build passa con un avviso.
+    // Nelle preview l'integrazione è spenta e il plugin non entra.
+    // telemetry: false perché il plugin altrimenti manda a Sentry i dati del build.
     // Server spento qui, acceso da send-quote che importa sentry.server.config.ts: l'integrazione
     // inietta l'init solo nelle pagine .astro (injectScript 'page-ssr'), non negli endpoint, e il
     // suo middleware scrive nell'HTML on demand un <meta name="baggage"> con la chiave pubblica
@@ -73,7 +78,9 @@ export default defineConfig({
     sentry({
       enabled: { client: process.env.VERCEL_ENV === 'production', server: false },
       clientInitPath: 'sentry.config.ts',
-      sourcemaps: { disable: true },
+      org: 'monferrina',
+      project: 'vetreriamonferrina-com',
+      telemetry: false,
     }),
     sitemap({
       // Esclude la pagina di manutenzione (503 servita dal Worker Cloudflare): non navigabile né indicizzabile.
