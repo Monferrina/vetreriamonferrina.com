@@ -1,5 +1,5 @@
-// Opzioni dell'SDK Sentry. Oggi gira solo nel browser (server spento in astro.config.mjs), ma
-// le voci server restano impostate per quando il server verrà acceso.
+// Opzioni dell'SDK Sentry, per il browser (sentry.config.ts) e per il server
+// (sentry.server.config.ts, che cambia solo il DSN).
 // Regola: nessun dato personale verso Sentry.
 // Il sito tratta nome, email e telefono nel modulo preventivi, e la privacy policy
 // dichiara che i rapporti d'errore non contengono né l'IP né i dati del modulo.

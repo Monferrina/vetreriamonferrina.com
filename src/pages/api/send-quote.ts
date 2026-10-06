@@ -3,6 +3,8 @@ import type { APIContext } from 'astro';
 import { Resend } from 'resend';
 import { RESEND_API_KEY, RESEND_FROM_EMAIL, VETRERIA_EMAIL, SITE_URL } from 'astro:env/server';
 import { handleSendQuote } from '../../lib/send-quote';
+// L'init di Sentry: l'integrazione non lo porta negli endpoint (astro.config.mjs).
+import '../../../sentry.server.config';
 
 export const prerender = false;
 

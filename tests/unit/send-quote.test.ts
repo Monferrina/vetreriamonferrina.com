@@ -1,10 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import {
-  handleSendQuote,
-  type EmailSender,
-  type SendQuoteConfig,
-  type SendQuoteRequest,
-} from '../../src/lib/send-quote';
+import { handleSendQuote, type EmailSender, type SendQuoteRequest } from '../../src/lib/send-quote';
+import { config, validBody } from './send-quote-fixtures';
 
 // ---------- test doubles ----------
 
@@ -22,25 +18,6 @@ function makeEmailSender(
 }
 
 // ---------- fixtures ----------
-
-const config: SendQuoteConfig = {
-  allowedOrigins: ['https://vetreriamonferrina.com'],
-  resendApiKey: 're_test_key',
-  fromEmail: 'noreply@test.example.com',
-  toEmail: 'recipient@test.example.com',
-  sendEmails: true,
-};
-
-const validBody = {
-  name: 'Mario Rossi',
-  phone: '+39 0142 123456',
-  email: 'mario@example.com',
-  serviceType: 'box-doccia',
-  description: 'Vorrei un box doccia su misura',
-  measurements: '120x80',
-  privacy: true,
-  honeypot: '',
-};
 
 function makeReq(overrides: Partial<SendQuoteRequest> = {}): SendQuoteRequest {
   return {
