@@ -51,14 +51,36 @@ describe('middleware — origin lockdown (solo /api)', () => {
     expect(res.status).toBe(200);
   });
 
-  it('fail-open: secret non configurato → non blocca (deploy sicuro)', async () => {
+  // Fail-closed (M1): il perché sta nel commento di `guard` in src/middleware.ts.
+  it('fail-closed: secret non configurato in produzione → 403', async () => {
+    delete process.env.ORIGIN_VERIFY_SECRET;
+    const res = (await onRequest(ctx('/api/send-quote'), NEXT)) as Response;
+    expect(res.status).toBe(403);
+  });
+
+  it('non blocca /api fuori produzione (preview/dev escluse)', async () => {
+    process.env.VERCEL_ENV = 'preview';
+    const res = (await onRequest(ctx('/api/send-quote'), NEXT)) as Response;
+    expect(res.status).toBe(200);
+  });
+
+  it('fail-closed: secret vuoto in produzione → 403', async () => {
+    process.env.ORIGIN_VERIFY_SECRET = '';
+    const res = (await onRequest(ctx('/api/send-quote'), NEXT)) as Response;
+    expect(res.status).toBe(403);
+  });
+
+  // Guardie del fail-closed: preview e locale senza segreto restano aperti.
+  it('preview senza secret → non blocca', async () => {
+    process.env.VERCEL_ENV = 'preview';
     delete process.env.ORIGIN_VERIFY_SECRET;
     const res = (await onRequest(ctx('/api/send-quote'), NEXT)) as Response;
     expect(res.status).toBe(200);
   });
 
-  it('non blocca /api fuori produzione (preview/dev escluse)', async () => {
-    process.env.VERCEL_ENV = 'preview';
+  it('locale (VERCEL_ENV assente) senza secret → non blocca', async () => {
+    delete process.env.VERCEL_ENV;
+    delete process.env.ORIGIN_VERIFY_SECRET;
     const res = (await onRequest(ctx('/api/send-quote'), NEXT)) as Response;
     expect(res.status).toBe(200);
   });
