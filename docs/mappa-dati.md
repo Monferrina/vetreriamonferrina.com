@@ -36,13 +36,14 @@ Il corpo dell'email è costruito da `src/lib/email-templates/quote-request.ts` e
 
 ## 3. Chi tocca cosa, e per quanto
 
-| Fornitore         | Cosa vede                 | Dove                                                    | Per quanto                                   | Perché                        |
-| ----------------- | ------------------------- | ------------------------------------------------------- | -------------------------------------------- | ----------------------------- |
-| Cloudflare        | IP, metadati di richiesta | rete globale                                            | log di piattaforma, a breve termine          | DNS, TLS, WAF                 |
-| Vercel            | il payload, in transito   | region impostata sul progetto (dashboard, non nel repo) | nulla di persistente: la funzione non scrive | esecuzione del modulo         |
-| Upstash           | solo l'IP                 | AWS `eu-central-1` (Francoforte), resta in UE           | 60 secondi, scadenza automatica              | contare gli invii ravvicinati |
-| Resend            | l'email completa          | USA, con SCC e Data Privacy Framework                   | secondo la sua retention di invio            | consegna dell'email           |
-| Casella aziendale | l'email completa          | provider di posta                                       | 24 mesi dall'ultimo contatto                 | gestire il preventivo         |
+| Fornitore         | Cosa vede                                                     | Dove                                                    | Per quanto                                   | Perché                        |
+| ----------------- | ------------------------------------------------------------- | ------------------------------------------------------- | -------------------------------------------- | ----------------------------- |
+| Cloudflare        | IP, metadati di richiesta                                     | rete globale                                            | log di piattaforma, a breve termine          | DNS, TLS, WAF                 |
+| Vercel            | il payload, in transito                                       | region impostata sul progetto (dashboard, non nel repo) | nulla di persistente: la funzione non scrive | esecuzione del modulo         |
+| Upstash           | solo l'IP                                                     | AWS `eu-central-1` (Francoforte), resta in UE           | 60 secondi, scadenza automatica              | contare gli invii ravvicinati |
+| Resend            | l'email completa                                              | USA, con SCC e Data Privacy Framework                   | secondo la sua retention di invio            | consegna dell'email           |
+| Casella aziendale | l'email completa                                              | provider di posta                                       | 24 mesi dall'ultimo contatto                 | gestire il preventivo         |
+| Sentry            | rapporto tecnico d'errore e paese della connessione, senza IP | regione UE, Francoforte; SCC e DPF per i metadati USA   | fino a 90 giorni (30 sul piano gratuito)     | trovare i malfunzionamenti    |
 
 La region Upstash è dichiarata anche ai visitatori, in `src/pages/privacy.astro`: è stata verificata in console il 2026-07-27 e spostare il database fuori dall'UE significherebbe correggere la privacy policy, non solo un'impostazione. La region Vercel invece è solo una configurazione di piattaforma, da verificare in dashboard: nel repo compaiono soltanto endpoint e token letti da variabili d'ambiente.
 
