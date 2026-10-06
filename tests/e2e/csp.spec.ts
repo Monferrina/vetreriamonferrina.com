@@ -41,6 +41,22 @@ test.describe('CSP senza unsafe-inline', () => {
     expect(csp).not.toContain("script-src 'self' 'unsafe-inline'");
   });
 
+  // Cloudflare inietta nell'HTML lo script inline "JavaScript Detections" del Bot Fight Mode
+  // (su Free acceso e non disattivabile, hash non supportati), che il CSP blocca: misurato in
+  // produzione su / e sulla 404. La doc Cloudflare: con `Cache-Control: no-transform`
+  // dall'origine non lo inietta. Gli asset tengono la loro cache immutabile.
+  test("l'HTML ha Cache-Control no-transform, gli asset restano immutabili", async ({ page }) => {
+    const html = await page.goto('/');
+    expect(html!.headers()['cache-control']).toContain('no-transform');
+    const css = await page.evaluate(
+      () =>
+        document.querySelector<HTMLLinkElement>('link[rel="stylesheet"][href^="/_astro/"]')?.href
+    );
+    expect(css).toBeTruthy();
+    const asset = await page.request.get(css!);
+    expect(asset.headers()['cache-control']).toBe('public, max-age=31536000, immutable');
+  });
+
   test('nessuna violazione CSP su /, /contatti, /servizi, /api/send-quote e navigando', async ({
     page,
   }) => {
