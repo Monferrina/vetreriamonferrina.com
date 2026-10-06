@@ -15,3 +15,17 @@ describe('stackhawk.yml, scansione della produzione', () => {
     expect(excluded).toBe(true);
   });
 });
+
+// Il bypass della Vercel Authentication (AL1) va in authentication.external: è l'unica
+// forma che StackHawk oscura nella configurazione caricata; in un replacer finiva in
+// chiaro sulla piattaforma (H1, scan 47b0ee7c).
+describe('stackhawk.yml, bypass Vercel', () => {
+  test('sta in authentication.external e in nessun replacer', () => {
+    const values = config.app.authentication?.external?.values ?? [];
+    expect(values).toContainEqual({
+      type: 'TOKEN',
+      value: { name: 'x-vercel-protection-bypass', val: '${VERCEL_AUTOMATION_BYPASS_SECRET}' },
+    });
+    expect(JSON.stringify(config.app.replacers ?? [])).not.toContain('bypass');
+  });
+});

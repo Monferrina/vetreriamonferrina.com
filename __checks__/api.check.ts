@@ -17,6 +17,10 @@ import { websiteGroup } from './groups.check';
 // `x-origin-verify`). Lo forniamo a mano (secret Checkly ORIGIN_VERIFY_SECRET, stesso
 // valore di CF/Vercel) così il middleware in produzione accetta questa richiesta sull'API.
 // Email-safe: secret errato → 403 (nessuna mail, il 403 precede l'handler).
+//
+// Vercel Authentication protegge anche l'origin (AL1): senza `x-vercel-protection-bypass`
+// (variabile Checkly VERCEL_AUTOMATION_BYPASS_SECRET, stesso valore di Doppler `ci`)
+// Vercel risponde con il login al posto dell'API.
 new ApiCheck('send-quote-api', {
   name: 'Send Quote API',
   group: websiteGroup,
@@ -33,6 +37,7 @@ new ApiCheck('send-quote-api', {
       { key: 'Content-Type', value: 'application/json' },
       { key: 'Origin', value: 'https://vetreriamonferrina.com' },
       { key: 'x-origin-verify', value: '{{ORIGIN_VERIFY_SECRET}}' },
+      { key: 'x-vercel-protection-bypass', value: '{{VERCEL_AUTOMATION_BYPASS_SECRET}}' },
     ],
     body: JSON.stringify({
       name: 'Checkly Monitor',
