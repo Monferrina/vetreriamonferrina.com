@@ -37,11 +37,14 @@ beforeAll(() => {
 
 afterAll(() => Sentry.close());
 
-// Valori che non devono mai uscire verso Sentry: i dati del modulo e l'IP del visitatore.
+// Valori che non devono mai uscire verso Sentry: i dati personali del modulo e l'IP del visitatore
+// (serviceType no: è una lista chiusa di lavori, non un dato personale).
 const visitor = {
   name: validBody.name,
   phone: validBody.phone,
   email: validBody.email,
+  description: validBody.description,
+  measurements: validBody.measurements,
   ip: '203.0.113.7',
 };
 
@@ -50,7 +53,12 @@ const failures: [string, EmailSender['send'], string][] = [
     'Resend risponde con un errore',
     async () => ({
       data: null,
-      error: { name: 'validation_error', message: 'The domain is not verified' },
+      // Il messaggio di Resend può citare i campi dell'email (l'oggetto ha il nome del visitatore):
+      // qui li cita, così un report del messaggio intero fa rosso.
+      error: {
+        name: 'validation_error',
+        message: `Invalid subject "${validBody.name}": ${validBody.description} ${validBody.measurements}`,
+      },
     }),
     'validation_error',
   ],
