@@ -43,6 +43,17 @@ describe('middleware — origin lockdown (solo /api)', () => {
     expect(res.status).toBe(403);
   });
 
+  // Guardia per `sameSecret` (src/middleware.ts): timingSafeEqual lancia se le lunghezze differiscono.
+  it('blocca /api con x-origin-verify di lunghezza diversa dal secret, senza eccezione', async () => {
+    for (const h of ['sek', 'sekret-lungo', '']) {
+      const res = (await onRequest(
+        ctx('/api/send-quote', { 'x-origin-verify': h }),
+        NEXT
+      )) as Response;
+      expect(res.status).toBe(403);
+    }
+  });
+
   it('lascia passare /api con x-origin-verify corretto (traffico via Worker)', async () => {
     const res = (await onRequest(
       ctx('/api/send-quote', { 'x-origin-verify': 'sekret' }),

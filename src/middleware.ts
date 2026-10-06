@@ -1,4 +1,5 @@
 import process from 'node:process';
+import { createHash, timingSafeEqual } from 'node:crypto';
 import { defineMiddleware } from 'astro:middleware';
 import type { APIContext, MiddlewareNext } from 'astro';
 import { cspHeader } from './lib/csp';
@@ -40,9 +41,18 @@ const guard = async (context: APIContext, next: MiddlewareNext): Promise<Respons
   if (
     context.url.pathname.startsWith('/api/') &&
     process.env.VERCEL_ENV === 'production' &&
-    (!secret || context.request.headers.get('x-origin-verify') !== secret)
+    (!secret || !sameSecret(context.request.headers.get('x-origin-verify') ?? '', secret))
   ) {
     return new Response('Forbidden', { status: 403 });
   }
   return next();
 };
+
+// Confronto a tempo costante (doc Node: timingSafeEqual "does not leak timing information").
+// `!==` esce al primo byte diverso e offre un oracolo di tempo a chi prova il segreto
+// byte per byte. timingSafeEqual lancia se le lunghezze differiscono (doc: "An error is
+// thrown if a and b have different byte lengths"): si confrontano i digest SHA-256, sempre
+// di 32 byte, così non serve un controllo di lunghezza che riveli quella del segreto.
+const digest = (s: string) => createHash('sha256').update(s).digest();
+const sameSecret = (provided: string, secret: string): boolean =>
+  timingSafeEqual(digest(provided), digest(secret));
