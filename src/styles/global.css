@@ -356,7 +356,14 @@ html {
 }
 
 /* ==================== View Transitions ==================== */
-/* Fast crossfade between pages (Astro ClientRouter) — no gap */
+/* Transizioni tra pagine native del browser (cross-document, solo CSS): niente ClientRouter,
+   che non è supportato con security.csp (CSP1). Chrome 126+, Safari 18.2+; Firefox naviga
+   senza animazione. */
+@view-transition {
+  navigation: auto;
+}
+
+/* Fast crossfade between pages — no gap */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 200ms;

@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 import sitemap from '@astrojs/sitemap';
 import { blogPosts } from './src/data/blog-posts';
+import { cspDirectives } from './src/lib/csp';
 
 // lastmod solo per i post del blog (date reali) — le altre pagine non hanno una
 // data di modifica affidabile, meglio ometterla che dichiararne una falsa.
@@ -17,7 +18,19 @@ const blogLastmod = new Map(
 
 export default defineConfig({
   output: 'server',
-  adapter: vercel(),
+  // staticHeaders: il CSP delle pagine statiche va nell'header della config di Vercel, non in
+  // un <meta> (adapter docs). Senza, le pagine avrebbero il <meta> di Astro più l'header.
+  adapter: vercel({ staticHeaders: true }),
+  security: {
+    // script-src e style-src li genera Astro con gli hash degli inline; le altre direttive sono
+    // le stesse per tutte le risposte (src/lib/csp.ts, usate anche dal middleware per le on demand).
+    // style-src tiene 'unsafe-inline' (quindi niente hash, Astro li toglie): il rilievo HawkScan
+    // 10055-5 riguarda script-src; gli style="" inline (7–8 per pagina) sono un altro task.
+    csp: {
+      directives: cspDirectives,
+      styleDirective: { resources: ["'self'", "'unsafe-inline'"] },
+    },
+  },
   site: 'https://vetreriamonferrina.com',
   trailingSlash: 'never',
 

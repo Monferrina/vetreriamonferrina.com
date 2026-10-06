@@ -2,8 +2,6 @@
 // src/components/WeatherWidget.astro
 // Client-side weather widget using Open-Meteo (free, no API key).
 // Shows current weather for Casale Monferrato with smart glass tips.
-const LAT = 45.1334;
-const LON = 8.4525;
 ---
 
 <div
@@ -29,7 +27,12 @@ const LON = 8.4525;
   </p>
 </div>
 
-<script is:inline define:vars={{ LAT, LON }}>
+<script>
+  // Script normale, non is:inline: così Astro lo hasha nel CSP (security.csp). Con define:vars
+  // restava inline senza hash e il browser lo bloccava (misurato, CSP1).
+  const LAT = 45.1334;
+  const LON = 8.4525;
+
   async function initWeather() {
     const widget = document.getElementById('weather-widget');
     if (!widget || widget.dataset.loaded) return;
@@ -72,15 +75,15 @@ const LON = 8.4525;
         99: { icon: '⛈️', desc: 'Temporale con grandine forte' },
       };
 
-      const weather = weatherMap[code] || { icon: '🌡️', desc: 'N/D' };
+      const weather = weatherMap[code as keyof typeof weatherMap] || { icon: '🌡️', desc: 'N/D' };
 
-      document.getElementById('weather-icon').textContent = weather.icon;
-      document.getElementById('weather-temp').textContent =
+      document.getElementById('weather-icon')!.textContent = weather.icon;
+      document.getElementById('weather-temp')!.textContent =
         `${temp}°C · Umidità ${humidity}% · Vento ${wind} km/h`;
-      document.getElementById('weather-desc').textContent = weather.desc;
+      document.getElementById('weather-desc')!.textContent = weather.desc;
 
       // Smart glass tips based on weather
-      const tipEl = document.getElementById('weather-tip');
+      const tipEl = document.getElementById('weather-tip')!;
       let tip = '';
 
       if (temp <= 5) {
@@ -107,7 +110,7 @@ const LON = 8.4525;
 
       // Time
       const now = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
-      document.getElementById('weather-time').textContent = `aggiornato alle ${now}`;
+      document.getElementById('weather-time')!.textContent = `aggiornato alle ${now}`;
     } catch {
       // Silently fail — widget just stays empty
       widget.style.display = 'none';
@@ -142,5 +145,4 @@ const LON = 8.4525;
   } else {
     scheduleWeather();
   }
-  document.addEventListener('astro:after-swap', scheduleWeather);
 </script>

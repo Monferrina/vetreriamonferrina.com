@@ -156,7 +156,7 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 ├── src/
 │   ├── components/          # 19 componenti Astro
 │   ├── data/                # Dati statici (chatbot, recensioni, orari, servizi, blog)
-│   ├── layouts/             # Layout base (dark mode, View Transitions, SEO)
+│   ├── layouts/             # Layout base (dark mode, CSP con hash, SEO)
 │   ├── lib/                 # Logica condivisa (immagini, validazione, sanitize, rate limit, email)
 │   ├── pages/               # Pagine e API routes
 │   │   ├── api/             # Serverless function del form preventivo

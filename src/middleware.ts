@@ -1,7 +1,20 @@
 import process from 'node:process';
 import { defineMiddleware } from 'astro:middleware';
+import type { APIContext, MiddlewareNext } from 'astro';
+import { cspHeader } from './lib/csp';
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  const response = await guard(context, next);
+  // CSP per le risposte che Astro non copre (/api, _image, 403 di questo middleware). Le pagine
+  // HTML lo hanno già da security.csp con gli hash degli script inline (render/page.js, destinazione
+  // `adapter`): sovrascriverlo qui le lascerebbe con la sola default-src e gli script bloccati.
+  if (!response.headers.has('Content-Security-Policy')) {
+    response.headers.set('Content-Security-Policy', cspHeader);
+  }
+  return response;
+});
+
+const guard = async (context: APIContext, next: MiddlewareNext): Promise<Response> => {
   // Origin lockdown — enforce SOLO sulle rotte /api/ (le uniche SSR).
   //
   // La guardia `/api/` è fondamentale: il middleware Astro gira ANCHE durante il
@@ -25,4 +38,4 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return new Response('Forbidden', { status: 403 });
   }
   return next();
-});
+};

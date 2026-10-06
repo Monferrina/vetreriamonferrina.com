@@ -814,6 +814,5 @@
     showTooltipIfNeeded();
   }
 
-  // Initialize on first load and re-initialize after View Transitions navigation
-  document.addEventListener('astro:page-load', () => initChatbot());
+  initChatbot();
 </script>
