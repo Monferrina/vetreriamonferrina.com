@@ -24,12 +24,9 @@ export default defineConfig({
   security: {
     // script-src e style-src li genera Astro con gli hash degli inline; le altre direttive sono
     // le stesse per tutte le risposte (src/lib/csp.ts, usate anche dal middleware per le on demand).
-    // style-src tiene 'unsafe-inline' (quindi niente hash, Astro li toglie): il rilievo HawkScan
-    // 10055-5 riguarda script-src; gli style="" inline (7–8 per pagina) sono un altro task.
-    csp: {
-      directives: cspDirectives,
-      styleDirective: { resources: ["'self'", "'unsafe-inline'"] },
-    },
+    // Niente 'unsafe-inline' nemmeno in style-src (HawkScan 10055-4): gli style="" sono classi,
+    // e il JS cambia gli stili per proprietà (el.style.x = …, permesso), mai con setAttribute/cssText.
+    csp: { directives: cspDirectives },
   },
   site: 'https://vetreriamonferrina.com',
   trailingSlash: 'never',

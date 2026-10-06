@@ -18,6 +18,29 @@ test.describe('CSP senza unsafe-inline', () => {
     for (const d of scriptSrc) expect(d).not.toContain("'unsafe-inline'");
   });
 
+  // HawkScan 10055-4 "CSP: style-src unsafe-inline" (Medium, 15 percorsi, scan b0d5de5b):
+  // gli style="" inline sono diventati classi, e Astro hasha i blocchi <style>.
+  test("l'header di / ha style-src senza 'unsafe-inline'", async ({ page }) => {
+    const res = await page.goto('/');
+    const csp = res!.headers()['content-security-policy'] ?? '';
+    const styleSrc = csp.split(/[;,]/).filter((d) => d.trim().startsWith('style-src'));
+    expect(styleSrc.length).toBeGreaterThan(0);
+    for (const d of styleSrc) expect(d).not.toContain("'unsafe-inline'");
+  });
+
+  // Un URL inesistente finiva sul 404.html statico, servito dal fallback dell'adapter senza
+  // header (HawkScan 10038 su GET /api, scan b0d5de5b): la 404 è on demand, così l'header
+  // con gli hash lo mette Astro come per ogni pagina renderizzata.
+  test('un URL inesistente risponde 404 con lo stesso CSP hashato delle pagine', async ({
+    page,
+  }) => {
+    const res = await page.goto('/pagina-che-non-esiste');
+    expect(res!.status()).toBe(404);
+    const csp = res!.headers()['content-security-policy'] ?? '';
+    expect(csp).toContain("script-src 'self' 'sha256-");
+    expect(csp).not.toContain("script-src 'self' 'unsafe-inline'");
+  });
+
   test('nessuna violazione CSP su /, /contatti, /servizi e navigando tra pagine', async ({
     page,
   }) => {
