@@ -30,7 +30,8 @@ const guard = async (context: APIContext, next: MiddlewareNext): Promise<Respons
   //
   // A runtime: chi colpisce *.vercel.app/api/... diretto (senza Worker → senza header)
   // prende 403. Il traffico via Cloudflare passa dal Worker che timbra x-origin-verify.
-  // Fail-open: se il segreto non è configurato su Vercel, non blocca.
+  // Fail-open: se il segreto non è configurato su Vercel, non blocca. Secondo strato
+  // dietro la Vercel Authentication (README, "Vercel Authentication").
   const secret = process.env.ORIGIN_VERIFY_SECRET;
   if (
     context.url.pathname.startsWith('/api/') &&

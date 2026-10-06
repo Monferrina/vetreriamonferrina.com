@@ -239,6 +239,10 @@ Con le pagine a `prerender=true` il middleware gira solo sulle rotte SSR, che og
 
 Il segreto vive in tre posti con lo stesso valore: secret del Worker su Cloudflare, env di Vercel in Production, env di Checkly per il monitor dell'API. Chi colpisce `*.vercel.app/api/send-quote` direttamente riceve `403`.
 
+### Vercel Authentication
+
+Il progetto Vercel ha la Deployment Protection su **All Deployments** (gratuita su ogni piano dal 9/9/2026): ogni URL, alias `*.vercel.app` e dominio pubblico compresi, risponde con il login Vercel a chi arriva senza l'header `x-vercel-protection-bypass`. Lo manda il Worker su ogni richiesta verso l'origin, il monitor Checkly dell'API e la scansione settimanale di HawkScan (`stackhawk.yml`, `authentication.external`). Il valore è il "Protection Bypass for Automation" del progetto, in Doppler `ci`, nei secret di GitHub, nel Worker e in Checkly: rigenerarlo su Vercel invalida le deployment già pubblicate, quindi si aggiornano i quattro posti e si ridistribuisce, altrimenti il sito pubblico risponde con il login. Senza questo strato chi conosce l'IP di Vercel serve il sito con `Host: vetreriamonferrina.com` saltando Cloudflare (misurato il 06/10/2026).
+
 ### Resend
 
 Gestisce l'invio email dal form preventivo, su account `giuseppefioravanti@proton.me`. Il dominio mittente è verificato con record DNS (MX, SPF, DKIM), il TLS è enforced e il tracking di click e aperture è disattivato. Le email usano i template HTML in `src/lib/email-templates/`.

@@ -9,6 +9,10 @@
  * `x-origin-verify` (ORIGIN_VERIFY_SECRET). Il middleware Astro, in produzione, rifiuta
  * chi non ce l'ha → chi colpisce *.vercel.app diretto (bypassando CF) prende 403.
  *
+ * Vercel Authentication: l'origin risponde con il login Vercel a chi arriva senza
+ * `x-vercel-protection-bypass` (VERCEL_AUTOMATION_BYPASS_SECRET); dove vive il valore e
+ * come si ruota sta nel README della repo, sezione "Vercel Authentication".
+ *
  * Toggle manutenzione: Cloudflare Dashboard → Workers & Pages → maintenance-mode →
  *         Settings → Variabili e segreti → MAINTENANCE_ENABLED
  * Il secret ORIGIN_VERIFY_SECRET va aggiunto come Secret (runtime), stesso valore su Vercel.
@@ -19,6 +23,7 @@
 interface Env {
   MAINTENANCE_ENABLED: string;
   ORIGIN_VERIFY_SECRET: string;
+  VERCEL_AUTOMATION_BYPASS_SECRET: string;
 }
 
 const ORIGIN = 'https://vetreriamonferrina.vercel.app';
@@ -36,14 +41,26 @@ const SECURITY_HEADERS: Record<string, string> = {
     "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
 };
 
+// Header che l'origin pretende su ogni richiesta: senza il lockdown il middleware risponde
+// 403 sull'API, senza il bypass Vercel risponde con il login. In un posto solo perché il
+// fetch della pagina di manutenzione ne ha bisogno quanto il passthrough.
+function originAuth(env: Env): Record<string, string> {
+  return {
+    'x-origin-verify': env.ORIGIN_VERIFY_SECRET,
+    'x-vercel-protection-bypass': env.VERCEL_AUTOMATION_BYPASS_SECRET,
+  };
+}
+
 async function passthrough(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url);
   const originUrl = `${ORIGIN}${url.pathname}${url.search}`;
 
-  // Copia mutabile degli header + timbro segreto. `.set()` (non `.append()`) sovrascrive
-  // un eventuale x-origin-verify falso mandato dal client → sul path CF è airtight.
+  // Copia mutabile degli header + timbri segreti. `.set()` (non `.append()`) sovrascrive
+  // un eventuale valore falso mandato dal client → sul path CF è airtight.
   const originHeaders = new Headers(request.headers);
-  originHeaders.set('x-origin-verify', env.ORIGIN_VERIFY_SECRET);
+  for (const [name, value] of Object.entries(originAuth(env))) {
+    originHeaders.set(name, value);
+  }
 
   // redirect: 'manual' — i 3xx dell'origin (trailing-slash, sitemap, vecchi
   // /images/*) devono arrivare al client come redirect veri. Con 'follow' il
@@ -127,7 +144,7 @@ export default {
       // Anche il fetch della pagina di manutenzione passa dall'origin lockdown: senza il
       // segreto il middleware la 403-erebbe e la pagina di manutenzione risulterebbe rotta.
       const maintenanceResponse = await fetch(`${ORIGIN}/maintenance`, {
-        headers: { 'x-origin-verify': env.ORIGIN_VERIFY_SECRET },
+        headers: originAuth(env),
       });
       return new Response(maintenanceResponse.body, {
         status: 503,

@@ -31,8 +31,11 @@ jobs:
           HAWK_AGENT: github-actions
           # Il Bot Fight Mode di Cloudflare risponde ai runner GitHub con una challenge (403,
           # scan c8106a85: 3 URL, tutti di Cloudflare) e nessuna regola lo puo' saltare. Si
-          # scansiona l'alias Vercel di produzione: stessa app, stessi header.
+          # scansiona l'alias Vercel di produzione: stessa app, stessi header. L'alias è
+          # protetto dalla Vercel Authentication (AL1): il bypass entra dalla
+          # authentication.external di stackhawk.yml.
           APP_HOST: https://vetreriamonferrina.vercel.app
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         with:
           apiKey: ${{ secrets.HAWK_API_KEY }}
           # La CLI misurata in locale il 05/10; latest cambierebbe senza una PR.

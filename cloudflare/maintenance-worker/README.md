@@ -25,7 +25,7 @@ Qualunque eccezione nel `fetch` viene catturata e produce un 502 di testo con `R
 
 Quando la manutenzione è spenta il worker inoltra la richiesta all'origin, ma la modifica in cinque punti.
 
-Sulla richiesta in uscita imposta l'header `x-origin-verify` con `ORIGIN_VERIFY_SECRET`, usando `.set()` e non `.append()`, così un valore falso mandato dal client viene sovrascritto. Usa `redirect: 'manual'`, perché i 3xx dell'origin (trailing slash, sitemap, vecchi `/images/*`) devono arrivare al client come redirect veri invece che mascherati da 200.
+Sulla richiesta in uscita imposta gli header `x-origin-verify` con `ORIGIN_VERIFY_SECRET` e `x-vercel-protection-bypass` con `VERCEL_AUTOMATION_BYPASS_SECRET`, usando `.set()` e non `.append()`, così un valore falso mandato dal client viene sovrascritto. Usa `redirect: 'manual'`, perché i 3xx dell'origin (trailing slash, sitemap, vecchi `/images/*`) devono arrivare al client come redirect veri invece che mascherati da 200.
 
 Sulla risposta riscrive l'header `Location` quando punta all'origin Vercel, sostituendolo con l'host pubblico richiesto dal client: il confronto è fatto sull'origin parsato, non con `startsWith`. Aggiunge `Strict-Transport-Security` se manca, perché Vercel non lo mette su tutte le 3xx. Infine imposta `x-maintenance: off` e `x-worker: active`, che sono gli header su cui si basa il monitor Checkly `cloudflare-worker-active`.
 
@@ -42,6 +42,10 @@ Lo stesso valore deve esistere in tre posti. Se uno dei tre va fuori sincrono il
 | Checkly, per il monitor dell'API | variabile d'ambiente `ORIGIN_VERIFY_SECRET`                  |
 
 Anche il fetch della pagina di manutenzione passa dal lockdown: senza il segreto il middleware la respingerebbe e la pagina di manutenzione risulterebbe rotta.
+
+## Vercel Authentication
+
+Il progetto Vercel protegge tutte le deployment, dominio pubblico compreso: senza `x-vercel-protection-bypass` l'origin risponde con la pagina di login Vercel, e il worker la passerebbe ai visitatori. Il secret `VERCEL_AUTOMATION_BYPASS_SECRET` del worker si imposta come `ORIGIN_VERIFY_SECRET` (Settings, Variables and Secrets, come Secret); dove vive il valore e come si ruota sta nel README della repo, sezione "Vercel Authentication".
 
 ## Allowlist durante la manutenzione
 
