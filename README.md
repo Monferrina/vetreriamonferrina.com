@@ -235,7 +235,7 @@ Il Worker in `cloudflare/maintenance-worker/` è collegato a GitHub: ogni push s
 
 L'URL `*.vercel.app` è pubblico e bypasserebbe WAF e rate-limit di Cloudflare. Per chiuderlo sull'API preventivi, che è il rischio concreto fra spam ed escalation, c'è un handshake a segreto condiviso: il Worker timbra l'header `x-origin-verify` (da `ORIGIN_VERIFY_SECRET`) su ogni richiesta verso l'origin, e il middleware in `src/middleware.ts` risponde `403` in produzione a chi non ce l'ha.
 
-Con le pagine a `prerender=true` il middleware gira solo sulle rotte SSR, che oggi è solo `/api/send-quote`. Se il segreto non è configurato il comportamento è fail-open, per non spegnere il form in caso di errore di configurazione.
+Con le pagine a `prerender=true` il middleware gira solo sulle rotte SSR, che oggi è solo `/api/send-quote`. Il comportamento è fail-closed: se il segreto manca o è vuoto su Vercel in Production, l'API risponde `403` a tutti, Worker compreso, e il form si ferma finché il segreto non torna; il monitor Checkly dell'API, che gira ogni 30 minuti, lo vede come 403. Un errore di configurazione si vede, invece di lasciare l'API aperta a chi conosce l'URL Vercel.
 
 Il segreto vive in tre posti con lo stesso valore: secret del Worker su Cloudflare, env di Vercel in Production, env di Checkly per il monitor dell'API. Chi colpisce `*.vercel.app/api/send-quote` direttamente riceve `403`.
 

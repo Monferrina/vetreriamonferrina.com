@@ -22,7 +22,7 @@ const guard = async (context: APIContext, next: MiddlewareNext): Promise<Respons
   //
   // La guardia `/api/` è fondamentale: il middleware Astro gira ANCHE durante il
   // prerender al build delle pagine statiche. Senza il filtro sul path, in un build
-  // di produzione (VERCEL_ENV=production, secret presente) ogni pagina verrebbe
+  // di produzione (VERCEL_ENV=production, con o senza secret) ogni pagina verrebbe
   // compilata come "Forbidden" (le richieste interne di prerender non hanno l'header).
   // Le pagine statiche non hanno path /api/ → non entrano MAI nell'enforce → si
   // compilano correttamente. /api/send-quote è prerender=false → non prerenderata al
@@ -30,14 +30,17 @@ const guard = async (context: APIContext, next: MiddlewareNext): Promise<Respons
   //
   // A runtime: chi colpisce *.vercel.app/api/... diretto (senza Worker → senza header)
   // prende 403. Il traffico via Cloudflare passa dal Worker che timbra x-origin-verify.
-  // Fail-open: se il segreto non è configurato su Vercel, non blocca. Secondo strato
-  // dietro la Vercel Authentication (README, "Vercel Authentication").
+  // Fail-closed: segreto assente o vuoto su Vercel → 403 anche per il Worker, così il form
+  // si ferma e Checkly lo vede, invece di restare aperto in silenzio con il rate limit
+  // aggirabile da un cf-connecting-ip falsificato. Secondo strato dietro la Vercel
+  // Authentication (README, "Vercel Authentication"). Dipende da VERCEL_ENV, cioè dalle
+  // System Environment Variables esposte dal progetto Vercel (`autoExposeSystemEnvs`,
+  // misurato true il 06/10/2026): un fallback su NODE_ENV chiuderebbe anche le preview.
   const secret = process.env.ORIGIN_VERIFY_SECRET;
   if (
     context.url.pathname.startsWith('/api/') &&
     process.env.VERCEL_ENV === 'production' &&
-    secret &&
-    context.request.headers.get('x-origin-verify') !== secret
+    (!secret || context.request.headers.get('x-origin-verify') !== secret)
   ) {
     return new Response('Forbidden', { status: 403 });
   }
