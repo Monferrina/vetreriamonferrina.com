@@ -41,6 +41,43 @@ test.describe('CSP senza unsafe-inline', () => {
     expect(csp).not.toContain("script-src 'self' 'unsafe-inline'");
   });
 
+  // Cloudflare inietta nell'HTML lo script inline "JavaScript Detections" del Bot Fight Mode
+  // (su Free acceso e non disattivabile, hash non supportati), che il CSP blocca: misurato in
+  // produzione su / e sulla 404. La doc Cloudflare: con `Cache-Control: no-transform`
+  // dall'origine non lo inietta. Gli asset tengono la loro cache immutabile.
+  test("l'HTML ha Cache-Control no-transform, gli asset restano immutabili", async ({ page }) => {
+    const html = await page.goto('/');
+    expect(html!.headers()['cache-control']).toContain('no-transform');
+    const css = await page.evaluate(
+      () =>
+        document.querySelector<HTMLLinkElement>('link[rel="stylesheet"][href^="/_astro/"]')?.href
+    );
+    expect(css).toBeTruthy();
+    const asset = await page.request.get(css!);
+    expect(asset.headers()['cache-control']).toBe('public, max-age=31536000, immutable');
+  });
+
+  // Il CSP non rompe la build: uno script o uno stile non dichiarato in src/lib/csp.ts (o non
+  // hashato da Astro) si vede solo nella console del browser. Questa è la rete: ogni pagina della
+  // sitemap, così una pagina nuova entra da sola. Le pagine fuori sitemap (404, /api) stanno sotto.
+  test('nessuna violazione CSP su tutte le pagine della sitemap', async ({ page, baseURL }) => {
+    // 35 pagine a networkidle: ~1,5 s l'una sulla preview, oltre i 30 s di default.
+    test.setTimeout(180_000);
+    const sitemap = await (await page.request.get('/sitemap-0.xml')).text();
+    const paths = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname);
+    expect(paths.length).toBeGreaterThan(20);
+    const violazioni: string[] = [];
+    page.on('console', (m) => {
+      if (/Content Security Policy|Refused to (execute|load|apply)/.test(m.text())) {
+        violazioni.push(`${page.url().replace(baseURL!, '')}: ${m.text().slice(0, 160)}`);
+      }
+    });
+    for (const path of paths) {
+      await page.goto(path, { waitUntil: 'networkidle' });
+    }
+    expect(violazioni).toEqual([]);
+  });
+
   test('nessuna violazione CSP su /, /contatti, /servizi, /api/send-quote e navigando', async ({
     page,
   }) => {
