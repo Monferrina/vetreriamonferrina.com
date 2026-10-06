@@ -1,0 +1,26 @@
+# HawkScan, scansione della produzione (env Production): settimanale da programmati.yml.
+# Per la preview Vercel di una PR si aggiunge stackhawk-preview.yml (vince il file dopo).
+app:
+  applicationId: 60a7a4e9-1923-4cad-a266-918a20d03404
+  env: Production
+  host: ${APP_HOST:https://vetreriamonferrina.com}
+  # Ogni POST che arriva in produzione manda una email vera tramite Resend e consuma il
+  # rate limit dei clienti. Il controllo sta in tests/unit/stackhawk-config.test.ts.
+  excludePaths:
+    - '^/api/send-quote'
+
+hawk:
+  # Un Medium o un High fa uscire la scansione con 42: il job settimanale fallisce e
+  # GitHub lo notifica (Marco, 05/10).
+  failureThreshold: medium
+
+tags:
+  - name: _STACKHAWK_AGENT
+    value: ${HAWK_AGENT:none}
+  # Nessun repo collegato in Attack Surface Management (hawk op repo list vuoto, 05/10).
+  - name: git_origin
+    value: monferrina/vetreriamonferrina.com
+  - name: _STACKHAWK_GIT_COMMIT_SHA
+    value: ${COMMIT_SHA:none}
+  - name: _STACKHAWK_GIT_BRANCH
+    value: ${BRANCH_NAME:none}

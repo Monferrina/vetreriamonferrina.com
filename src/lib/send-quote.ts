@@ -8,6 +8,9 @@ export interface SendQuoteConfig {
   resendApiKey: string;
   fromEmail: string;
   toEmail: string;
+  // false fuori dalla produzione: la preview Vercel viene scansionata da HawkScan, e con la
+  // chiave Resend messa lì per sbaglio ogni corpo valido diventerebbe un'email vera.
+  sendEmails: boolean;
 }
 
 export interface SendQuoteRequest {
@@ -67,8 +70,8 @@ export async function handleSendQuote(
     return json(422, { errors });
   }
 
-  // 4. Dry run: skip email (used by Checkly monitoring)
-  if ((req.body as Record<string, unknown>).dryRun === true) {
+  // 4. Dry run: skip email (used by Checkly monitoring, and everywhere outside production)
+  if ((req.body as Record<string, unknown>).dryRun === true || !config.sendEmails) {
     console.log('[send-quote] Dry run — skipping email');
     return json(200, { success: true, dryRun: true });
   }

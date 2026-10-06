@@ -10,13 +10,8 @@ vi.mock('astro:env/server', () => ({
   SITE_URL: undefined,
 }));
 
-vi.mock('resend', () => ({
-  Resend: class {
-    emails = {
-      send: async () => ({ data: null, error: null }),
-    };
-  },
-}));
+// Resend vero, non mockato: senza chiave il costruttore lancia, come in dev e sulla
+// preview Vercel. Un mock che non lancia nascondeva il 500 prima del controllo Origin.
 
 import { POST } from '../../src/pages/api/send-quote';
 

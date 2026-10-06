@@ -28,6 +28,7 @@ const config: SendQuoteConfig = {
   resendApiKey: 're_test_key',
   fromEmail: 'noreply@test.example.com',
   toEmail: 'recipient@test.example.com',
+  sendEmails: true,
 };
 
 const validBody = {
@@ -237,6 +238,21 @@ describe('handleSendQuote', () => {
     expect(result.status).toBe(200);
     expect(result.body).toEqual({ success: true });
     expect(sender.calls).toHaveLength(1);
+  });
+
+  // Fuori dalla produzione (dev, preview Vercel) nessuna email: le scansioni HawkScan della
+  // preview mandano corpi validi senza dryRun.
+  it('sendEmails: false → risponde come un dryRun senza inviare email', async () => {
+    const sender = makeEmailSender();
+    const result = await handleSendQuote(
+      makeReq({ ip: uniqueIp() }),
+      { ...config, sendEmails: false },
+      sender
+    );
+
+    expect(result.status).toBe(200);
+    expect(result.body).toEqual({ success: true, dryRun: true });
+    expect(sender.calls).toHaveLength(0);
   });
 
   it('dryRun con dati invalidi: risponde 422 (validazione attiva)', async () => {

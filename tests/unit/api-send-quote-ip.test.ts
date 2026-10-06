@@ -53,6 +53,8 @@ function contesto(headers: Record<string, string>, clientAddress?: string) {
 describe('risoluzione dell IP nella route (chiave del rate limit)', () => {
   beforeEach(() => {
     inviate.length = 0;
+    // Fuori dalla produzione la route non manda email (sendEmails): qui serve l'email.
+    vi.stubEnv('VERCEL_ENV', 'production');
   });
 
   const ipInEmail = () => {
