@@ -4,7 +4,8 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import BaseLayout from '../../src/layouts/BaseLayout.astro';
 import { renderHtml, renderPage } from './render-page';
-import { cspHeader } from '../../src/lib/csp';
+import { cspDirectives, cspHeader } from '../../src/lib/csp';
+import { sentryOptions } from '../../src/lib/sentry-options';
 
 describe('BaseLayout', () => {
   test('contiene meta tag essenziali', async () => {
@@ -111,6 +112,17 @@ describe('vercel.json security headers', () => {
     expect(csp).toContain("base-uri 'self'");
     expect(csp).toContain("form-action 'self'");
     expect(csp).not.toContain("'unsafe-inline'");
+  });
+
+  // Senza l'host di ingest nel CSP il browser blocca gli invii a Sentry e gli errori del
+  // browser si perdono senza alcun segnale. Host esatto dell'org, non *.ingest: il wildcard
+  // aprirebbe un canale d'uscita verso qualunque org Sentry. L'host atteso viene dal DSN,
+  // così un cambio di DSN senza il CSP aggiornato fa fallire il test.
+  test('il CSP consente gli invii degli errori a Sentry, solo verso l’org', () => {
+    const connectSrc = cspDirectives.find((d) => d.startsWith('connect-src'));
+
+    expect(connectSrc?.split(' ')).toContain(new URL(sentryOptions.dsn).origin);
+    expect(connectSrc).not.toContain('*');
   });
 
   test('HSTS con max-age lungo e preload', () => {

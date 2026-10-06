@@ -4,6 +4,7 @@ import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 
 import sitemap from '@astrojs/sitemap';
+import sentry from '@sentry/astro';
 import { blogPosts } from './src/data/blog-posts';
 import { cspDirectives } from './src/lib/csp';
 
@@ -57,9 +58,22 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    // Flag di tree-shaking documentati da Sentry: solo error monitoring, quindi via il codice
+    // di tracing e i log di debug dal bundle client.
+    define: { __SENTRY_TRACING__: false, __SENTRY_DEBUG__: false },
   },
 
   integrations: [
+    // Solo in produzione: da disabilitata l'integrazione non aggiunge codice al bundle,
+    // e gli errori di dev e preview non finiscono nel progetto. Source map in una PR a parte.
+    // Server spento: Astro inietta l'init server solo nelle pagine .astro, tutte prerenderizzate,
+    // quindi nella funzione Vercel (send-quote) arrivava il middleware senza init (misurato
+    // sulla build). Il server va fatto a parte, insieme alla cattura degli errori di send-quote.
+    sentry({
+      enabled: { client: process.env.VERCEL_ENV === 'production', server: false },
+      clientInitPath: 'sentry.config.ts',
+      sourcemaps: { disable: true },
+    }),
     sitemap({
       // Esclude la pagina di manutenzione (503 servita dal Worker Cloudflare): non navigabile né indicizzabile.
       filter: (page) => !page.endsWith('/maintenance') && !page.endsWith('/maintenance/'),
