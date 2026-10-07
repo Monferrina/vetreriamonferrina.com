@@ -16,6 +16,14 @@ Il CSP non ha `'unsafe-inline'`: `script-src` e `style-src` li genera Astro (`se
 
 HawkScan gira solo quando la modifica tocca server, API o header (`src/middleware.ts`, `src/pages/api/`, `vercel.json`). Quando la scansione punta alla produzione, `POST /api/send-quote` resta escluso: ogni richiesta manda una email vera tramite Resend.
 
+## Segreti
+
+Le variabili di Vercel arrivano da Doppler con la sync ufficiale: config `prd` → Production, `stg` → Preview (`stg` contiene solo riferimenti `${prd.NOME}`). Su Vercel sono di tipo Secret, illeggibili: il valore in uso esiste solo in Doppler, ed è lì che si cambia. Una modifica fatta a mano su Vercel resta finché lo stesso nome non cambia in Doppler, e nessuno la segnala.
+
+Un cambio in `prd` va in onda al deploy di produzione successivo, qualunque lo inneschi (anche un merge di Dependabot giorni dopo). Dopo ogni cambio: redeploy di produzione subito, poi un preventivo vero dal sito, con l'email arrivata a `VETRERIA_EMAIL`. Il check Checkly del form usa `dryRun` e non passa da Resend.
+
+Una sync si stacca lasciando le variabili su Vercel. L'opzione "Delete all secrets in Vercel" cancella anche `ORIGIN_VERIFY_SECRET`, e il middleware in produzione rifiuta ogni richiesta al form. (Comportamenti misurati su un progetto di prova il 07/10/2026: la doc Doppler non li descrive.)
+
 ## graphify
 
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
