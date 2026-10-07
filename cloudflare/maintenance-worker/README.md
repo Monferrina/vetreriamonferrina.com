@@ -38,7 +38,7 @@ Lo stesso valore deve esistere in tre posti. Se uno dei tre va fuori sincrono il
 | Dove                             | Come si imposta                                              |
 | -------------------------------- | ------------------------------------------------------------ |
 | Worker Cloudflare                | Settings, Variables and Secrets, come Secret (non variabile) |
-| Vercel, ambiente Production      | Settings, Environment Variables                              |
+| Vercel, ambiente Production      | Doppler `prd`: la sync lo porta su Vercel                    |
 | Checkly, per il monitor dell'API | variabile d'ambiente `ORIGIN_VERIFY_SECRET`                  |
 
 Anche il fetch della pagina di manutenzione passa dal lockdown: senza il segreto il middleware la respingerebbe e la pagina di manutenzione risulterebbe rotta.

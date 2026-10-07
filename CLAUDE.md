@@ -22,6 +22,8 @@ Le variabili di Vercel arrivano da Doppler con la sync ufficiale: config `prd` â
 
 Un cambio in `prd` va in onda al deploy di produzione successivo, qualunque lo inneschi (anche un merge di Dependabot giorni dopo). Dopo ogni cambio: redeploy di produzione subito, poi un preventivo vero dal sito, con l'email arrivata a `VETRERIA_EMAIL`. Il check Checkly del form usa `dryRun` e non passa da Resend.
 
+`ORIGIN_VERIFY_SECRET` vive anche nel Worker Cloudflare e in Checkly, dove la sync non arriva: si cambia nei tre posti nello stesso momento (tabella in `cloudflare/maintenance-worker/README.md`). Cambiato solo in Doppler, dopo il redeploy il sito rifiuta ogni richiesta che il Worker inoltra.
+
 Una sync si stacca lasciando le variabili su Vercel. L'opzione "Delete all secrets in Vercel" cancella anche `ORIGIN_VERIFY_SECRET`, e il middleware in produzione rifiuta ogni richiesta al form. (Comportamenti misurati su un progetto di prova il 07/10/2026: la doc Doppler non li descrive.)
 
 ## graphify
