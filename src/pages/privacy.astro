@@ -1,6 +1,7 @@
 ---
 // src/pages/privacy.astro — Informativa sulla privacy ai sensi del GDPR.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { city, email, emailHref, street } from '../data/contatti';
 import GlassPanel from '../components/GlassPanel.astro';
 export const prerender = true;
 ---
@@ -31,11 +32,10 @@ export const prerender = true;
           <p class="mt-3">Il titolare del trattamento dei dati personali è:</p>
           <p class="mt-3 font-semibold">Vetreria Monferrina di Fioravanti Giuseppe</p>
           <ul class="mt-3 list-disc pl-6 space-y-1">
-            <li>Sede legale: Strada Statale 31, 98/C — 15033 Casale Monferrato (AL)</li>
+            <li>Sede legale: {street} — {city}</li>
             <li>
-              Email: <a
-                href="mailto:vetreriamonferrina@gmail.com"
-                class="text-primary underline underline-offset-2">vetreriamonferrina@gmail.com</a
+              Email: <a href={emailHref} class="text-primary underline underline-offset-2"
+                >{email}</a
               >
             </li>
           </ul>
@@ -214,10 +214,7 @@ export const prerender = true;
           <p class="mt-3">
             Per esercitare i propri diritti, l'interessato può contattare il titolare del
             trattamento all'indirizzo email:
-            <a
-              href="mailto:vetreriamonferrina@gmail.com"
-              class="text-primary underline underline-offset-2">vetreriamonferrina@gmail.com</a
-            >
+            <a href={emailHref} class="text-primary underline underline-offset-2">{email}</a>
           </p>
         </div>
 

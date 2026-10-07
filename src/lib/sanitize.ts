@@ -1,30 +1,22 @@
-export function escapeHtml(input: string): string {
-  return input
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#x27;');
-}
-
 export function sanitizeString(input: string): string {
-  let sanitized = input
-    .replaceAll(/[\r\n]/g, ' ') // remove newlines (email header injection prevention)
-    .trim();
-
-  // Loop until stable to prevent bypass like "javasjavascript:cript:"
-  let previous = '';
-  while (previous !== sanitized) {
-    previous = sanitized;
-    sanitized = sanitized.replaceAll(/javascript:|data:|vbscript:/gi, '');
-  }
-
+  // Solo trim. Gli a capo restano: la descrizione e' una textarea e il template li rende con
+  // <br>; dagli header dell'email li toglie headerSafe.
+  // Niente filtro su javascript:/data:: cancellava "Data:" dal testo e non proteggeva niente,
+  // perche' i valori arrivano solo nell'email, escapati al render, e gli href (tel:, mailto:)
+  // usano telefono ed email gia' vincolati da validateQuoteForm.
+  //
   // Niente escapeHtml qui: l'escape appartiene al render, non al confine d'ingresso.
   // Escapando in ingresso, un apostrofo diventava 5 caratteri (&#x27;) e i limiti di
   // lunghezza misuravano il testo gonfiato: una descrizione italiana legittima sotto i
   // 2000 caratteri veniva rifiutata con 422 mentre il contatore del browser ne mostrava
   // meno di 2000. Chi renderizza escapa (v. email-templates/quote-request.ts).
-  return sanitized;
+  return input.trim();
+}
+
+// Per i valori che finiscono in un header dell'email (oggi l'oggetto): un a capo aprirebbe un
+// header nuovo. Qui e non in sanitizeString, perche' la descrizione deve tenere i suoi.
+export function headerSafe(value: string): string {
+  return value.replaceAll(/[\r\n]+/g, ' ');
 }
 
 export function sanitizeEmail(email: string): string {

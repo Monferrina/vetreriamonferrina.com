@@ -1,5 +1,5 @@
 import { validateQuoteForm, type QuoteFormData } from './validation';
-import { sanitizeFormData } from './sanitize';
+import { headerSafe, sanitizeFormData } from './sanitize';
 import { isRateLimited } from './rate-limit';
 import { quoteRequestEmail } from './email-templates/quote-request';
 import { report } from './sentry-report';
@@ -35,6 +35,7 @@ export interface EmailSender {
   send(params: {
     from: string;
     to: string;
+    replyTo: string;
     subject: string;
     html: string;
   }): Promise<{ data: { id: string } | null; error: { name: string; message: string } | null }>;
@@ -68,6 +69,9 @@ export async function handleSendQuote(
   if (errors.length > 0) {
     // Honeypot: silently accept to not reveal bot detection
     if (errors[0].field === 'honeypot') {
+      // Un autocompletamento che riempie il campo nascosto perderebbe un lead vero senza
+      // traccia: la riga nei log Vercel lo rende contabile. Nessun dato del form.
+      console.warn('[send-quote] Honeypot filled, email not sent');
       return json(200, { success: true });
     }
     return json(422, { errors });
@@ -84,7 +88,9 @@ export async function handleSendQuote(
     const { data: emailData, error: emailError } = await emailSender.send({
       from: config.fromEmail,
       to: config.toEmail,
-      subject: `Richiesta preventivo: ${data.serviceType} — ${data.name}`,
+      // Il "Rispondi" della vetreria va al cliente, non al mittente tecnico (Resend: replyTo).
+      replyTo: data.email,
+      subject: headerSafe(`Richiesta preventivo: ${data.serviceType} — ${data.name}`),
       html: quoteRequestEmail({
         name: data.name,
         phone: data.phone,

@@ -1,44 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import {
-  sanitizeString,
-  sanitizeEmail,
-  sanitizeFormData,
-  escapeHtml,
-} from '../../src/lib/sanitize';
+import { sanitizeString, sanitizeEmail, sanitizeFormData } from '../../src/lib/sanitize';
 
 describe('sanitizeString', () => {
-  it('rimuove newline (previene email header injection)', () => {
-    // \r\n becomes two spaces (one per char), then trim doesn't collapse inner spaces
-    const result = sanitizeString('test\r\nBcc: spam@evil.com');
-    expect(result).not.toContain('\r');
-    expect(result).not.toContain('\n');
-    expect(result).toBe('test  Bcc: spam@evil.com');
-  });
-
-  it('rimuove \\r singolo', () => {
-    expect(sanitizeString('test\rinjection')).toBe('test injection');
-  });
-
-  it('rimuove \\n singolo', () => {
-    expect(sanitizeString('test\ninjection')).toBe('test injection');
-  });
-
   // L'escape HTML e' passato al render (email-templates/quote-request.ts): qui il testo
   // resta grezzo, cosi' i limiti di lunghezza misurano i caratteri veri e non le entity.
   it("non escapa piu' i tag: l'escape appartiene al render", () => {
     expect(sanitizeString('<script>alert(1)</script>')).toBe('<script>alert(1)</script>');
-  });
-
-  it('rimuove javascript: protocol', () => {
-    expect(sanitizeString('javascript:alert(1)')).toBe('alert(1)');
-  });
-
-  it('rimuove javascript: con maiuscole miste', () => {
-    expect(sanitizeString('JavaScript:alert(1)')).toBe('alert(1)');
-  });
-
-  it('rimuove javascript: con MAIUSCOLO', () => {
-    expect(sanitizeString('JAVASCRIPT:alert(1)')).toBe('alert(1)');
   });
 
   it('preserva testo normale', () => {
@@ -61,18 +28,9 @@ describe('sanitizeString', () => {
     expect(sanitizeString('')).toBe('');
   });
 
-  it('bypass con doppio javascript: viene neutralizzato', () => {
-    expect(sanitizeString('javasjavascript:cript:alert(1)')).not.toContain('javascript:');
-  });
-
-  it('combinazione di attacchi multipli', () => {
-    const malicious = '<script>javascript:alert(1)</script>\r\nBcc: spam@evil.com';
-    const result = sanitizeString(malicious);
-    expect(result).not.toContain('javascript:');
-    expect(result).not.toContain('\r');
-    expect(result).not.toContain('\n');
-    // Gli angolari restano grezzi: a neutralizzarli e' l'escape al render.
-    expect(result).toContain('<script>');
+  // Filtro sui protocolli tolto: perche' in src/lib/sanitize.ts.
+  it('preserva "Data:" nel testo', () => {
+    expect(sanitizeString('Data: entro fine mese')).toBe('Data: entro fine mese');
   });
 });
 
@@ -139,14 +97,14 @@ describe('sanitizeFormData', () => {
     expect(result.email).toBe('user@example.com');
   });
 
+  // A capo: v. sanitize.ts.
   it('applica sanitizeString ai campi non-email', () => {
     const result = sanitizeFormData({
       name: '  Mario <script>  ',
-      description: 'test\r\ninjection',
+      description: '  Riga uno\nRiga due  ',
     });
     expect(result.name).toBe('Mario <script>');
-    expect((result.description as string).includes('\r')).toBe(false);
-    expect((result.description as string).includes('\n')).toBe(false);
+    expect(result.description).toBe('Riga uno\nRiga due');
   });
 
   it('oggetto vuoto ritorna oggetto vuoto', () => {
@@ -166,17 +124,5 @@ describe('sanitizeFormData', () => {
     expect(result).not.toHaveProperty('constructor');
     expect(result).not.toHaveProperty('prototype');
     expect(result.name).toBe('Mario');
-  });
-});
-
-describe('escapeHtml', () => {
-  it('escapa tutti i caratteri HTML pericolosi', () => {
-    expect(escapeHtml('<script>"test" & \'xss\'</script>')).toBe(
-      '&lt;script&gt;&quot;test&quot; &amp; &#x27;xss&#x27;&lt;/script&gt;'
-    );
-  });
-
-  it('non modifica testo sicuro', () => {
-    expect(escapeHtml('Mario Rossi 120x80')).toBe('Mario Rossi 120x80');
   });
 });

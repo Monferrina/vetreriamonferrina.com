@@ -379,6 +379,7 @@
   // Engine e decision-tree (≈19KB) caricati con import() alla prima apertura:
   // fuori dal critical path di ogni pagina, il toggle resta leggero.
   import type { ChatbotEngine, ChatFlow, ChatOption } from '../lib/chatbot-engine';
+  import { phoneHref } from '../data/contatti';
 
   let chatbotAbort: AbortController | null = null;
 
@@ -609,7 +610,7 @@
           window.location.href = '/contatti';
           break;
         case 'call_phone':
-          window.location.href = 'tel:+390142563728';
+          window.location.href = phoneHref;
           break;
         case 'open_page':
           if (param && param.startsWith('/')) {

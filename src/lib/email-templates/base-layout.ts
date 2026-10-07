@@ -1,3 +1,5 @@
+import { city, email, phoneLocal, street } from '../../data/contatti';
+
 const PRIMARY = '#1b4965';
 const PRIMARY_LIGHT = '#2a6f97';
 const SECONDARY = '#b56c33';
@@ -53,10 +55,10 @@ export function baseLayout(title: string, content: string): string {
                 Vetreria Monferrina di Fioravanti Giuseppe
               </p>
               <p style="margin:4px 0 0;font-size:12px;color:${NEUTRAL_500};">
-                SS 31, 98/C &mdash; 15033 Casale Monferrato (AL)
+                ${street} &mdash; ${city}
               </p>
               <p style="margin:4px 0 0;font-size:12px;color:${NEUTRAL_500};">
-                Tel. 0142 563728 &mdash; vetreriamonferrina@gmail.com
+                Tel. ${phoneLocal} &mdash; ${email}
               </p>
               <p style="margin:12px 0 0;font-size:11px;color:#a3a3a3;">
                 Email generata automaticamente dal sito
