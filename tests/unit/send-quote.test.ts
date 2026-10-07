@@ -57,6 +57,31 @@ describe('handleSendQuote', () => {
     expect(params.subject).toContain('Mario Rossi');
   });
 
+  // L'oggetto e' un header con testo libero del visitatore: niente a capo (replyTo e' l'email,
+  // gia' senza a capo per sanitizeEmail ed EMAIL_REGEX).
+  it("invio valido: l'oggetto non contiene a capo dal nome", async () => {
+    const sender = makeEmailSender();
+    await handleSendQuote(
+      makeReq({ ip: uniqueIp(), body: { ...validBody, name: 'Mario\r\nBcc: x@example.com' } }),
+      config,
+      sender
+    );
+
+    expect(sender.calls[0][0].subject).not.toMatch(/[\r\n]/);
+  });
+
+  // Senza replyTo il "Rispondi" della vetreria andava al mittente tecnico, non al cliente.
+  it("invio valido: si risponde all'email del visitatore", async () => {
+    const sender = makeEmailSender();
+    await handleSendQuote(
+      makeReq({ ip: uniqueIp(), body: { ...validBody, email: 'Mario.Rossi@Example.com' } }),
+      config,
+      sender
+    );
+
+    expect(sender.calls[0][0].replyTo).toBe('mario.rossi@example.com');
+  });
+
   it('invio valido: html contiene tutti i campi del form', async () => {
     const sender = makeEmailSender();
     await handleSendQuote(makeReq({ ip: uniqueIp() }), config, sender);

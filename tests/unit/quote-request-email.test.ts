@@ -20,6 +20,18 @@ describe('quoteRequestEmail — escaping', () => {
     expect(html).toContain('&lt;script&gt;alert(1)&lt;/script&gt;');
   });
 
+  test('la descrizione tiene gli a capo, escapata', () => {
+    const html = quoteRequestEmail({ ...base, description: 'Riga <b>uno</b>\nRiga due', ip: '' });
+    expect(html).toContain('Riga &lt;b&gt;uno&lt;/b&gt;<br>Riga due');
+  });
+
+  // RFC 3966 ammette come separatori solo - . ( ): con "/" o spazi il tap non chiama.
+  test('il link tel: contiene solo cifre e +', () => {
+    const html = quoteRequestEmail({ ...base, phone: '+39 0142/563728', ip: '' });
+    expect(html).toContain('href="tel:+390142563728"');
+    expect(html).toContain('+39 0142/563728</a>');
+  });
+
   test('lascia intatto un IP normale', () => {
     const html = quoteRequestEmail({ ...base, ip: '203.0.113.7' });
     expect(html).toContain('203.0.113.7');

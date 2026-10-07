@@ -47,6 +47,48 @@ test.describe('Form preventivo', () => {
     await expect(page.getByText('Richiesta inviata con successo!')).toBeHidden();
   });
 
+  // Risposta non JSON: v. src/lib/quote-submit.ts.
+  test("una risposta non JSON e' un errore del server, non di rete", async ({ page }) => {
+    await page.route('**/api/send-quote', (route) =>
+      route.fulfill({
+        status: 503,
+        contentType: 'text/html',
+        body: '<html>Service Unavailable</html>',
+      })
+    );
+    await page.goto('/preventivo');
+    await compila(page);
+    await page.getByRole('button', { name: /invia/i }).click();
+    await expect(page.locator('#form-error-message')).toHaveText(
+      "Errore durante l'invio. Riprova."
+    );
+  });
+
+  // Il server valida dopo sanitize e puo' rispondere 422 su un campo che il browser aveva
+  // accettato: senza focus l'errore restava lontano dal pulsante e sembrava non succedere niente.
+  test('un 422 del server porta il focus sul campo in errore', async ({ page }) => {
+    await page.route('**/api/send-quote', (route) =>
+      route.fulfill({
+        status: 422,
+        json: { errors: [{ field: 'description', message: 'Descrizione troppo corta' }] },
+      })
+    );
+    await page.goto('/preventivo');
+    await compila(page);
+    await page.getByRole('button', { name: /invia/i }).click();
+    await expect(page.getByText('Descrizione troppo corta')).toBeVisible();
+    await expect(page.getByLabel(/descrizione del lavoro/i)).toBeFocused();
+  });
+
+  test('i campi in errore sono marcati aria-invalid', async ({ page }) => {
+    await page.goto('/preventivo');
+    await page.getByLabel(/email/i).fill('mario.rossi@example.com');
+    await page.getByRole('button', { name: /invia/i }).click();
+    await expect(page.getByLabel(/nome e cognome/i)).toHaveAttribute('aria-invalid', 'true');
+    await expect(page.getByLabel(/acconsento/i)).toHaveAttribute('aria-invalid', 'true');
+    await expect(page.getByLabel(/email/i)).not.toHaveAttribute('aria-invalid', 'true');
+  });
+
   test('mostra errori per campi vuoti', async ({ page }) => {
     await page.goto('/preventivo');
     await page.getByRole('button', { name: /invia/i }).click();
@@ -63,5 +105,24 @@ test.describe('Form preventivo', () => {
     await page.goto('/preventivo?servizio=hacking');
     const select = page.locator('select[name="serviceType"]');
     await expect(select).toHaveValue('');
+  });
+});
+
+// Seam F1: senza script il form non deve partire (perche': commento in testa a QuoteForm.astro).
+test.describe('Form preventivo senza JavaScript', () => {
+  test.use({ javaScriptEnabled: false });
+
+  test('non invia nulla e mostra i contatti', async ({ page }) => {
+    await page.goto('/preventivo');
+    await compila(page);
+    await expect(page.getByRole('button', { name: /invia/i })).toBeDisabled();
+    await expect(
+      page.locator('#quote-form').getByRole('link', { name: '+39 0142 563728' })
+    ).toBeVisible();
+    // Invio da un campo: per WHATWG l'invio implicito clicca il pulsante solo se non e' disabled.
+    // L'invio da Invio e' un task del browser: una navigazione arriverebbe ben prima di 500 ms.
+    const inviata = page.waitForRequest((r) => r.isNavigationRequest(), { timeout: 500 });
+    await page.getByLabel(/email/i).press('Enter');
+    await expect(inviata).rejects.toThrow();
   });
 });

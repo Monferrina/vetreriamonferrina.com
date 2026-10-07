@@ -19,7 +19,9 @@ export interface ValidationError {
 export const VALID_SERVICE_TYPES = [...services.map((s) => s.slug), 'altro'];
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const PHONE_REGEX = /^[\d\s+\-().]{7,20}$/;
+// La barra e' comune nei numeri italiani (0142/563728); almeno 6 cifre, perche' i soli
+// separatori (".......") passavano e arrivavano alla vetreria come numero.
+const PHONE_REGEX = /^(?=(?:\D*\d){6})[\d\s+\-()./]{7,20}$/;
 const MAX_NAME_LENGTH = 100;
 const MAX_DESCRIPTION_LENGTH = 2000;
 const MAX_MEASUREMENTS_LENGTH = 500;

@@ -36,6 +36,33 @@ describe('form preventivo', () => {
     expect(senzaLabel.map((c) => c.id)).toEqual([]);
   });
 
+  // Un aria-describedby verso un id che non c'e' non lega niente: il lettore di schermo non
+  // annunciava l'errore di tipo di lavoro, descrizione e misure; la privacy non era collegata.
+  test('ogni campo punta al suo messaggio di errore', () => {
+    for (const campo of [
+      'name',
+      'phone',
+      'email',
+      'serviceType',
+      'description',
+      'measurements',
+      'privacy',
+    ]) {
+      const id = d.querySelector(`#quote-form [name="${campo}"]`)!.getAttribute('aria-describedby');
+      expect(id, campo).toBeTruthy();
+      expect(d.getElementById(id!)?.getAttribute('data-error'), campo).toBe(campo);
+    }
+  });
+
+  // Il messaggio lo legge il focus sul campo (aria-describedby): con role="alert" su ognuno,
+  // un invio vuoto annunciava tutti gli errori insieme mentre il focus si spostava.
+  test('i messaggi dei campi non sono regioni live', () => {
+    const live = [...d.querySelectorAll('[data-error]')].filter(
+      (p) => p.hasAttribute('role') || p.hasAttribute('aria-live')
+    );
+    expect(live.map((p) => p.getAttribute('data-error'))).toEqual([]);
+  });
+
   test("l'honeypot è nascosto ai lettori di schermo e fuori dal tab", () => {
     const honeypot = d.querySelector('input[name="website"]')!;
     expect(honeypot.parentElement?.getAttribute('aria-hidden')).toBe('true');

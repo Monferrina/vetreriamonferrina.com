@@ -193,6 +193,21 @@ describe('validateQuoteForm', () => {
     expect(errors.some((e) => e.field === 'phone')).toBe(false);
   });
 
+  it('telefono con la barra (0142/563728): nessun errore', () => {
+    const errors = validateQuoteForm({ ...validData, phone: '0142/563728' });
+    expect(errors.some((e) => e.field === 'phone')).toBe(false);
+  });
+
+  it('telefono senza almeno 6 cifre: errore', () => {
+    for (const phone of ['.......', '+++++++', '12-34-5 ()']) {
+      const errors = validateQuoteForm({ ...validData, phone });
+      expect(
+        errors.some((e) => e.field === 'phone'),
+        phone
+      ).toBe(true);
+    }
+  });
+
   it('errori multipli contemporanei', () => {
     const errors = validateQuoteForm({
       ...validData,

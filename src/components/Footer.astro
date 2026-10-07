@@ -1,13 +1,10 @@
 ---
+import { city, email, emailHref, phone, phoneHref, street, whatsappHref } from '../data/contatti';
 // src/components/Footer.astro
 const currentYear = new Date().getFullYear();
 
 const companyName = 'Vetreria Monferrina di Fioravanti Giuseppe';
 const vatNumber = '01574530067';
-const address = 'Strada Statale 31, 98/C';
-const city = '15033 Casale Monferrato (AL)';
-const phone = '+39 0142 563728';
-const email = 'vetreriamonferrina@gmail.com';
 ---
 
 <footer
@@ -21,7 +18,7 @@ const email = 'vetreriamonferrina@gmail.com';
           {companyName}
         </p>
         <p class="mt-1 text-sm">
-          Sede legale: {address}, {city}
+          Sede legale: {street}, {city}
         </p>
         <p class="mt-1 text-sm">P.IVA: {vatNumber}</p>
       </div>
@@ -30,22 +27,19 @@ const email = 'vetreriamonferrina@gmail.com';
         <h3 class="font-heading text-lg text-primary">Contatti</h3>
         <ul class="mt-2 space-y-2 text-sm">
           <li>
-            <a
-              href={`tel:${phone.replace(/\s/g, '')}`}
-              class="transition-colors hover:text-primary"
-            >
+            <a href={phoneHref} class="transition-colors hover:text-primary">
               Tel: {phone}
             </a>
           </li>
           <li>
-            <a href={`mailto:${email}`} class="transition-colors hover:text-primary">
+            <a href={emailHref} class="transition-colors hover:text-primary">
               {email}
             </a>
           </li>
         </ul>
         <div class="mt-4 flex items-center gap-3">
           <a
-            href="https://wa.me/393355955786"
+            href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp"

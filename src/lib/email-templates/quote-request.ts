@@ -22,8 +22,7 @@ function escapeAttr(value: string): string {
 }
 
 // Escape per contenuto testuale HTML. Va applicato a OGNI valore che finisce nel markup:
-// sanitizeFormData toglie i newline e gli schemi pericolosi ma non escapa piu' (l'escape
-// in ingresso gonfiava i conteggi di lunghezza), e l'IP arriva da cf-connecting-ip senza
+// sanitizeFormData non escapa (v. sanitize.ts), e l'IP arriva da cf-connecting-ip senza
 // passare di li'. Per gli attributi si usa escapeAttr.
 function escapeHtml(value: string): string {
   return value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
@@ -47,13 +46,13 @@ export function quoteRequestEmail(data: QuoteEmailData): string {
       <tbody>
         ${row('Nome', escapeHtml(data.name))}
         <tr><td colspan="2" style="border-bottom:1px solid #f5f5f5;"></td></tr>
-        ${row('Telefono', `<a href="tel:${escapeAttr(data.phone)}" style="color:#1b4965;text-decoration:none;">${escapeHtml(data.phone)}</a>`)}
+        ${row('Telefono', `<a href="tel:${escapeAttr(data.phone.replaceAll(/[^\d+]/g, ''))}" style="color:#1b4965;text-decoration:none;">${escapeHtml(data.phone)}</a>`)}
         <tr><td colspan="2" style="border-bottom:1px solid #f5f5f5;"></td></tr>
         ${row('Email', `<a href="mailto:${escapeAttr(data.email)}" style="color:#1b4965;text-decoration:none;">${escapeHtml(data.email)}</a>`)}
         <tr><td colspan="2" style="border-bottom:1px solid #f5f5f5;"></td></tr>
         ${row('Tipo di lavoro', escapeHtml(data.serviceType))}
         <tr><td colspan="2" style="border-bottom:1px solid #f5f5f5;"></td></tr>
-        ${row('Descrizione', escapeHtml(data.description))}
+        ${row('Descrizione', escapeHtml(data.description).replaceAll('\n', '<br>'))}
         <tr><td colspan="2" style="border-bottom:1px solid #f5f5f5;"></td></tr>
         ${row('Misure', escapeHtml(data.measurements))}
       </tbody>

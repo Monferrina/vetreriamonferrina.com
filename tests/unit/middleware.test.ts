@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import process from 'node:process';
 import { onRequest } from '../../src/middleware';
 import { cspHeader } from '../../src/lib/csp';
@@ -98,6 +98,14 @@ describe('middleware — origin lockdown (solo /api)', () => {
 });
 
 describe('middleware — CSP sulle risposte on demand', () => {
+  // Vitest gira con DEV=true: questi casi descrivono build e produzione.
+  beforeEach(() => {
+    vi.stubEnv('DEV', false);
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   // Le pagine HTML hanno il CSP da Astro (security.csp, con gli hash degli script inline); le
   // risposte senza (/api, _image, il 403 di questo middleware) lo ricevono qui, dalle stesse direttive.
   it('risposta senza CSP: header con le direttive condivise, senza unsafe-inline', async () => {
@@ -123,5 +131,14 @@ describe('middleware — CSP sulle risposte on demand', () => {
       new Response('<html>', { headers: { 'Content-Security-Policy': astroCsp } });
     const res = (await onRequest(ctx('/servizi'), next)) as Response;
     expect(res.headers.get('Content-Security-Policy')).toBe(astroCsp);
+  });
+
+  // Bug di Astro in dev: dettagli in src/middleware.ts.
+  it('in dev la risposta esce senza CSP', async () => {
+    vi.stubEnv('DEV', true);
+    const next = async () =>
+      new Response('<html>', { headers: { 'Content-Security-Policy': "style-src 'self'" } });
+    const res = (await onRequest(ctx('/preventivo'), next)) as Response;
+    expect(res.headers.get('Content-Security-Policy')).toBeNull();
   });
 });

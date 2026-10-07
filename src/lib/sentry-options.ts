@@ -21,7 +21,8 @@ export const sentryOptions = {
     stackFrameVariables: false, // in send-quote le variabili locali sono nome, email, telefono
   },
   // Breadcrumbs registra le navigazioni e le richieste fetch con l'URL intero, query compresa
-  // (il GET del form senza JS porta nome, email e telefono), e il testo dei click; Console i
+  // (un URL con dati personali in query, come il vecchio GET del form senza JS, e' sempre
+  // possibile da un link esterno), e il testo dei click; Console i
   // messaggi della console. Le integrazioni vanno tolte, non solo svuotate: con il solo
   // maxBreadcrumbs: 0 intercettano comunque console, fetch e click. BrowserSession
   // manderebbe una richiesta a Sentry a ogni pagina vista, ProcessSession (server) una a ogni
@@ -32,8 +33,9 @@ export const sentryOptions = {
       (i) => !['Breadcrumbs', 'Console', 'BrowserSession', 'ProcessSession'].includes(i.name)
     ),
   maxBreadcrumbs: 0,
-  // urlQueryParams non tocca request.url: il browser lo manda con la query string, e il form
-  // preventivi senza JS fa un GET con nome, email e telefono nell'URL. Lo stesso URL compare
+  // urlQueryParams non tocca request.url: il browser lo manda con la query string, che puo'
+  // contenere dati personali (fino a F1 il form senza JS faceva un GET con nome, email e
+  // telefono, e un vecchio link resta in giro). Lo stesso URL compare
   // nei frame degli script inline, nel testo degli errori (location.href, URL relativi) e in
   // extra.__serialized__ quando si rifiuta una Promise con un oggetto (misurato sulla build di
   // produzione): per questo si ripuliscono tutte le stringhe dell'evento, non campi scelti.

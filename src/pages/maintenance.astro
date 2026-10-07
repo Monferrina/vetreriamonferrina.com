@@ -1,6 +1,7 @@
 ---
 // src/pages/maintenance.astro — Pagina di manutenzione 503 servita dal Cloudflare Worker.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { emailHref, phoneHref } from '../data/contatti';
 export const prerender = true;
 ---
 
@@ -35,7 +36,7 @@ export const prerender = true;
       </p>
       <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
         <a
-          href="tel:+390142563728"
+          href={phoneHref}
           class="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-neutral-50 transition-colors hover:bg-primary-dark"
         >
           <svg
@@ -55,7 +56,7 @@ export const prerender = true;
           Chiamaci
         </a>
         <a
-          href="mailto:vetreriamonferrina@gmail.com"
+          href={emailHref}
           class="inline-flex items-center gap-2 rounded-lg border border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-800 transition-colors hover:bg-neutral-100"
         >
           <svg

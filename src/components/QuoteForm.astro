@@ -1,8 +1,14 @@
 ---
 // src/components/QuoteForm.astro
 // Interactive quote request form with client-side validation,
-// honeypot anti-spam, and fetch-based submission.
+// honeypot anti-spam, and fetch-based submission. method="post" keeps the fields out of
+// the URL when the script does not run (JS off, script error, CSP block). The page is static,
+// so a native POST gets an empty 405 (measured in production, 2026-10-07): the submit button
+// therefore starts disabled and only the script enables it, so nothing leaves the browser
+// without it (WHATWG: implicit submission clicks the default button only if not disabled),
+// and #form-nojs keeps the phone and email in view until the script hides it.
 import { services, categories, type CategoryKey } from '../data/services';
+import { email, emailHref, phone, phoneHref } from '../data/contatti';
 
 const categoryKeys = Object.keys(categories) as CategoryKey[];
 ---
@@ -19,7 +25,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
   </ul>
 </div>
 
-<form id="quote-form" novalidate class="space-y-6">
+<form id="quote-form" method="post" novalidate class="space-y-6">
   <div class="absolute -left-[9999px] opacity-0" aria-hidden="true">
     <label for="website">Non compilare questo campo</label>
     <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
@@ -42,14 +48,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
       class="mt-1 block w-full rounded-lg border border-neutral-200 bg-surface px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
       placeholder="es. Mario Rossi"
     />
-    <p
-      id="name-error"
-      data-error="name"
-      class="mt-1 hidden text-sm text-error"
-      role="alert"
-      aria-live="assertive"
-    >
-    </p>
+    <p id="name-error" data-error="name" class="mt-1 hidden text-sm text-error"></p>
   </div>
 
   <div>
@@ -67,14 +66,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
       class="mt-1 block w-full rounded-lg border border-neutral-200 bg-surface px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
       placeholder="es. +39 0142 123456"
     />
-    <p
-      id="phone-error"
-      data-error="phone"
-      class="mt-1 hidden text-sm text-error"
-      role="alert"
-      aria-live="assertive"
-    >
-    </p>
+    <p id="phone-error" data-error="phone" class="mt-1 hidden text-sm text-error"></p>
   </div>
 
   <div>
@@ -92,14 +84,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
       class="mt-1 block w-full rounded-lg border border-neutral-200 bg-surface px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
       placeholder="es. mario@esempio.it"
     />
-    <p
-      id="email-error"
-      data-error="email"
-      class="mt-1 hidden text-sm text-error"
-      role="alert"
-      aria-live="assertive"
-    >
-    </p>
+    <p id="email-error" data-error="email" class="mt-1 hidden text-sm text-error"></p>
   </div>
 
   <div>
@@ -128,14 +113,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
       }
       <option value="altro">Altro</option>
     </select>
-    <p
-      id="serviceType-error"
-      data-error="serviceType"
-      class="mt-1 hidden text-sm text-error"
-      role="alert"
-      aria-live="assertive"
-    >
-    </p>
+    <p id="serviceType-error" data-error="serviceType" class="mt-1 hidden text-sm text-error"></p>
   </div>
 
   <div>
@@ -154,13 +132,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
       class="mt-1 block w-full rounded-lg border border-neutral-200 bg-surface px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
       placeholder="Descrivi il lavoro di cui hai bisogno: tipo di vetro, dove va installato, eventuali preferenze..."
     ></textarea>
-    <p
-      data-error="description"
-      class="mt-1 hidden text-sm text-error"
-      role="alert"
-      aria-live="assertive"
-    >
-    </p>
+    <p id="description-error" data-error="description" class="mt-1 hidden text-sm text-error"></p>
   </div>
 
   <div>
@@ -179,13 +151,7 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
       class="mt-1 block w-full rounded-lg border border-neutral-200 bg-surface px-4 py-2.5 text-neutral-800 shadow-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
       placeholder="es. 120x80 cm, altezza 200 cm"
     />
-    <p
-      data-error="measurements"
-      class="mt-1 hidden text-sm text-error"
-      role="alert"
-      aria-live="assertive"
-    >
-    </p>
+    <p id="measurements-error" data-error="measurements" class="mt-1 hidden text-sm text-error"></p>
   </div>
 
   <div>
@@ -194,6 +160,8 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
         type="checkbox"
         id="privacy"
         name="privacy"
+        aria-required="true"
+        aria-describedby="privacy-error"
         class="mt-0.5 h-5 w-5 rounded border-neutral-200 text-primary focus:ring-primary/20"
       />
       <span class="text-sm text-neutral-800">
@@ -202,19 +170,14 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
         <span class="text-error">*</span>
       </span>
     </label>
-    <p
-      data-error="privacy"
-      class="mt-1 hidden text-sm text-error"
-      role="alert"
-      aria-live="assertive"
-    >
-    </p>
+    <p id="privacy-error" data-error="privacy" class="mt-1 hidden text-sm text-error"></p>
   </div>
 
   <div>
     <button
       type="submit"
       id="submit-btn"
+      disabled
       class="inline-flex items-center justify-center gap-2 rounded-full bg-secondary-dark px-8 py-3.5 text-base font-semibold text-white shadow-lg transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-secondary-light focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
     >
       <span id="submit-text">Invia richiesta</span>
@@ -232,6 +195,16 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
         ></path>
       </svg>
     </button>
+    {
+      /* Sotto il pulsante, non sopra il form: quando lo script lo nasconde non sposta niente
+        nella parte visibile al caricamento (CLS). */
+    }
+    <p id="form-nojs" class="mt-3 text-sm text-neutral-700">
+      Se il pulsante resta disattivato, chiamaci al
+      <a href={phoneHref} class="font-medium text-primary underline">{phone}</a>
+      o scrivici a
+      <a href={emailHref} class="font-medium text-primary underline">{email}</a>.
+    </p>
   </div>
 
   <div
@@ -296,9 +269,10 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
 
 <script>
   // Le stesse regole del server (src/lib/validation.ts), non una copia che diverge. Il server
-  // valida dopo sanitizeFormData: se toglie qualcosa (es. "javascript:") puo' ancora
-  // rispondere 422, e quegli errori li mostra showErrors.
+  // valida dopo sanitizeFormData (fa il trim): se cambia qualcosa
+  // puo' ancora rispondere 422, e quegli errori li mostra showErrors.
   import { validateQuoteForm, VALID_SERVICE_TYPES, type ValidationError } from '../lib/validation';
+  import { submitQuote } from '../lib/quote-submit';
 
   const KNOWN_FIELDS = [
     'name',
@@ -316,7 +290,15 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
       el.classList.add('hidden');
       el.textContent = '';
     });
+    // aria-invalid dice al lettore di schermo quale campo e' sbagliato (WCAG 3.3.1).
+    document
+      .querySelectorAll('#quote-form [aria-invalid]')
+      .forEach((el) => el.removeAttribute('aria-invalid'));
 
+    // Il focus va al primo campo in errore anche per i 422 del server: senza, l'errore restava
+    // lontano dal pulsante. Dentro #quote-form: [name="description"] da solo prende il
+    // <meta name="description"> dell'head.
+    let focused = false;
     for (const err of errors) {
       // Only allow known field names to prevent selector injection
       if (!KNOWN_FIELDS.includes(err.field)) continue;
@@ -324,6 +306,15 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
       if (el) {
         el.textContent = err.message;
         el.classList.remove('hidden');
+      }
+      const input = document.querySelector<HTMLElement>(`#quote-form [name="${err.field}"]`);
+      input?.setAttribute('aria-invalid', 'true');
+      if (!focused && input) {
+        // Gia' a fuoco (Invio dentro il campo sbagliato): focus() non fa niente e il lettore di
+        // schermo non rilegge l'errore, che non e' una regione live. blur() lo fa rileggere.
+        if (document.activeElement === input) input.blur();
+        input.focus();
+        focused = true;
       }
     }
   }
@@ -420,41 +411,23 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     // e il bot deve ricevere la stessa risposta di un invio vero.
     const errors = validateQuoteForm({ ...formData, honeypot: '' });
     showErrors(errors);
-    if (errors.length > 0) {
-      // Focus first error field
-      const firstErrorField = document.querySelector(`[name="${errors[0].field}"]`) as HTMLElement;
-      firstErrorField?.focus();
-      return;
-    }
+    if (errors.length > 0) return;
 
     setLoading(true);
+    // Import dinamico: solo all'errore. In produzione e' il modulo gia' caricato dall'init di
+    // Sentry; dove l'integrazione e' spenta (preview, dev) l'SDK resta fuori dal bundle della
+    // pagina (astro.config.mjs) e captureException, senza init, non manda niente.
+    const esito = await submitQuote(formData, {
+      report: (err) => void import('@sentry/astro').then((Sentry) => Sentry.captureException(err)),
+    });
+    setLoading(false);
 
-    try {
-      const res = await fetch('/api/send-quote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      const json = await res.json();
-
-      if (res.ok && json.success) {
-        showSuccess();
-        return;
-      }
-
-      // Server validation errors
-      if (json.errors && Array.isArray(json.errors)) {
-        showErrors(json.errors);
-        return;
-      }
-
-      // Generic server error
-      showGlobalError(json.error || "Errore durante l'invio. Riprova.");
-    } catch {
-      showGlobalError('Errore di rete. Controlla la connessione e riprova.');
-    } finally {
-      setLoading(false);
-    }
+    if (esito.kind === 'success') showSuccess();
+    else if (esito.kind === 'fieldErrors') showErrors(esito.errors);
+    else showGlobalError(esito.message);
   });
+
+  // Ultima riga (perche': commento in testa al file).
+  (document.getElementById('submit-btn') as HTMLButtonElement).disabled = false;
+  document.getElementById('form-nojs')?.classList.add('hidden');
 </script>

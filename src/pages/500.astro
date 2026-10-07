@@ -1,6 +1,7 @@
 ---
 // src/pages/500.astro — Pagina di errore 500 con messaggio di servizio temporaneamente non disponibile.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { phoneHref } from '../data/contatti';
 export const prerender = true;
 ---
 
@@ -34,7 +35,7 @@ export const prerender = true;
           Torna alla home
         </a>
         <a
-          href="tel:+390142563728"
+          href={phoneHref}
           class="inline-flex items-center gap-2 rounded-lg border border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-800 transition-colors hover:bg-neutral-100"
         >
           <svg
