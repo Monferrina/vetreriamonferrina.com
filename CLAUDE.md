@@ -36,3 +36,17 @@ Rules:
 - If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
 - Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
 - After modifying code, refresh the graph with the `/graphify . --update` skill. The bare `graphify update .` CLI re-extracts code with the AST only and drops the doc→code links and the curated community labels (measured 2026-09-10: 683 → 645 links).
+
+## Agent skills
+
+### Issue tracker
+
+Le issue vivono su GitHub Issues di `Monferrina/vetreriamonferrina.com` (`gh`, default già impostato). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Le cinque label canoniche con il loro nome (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `GLOSSARY.md` in radice e ADR in `docs/adr/`. See `docs/agents/domain.md`.
