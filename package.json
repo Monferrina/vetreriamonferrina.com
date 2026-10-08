@@ -44,7 +44,7 @@
     "@astrojs/check": "^0.9.10",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.63.0",
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "^5.0.3",
     "checkly": "^9.5.0",
     "eslint": "^10.11.0",
     "eslint-plugin-astro": "^3.2.1",
