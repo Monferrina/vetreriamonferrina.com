@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import fc from 'fast-check';
 import { validateQuoteForm, VALID_SERVICE_TYPES } from '../../src/lib/validation';
 import { sanitizeFormData } from '../../src/lib/sanitize';
 import { services } from '../../src/data/services';
@@ -39,6 +40,27 @@ describe('validateQuoteForm', () => {
       const errors = validateQuoteForm(sanificato({ name: 123 }));
       expect(errors.some((e) => e.field === 'name')).toBe(true);
     });
+
+    it('un booleano in un campo di testo produce un 422, non un TypeError (F3)', () => {
+      // sanitizeFormData lascia passare i booleani sotto qualunque chiave (privacy, honeypot):
+      // name: true arrivava a .trim() → TypeError → 500 ed evento Sentry a ogni richiesta.
+      const errors = validateQuoteForm(sanificato({ name: true }));
+      expect(errors.some((e) => e.field === 'name')).toBe(true);
+    });
+  });
+
+  // Invariante (B1p): il corpo arriva da JSON.parse, quindi ogni campo può avere qualunque tipo.
+  // Per qualunque valore JSON in qualunque campo il validatore non lancia e restituisce solo
+  // errori di campi noti: un'eccezione qui diventava un 500 e un evento Sentry a comando (F3).
+  it('per qualunque valore JSON in qualunque campo: nessuna eccezione, solo errori di campi noti', () => {
+    const campi = Object.keys(validData) as (keyof typeof validData)[];
+    fc.assert(
+      fc.property(fc.dictionary(fc.constantFrom(...campi), fc.jsonValue()), (over) => {
+        const errors = validateQuoteForm({ ...validData, ...over });
+        expect(Array.isArray(errors)).toBe(true);
+        for (const e of errors) expect(campi).toContain(e.field);
+      })
+    );
   });
 
   it('honeypot compilato: bot detected', () => {
@@ -89,6 +111,20 @@ describe('validateQuoteForm', () => {
     expect(errors.some((e) => e.field === 'email')).toBe(true);
   });
 
+  it('email di 255 caratteri con forma valida: errore (RFC 5321, massimo 254) (N1)', () => {
+    // Senza tetto un indirizzo di 4 MB passava la regex e finiva in replyTo (misurato 08/10/2026).
+    const email = `${'a'.repeat(255 - '@example.com'.length)}@example.com`;
+    expect(email).toHaveLength(255);
+    const errors = validateQuoteForm({ ...validData, email });
+    expect(errors.some((e) => e.field === 'email')).toBe(true);
+  });
+
+  it('email di 254 caratteri con forma valida: nessun errore', () => {
+    const email = `${'a'.repeat(254 - '@example.com'.length)}@example.com`;
+    expect(email).toHaveLength(254);
+    expect(validateQuoteForm({ ...validData, email })).toHaveLength(0);
+  });
+
   it('email senza dominio: errore', () => {
     const errors = validateQuoteForm({ ...validData, email: 'test@' });
     expect(errors.some((e) => e.field === 'email')).toBe(true);
@@ -116,6 +152,14 @@ describe('validateQuoteForm', () => {
       expect(VALID_SERVICE_TYPES).toContain(s.slug);
     }
     expect(VALID_SERVICE_TYPES).toContain('altro');
+  });
+
+  it('privacy con un valore truthy diverso da true ("no", 1): errore', () => {
+    // Il form manda `checked`, un booleano: qualunque altro valore non è un consenso.
+    for (const privacy of ['no', 1]) {
+      const errors = validateQuoteForm({ ...validData, privacy });
+      expect(errors.some((e) => e.field === 'privacy')).toBe(true);
+    }
   });
 
   it('privacy non accettata: errore', () => {

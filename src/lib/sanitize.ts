@@ -36,10 +36,9 @@ export function sanitizeFormData(data: Record<string, unknown>): Record<string, 
     if (typeof value === 'string') {
       sanitized[key] = key === 'email' ? sanitizeEmail(value) : sanitizeString(value);
     } else if (typeof value === 'boolean') {
-      // Solo i booleani passano intatti (privacy, honeypot). Numeri, oggetti e null
-      // venivano lasciati passare cosi' com'erano e poi validateQuoteForm chiamava
-      // .trim() su di loro: TypeError non gestito → 500 HTML invece del 422 JSON.
-      // Scartandoli qui, il campo risulta mancante e la validazione risponde 422.
+      // I booleani passano intatti sotto qualunque chiave (privacy, honeypot, dryRun, ma anche
+      // name): i tipi li controlla validateQuoteForm (F3). Numeri, oggetti e null si scartano
+      // qui, e il campo risulta mancante (422).
       sanitized[key] = value;
     }
   }
