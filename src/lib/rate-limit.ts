@@ -2,7 +2,7 @@ import process from 'node:process';
 import { isProduction } from './env';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
-import { report } from './sentry-report';
+import { reportThrottled } from './sentry-report';
 
 const MAX_REQUESTS = 5; // 5 per minute per IP
 const WINDOW = '60 s';
@@ -69,13 +69,6 @@ function isRateLimitedInMemory(ip: string): boolean {
   return false;
 }
 
-// T06 (N3): con Upstash giù, o con la quota esaurita da un flood, ogni richiesta mandava un
-// evento, e lo stesso flood consumava la quota di Sentry accecando gli allarmi veri (Resend).
-// Un evento ogni 10 minuti basta a dire "Upstash è giù"; il log resta a ogni richiesta.
-// ponytail: tetto per istanza, N istanze calde → N eventi ogni 10 min; un contatore globale costerebbe una chiamata Upstash proprio quando Upstash è giù.
-const UPSTASH_REPORT_EVERY_MS = 10 * 60_000;
-let lastUpstashReport = -Infinity;
-
 // `limiter` defaults to the module-level Upstash instance; tests inject a fake to exercise
 // the global path without a network call (same DI pattern as send-quote.ts's EmailSender).
 export async function isRateLimited(
@@ -95,10 +88,8 @@ export async function isRateLimited(
       // intero ("command was: …"), e la chiave del limite è l'IP del visitatore.
       const name = err instanceof Error ? err.name : 'Error';
       console.error('[rate-limit] Upstash non raggiungibile, fallback in-memory:', name);
-      if (Date.now() - lastUpstashReport >= UPSTASH_REPORT_EVERY_MS) {
-        lastUpstashReport = Date.now();
-        await report(new Error(`Upstash ${name}`));
-      }
+      // N3: un evento ogni dieci minuti basta a dire "Upstash è giù" (sentry-report.ts).
+      await reportThrottled('upstash', new Error(`Upstash ${name}`));
     }
   }
   return isRateLimitedInMemory(ip);

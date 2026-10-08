@@ -282,8 +282,8 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
   // puo' ancora rispondere 422, e quegli errori li mostra showErrors.
   import { validateQuoteForm, VALID_SERVICE_TYPES, type ValidationError } from '../lib/validation';
   import { submitQuote } from '../lib/quote-submit';
-  // La stessa action del server (src/lib/turnstile.ts): se divergono ogni invio prende 403.
-  import { TURNSTILE_ACTION } from '../lib/turnstile';
+  // La stessa action che il server confronta (src/lib/turnstile.ts la importa da qui).
+  import { TURNSTILE_ACTION } from '../lib/quote-submit';
 
   const KNOWN_FIELDS = [
     'name',
@@ -430,14 +430,16 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
 
   // Watchdog: uno script bloccato (CSP, rete, estensioni) o un render fallito non chiamano nessun
   // callback, e il server non vede nessuna richiesta. Senza questo evento il form resta fermo in
-  // silenzio. 15 s: da tarare sugli eventi reali.
-  setTimeout(() => {
-    if (widgetId === undefined) reportWidget('non caricato');
+  // silenzio. 15 s: da tarare sugli eventi reali. Passa da report, non da reportWidget: un codice
+  // di error-callback arrivato dopo (sitekey sbagliata su una rete lenta) deve arrivare lo stesso.
+  const watchdog = setTimeout(() => {
+    if (widgetId === undefined) report(new Error('turnstile non caricato'));
   }, 15_000);
 
   const turnstileScript = document.createElement('script');
   turnstileScript.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
   turnstileScript.addEventListener('load', () => {
+    clearTimeout(watchdog);
     widgetId = turnstileApi()?.render(widget, {
       sitekey: widget.dataset.sitekey,
       action: TURNSTILE_ACTION,

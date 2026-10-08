@@ -1,5 +1,10 @@
 import type { QuoteFormData, ValidationError } from './validation';
 
+// Action del widget Turnstile, confrontata dal server (src/lib/turnstile.ts). Vive qui, nel
+// modulo già condiviso con il browser, così lo script del form non importa il modulo di
+// siteverify, che deve poter usare API di Node.
+export const TURNSTILE_ACTION = 'send-quote';
+
 export type SubmitOutcome =
   | { kind: 'success' }
   | { kind: 'fieldErrors'; errors: ValidationError[] }
@@ -44,7 +49,10 @@ export async function submitQuote(
   const message = typeof json.error === 'string' ? json.error : null;
   const segnalatoDalServer = (res.status === 500 || res.status === 503) && message !== null;
   if (res.status !== 429 && !segnalatoDalServer) {
-    deps.report(new Error(`send-quote HTTP ${res.status}`));
+    // "json" distingue il 403 di Turnstile (JSON dell'endpoint) dal 403 testuale del middleware
+    // o dall'HTML di Cloudflare: altrimenti un ORIGIN_VERIFY_SECRET sbagliato sembrerebbe una
+    // raffica di falsi positivi di Turnstile.
+    deps.report(new Error(`send-quote HTTP ${res.status}${message !== null ? ' json' : ''}`));
   }
   return { kind: 'error', message: message ?? "Errore durante l'invio. Riprova." };
 }

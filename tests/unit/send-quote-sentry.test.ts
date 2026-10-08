@@ -142,6 +142,16 @@ describe('Turnstile → Sentry (seam B3)', () => {
     expect(sent).toHaveLength(1);
     expect(sent[0]).toContain('Turnstile invalid-input-secret');
     for (const value of Object.values(visitor)) expect(sent[0]).not.toContain(value);
+
+    // Stesso tetto di Upstash (N3, deciso da Marco l'08/10): un secondo 503 entro dieci minuti
+    // non manda un altro evento. Il 503 al visitatore resta.
+    const res2 = await handleSendQuote(
+      { ...req, ip: '198.51.100.92' },
+      { ...config, verifyHuman: async () => ({ kind: 'unavailable', code: 'TimeoutError' }) },
+      sender
+    );
+    expect(res2.status).toBe(503);
+    expect(sent).toHaveLength(1);
   });
 });
 

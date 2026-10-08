@@ -1,3 +1,5 @@
+import { TURNSTILE_ACTION } from './quote-submit';
+
 // Verifica lato server del token Turnstile. Fonte: doc Cloudflare "Server-side validation" e
 // "Testing", lette il 07/10/2026; misure B-7/B-8 del 07/10/2026 su siteverify.
 
@@ -6,7 +8,6 @@
 // (misurato 07/10/2026). Usati solo fuori produzione.
 export const TURNSTILE_TEST_SITEKEY = '1x00000000000000000000AA';
 export const TURNSTILE_TEST_SECRET = '1x0000000000000000000000000000000AA';
-export const TURNSTILE_ACTION = 'send-quote';
 
 const SITEVERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 // Doc: token di 2048 caratteri al massimo. Oltre, vuoto o non stringa: rifiuto senza rete.

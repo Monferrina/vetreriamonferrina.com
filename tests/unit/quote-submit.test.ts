@@ -91,7 +91,7 @@ describe('submitQuote', () => {
       kind: 'error',
       message: 'Verifica anti-spam non riuscita. Riprova o chiamaci.',
     });
-    expect(report.mock.calls[0][0]).toEqual(new Error('send-quote HTTP 403'));
+    expect(report.mock.calls[0][0]).toEqual(new Error('send-quote HTTP 403 json'));
   });
 
   it('un JSON senza la forma attesa e un errore del server', async () => {

@@ -12,13 +12,18 @@ export const prerender = true;
 // Pagina prerenderizzata: la sitekey si sceglie al build, con lo stesso predicato di sendEmails
 // (src/lib/env.ts), così la chiave vera sta dove partono email vere.
 const production = isProduction();
-// Build di produzione su Vercel senza sitekey: si ferma qui. Online andrebbe un form che dà sempre
-// 403, e nessun monitor lato server lo vedrebbe. Solo VERCEL_ENV: un build fuori da Vercel
-// (ci.yml, locale) gira con NODE_ENV=production (misurato 08/10/2026: `npm run build` senza
-// VERCEL_ENV esce con data-sitekey vuoto, con VERCEL_ENV=preview con la sitekey di test) e senza
-// la chiave: quel build non va online, e il server nello stesso caso risponde 503 (CONTRIBUTING).
-if (process.env.VERCEL_ENV === 'production' && !TURNSTILE_SITE_KEY) {
-  throw new Error('TURNSTILE_SITE_KEY assente nel build di produzione');
+// Build di produzione senza sitekey: si ferma qui. Online andrebbe un form con data-sitekey vuoto,
+// pulsante spento per tutti, e nessun monitor lato server lo vedrebbe. Stesso predicato della
+// scelta della chiave: se Vercel non esponesse VERCEL_ENV, NODE_ENV=production sceglierebbe la
+// chiave vera assente e, con una guardia sul solo VERCEL_ENV, il build passerebbe. Esente solo
+// GitHub Actions (GITHUB_ACTIONS=true, doc GitHub), dove ci.yml builda con NODE_ENV=production e
+// senza la chiave (misurato 08/10/2026: `npm run build` locale senza VERCEL_ENV esce con
+// data-sitekey vuoto, con VERCEL_ENV=preview con la sitekey di test). Un build locale si fa con
+// VERCEL_ENV=preview (CONTRIBUTING).
+if (production && !process.env.GITHUB_ACTIONS && !TURNSTILE_SITE_KEY) {
+  throw new Error(
+    'TURNSTILE_SITE_KEY assente in un build di produzione: in locale usa VERCEL_ENV=preview'
+  );
 }
 
 // CSP solo su questa pagina, nell'header statico di Vercel (staticHeaders). insertScriptResource

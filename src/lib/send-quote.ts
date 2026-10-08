@@ -2,7 +2,7 @@ import { validateQuoteForm, type QuoteFormData } from './validation';
 import { headerSafe, sanitizeFormData } from './sanitize';
 import { isRateLimited } from './rate-limit';
 import { quoteRequestEmail } from './email-templates/quote-request';
-import { report } from './sentry-report';
+import { report, reportThrottled } from './sentry-report';
 import type { TurnstileOutcome } from './turnstile';
 
 export interface SendQuoteConfig {
@@ -101,9 +101,10 @@ export async function handleSendQuote(
     return json(403, { error: TURNSTILE_ERROR });
   }
   if (human.kind === 'unavailable') {
-    // Fail-closed: senza verifica niente email. A Sentry solo il codice, mai token né IP.
+    // Fail-closed: senza verifica niente email. A Sentry solo il codice, mai token né IP, e al
+    // massimo un evento ogni dieci minuti (come Upstash, N3): i lead rifiutati si contano nel log.
     console.error('[send-quote] Turnstile non disponibile:', human.code);
-    await report(new Error(`Turnstile ${human.code}`));
+    await reportThrottled('turnstile', new Error(`Turnstile ${human.code}`));
     return json(503, { error: EMAIL_ERROR });
   }
 
