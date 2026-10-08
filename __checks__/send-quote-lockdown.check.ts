@@ -1,5 +1,5 @@
 import { ApiCheck, AssertionBuilder } from 'checkly/constructs';
-import { websiteGroup } from './groups.check';
+import { avvisiSito, websiteGroup } from './groups.check';
 
 // Caso negativo dell'origin lockdown (M1, fail-closed): un POST diretto all'origin Vercel
 // SENZA `x-origin-verify` deve ricevere il 403 "Forbidden" del middleware. Il check positivo
@@ -24,6 +24,7 @@ import { websiteGroup } from './groups.check';
 new ApiCheck('send-quote-lockdown', {
   name: 'Send Quote API lockdown (senza x-origin-verify → 403)',
   group: websiteGroup,
+  alertChannels: avvisiSito,
   activated: true,
   shouldFail: true,
   degradedResponseTime: 5000,

@@ -1,5 +1,5 @@
 import { ApiCheck, AssertionBuilder, Frequency } from 'checkly/constructs';
-import { websiteGroup } from './groups.check';
+import { avvisiSito, websiteGroup } from './groups.check';
 
 // Verifica che il Worker Cloudflare sia davanti all'origin. Sul passthrough il worker
 // timbra `x-worker: active` e `x-maintenance: off` (vedi cloudflare/maintenance-worker).
@@ -37,6 +37,7 @@ new ApiCheck('cloudflare-worker-active', {
 new ApiCheck('worker-filters-vercel-instructions', {
   name: 'Cloudflare Worker: filtra le istruzioni x-vercel-* dei visitatori',
   group: websiteGroup,
+  alertChannels: avvisiSito,
   activated: true,
   frequency: Frequency.EVERY_6H,
   degradedResponseTime: 5000,
