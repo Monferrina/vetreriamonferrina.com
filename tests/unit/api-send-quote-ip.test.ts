@@ -8,6 +8,7 @@ vi.mock('astro:env/server', () => ({
   RESEND_FROM_EMAIL: 'noreply@test.example.com',
   VETRERIA_EMAIL: 'recipient@test.example.com',
   SITE_URL: 'https://vetreriamonferrina.com',
+  TURNSTILE_SECRET_KEY: 'segreto-di-prova',
 }));
 
 const inviate: { html: string }[] = [];
@@ -33,7 +34,21 @@ const corpoValido = JSON.stringify({
   measurements: '120x80',
   privacy: true,
   honeypot: '',
+  turnstileToken: 'XXXX.DUMMY.TOKEN.XXXX',
 });
+
+// Con VERCEL_ENV=production la route usa il secret vero e chiama siteverify: fetch finto, che
+// risponde come Cloudflare per un token valido del sito. Nessuna rete.
+vi.stubGlobal(
+  'fetch',
+  vi.fn(
+    async () =>
+      new Response(
+        JSON.stringify({ success: true, hostname: 'vetreriamonferrina.com', action: 'send-quote' }),
+        { status: 200 }
+      )
+  )
+);
 
 function contesto(headers: Record<string, string>, clientAddress?: string) {
   const h = new Headers({ 'Content-Type': 'application/json' });

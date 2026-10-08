@@ -6,6 +6,8 @@ export const config: SendQuoteConfig = {
   fromEmail: 'noreply@test.example.com',
   toEmail: 'recipient@test.example.com',
   sendEmails: true,
+  // Verificatore finto: i test del gestore non parlano con Cloudflare.
+  verifyHuman: async () => ({ kind: 'ok' }),
 };
 
 export const validBody = {
@@ -17,4 +19,5 @@ export const validBody = {
   measurements: '120x80',
   privacy: true,
   honeypot: '',
+  turnstileToken: 'XXXX.DUMMY.TOKEN.XXXX',
 };

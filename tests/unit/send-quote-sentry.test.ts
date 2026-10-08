@@ -15,6 +15,7 @@ vi.mock('astro:env/server', () => ({
   RESEND_FROM_EMAIL: config.fromEmail,
   VETRERIA_EMAIL: config.toEmail,
   SITE_URL: 'https://vetreriamonferrina.com',
+  TURNSTILE_SECRET_KEY: 'segreto-di-prova',
 }));
 
 // Corpi delle envelope che l'SDK manderebbe a Sentry: si guarda ciò che esce davvero,
@@ -112,6 +113,34 @@ describe('POST /api/send-quote → Sentry', () => {
     expect(res.headers.get('Content-Type')).toBe('application/json');
     expect(sent).toHaveLength(1);
     expect(sent[0]).toContain('ClientAddressNotAvailable');
+    for (const value of Object.values(visitor)) expect(sent[0]).not.toContain(value);
+  });
+});
+
+describe('Turnstile → Sentry (seam B3)', () => {
+  it('verifica non disponibile: un evento con il solo codice; token rifiutato: nessun evento', async () => {
+    sent.length = 0;
+    const sender: EmailSender = { send: async () => ({ data: { id: 'x' }, error: null }) };
+    const req = { origin: 'https://vetreriamonferrina.com', ip: '198.51.100.90', body: validBody };
+
+    await handleSendQuote(
+      req,
+      { ...config, verifyHuman: async () => ({ kind: 'invalid' }) },
+      sender
+    );
+    expect(sent).toHaveLength(0);
+
+    const res = await handleSendQuote(
+      { ...req, ip: '198.51.100.91' },
+      {
+        ...config,
+        verifyHuman: async () => ({ kind: 'unavailable', code: 'invalid-input-secret' }),
+      },
+      sender
+    );
+    expect(res.status).toBe(503);
+    expect(sent).toHaveLength(1);
+    expect(sent[0]).toContain('Turnstile invalid-input-secret');
     for (const value of Object.values(visitor)) expect(sent[0]).not.toContain(value);
   });
 });

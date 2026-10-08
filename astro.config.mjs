@@ -44,6 +44,15 @@ export default defineConfig({
       RESEND_FROM_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
       VETRERIA_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
       SITE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+      // Turnstile (Z1). Il segreto si legge a runtime. La sitekey si legge al build di /preventivo,
+      // che è prerenderizzata, e finisce nell'HTML: è pubblica per natura, da qui access 'public'.
+      // Niente prefisso PUBLIC_: la sync Doppler → Vercel (tipo Secret) lo rifiuta e si stacca.
+      TURNSTILE_SECRET_KEY: envField.string({
+        context: 'server',
+        access: 'secret',
+        optional: true,
+      }),
+      TURNSTILE_SITE_KEY: envField.string({ context: 'server', access: 'public', optional: true }),
     },
   },
 

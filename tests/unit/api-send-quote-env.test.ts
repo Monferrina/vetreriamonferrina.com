@@ -8,6 +8,7 @@ vi.mock('astro:env/server', () => ({
   RESEND_FROM_EMAIL: undefined,
   VETRERIA_EMAIL: undefined,
   SITE_URL: undefined,
+  TURNSTILE_SECRET_KEY: undefined,
 }));
 
 // Resend vero, non mockato: senza chiave il costruttore lancia, come in dev e sulla
