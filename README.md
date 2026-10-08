@@ -222,7 +222,7 @@ Il dominio è su Cloudflare, piano Free, con proxy attivo.
 | -------------- | --------------------------------------------------------------------------------------- |
 | DNS            | A verso `76.76.21.21` e CNAME www verso `cname.vercel-dns.com`, entrambi proxied        |
 | SSL/TLS        | Full (Strict)                                                                           |
-| HSTS           | 2 anni (max-age 63072000), includeSubDomains, preload                                   |
+| HSTS           | 1 anno (max-age 31536000), includeSubDomains, senza preload (dalla zona Cloudflare)     |
 | WAF            | Bot Fight Mode e AI Bot Blocking                                                        |
 | Cache          | Asset statici 1 anno (`/_astro/`, `.webp`, `.woff2`)                                    |
 | Analytics      | Web Analytics (RUM, zero cookie)                                                        |

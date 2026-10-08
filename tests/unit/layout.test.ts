@@ -125,7 +125,10 @@ describe('vercel.json security headers', () => {
     expect(connectSrc).not.toContain('*');
   });
 
-  test('HSTS con max-age lungo e preload', () => {
+  // Uguale all'HSTS della zona Cloudflare, che sovrascrive l'header (misurato 08/10/2026:
+  // 1 anno, includeSubDomains, preload false). Niente preload: l'iscrizione alla lista è
+  // difficile da revocare (decisione di Marco, Z1).
+  test('HSTS di un anno, senza preload, come la zona Cloudflare', () => {
     const vercelPath = resolve(__dirname, '../../vercel.json');
     const vercelConfig = JSON.parse(readFileSync(vercelPath, 'utf-8'));
     const headers = vercelConfig.headers.find(
@@ -133,8 +136,6 @@ describe('vercel.json security headers', () => {
     ).headers;
     const hsts = headers.find((h: { key: string }) => h.key === 'Strict-Transport-Security');
 
-    expect(hsts.value).toContain('max-age=63072000');
-    expect(hsts.value).toContain('includeSubDomains');
-    expect(hsts.value).toContain('preload');
+    expect(hsts.value).toBe('max-age=31536000; includeSubDomains');
   });
 });

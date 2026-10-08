@@ -33,7 +33,7 @@ const ORIGIN = 'https://vetreriamonferrina.vercel.app';
 // audit 13/7). CSP allineata a quella del sito (la pagina manutenzione usa gli
 // stessi asset/_astro e stili inline).
 const SECURITY_HEADERS: Record<string, string> = {
-  'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
@@ -51,13 +51,33 @@ function originAuth(env: Env): Record<string, string> {
   };
 }
 
+// Gli x-vercel-* sono istruzioni per Vercel: dal visitatore, accanto al nostro bypass,
+// valevano come nostre (x-vercel-set-bypass-cookie → cookie con dentro il segreto, Z1 F1).
+// Vercel le accetta come header e come parametro della query (doc Protection Bypass for
+// Automation): nome confrontato decodificato, senza spazi, in minuscolo.
+const isVercelInstruction = (name: string) => /^x-vercel-/i.test(name.trim());
+
 async function passthrough(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url);
-  const originUrl = `${ORIGIN}${url.pathname}${url.search}`;
+  // Coppie grezze, non searchParams: searchParams.delete() riscrive tutta la query
+  // (%20 → +, flag → flag=), e l'origin riceverebbe parametri diversi da quelli inviati.
+  const pairs = url.search.slice(1).split('&');
+  const kept = pairs.filter(
+    (pair) => ![...new URLSearchParams(pair).keys()].some(isVercelInstruction)
+  );
+  const search =
+    kept.length === pairs.length ? url.search : kept.length ? `?${kept.join('&')}` : '';
+  const originUrl = `${ORIGIN}${url.pathname}${search}`;
 
   // Copia mutabile degli header + timbri segreti. `.set()` (non `.append()`) sovrascrive
   // un eventuale valore falso mandato dal client → sul path CF è airtight.
   const originHeaders = new Headers(request.headers);
+  // Chiavi raccolte prima: Headers non va modificato mentre lo si itera.
+  const vercelHeaders = [...originHeaders.keys()].filter(isVercelInstruction);
+  for (const name of vercelHeaders) {
+    originHeaders.delete(name);
+  }
+  const filtered = search !== url.search || vercelHeaders.length > 0;
   for (const [name, value] of Object.entries(originAuth(env))) {
     originHeaders.set(name, value);
   }
@@ -74,6 +94,10 @@ async function passthrough(request: Request, env: Env): Promise<Response> {
   });
   const response = await fetch(originRequest);
   const headers = new Headers(response.headers);
+  // Il sito non imposta cookie: l'unico che l'origin può mandare è il _vercel_jwt di
+  // Vercel Authentication, coniato col nostro bypass. Consegnato al visitatore apriva
+  // l'alias vercel.app per 7 giorni, saltando Worker, WAF e manutenzione (Z1, F1).
+  headers.delete('set-cookie');
 
   // Le Location dell'origin (*.vercel.app, o relative) non devono trapelare:
   // riscritte sullo host pubblico richiesto dal client. Confronto sull'origin
@@ -93,11 +117,14 @@ async function passthrough(request: Request, env: Env): Promise<Response> {
   // HSTS su ogni risposta in uscita dal worker (Vercel lo mette sulle sue,
   // ma non su tutte le 3xx; copre anche www, segnalato da CF come senza HSTS).
   if (!headers.has('strict-transport-security')) {
-    headers.set('strict-transport-security', 'max-age=63072000; includeSubDomains; preload');
+    headers.set('strict-transport-security', SECURITY_HEADERS['Strict-Transport-Security']);
   }
 
   headers.set('x-maintenance', 'off');
   headers.set('x-worker', 'active');
+  // Per il monitor Checkly worker-filters-vercel-instructions: prova che il filtro gira
+  // senza che il check debba mai vedere un cookie di bypass (che conterrebbe il segreto).
+  if (filtered) headers.set('x-worker-filtered', '1');
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
