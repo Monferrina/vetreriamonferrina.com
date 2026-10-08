@@ -29,7 +29,9 @@ export default defineConfig({
       : undefined,
     // La traccia del tentativo che fallisce, non del retry: sulla preview due fallimenti rari
     // (05/10, pagina senza CSS) erano passati al retry e la traccia non diceva niente.
-    trace: 'retain-on-first-failure',
+    // In CI no: la traccia registra gli header delle richieste, bypass compreso, e
+    // e2e.yml la pubblica come artefatto di una repo pubblica (Z1, PT-2).
+    trace: process.env.CI ? 'off' : 'retain-on-first-failure',
     screenshot: 'only-on-failure',
     // Banner cookie gia visto: evita che intercetti i click (chatbot/bottom nav
     // su mobile). legal.spec fa opt-out per testare il banner stesso.
