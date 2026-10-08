@@ -44,7 +44,7 @@ I test end-to-end girano nel workflow `e2e.yml`, job `E2E (Playwright)`, sulla p
 
 Il form preventivi usa Turnstile con le chiavi di test della doc fuori produzione (`npm run dev`, preview). `astro build` gira con `NODE_ENV=production`, quindi un build locale senza `VERCEL_ENV` si comporta da produzione: senza `TURNSTILE_SITE_KEY` si ferma con errore (fuori da GitHub Actions), e senza `TURNSTILE_SECRET_KEY` il form servito risponderebbe 503. È il fail-closed voluto: un build locale si lancia con `VERCEL_ENV=preview npm run build`, che usa le chiavi di test.
 
-Vanno a parte i monitor Checkly (quando cambiano `__checks__/` o `checkly.config.ts`: `checkly test` sulla PR, `checkly deploy` al merge) e la CI del Worker (`wrangler deploy --dry-run`, solo sulle PR che toccano `cloudflare/maintenance-worker/`).
+Vanno a parte i monitor Checkly (`checkly test --tags preview` sulla preview Vercel di ogni PR, solo per i check con quel tag; `checkly deploy` al merge quando cambiano `__checks__/` o `checkly.config.ts`; i check senza tag presuppongono la produzione e si verificano dopo il merge) e la CI del Worker (`wrangler deploy --dry-run`, solo sulle PR che toccano `cloudflare/maintenance-worker/`).
 
 Verifica l'esito guardando il codice di uscita dei comandi, non filtrando l'output: un `grep` sui soli warning può nascondere un errore che poi blocca la CI.
 

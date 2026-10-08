@@ -1,8 +1,10 @@
 name: Monitor Checkly
 
-# Monitoring as code: valida i check sulle PR e li deploya su Checkly al merge in main.
-# Gira solo quando cambiano le definizioni dei check (paths filter) per efficienza.
-# Se i secret non sono configurati, gli step si skippano: la CI resta verde.
+# Monitoring as code: sulle PR prova i check con tag `preview` contro la preview Vercel della PR
+# (stesso evento e stesso URL di e2e.yml); al merge in main deploya tutti i check su Checkly.
+# I check senza tag presuppongono la produzione (Worker, lockdown, chiavi Turnstile vere) e non
+# girano sulle PR: un `checkly test` contro la produzione prima del merge ha mandato email vere
+# alla vetreria (08/10/2026, #400). Se i secret non sono configurati, gli step si skippano.
 
 on:
   push:
@@ -11,25 +13,54 @@ on:
       - '__checks__/**'
       - 'checkly.config.ts'
       - '.github/workflows/checkly.yml'
-  pull_request:
-    branches: [main]
-    paths:
-      - '__checks__/**'
-      - 'checkly.config.ts'
-      - '.github/workflows/checkly.yml'
-
-concurrency:
-  group: checkly-${{ github.ref }}
-  cancel-in-progress: true
+  deployment_status:
 
 permissions:
   contents: read
 
 jobs:
-  checkly:
-    name: Test & Deploy Monitors
+  preview:
+    # Come e2e.yml: Vercel crea un deployment GitHub con lo SHA della PR e, a build finita, lo
+    # stato "success" con l'URL. Gira su ogni preview (un check browser per run): il filtro sui
+    # file non vale per deployment_status.
+    name: Test monitors (preview)
+    if: github.event_name == 'deployment_status' && github.event.deployment.environment == 'Preview'
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
+      CHECKLY_ACCOUNT_ID: ${{ secrets.CHECKLY_ACCOUNT_ID }}
+    steps:
+      - name: Preview pronta
+        if: github.event.deployment_status.state != 'success'
+        run: |
+          echo "::error::Deployment di Preview in stato '$STATO', niente da testare"
+          exit 1
+        env:
+          STATO: ${{ github.event.deployment_status.state }}
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Test checks tagged preview
+        if: ${{ env.CHECKLY_API_KEY != '' }}
+        run: npx checkly test --tags preview -e "PREVIEW_URL=$PREVIEW_URL"
+        env:
+          PREVIEW_URL: ${{ github.event.deployment_status.environment_url }}
+
+  deploy:
+    name: Test & Deploy Monitors
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: checkly-deploy
+      cancel-in-progress: true
     env:
       CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
       CHECKLY_ACCOUNT_ID: ${{ secrets.CHECKLY_ACCOUNT_ID }}
@@ -42,10 +73,6 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Validate checks (PR)
-        if: ${{ github.event_name == 'pull_request' && env.CHECKLY_API_KEY != '' }}
-        run: npx checkly test
-
-      - name: Deploy checks (main)
-        if: ${{ github.event_name == 'push' && env.CHECKLY_API_KEY != '' }}
+      - name: Deploy checks
+        if: ${{ env.CHECKLY_API_KEY != '' }}
         run: npx checkly deploy --force
