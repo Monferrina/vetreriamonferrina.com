@@ -14,6 +14,22 @@ export const test = base.extend<{ terzi: void }>({
         (url) => url.origin !== sito || url.pathname.startsWith('/_vercel/'),
         (route) => route.abort()
       );
+      // Turnstile (Z1): lo script di Cloudflare è fuori dal sito e resterebbe bloccato, con il
+      // pulsante di invio spento per sempre (misurato in CI l'08/10/2026: 12 test in timeout).
+      // Al suo posto un finto window.turnstile che dà subito il token fittizio della doc: i test
+      // restano ermetici e il bypass non esce dal sito. Il widget vero lo prova il check Checkly
+      // sulla preview (__checks__/scripts/turnstile-widget.ts). Registrata dopo il blocco: Playwright
+      // prova le route dall'ultima registrata, quindi questa vince.
+      await context.route('https://challenges.cloudflare.com/turnstile/v0/api.js**', (route) =>
+        route.fulfill({
+          contentType: 'application/javascript',
+          body: `window.turnstile = {
+            render(el, opts) { setTimeout(() => opts.callback('XXXX.DUMMY.TOKEN.XXXX'), 0); return 'finto'; },
+            reset() {},
+            remove() {},
+          };`,
+        })
+      );
       await use();
     },
     { auto: true },
