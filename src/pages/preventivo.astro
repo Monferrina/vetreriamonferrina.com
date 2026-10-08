@@ -1,9 +1,31 @@
 ---
 // src/pages/preventivo.astro — Form di richiesta preventivo con validazione client-side.
+import process from 'node:process';
+import { TURNSTILE_SITE_KEY } from 'astro:env/server';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GlassPanel from '../components/GlassPanel.astro';
 import QuoteForm from '../components/QuoteForm.astro';
+import { turnstileSiteKey } from '../lib/turnstile';
 export const prerender = true;
+
+// Pagina prerenderizzata: la sitekey si sceglie al build, con lo stesso predicato di sendEmails
+// (api/send-quote.ts), così la chiave vera sta dove partono email vere.
+const production = (process.env.VERCEL_ENV || process.env.NODE_ENV) === 'production';
+// Build di produzione su Vercel senza sitekey: si ferma qui. Online andrebbe un form che dà sempre
+// 403, e nessun monitor lato server lo vedrebbe. Solo VERCEL_ENV: un build fuori da Vercel
+// (ci.yml, locale) gira con NODE_ENV=production (misurato 08/10/2026: `npm run build` senza
+// VERCEL_ENV esce con data-sitekey vuoto, con VERCEL_ENV=preview con la sitekey di test) e senza
+// la chiave: quel build non va online, e il server nello stesso caso risponde 503 (CONTRIBUTING).
+if (process.env.VERCEL_ENV === 'production' && !TURNSTILE_SITE_KEY) {
+  throw new Error('TURNSTILE_SITE_KEY assente nel build di produzione');
+}
+
+// CSP solo su questa pagina, nell'header statico di Vercel (staticHeaders). insertScriptResource
+// toglie il 'self' di default di Astro (astro/dist/runtime/server/render/csp.js) e senza i bundle
+// in /_astro sarebbero bloccati: va rimesso. Domini dalla doc Turnstile "Content Security Policy".
+Astro.csp?.insertScriptResource("'self'");
+Astro.csp?.insertScriptResource('https://challenges.cloudflare.com');
+Astro.csp?.insertDirective('frame-src https://challenges.cloudflare.com');
 ---
 
 <BaseLayout
@@ -26,6 +48,6 @@ export const prerender = true;
     <p class="text-neutral-800 mb-8">
       Tutti i campi con <span class="text-error">*</span> sono obbligatori.
     </p>
-    <QuoteForm />
+    <QuoteForm turnstileSiteKey={turnstileSiteKey(production, TURNSTILE_SITE_KEY)} />
   </section>
 </BaseLayout>

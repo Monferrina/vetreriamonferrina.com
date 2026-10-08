@@ -33,6 +33,8 @@ test.describe('Form preventivo', () => {
       measurements: '120x80 cm',
       privacy: true,
       honeypot: '',
+      // Sitekey di test della doc: il widget dà sempre un token.
+      turnstileToken: expect.any(String),
     });
   });
 

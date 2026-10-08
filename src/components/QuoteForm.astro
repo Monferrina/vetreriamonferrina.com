@@ -4,12 +4,17 @@
 // honeypot anti-spam, and fetch-based submission. method="post" keeps the fields out of
 // the URL when the script does not run (JS off, script error, CSP block). The page is static,
 // so a native POST gets an empty 405 (measured in production, 2026-10-07): the submit button
-// therefore starts disabled and only the script enables it, so nothing leaves the browser
+// therefore starts disabled and only the script enables it, once Turnstile gives a token, so nothing leaves the browser
 // without it (WHATWG: implicit submission clicks the default button only if not disabled),
 // and #form-nojs keeps the phone and email in view until the script hides it.
 import { services, categories, type CategoryKey } from '../data/services';
 import { email, emailHref, phone, phoneHref } from '../data/contatti';
 
+interface Props {
+  // Scelta al build da preventivo.astro: chiave vera solo in produzione.
+  turnstileSiteKey: string;
+}
+const { turnstileSiteKey } = Astro.props;
 const categoryKeys = Object.keys(categories) as CategoryKey[];
 ---
 
@@ -174,6 +179,10 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
   </div>
 
   <div>
+    {
+      /* Turnstile, aspetto interaction-only: resta vuoto finché Cloudflare non chiede un'interazione. */
+    }
+    <div id="turnstile" data-sitekey={turnstileSiteKey} class="mb-4"></div>
     <button
       type="submit"
       id="submit-btn"
@@ -324,7 +333,8 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     const text = document.getElementById('submit-text') as HTMLSpanElement;
     const spinner = document.getElementById('submit-spinner') as unknown as SVGElement;
 
-    btn.disabled = loading;
+    sending = loading;
+    btn.disabled = loading || turnstileToken === '';
     if (loading) {
       text.textContent = 'Invio in corso...';
       spinner.classList.remove('hidden');
@@ -378,6 +388,73 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
   // Initialize
   preSelectService();
 
+  // Import dinamico: solo all'errore. In produzione e' il modulo gia' caricato dall'init di
+  // Sentry; dove l'integrazione e' spenta (preview, dev) l'SDK resta fuori dal bundle della
+  // pagina (astro.config.mjs) e captureException, senza init, non manda niente.
+  const report = (err: Error) =>
+    void import('@sentry/astro').then((Sentry) => Sentry.captureException(err));
+  // Un evento per pagina dal widget. Con retry 'auto' (default) error-callback "can be invoked
+  // multiple times for the same underlying issue" (doc Turnstile, Client-side errors): senza
+  // tetto, un visitatore con il widget rotto consumava la quota Sentry del browser.
+  let widgetReported = false;
+  const reportWidget = (what: string) => {
+    if (widgetReported) return;
+    widgetReported = true;
+    report(new Error(`turnstile ${what}`));
+  };
+
+  // Turnstile (Z1). Il pulsante si attiva solo con un token, perché senza il server risponde 403.
+  // Lo script di Cloudflare non si può servire da qui né fissare con SRI (doc: niente proxy né
+  // cache): si carica solo su questa pagina, dal dominio dichiarato nel CSP (preventivo.astro).
+  interface TurnstileApi {
+    render(el: HTMLElement, opts: Record<string, unknown>): string | undefined;
+    reset(id?: string): void;
+  }
+  const turnstileApi = () => (window as unknown as { turnstile?: TurnstileApi }).turnstile;
+  const widget = document.getElementById('turnstile') as HTMLElement;
+  let turnstileToken = '';
+  let widgetId: string | undefined;
+  // true durante un invio. refresh-expired 'auto' (default, doc) può chiamare callback in
+  // qualunque momento: senza questo, un token nuovo a invio in corso riaccendeva il pulsante e un
+  // secondo click mandava un secondo preventivo.
+  let sending = false;
+
+  // Senza token il pulsante resta spento e #form-nojs mostra telefono ed email.
+  function setToken(token: string) {
+    turnstileToken = token;
+    (document.getElementById('submit-btn') as HTMLButtonElement).disabled = sending || token === '';
+    document.getElementById('form-nojs')?.classList.toggle('hidden', token !== '');
+  }
+
+  // Watchdog: uno script bloccato (CSP, rete, estensioni) o un render fallito non chiamano nessun
+  // callback, e il server non vede nessuna richiesta. Senza questo evento il form resta fermo in
+  // silenzio. 15 s: da tarare sugli eventi reali.
+  setTimeout(() => {
+    if (widgetId === undefined) reportWidget('non caricato');
+  }, 15_000);
+
+  const turnstileScript = document.createElement('script');
+  turnstileScript.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+  turnstileScript.addEventListener('load', () => {
+    widgetId = turnstileApi()?.render(widget, {
+      sitekey: widget.dataset.sitekey,
+      action: 'send-quote',
+      appearance: 'interaction-only',
+      callback: setToken,
+      'expired-callback': () => setToken(''),
+      // Browser che Turnstile non supporta: render ha dato l'id, quindi il watchdog tace, e
+      // error-callback non è detto che scatti. Il pulsante resta spento, #form-nojs in vista.
+      'unsupported-callback': () => reportWidget('browser non supportato'),
+      'error-callback': (code: string) => {
+        setToken('');
+        // Niente "return true": con un valore falsy Turnstile scrive il codice nella console
+        // (doc), ed è l'unico segnale in preview, dove Sentry è spento.
+        reportWidget(`widget ${code}`);
+      },
+    });
+  });
+  document.head.append(turnstileScript);
+
   // Retry button: hide error and let user try again
   const retryBtn = document.getElementById('retry-btn') as HTMLButtonElement;
   retryBtn.addEventListener('click', () => {
@@ -414,20 +491,17 @@ const categoryKeys = Object.keys(categories) as CategoryKey[];
     if (errors.length > 0) return;
 
     setLoading(true);
-    // Import dinamico: solo all'errore. In produzione e' il modulo gia' caricato dall'init di
-    // Sentry; dove l'integrazione e' spenta (preview, dev) l'SDK resta fuori dal bundle della
-    // pagina (astro.config.mjs) e captureException, senza init, non manda niente.
-    const esito = await submitQuote(formData, {
-      report: (err) => void import('@sentry/astro').then((Sentry) => Sentry.captureException(err)),
-    });
+    const esito = await submitQuote({ ...formData, turnstileToken }, { report });
     setLoading(false);
+    // Token monouso (doc): dopo un errore potrebbe essere già stato consumato, se ne chiede uno
+    // nuovo. I 422 arrivano prima della verifica e lo lasciano valido.
+    if (esito.kind === 'error') {
+      setToken('');
+      turnstileApi()?.reset(widgetId);
+    }
 
     if (esito.kind === 'success') showSuccess();
     else if (esito.kind === 'fieldErrors') showErrors(esito.errors);
     else showGlobalError(esito.message);
   });
-
-  // Ultima riga (perche': commento in testa al file).
-  (document.getElementById('submit-btn') as HTMLButtonElement).disabled = false;
-  document.getElementById('form-nojs')?.classList.add('hidden');
 </script>
