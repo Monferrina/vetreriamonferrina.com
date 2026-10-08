@@ -1,6 +1,6 @@
 # ADR-0001: Turnstile sul modulo preventivi e protezione del bordo
 
-**Status:** Proposed
+**Status:** Accepted (Marco, 08/10/2026)
 **Date:** 2026-10-08
 **Deciders:** Marco Bellingeri
 
@@ -85,4 +85,4 @@ Una regola sul bordo che blocchi `x-vercel-*` dei visitatori, in attesa del Work
 2. [ ] Widget, CSP della pagina e watchdog (#396)
 3. [ ] Monitor Checkly (#397)
 4. [ ] Preventivo vero dopo il deploy e misure dietro Cloudflare (#398)
-5. [ ] Approvazione di questo ADR nella PR: Status → Accepted
+5. [x] Approvazione di questo ADR nella PR: Status → Accepted
