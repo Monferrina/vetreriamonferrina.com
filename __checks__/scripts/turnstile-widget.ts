@@ -6,7 +6,10 @@ import { test, expect } from '@playwright/test';
 //
 // Sulle PR gira sulla preview (checkly.yml, `-e PREVIEW_URL=…`): lì serve il bypass della Vercel
 // Authentication, letto dalle variabili dell'account Checkly a runtime, mai scritto nella
-// configurazione. In produzione (deploy al merge) PREVIEW_URL non c'è.
+// configurazione. Misurato l'08/10/2026 su una run fallita di proposito (sessione
+// 01a11b2d-275a-72b5-82d7-121474305571): negli artefatti che Checkly conserva (video, trace,
+// rete, log, JSON) il valore dell'header compare 0 volte, solo il suo nome. In produzione
+// (deploy al merge) PREVIEW_URL non c'è.
 const preview = process.env.PREVIEW_URL;
 if (preview) {
   test.use({
