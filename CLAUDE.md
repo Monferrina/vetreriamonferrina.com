@@ -10,7 +10,7 @@ Ai servizi esterni (modelli, agenti, scanner, issue, commenti nelle PR) va solo 
 
 ## CSP
 
-Il CSP non ha `'unsafe-inline'`: `script-src` e `style-src` li genera Astro (`security.csp`) con gli hash degli script e degli stili inline di ogni pagina; le altre direttive stanno in `src/lib/csp.ts`, lette anche dal middleware. Uno script o uno stile scritto a mano (`is:inline`, `define:vars`, `style=""`), o una chiamata a un dominio nuovo (`connect-src`, `img-src`, `frame-src`…), **non rompe la build**: il browser lo blocca e l'errore sta solo nella console. Ogni modifica che aggiunge script, stili o servizi esterni dichiara il dominio in `src/lib/csp.ts` (o passa da `Astro.csp.insertScriptHash`) e si verifica sulla preview con `tests/e2e/csp.spec.ts`, che gira su tutte le pagine della sitemap. Cloudflare non inietta script nelle pagine perché l'HTML esce con `Cache-Control: no-transform` (`vercel.json`): toglierlo riporta lo script inline del Bot Fight Mode, che il CSP blocca.
+Il CSP non ha `'unsafe-inline'`: `script-src` e `style-src` li genera Astro (`security.csp`) con gli hash degli script e degli stili inline di ogni pagina; le altre direttive stanno in `src/lib/csp.ts`, lette anche dal middleware. Uno script o uno stile scritto a mano (`is:inline`, `define:vars`, `style=""`), o una chiamata a un dominio nuovo (`connect-src`, `img-src`, `frame-src`…), **non rompe la build**: il browser lo blocca e l'errore sta solo nella console. Ogni modifica che aggiunge script, stili o servizi esterni dichiara il dominio in `src/lib/csp.ts` (o passa da `Astro.csp.insertScriptHash`) e si verifica sulla preview con `tests/e2e/csp.spec.ts`, che gira su tutte le pagine della sitemap. Un dominio che serve a una pagina sola (Turnstile su `/preventivo`) si dichiara nel frontmatter di quella pagina con `Astro.csp.insertScriptResource` e `insertDirective`: `insertScriptResource` toglie il `'self'` di default di Astro, che va rimesso a mano (misurato l'08/10/2026 sull'header statico in `.vercel/output/config.json`). Cloudflare non inietta script nelle pagine perché l'HTML esce con `Cache-Control: no-transform` (`vercel.json`): toglierlo riporta lo script inline del Bot Fight Mode, che il CSP blocca.
 
 ## HawkScan
 
@@ -36,3 +36,17 @@ Rules:
 - If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
 - Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
 - After modifying code, refresh the graph with the `/graphify . --update` skill. The bare `graphify update .` CLI re-extracts code with the AST only and drops the doc→code links and the curated community labels (measured 2026-09-10: 683 → 645 links).
+
+## Agent skills
+
+### Issue tracker
+
+Le issue vivono su GitHub Issues di `Monferrina/vetreriamonferrina.com` (`gh`, default già impostato). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Le cinque label canoniche con il loro nome (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `GLOSSARY.md` in radice e ADR in `docs/adr/`. See `docs/agents/domain.md`.

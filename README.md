@@ -72,16 +72,18 @@ npm run dev
 
 In locale si parte da `.env.example` copiato in `.env.local`. Su Vercel si configurano in Settings, Environment Variables.
 
-| Variabile                  | Descrizione                                        | Dove ottenerla                                     |
-| -------------------------- | -------------------------------------------------- | -------------------------------------------------- |
-| `RESEND_API_KEY`           | API key Resend per l'invio email                   | [resend.com/api-keys](https://resend.com/api-keys) |
-| `RESEND_FROM_EMAIL`        | Mittente, su dominio verificato su Resend          | Es. `preventivi@vetreriamonferrina.com`            |
-| `VETRERIA_EMAIL`           | Casella che riceve i preventivi                    | Casella aziendale                                  |
-| `SITE_URL`                 | URL del sito in produzione                         | `https://vetreriamonferrina.com`                   |
-| `UPSTASH_REDIS_REST_URL`   | Endpoint REST del database Redis per il rate-limit | [console.upstash.com](https://console.upstash.com) |
-| `UPSTASH_REDIS_REST_TOKEN` | Token REST corrispondente                          | [console.upstash.com](https://console.upstash.com) |
-| `GOOGLE_PLACES_API_KEY`    | Chiave Places API, solo per lo script build-time   | Google Cloud Console                               |
-| `GOOGLE_PLACE_ID`          | Place ID della vetreria, solo per lo script        | Place ID Finder o Google Maps                      |
+| Variabile                  | Descrizione                                                                                                                                  | Dove ottenerla                                     |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| `RESEND_API_KEY`           | API key Resend per l'invio email                                                                                                             | [resend.com/api-keys](https://resend.com/api-keys) |
+| `RESEND_FROM_EMAIL`        | Mittente, su dominio verificato su Resend                                                                                                    | Es. `preventivi@vetreriamonferrina.com`            |
+| `VETRERIA_EMAIL`           | Casella che riceve i preventivi                                                                                                              | Casella aziendale                                  |
+| `SITE_URL`                 | URL del sito in produzione                                                                                                                   | `https://vetreriamonferrina.com`                   |
+| `TURNSTILE_SECRET_KEY`     | Secret Turnstile, solo produzione (altrove il codice usa quello di test della doc). Dopo ogni cambio: redeploy e un preventivo vero di prova | Cloudflare → Turnstile                             |
+| `TURNSTILE_SITE_KEY`       | Sitekey Turnstile, pubblica, letta al build di `/preventivo`; obbligatoria nel build di produzione su Vercel                                 | Cloudflare → Turnstile                             |
+| `UPSTASH_REDIS_REST_URL`   | Endpoint REST del database Redis per il rate-limit                                                                                           | [console.upstash.com](https://console.upstash.com) |
+| `UPSTASH_REDIS_REST_TOKEN` | Token REST corrispondente                                                                                                                    | [console.upstash.com](https://console.upstash.com) |
+| `GOOGLE_PLACES_API_KEY`    | Chiave Places API, solo per lo script build-time                                                                                             | Google Cloud Console                               |
+| `GOOGLE_PLACE_ID`          | Place ID della vetreria, solo per lo script                                                                                                  | Place ID Finder o Google Maps                      |
 
 Le due variabili Upstash sono opzionali in locale: se mancano, il rate-limit di `/api/send-quote` ricade su un contatore in memoria.
 

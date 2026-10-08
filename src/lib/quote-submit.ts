@@ -1,5 +1,10 @@
 import type { QuoteFormData, ValidationError } from './validation';
 
+// Action del widget Turnstile, confrontata dal server (src/lib/turnstile.ts). Vive qui, nel
+// modulo già condiviso con il browser, così lo script del form non importa il modulo di
+// siteverify, che deve poter usare API di Node.
+export const TURNSTILE_ACTION = 'send-quote';
+
 export type SubmitOutcome =
   | { kind: 'success' }
   | { kind: 'fieldErrors'; errors: ValidationError[] }
@@ -14,8 +19,12 @@ export interface SubmitDeps {
 // Invio del form preventivi. Gli invii falliti che il form intercetta vanno a Sentry: il server
 // non vede un 403 del middleware, l'HTML di Cloudflare, un 504 di Vercel o la rete giu'.
 // 422 (campi) e 429 (rate limit) sono risposte attese e restano fuori; il 500 JSON dell'endpoint
-// lo ha gia' segnalato il server (send-quote.ts), e due eventi dividerebbero lo stesso guasto.
-export async function submitQuote(data: QuoteFormData, deps: SubmitDeps): Promise<SubmitOutcome> {
+// e il 503 JSON (Turnstile non disponibile) li ha gia' segnalati il server (send-quote.ts), e due
+// eventi dividerebbero lo stesso guasto. Il 403 JSON di Turnstile si segnala: misura i falsi positivi.
+export async function submitQuote(
+  data: QuoteFormData & { turnstileToken?: string },
+  deps: SubmitDeps
+): Promise<SubmitOutcome> {
   let res: Response;
   try {
     res = await fetch('/api/send-quote', {
@@ -38,9 +47,12 @@ export async function submitQuote(data: QuoteFormData, deps: SubmitDeps): Promis
     return { kind: 'fieldErrors', errors: json.errors as ValidationError[] };
   }
   const message = typeof json.error === 'string' ? json.error : null;
-  const segnalatoDalServer = res.status === 500 && message !== null;
+  const segnalatoDalServer = (res.status === 500 || res.status === 503) && message !== null;
   if (res.status !== 429 && !segnalatoDalServer) {
-    deps.report(new Error(`send-quote HTTP ${res.status}`));
+    // "json" distingue il 403 di Turnstile (JSON dell'endpoint) dal 403 testuale del middleware
+    // o dall'HTML di Cloudflare: altrimenti un ORIGIN_VERIFY_SECRET sbagliato sembrerebbe una
+    // raffica di falsi positivi di Turnstile.
+    deps.report(new Error(`send-quote HTTP ${res.status}${message !== null ? ' json' : ''}`));
   }
   return { kind: 'error', message: message ?? "Errore durante l'invio. Riprova." };
 }

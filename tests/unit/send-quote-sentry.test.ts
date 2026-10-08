@@ -15,6 +15,7 @@ vi.mock('astro:env/server', () => ({
   RESEND_FROM_EMAIL: config.fromEmail,
   VETRERIA_EMAIL: config.toEmail,
   SITE_URL: 'https://vetreriamonferrina.com',
+  TURNSTILE_SECRET_KEY: 'segreto-di-prova',
 }));
 
 // Corpi delle envelope che l'SDK manderebbe a Sentry: si guarda ciò che esce davvero,
@@ -116,6 +117,54 @@ describe('POST /api/send-quote → Sentry', () => {
   });
 });
 
+describe('Turnstile → Sentry (seam B3)', () => {
+  it('verifica non disponibile: un evento con il solo codice; token rifiutato: nessun evento', async () => {
+    sent.length = 0;
+    const sender: EmailSender = { send: async () => ({ data: { id: 'x' }, error: null }) };
+    const req = { origin: 'https://vetreriamonferrina.com', ip: '198.51.100.90', body: validBody };
+
+    await handleSendQuote(
+      req,
+      { ...config, verifyHuman: async () => ({ kind: 'invalid' }) },
+      sender
+    );
+    expect(sent).toHaveLength(0);
+
+    const res = await handleSendQuote(
+      { ...req, ip: '198.51.100.91' },
+      {
+        ...config,
+        verifyHuman: async () => ({ kind: 'unavailable', code: 'invalid-input-secret' }),
+      },
+      sender
+    );
+    expect(res.status).toBe(503);
+    expect(sent).toHaveLength(1);
+    expect(sent[0]).toContain('Turnstile invalid-input-secret');
+    for (const value of Object.values(visitor)) expect(sent[0]).not.toContain(value);
+
+    // Stesso tetto di Upstash (N3, deciso da Marco l'08/10): un secondo 503 con lo stesso codice
+    // entro dieci minuti non manda un altro evento; un codice diverso sì (chiave per codice).
+    const res2 = await handleSendQuote(
+      { ...req, ip: '198.51.100.92' },
+      {
+        ...config,
+        verifyHuman: async () => ({ kind: 'unavailable', code: 'invalid-input-secret' }),
+      },
+      sender
+    );
+    expect(res2.status).toBe(503);
+    expect(sent).toHaveLength(1);
+    await handleSendQuote(
+      { ...req, ip: '198.51.100.93' },
+      { ...config, verifyHuman: async () => ({ kind: 'unavailable', code: 'TimeoutError' }) },
+      sender
+    );
+    expect(sent).toHaveLength(2);
+    expect(sent[1]).toContain('Turnstile TimeoutError');
+  });
+});
+
 describe('isRateLimited → Sentry', () => {
   // @upstash/redis 1.39.0 mette nel messaggio il comando intero ("command was: …"), e la
   // chiave del limite è l'IP del visitatore.
@@ -138,5 +187,25 @@ describe('isRateLimited → Sentry', () => {
     expect(sent).toHaveLength(1);
     expect(sent[0]).toContain('UpstashError');
     expect(sent[0]).not.toContain(ip);
+  });
+
+  it('due guasti Upstash entro dieci minuti: un evento solo; dopo dieci minuti un altro (N3)', async () => {
+    // Solo Date: con i timer finti il flush di Sentry resterebbe appeso.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      const broken = { limit: () => Promise.reject(new errors.UpstashError('ERR giù')) };
+      const t0 = Date.now() + 11 * 60_000; // oltre il tetto lasciato dal test precedente
+      vi.setSystemTime(t0);
+      sent.length = 0;
+      await isRateLimited('198.51.100.78', broken);
+      await isRateLimited('198.51.100.79', broken);
+      expect(sent).toHaveLength(1);
+
+      vi.setSystemTime(t0 + 10 * 60_000);
+      await isRateLimited('198.51.100.80', broken);
+      expect(sent).toHaveLength(2);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

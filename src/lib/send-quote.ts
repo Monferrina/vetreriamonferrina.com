@@ -2,7 +2,8 @@ import { validateQuoteForm, type QuoteFormData } from './validation';
 import { headerSafe, sanitizeFormData } from './sanitize';
 import { isRateLimited } from './rate-limit';
 import { quoteRequestEmail } from './email-templates/quote-request';
-import { report } from './sentry-report';
+import { report, reportThrottled } from './sentry-report';
+import type { TurnstileOutcome } from './turnstile';
 
 export interface SendQuoteConfig {
   allowedOrigins: string[];
@@ -12,6 +13,9 @@ export interface SendQuoteConfig {
   // false fuori dalla produzione: la preview Vercel viene scansionata da HawkScan, e con la
   // chiave Resend messa lì per sbaglio ogni corpo valido diventerebbe un'email vera.
   sendEmails: boolean;
+  // Verifica Turnstile (src/lib/turnstile.ts), iniettata come l'EmailSender: i test la
+  // sostituiscono senza rete. Obbligatoria: un default "ok" sarebbe fail-open.
+  verifyHuman: (token: unknown) => Promise<TurnstileOutcome>;
 }
 
 export interface SendQuoteRequest {
@@ -21,6 +25,7 @@ export interface SendQuoteRequest {
 }
 
 export const EMAIL_ERROR = 'Errore invio email. Riprova o chiamaci.';
+export const TURNSTILE_ERROR = 'Verifica anti-spam non riuscita. Riprova o chiamaci.';
 
 interface JsonResponse {
   status: number;
@@ -29,6 +34,11 @@ interface JsonResponse {
 
 function json(status: number, body: Record<string, unknown>): JsonResponse {
   return { status, body };
+}
+
+function dryRun(): JsonResponse {
+  console.log('[send-quote] Dry run — skipping email');
+  return json(200, { success: true, dryRun: true });
 }
 
 export interface EmailSender {
@@ -63,9 +73,9 @@ export async function handleSendQuote(
     return json(400, { error: 'Dati non validi' });
   }
 
-  const data = sanitizeFormData(req.body as Record<string, unknown>) as unknown as QuoteFormData;
+  const fields = sanitizeFormData(req.body as Record<string, unknown>);
 
-  const errors = validateQuoteForm(data);
+  const errors = validateQuoteForm(fields);
   if (errors.length > 0) {
     // Honeypot: silently accept to not reveal bot detection
     if (errors[0].field === 'honeypot') {
@@ -76,14 +86,34 @@ export async function handleSendQuote(
     }
     return json(422, { errors });
   }
+  // Il tipo si afferma solo dopo la validazione superata (F3).
+  const data = fields as unknown as QuoteFormData;
 
-  // 4. Dry run: skip email (used by Checkly monitoring, and everywhere outside production)
-  if ((req.body as Record<string, unknown>).dryRun === true || !config.sendEmails) {
-    console.log('[send-quote] Dry run — skipping email');
-    return json(200, { success: true, dryRun: true });
+  // 4. Dry run del corpo (Checkly, api.check.ts): prima di Turnstile, che un monitor non può
+  // superare. Non parte nessuna email; chi lo usa ottiene solo la validazione.
+  if (fields.dryRun === true) return dryRun();
+
+  // 5. Turnstile: un'email parte solo per un browser che ha superato la verifica. Dopo il rate
+  // limit (siteverify non diventa un amplificatore) e dopo la validazione (un 422 non consuma il
+  // token monouso).
+  const human = await config.verifyHuman(fields.turnstileToken);
+  if (human.kind === 'invalid') {
+    return json(403, { error: TURNSTILE_ERROR });
+  }
+  if (human.kind === 'unavailable') {
+    // Fail-closed: senza verifica niente email. A Sentry solo il codice, mai token né IP, e al
+    // massimo un evento ogni dieci minuti (come Upstash, N3): i lead rifiutati si contano nel log.
+    console.error('[send-quote] Turnstile non disponibile:', human.code);
+    // Chiave per codice: un TimeoutError passeggero non deve nascondere per dieci minuti un
+    // "chiave di test in produzione" o un invalid-input-secret.
+    await reportThrottled(`turnstile:${human.code}`, new Error(`Turnstile ${human.code}`));
+    return json(503, { error: EMAIL_ERROR });
   }
 
-  // 5. Send email
+  // 6. Fuori produzione niente email (preview scansionata da HawkScan, dev)
+  if (!config.sendEmails) return dryRun();
+
+  // 7. Send email
   try {
     const { data: emailData, error: emailError } = await emailSender.send({
       from: config.fromEmail,

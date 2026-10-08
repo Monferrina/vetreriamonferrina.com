@@ -25,5 +25,9 @@ paths:
                 privacy: { type: boolean, example: true }
                 honeypot: { type: string, example: '' }
                 dryRun: { type: boolean, example: true }
+                # Token fittizio della doc Turnstile. L'esempio ha dryRun: true, che risponde prima
+                # di Turnstile: la scansione non arriva a siteverify. Il token serve alle varianti
+                # senza dryRun, che sulla preview (secret di test) rispondono 200 in dryRun.
+                turnstileToken: { type: string, example: XXXX.DUMMY.TOKEN.XXXX }
       responses:
         '200': { description: OK }

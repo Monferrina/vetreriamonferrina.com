@@ -70,6 +70,30 @@ describe('submitQuote', () => {
     expect(report).not.toHaveBeenCalled();
   });
 
+  // Seam B5 (Z1): il 503 JSON di Turnstile lo ha gia' segnalato il server; il 403 JSON
+  // (token rifiutato) si segnala, per misurare i falsi positivi.
+  it("un 503 JSON dell'endpoint non va a Sentry: lo ha gia' segnalato il server", async () => {
+    const report = vi.fn();
+    risponde(503, JSON.stringify({ error: 'Errore invio email. Riprova o chiamaci.' }));
+    const esito = await submitQuote(dati, { report });
+    expect(esito).toEqual({ kind: 'error', message: 'Errore invio email. Riprova o chiamaci.' });
+    expect(report).not.toHaveBeenCalled();
+  });
+
+  it('un 403 JSON di Turnstile va a Sentry con il solo stato', async () => {
+    const report = vi.fn();
+    risponde(
+      403,
+      JSON.stringify({ error: 'Verifica anti-spam non riuscita. Riprova o chiamaci.' })
+    );
+    const esito = await submitQuote(dati, { report });
+    expect(esito).toEqual({
+      kind: 'error',
+      message: 'Verifica anti-spam non riuscita. Riprova o chiamaci.',
+    });
+    expect(report.mock.calls[0][0]).toEqual(new Error('send-quote HTTP 403 json'));
+  });
+
   it('un JSON senza la forma attesa e un errore del server', async () => {
     const report = vi.fn();
     risponde(502, 'null');
@@ -87,7 +111,7 @@ describe('submitQuote', () => {
 
   it("l'errore per Sentry non contiene nome, email o telefono", async () => {
     const report = vi.fn();
-    risponde(503, JSON.stringify({ error: 'x' }));
+    risponde(502, JSON.stringify({ error: 'x' }));
     await submitQuote(dati, { report });
     const testo = JSON.stringify(report.mock.calls, Object.getOwnPropertyNames(new Error()));
     for (const dato of [dati.name, dati.email, dati.phone]) expect(testo).not.toContain(dato);

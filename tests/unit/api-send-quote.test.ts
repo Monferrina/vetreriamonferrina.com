@@ -8,6 +8,7 @@ vi.mock('astro:env/server', () => ({
   RESEND_FROM_EMAIL: 'noreply@test.example.com',
   VETRERIA_EMAIL: 'recipient@test.example.com',
   SITE_URL: 'https://vetreriamonferrina.com',
+  TURNSTILE_SECRET_KEY: 'segreto-di-prova',
 }));
 
 // Resend mockato: nessuna chiamata di rete. Con dryRun l'email non viene

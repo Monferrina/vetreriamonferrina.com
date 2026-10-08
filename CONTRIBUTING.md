@@ -42,7 +42,9 @@ La CI in `.github/workflows/ci.yml` esegue questi step nel job `Lint, Type Check
 
 I test end-to-end girano nel workflow `e2e.yml`, job `E2E (Playwright)`, sulla preview Vercel della PR (build di produzione), sui progetti `chromium` e `mobile` (iPhone 13). Il job parte quando Vercel segnala la preview pronta; se il deploy fallisce il check è rosso, se non arriva resta in attesa. Il job gira nel container `mcr.microsoft.com/playwright` con la stessa versione di `@playwright/test`: quando Dependabot alza `@playwright/test` l'E2E della sua PR fallisce finché non si aggiornano tag e digest in `e2e.yml`. In locale si eseguono con `npm run test:e2e` sul dev server; con `BASE_URL` e `VERCEL_AUTOMATION_BYPASS_SECRET` su una preview.
 
-Vanno a parte i monitor Checkly (quando cambiano `__checks__/` o `checkly.config.ts`: `checkly test` sulla PR, `checkly deploy` al merge) e la CI del Worker (`wrangler deploy --dry-run`, solo sulle PR che toccano `cloudflare/maintenance-worker/`).
+Il form preventivi usa Turnstile con le chiavi di test della doc fuori produzione (`npm run dev`, preview). `astro build` gira con `NODE_ENV=production`, quindi un build locale senza `VERCEL_ENV` si comporta da produzione: senza `TURNSTILE_SITE_KEY` si ferma con errore (fuori da GitHub Actions), e senza `TURNSTILE_SECRET_KEY` il form servito risponderebbe 503. È il fail-closed voluto: un build locale si lancia con `VERCEL_ENV=preview npm run build`, che usa le chiavi di test.
+
+Vanno a parte i monitor Checkly (`checkly test --tags preview` sulla preview Vercel di ogni PR, solo per i check con quel tag; `checkly deploy` al merge quando cambiano `__checks__/` o `checkly.config.ts`; i check senza tag presuppongono la produzione e si verificano dopo il merge) e la CI del Worker (`wrangler deploy --dry-run`, solo sulle PR che toccano `cloudflare/maintenance-worker/`).
 
 Verifica l'esito guardando il codice di uscita dei comandi, non filtrando l'output: un `grep` sui soli warning può nascondere un errore che poi blocca la CI.
 

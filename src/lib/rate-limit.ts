@@ -1,7 +1,8 @@
 import process from 'node:process';
+import { isProduction } from './env';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
-import { report } from './sentry-report';
+import { reportThrottled } from './sentry-report';
 
 const MAX_REQUESTS = 5; // 5 per minute per IP
 const WINDOW = '60 s';
@@ -24,8 +25,7 @@ const ratelimit =
 
 // Fail-open dichiarato: senza Upstash in produzione il limite torna per-istanza
 // (5/min × N lambda), lo stato pre-#223. Il fallback resta, ma deve urlare nei log.
-// VERCEL_ENV distingue production da preview (NODE_ENV è 'production' su entrambi).
-if (!ratelimit && (process.env.VERCEL_ENV || process.env.NODE_ENV) === 'production') {
+if (!ratelimit && isProduction()) {
   console.error(
     '[rate-limit] UPSTASH_REDIS_REST_URL/TOKEN assenti in produzione: ' +
       'fallback in-memory per-istanza, il limite globale NON è attivo.'
@@ -88,7 +88,8 @@ export async function isRateLimited(
       // intero ("command was: …"), e la chiave del limite è l'IP del visitatore.
       const name = err instanceof Error ? err.name : 'Error';
       console.error('[rate-limit] Upstash non raggiungibile, fallback in-memory:', name);
-      await report(new Error(`Upstash ${name}`));
+      // N3: un evento ogni dieci minuti basta a dire "Upstash è giù" (sentry-report.ts).
+      await reportThrottled('upstash', new Error(`Upstash ${name}`));
     }
   }
   return isRateLimitedInMemory(ip);

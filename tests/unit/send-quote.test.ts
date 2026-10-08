@@ -1,5 +1,11 @@
-import { describe, it, expect } from 'vitest';
-import { handleSendQuote, type EmailSender, type SendQuoteRequest } from '../../src/lib/send-quote';
+import { describe, it, expect, vi } from 'vitest';
+import {
+  EMAIL_ERROR,
+  TURNSTILE_ERROR,
+  handleSendQuote,
+  type EmailSender,
+  type SendQuoteRequest,
+} from '../../src/lib/send-quote';
 import { config, validBody } from './send-quote-fixtures';
 
 // ---------- test doubles ----------
@@ -264,6 +270,70 @@ describe('handleSendQuote', () => {
 
     expect(result.status).toBe(422);
     expect(sender.calls).toHaveLength(0);
+  });
+
+  // --- Turnstile (Z1, seam B3) ---
+  it('token rifiutato (invalid): 403 con il messaggio anti-spam, nessuna email', async () => {
+    const sender = makeEmailSender();
+    const result = await handleSendQuote(
+      makeReq({ ip: uniqueIp() }),
+      { ...config, verifyHuman: async () => ({ kind: 'invalid' }) },
+      sender
+    );
+
+    expect(result.status).toBe(403);
+    expect(result.body).toEqual({ error: TURNSTILE_ERROR });
+    expect(sender.calls).toHaveLength(0);
+  });
+
+  it('verifica non disponibile: 503 fail-closed, nessuna email', async () => {
+    const sender = makeEmailSender();
+    const result = await handleSendQuote(
+      makeReq({ ip: uniqueIp() }),
+      { ...config, verifyHuman: async () => ({ kind: 'unavailable', code: 'TimeoutError' }) },
+      sender
+    );
+
+    expect(result.status).toBe(503);
+    expect(result.body).toEqual({ error: EMAIL_ERROR });
+    expect(sender.calls).toHaveLength(0);
+  });
+
+  it('dryRun del corpo: risponde prima di Turnstile (Checkly non ha un token)', async () => {
+    const sender = makeEmailSender();
+    const verifyHuman = vi.fn(async () => ({ kind: 'invalid' as const }));
+    const body = { ...validBody, dryRun: true, turnstileToken: undefined };
+    const result = await handleSendQuote(
+      makeReq({ ip: uniqueIp(), body }),
+      { ...config, verifyHuman },
+      sender
+    );
+
+    expect(result.status).toBe(200);
+    expect(result.body).toEqual({ success: true, dryRun: true });
+    expect(verifyHuman).not.toHaveBeenCalled();
+  });
+
+  it('sendEmails: false arriva dopo Turnstile: un token rifiutato dà 403 anche in preview', async () => {
+    const sender = makeEmailSender();
+    const result = await handleSendQuote(
+      makeReq({ ip: uniqueIp() }),
+      { ...config, sendEmails: false, verifyHuman: async () => ({ kind: 'invalid' }) },
+      sender
+    );
+
+    expect(result.status).toBe(403);
+    expect(sender.calls).toHaveLength(0);
+  });
+
+  it('il token del corpo arriva al verificatore', async () => {
+    const verifyHuman = vi.fn(async () => ({ kind: 'ok' as const }));
+    await handleSendQuote(
+      makeReq({ ip: uniqueIp() }),
+      { ...config, verifyHuman },
+      makeEmailSender()
+    );
+    expect(verifyHuman).toHaveBeenCalledWith('XXXX.DUMMY.TOKEN.XXXX');
   });
 
   // --- IP tracking in email ---
