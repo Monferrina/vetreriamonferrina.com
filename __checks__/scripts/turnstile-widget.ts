@@ -20,4 +20,11 @@ test('Turnstile widget presente su /preventivo senza violazioni CSP', async ({ p
     timeout: 15_000,
   });
   expect(violazioni).toEqual([]);
+
+  // Un build fatto fuori produzione e servito come produzione (sitekey vuota o di test della
+  // doc, che iniziano con 1x/2x/3x) darebbe 403 a ogni visitatore con tutti i monitor verdi:
+  // il check negativo si aspetta proprio un 403. Questo è l'unico monitor che lo vede.
+  const sitekey = await page.locator('#turnstile').getAttribute('data-sitekey');
+  expect(sitekey).toBeTruthy();
+  expect(sitekey).not.toMatch(/^[123]x/);
 });

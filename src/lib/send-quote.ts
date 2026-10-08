@@ -104,7 +104,9 @@ export async function handleSendQuote(
     // Fail-closed: senza verifica niente email. A Sentry solo il codice, mai token né IP, e al
     // massimo un evento ogni dieci minuti (come Upstash, N3): i lead rifiutati si contano nel log.
     console.error('[send-quote] Turnstile non disponibile:', human.code);
-    await reportThrottled('turnstile', new Error(`Turnstile ${human.code}`));
+    // Chiave per codice: un TimeoutError passeggero non deve nascondere per dieci minuti un
+    // "chiave di test in produzione" o un invalid-input-secret.
+    await reportThrottled(`turnstile:${human.code}`, new Error(`Turnstile ${human.code}`));
     return json(503, { error: EMAIL_ERROR });
   }
 
