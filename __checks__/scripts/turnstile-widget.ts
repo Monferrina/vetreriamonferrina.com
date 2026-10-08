@@ -36,11 +36,24 @@ test('Turnstile widget funzionante su /preventivo senza violazioni CSP', async (
   const response = await page.goto('/preventivo');
   expect(response?.status()).toBe(200);
 
-  // Il pulsante si accende solo quando Turnstile ha dato un token (QuoteForm.astro): è il
-  // segnale che script, widget e callback funzionano. Misurato sulla preview l'08/10/2026 con
-  // la sitekey di test: il token arriva senza che compaia nessun iframe, quindi l'iframe non è
-  // un segnale affidabile.
-  await expect(page.locator('#submit-btn')).toBeEnabled({ timeout: 20_000 });
+  if (preview) {
+    // Sitekey di test: il token arriva subito e il pulsante si accende (QuoteForm.astro), senza
+    // che compaia nessun iframe (misurato sulla preview l'08/10/2026).
+    await expect(page.locator('#submit-btn')).toBeEnabled({ timeout: 20_000 });
+  } else {
+    // Chiave vera: un browser headless come quello di Checkly riceve la sfida interattiva e
+    // nessun token (misurato in produzione l'08/10/2026: widget visibile, 45 s senza token). È
+    // Turnstile che fa il suo lavoro, quindi qui si pretende solo che il widget di Cloudflare sia
+    // partito: il suo frame è nella pagina (dentro lo shadow DOM, lo vede page.frames()).
+    await expect
+      .poll(
+        () => page.frames().some((f) => f.url().startsWith('https://challenges.cloudflare.com/')),
+        {
+          timeout: 20_000,
+        }
+      )
+      .toBe(true);
+  }
   expect(violazioni).toEqual([]);
 
   // Solo in produzione: un build fatto fuori produzione e servito come produzione (sitekey vuota
