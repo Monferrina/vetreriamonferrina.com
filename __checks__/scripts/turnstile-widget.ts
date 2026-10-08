@@ -15,10 +15,11 @@ test('Turnstile widget presente su /preventivo senza violazioni CSP', async ({ p
   const response = await page.goto('/preventivo');
   expect(response?.status()).toBe(200);
 
-  // Con appearance interaction-only l'iframe esiste anche se resta invisibile.
-  await expect(page.locator('iframe[src*="challenges.cloudflare.com"]')).toBeAttached({
-    timeout: 15_000,
-  });
+  // Il pulsante si accende solo quando Turnstile ha dato un token (QuoteForm.astro): è il
+  // segnale che script, widget e callback funzionano. Misurato sulla preview l'08/10/2026 con
+  // la sitekey di test: il token arriva senza che compaia nessun iframe, quindi l'iframe non è
+  // un segnale affidabile.
+  await expect(page.locator('#submit-btn')).toBeEnabled({ timeout: 20_000 });
   expect(violazioni).toEqual([]);
 
   // Un build fatto fuori produzione e servito come produzione (sitekey vuota o di test della
