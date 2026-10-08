@@ -139,4 +139,24 @@ describe('isRateLimited → Sentry', () => {
     expect(sent[0]).toContain('UpstashError');
     expect(sent[0]).not.toContain(ip);
   });
+
+  it('due guasti Upstash entro dieci minuti: un evento solo; dopo dieci minuti un altro (N3)', async () => {
+    // Solo Date: con i timer finti il flush di Sentry resterebbe appeso.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      const broken = { limit: () => Promise.reject(new errors.UpstashError('ERR giù')) };
+      const t0 = Date.now() + 11 * 60_000; // oltre il tetto lasciato dal test precedente
+      vi.setSystemTime(t0);
+      sent.length = 0;
+      await isRateLimited('198.51.100.78', broken);
+      await isRateLimited('198.51.100.79', broken);
+      expect(sent).toHaveLength(1);
+
+      vi.setSystemTime(t0 + 10 * 60_000);
+      await isRateLimited('198.51.100.80', broken);
+      expect(sent).toHaveLength(2);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 });
