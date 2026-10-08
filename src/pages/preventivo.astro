@@ -6,11 +6,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import GlassPanel from '../components/GlassPanel.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import { turnstileSiteKey } from '../lib/turnstile';
+import { isProduction } from '../lib/env';
 export const prerender = true;
 
 // Pagina prerenderizzata: la sitekey si sceglie al build, con lo stesso predicato di sendEmails
-// (api/send-quote.ts), così la chiave vera sta dove partono email vere.
-const production = (process.env.VERCEL_ENV || process.env.NODE_ENV) === 'production';
+// (src/lib/env.ts), così la chiave vera sta dove partono email vere.
+const production = isProduction();
 // Build di produzione su Vercel senza sitekey: si ferma qui. Online andrebbe un form che dà sempre
 // 403, e nessun monitor lato server lo vedrebbe. Solo VERCEL_ENV: un build fuori da Vercel
 // (ci.yml, locale) gira con NODE_ENV=production (misurato 08/10/2026: `npm run build` senza

@@ -1,4 +1,5 @@
 import process from 'node:process';
+import { isProduction } from './env';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import { report } from './sentry-report';
@@ -24,8 +25,7 @@ const ratelimit =
 
 // Fail-open dichiarato: senza Upstash in produzione il limite torna per-istanza
 // (5/min × N lambda), lo stato pre-#223. Il fallback resta, ma deve urlare nei log.
-// VERCEL_ENV distingue production da preview (NODE_ENV è 'production' su entrambi).
-if (!ratelimit && (process.env.VERCEL_ENV || process.env.NODE_ENV) === 'production') {
+if (!ratelimit && isProduction()) {
   console.error(
     '[rate-limit] UPSTASH_REDIS_REST_URL/TOKEN assenti in produzione: ' +
       'fallback in-memory per-istanza, il limite globale NON è attivo.'

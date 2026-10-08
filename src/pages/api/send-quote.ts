@@ -1,4 +1,3 @@
-import process from 'node:process';
 import type { APIContext } from 'astro';
 import { Resend } from 'resend';
 import {
@@ -10,6 +9,7 @@ import {
 } from 'astro:env/server';
 import { EMAIL_ERROR, handleSendQuote } from '../../lib/send-quote';
 import { turnstileServerConfig, verifyTurnstile } from '../../lib/turnstile';
+import { isProduction } from '../../lib/env';
 import { report } from '../../lib/sentry-report';
 // L'init di Sentry: l'integrazione non lo porta negli endpoint (astro.config.mjs).
 import '../../../sentry.server.config';
@@ -34,11 +34,7 @@ export async function POST(context: APIContext) {
 
 async function handle({ request, clientAddress }: APIContext) {
   const siteUrl = (SITE_URL || '').trim();
-  // Un solo predicato per "produzione", lo stesso di rate-limit.ts: dove partono email vere si
-  // usano chiavi Turnstile vere, dove si usano quelle di test non parte niente. Senza VERCEL_ENV
-  // (variabili di sistema spente) ripiega su NODE_ENV, così in produzione l'email parte invece
-  // di sparire in silenzio.
-  const production = (process.env.VERCEL_ENV || process.env.NODE_ENV) === 'production';
+  const production = isProduction();
   const allowedOrigins = [
     siteUrl,
     ...(import.meta.env.DEV ? ['http://localhost:4321', 'http://localhost:3000'] : []),

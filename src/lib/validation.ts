@@ -39,9 +39,9 @@ export function validateQuoteForm(data: {
   [K in keyof QuoteFormData]?: unknown;
 }): ValidationError[] {
   const errors: ValidationError[] = [];
-  const { name, phone, email, serviceType, description, measurements } = data;
+  const { honeypot, name, phone, email, serviceType, description, measurements } = data;
 
-  if (data.honeypot) {
+  if (honeypot) {
     return [{ field: 'honeypot', message: 'Bot detected' }];
   }
 

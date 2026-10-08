@@ -23,8 +23,14 @@ describe('verifyTurnstile', () => {
 
 // Risposta finta di siteverify. Con un corpo non JSON, res.json() rifiuta come farebbe fetch.
 function risponde(status: number, body: unknown) {
-  return vi.fn(async () => new Response(JSON.stringify(body), { status }));
+  return vi.fn(
+    async () => new Response(JSON.stringify(body), { status })
+  ) as unknown as typeof fetch;
 }
+const lancia = (err: Error) =>
+  vi.fn(async () => {
+    throw err;
+  }) as unknown as typeof fetch;
 
 describe('verifyTurnstile: risposte di siteverify', () => {
   it('manda secret e token a siteverify come form, con timeout', async () => {
@@ -34,7 +40,7 @@ describe('verifyTurnstile: risposte di siteverify', () => {
       action: 'send-quote',
     });
     expect(await verifyTurnstile('tok', produzione, fetchFn)).toEqual({ kind: 'ok' });
-    const [url, init] = fetchFn.mock.calls[0] as unknown as [string, RequestInit];
+    const [url, init] = vi.mocked(fetchFn).mock.calls[0] as unknown as [string, RequestInit];
     expect(url).toBe('https://challenges.cloudflare.com/turnstile/v0/siteverify');
     expect(init.method).toBe('POST');
     expect(String(init.body)).toBe('secret=segreto-vero&response=tok');
@@ -59,19 +65,9 @@ describe('verifyTurnstile: risposte di siteverify', () => {
 
   it('rete, timeout, HTTP diverso da 200, JSON rotto, internal-error, errori sul secret: unavailable', async () => {
     const casi: [typeof fetch, string][] = [
-      [
-        vi.fn(async () => {
-          throw new TypeError('fetch failed');
-        }) as unknown as typeof fetch,
-        'TypeError',
-      ],
-      [
-        vi.fn(async () => {
-          throw new DOMException('t', 'TimeoutError');
-        }) as unknown as typeof fetch,
-        'TimeoutError',
-      ],
-      [risponde(502, {}) as unknown as typeof fetch, 'HTTP 502'],
+      [lancia(new TypeError('fetch failed')), 'TypeError'],
+      [lancia(new DOMException('t', 'TimeoutError')), 'TimeoutError'],
+      [risponde(502, {}), 'HTTP 502'],
       [
         vi.fn(async () => new Response('<html>', { status: 200 })) as unknown as typeof fetch,
         'SyntaxError',
@@ -80,17 +76,17 @@ describe('verifyTurnstile: risposte di siteverify', () => {
         risponde(200, {
           success: false,
           'error-codes': ['internal-error'],
-        }) as unknown as typeof fetch,
+        }),
         'internal-error',
       ],
       [
         risponde(200, {
           success: false,
           'error-codes': ['invalid-input-secret'],
-        }) as unknown as typeof fetch,
+        }),
         'invalid-input-secret',
       ],
-      [risponde(200, { success: false }) as unknown as typeof fetch, 'risposta senza codici'],
+      [risponde(200, { success: false }), 'risposta senza codici'],
     ];
     for (const [fetchFn, code] of casi) {
       expect(await verifyTurnstile('tok', produzione, fetchFn)).toEqual({

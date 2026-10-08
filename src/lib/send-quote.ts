@@ -36,6 +36,11 @@ function json(status: number, body: Record<string, unknown>): JsonResponse {
   return { status, body };
 }
 
+function dryRun(): JsonResponse {
+  console.log('[send-quote] Dry run — skipping email');
+  return json(200, { success: true, dryRun: true });
+}
+
 export interface EmailSender {
   send(params: {
     from: string;
@@ -86,10 +91,7 @@ export async function handleSendQuote(
 
   // 4. Dry run del corpo (Checkly, api.check.ts): prima di Turnstile, che un monitor non può
   // superare. Non parte nessuna email; chi lo usa ottiene solo la validazione.
-  if (fields.dryRun === true) {
-    console.log('[send-quote] Dry run — skipping email');
-    return json(200, { success: true, dryRun: true });
-  }
+  if (fields.dryRun === true) return dryRun();
 
   // 5. Turnstile: un'email parte solo per un browser che ha superato la verifica. Dopo il rate
   // limit (siteverify non diventa un amplificatore) e dopo la validazione (un 422 non consuma il
@@ -106,10 +108,7 @@ export async function handleSendQuote(
   }
 
   // 6. Fuori produzione niente email (preview scansionata da HawkScan, dev)
-  if (!config.sendEmails) {
-    console.log('[send-quote] Dry run — skipping email');
-    return json(200, { success: true, dryRun: true });
-  }
+  if (!config.sendEmails) return dryRun();
 
   // 7. Send email
   try {

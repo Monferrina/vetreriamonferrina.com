@@ -6,7 +6,10 @@ import { test, expect } from '@playwright/test';
 test('Turnstile widget presente su /preventivo senza violazioni CSP', async ({ page }) => {
   const violazioni: string[] = [];
   page.on('console', (msg) => {
-    if (/Content Security Policy/i.test(msg.text())) violazioni.push(msg.text());
+    // Stessa regex di tests/e2e/csp.spec.ts.
+    if (/Content Security Policy|Refused to (execute|load|apply)/.test(msg.text())) {
+      violazioni.push(msg.text());
+    }
   });
 
   const response = await page.goto('/preventivo');
