@@ -17,9 +17,9 @@ jobs:
     name: HawkScan produzione
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    permissions:
-      contents: read
-      id-token: write # token OIDC per Trusted Sources di Vercel (TS1)
+    # Il segreto di bypass sta nell'Environment hawkscan, aperto solo a main (TS1): un
+    # workflow scritto su un altro ramo non lo legge.
+    environment: hawkscan
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -35,15 +35,12 @@ jobs:
           # Il Bot Fight Mode di Cloudflare risponde ai runner GitHub con una challenge (403,
           # scan c8106a85: 3 URL, tutti di Cloudflare) e nessuna regola lo puo' saltare. Si
           # scansiona l'alias Vercel di produzione: stessa app, stessi header. L'alias è
-          # protetto dalla Vercel Authentication (AL1): si entra con il token OIDC di
-          # stackhawk-oidc.yml.
+          # protetto dalla Vercel Authentication (AL1): il bypass entra dalla
+          # authentication.external di stackhawk.yml.
           APP_HOST: https://vetreriamonferrina.vercel.app
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         with:
           apiKey: ${{ secrets.HAWK_API_KEY }}
           # La CLI misurata in locale il 05/10; latest cambierebbe senza una PR.
           version: 6.5.0
-          configurationFiles: stackhawk.yml stackhawk-oidc.yml
-
-      - name: Diagnosi TS1 (temporanea)
-        if: always()
-        run: cat "$RUNNER_TEMP/ts1-diagnosi.log"
+          configurationFiles: stackhawk.yml

@@ -18,17 +18,14 @@ describe('stackhawk.yml, scansione della produzione', () => {
 
 // Il bypass della Vercel Authentication (AL1) va in authentication.external: è l'unica
 // forma che StackHawk oscura nella configurazione caricata; in un replacer finiva in
-// chiaro sulla piattaforma (H1, scan 47b0ee7c). Dal TS1 sta solo nel file della preview,
-// usato in locale; in CI si entra con il token OIDC di stackhawk-oidc.yml.
-const preview = parse(readFileSync('stackhawk-preview.yml', 'utf-8'));
-
-describe('stackhawk-preview.yml, bypass Vercel', () => {
+// chiaro sulla piattaforma (H1, scan 47b0ee7c).
+describe('stackhawk.yml, bypass Vercel', () => {
   test('sta in authentication.external e in nessun replacer', () => {
-    const values = preview.app.authentication?.external?.values ?? [];
+    const values = config.app.authentication?.external?.values ?? [];
     expect(values).toContainEqual({
       type: 'TOKEN',
       value: { name: 'x-vercel-protection-bypass', val: '${VERCEL_AUTOMATION_BYPASS_SECRET}' },
     });
-    expect(JSON.stringify(preview.hawkAddOn?.replacer ?? {})).not.toContain('bypass');
+    expect(JSON.stringify(config.app.replacers ?? [])).not.toContain('bypass');
   });
 });
