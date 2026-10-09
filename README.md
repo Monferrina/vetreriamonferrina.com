@@ -112,15 +112,15 @@ npm run check        # Type check (astro check)
 
 In `.github/workflows/` ci sono sette workflow. I passi comuni (Node 22 con cache npm e `npm ci`) stanno nella action composita `.github/actions/setup`.
 
-| Workflow                    | Quando gira                                     | Blocca il merge |
-| --------------------------- | ----------------------------------------------- | --------------- |
-| `ci.yml`                    | push su `main`, PR verso `main`                 | sì              |
-| `e2e.yml`                   | preview Vercel pronta (`deployment_status`)     | sì              |
-| `worker-ci.yml`             | PR che toccano `cloudflare/maintenance-worker/` | no              |
-| `checkly.yml`               | PR e push su `main` che toccano `__checks__/`   | no              |
-| `update-reviews.yml`        | cron mensile e avvio manuale                    | no              |
-| `dependabot-auto-merge.yml` | PR aperte da Dependabot                         | no              |
-| `agenti.yml`                | PR aperta, o commento `@gemini-cli`             | no              |
+| Workflow                    | Quando gira                                       | Blocca il merge |
+| --------------------------- | ------------------------------------------------- | --------------- |
+| `ci.yml`                    | push su `main`, PR verso `main`                   | sì              |
+| `e2e.yml`                   | preview Vercel pronta (`deployment_status`)       | sì              |
+| `worker-ci.yml`             | PR che toccano `cloudflare/maintenance-worker/`   | no              |
+| `checkly.yml`               | preview e produzione pronte (`deployment_status`) | no              |
+| `update-reviews.yml`        | cron mensile e avvio manuale                      | no              |
+| `dependabot-auto-merge.yml` | PR aperte da Dependabot                           | no              |
+| `agenti.yml`                | PR aperta, o commento `@gemini-cli`               | no              |
 
 Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione e il controllo dei link interni (`npm run check:links`). Il job `dependency-review`, solo sulle PR, blocca le dipendenze vulnerabili che la PR introduce, transitive comprese. Il workflow `e2e.yml` parte quando Vercel ha pronta la preview della PR ed esegue i test Playwright su quella preview, nel container ufficiale di Playwright che ha già Chromium e WebKit.
 
@@ -267,8 +267,10 @@ Monitoring-as-code su una sola location (`eu-central-1`) per rientrare nel free 
 - Pagine chiave (servizi, preventivo, contatti, chi siamo, galleria, FAQ), status 200 ogni 6 ore
 - Sitemap raggiungibile, status 200 ogni ora, seguendo il redirect verso `/sitemap-index.xml`
 - Homepage browser, Playwright su titolo e rendering, una volta al giorno
+- Turnstile widget, Playwright su `/preventivo` una volta al giorno: il widget di Cloudflare parte, nessuna violazione CSP, sitekey vera (sulla preview: il pulsante si accende con la sitekey di test)
+- Send Quote API con token Turnstile fittizio, POST senza `dryRun` una volta al giorno, attende il `403` della verifica (`shouldFail`): un segreto sbagliato o `siteverify` giù danno `503`. In caso di regressione a fail-open manda un'email marcata "Monitor Checkly"
 
-La configurazione sta in `checkly.config.ts` e `__checks__/`, il deploy avviene in CI al merge su `main`. Gli alert vanno sulla casella Proton, con integrazioni attive verso Vercel e GitHub.
+La configurazione sta in `checkly.config.ts` e `__checks__/`. In CI (`checkly.yml`) i check con tag `preview` girano sulla preview di ogni PR; tutti i check si deployano quando il deploy di produzione è pronto, non al merge, perché Checkly esegue subito un check nuovo. Gli altri presuppongono la produzione e non girano sulle PR. Gli alert vanno sulla casella Proton, con integrazioni attive verso Vercel e GitHub.
 
 ## Aggiornare i dati Google
 
