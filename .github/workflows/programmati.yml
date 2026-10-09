@@ -17,6 +17,9 @@ jobs:
     name: HawkScan produzione
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    # Il segreto di bypass sta nell'Environment hawkscan, aperto solo a main (TS1): un
+    # workflow scritto su un altro ramo non lo legge.
+    environment: hawkscan
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

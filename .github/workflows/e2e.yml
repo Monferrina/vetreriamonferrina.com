@@ -25,6 +25,9 @@ jobs:
     if: github.event.deployment.environment == 'Preview'
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write # token OIDC per Trusted Sources di Vercel (TS1)
     # Browser e librerie di sistema già nell'immagine ufficiale (doc Playwright): niente apt a
     # ogni run (#367: 14m38s). Tag = versione di @playwright/test, a mano (CONTRIBUTING.md).
     container:
@@ -52,7 +55,6 @@ jobs:
         run: npm run test:e2e
         env:
           BASE_URL: ${{ github.event.deployment_status.environment_url }}
-          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
 
       - name: Upload report on failure
         if: failure()
