@@ -117,6 +117,8 @@ Finché la PR non viene mergiata il sito resta sui dati precedenti, che restano 
 
 La chiave API non va mai committata: variabili d'ambiente in locale, GitHub Secrets in CI. Le restrizioni sulla chiave sono limitate a Places API e Places API (New).
 
+La mappa della pagina contatti usa un'altra chiave, `GOOGLE_MAPS_EMBED_KEY`: è pubblica per costruzione (finisce nell'HTML), limitata alla Maps Embed API e al referrer del sito, e sta in Doppler `prd`. Le due chiavi non si scambiano: la chiave Places non va mai in `prd` né nel browser.
+
 Lo script gira solo server-side, a build time o in CI, quindi la chiave non finisce mai nel browser. I file JSON committati contengono solo dati già pubblici su Google: rating, nome abbreviato dell'autore, data, testo della recensione e orari.
 
 Se in futuro si userà Google Maps JavaScript lato client, quella chiave sarà esposta e andrà protetta con Firebase App Check. Riferimento: https://developers.google.com/maps/documentation/javascript/places-app-check
