@@ -6,10 +6,14 @@
 //    punteggio basso di /contatti);
 //  - Privacy/GDPR: cookie e script di Google partono solo su azione esplicita.
 // Placeholder alto 400px come l'iframe → nessun layout shift (CLS).
+import { GOOGLE_MAPS_EMBED_KEY } from 'astro:env/server';
 import { street, town } from '../data/contatti';
 
 const PLACE_ID = 'ChIJcx_Q1ESwh0cRqv3FdLTrU1w';
-const API_KEY = import.meta.env.GOOGLE_PLACES_API_KEY ?? '';
+// Pubblica per costruzione (finisce nell'HTML): solo Maps Embed API, limitata al referrer del
+// sito. Non è GOOGLE_PLACES_API_KEY, la chiave Places dello script delle recensioni, che non deve
+// stare nel browser: prima lo stesso nome conteneva in prd questa chiave e in dev/ci l'altra (F2).
+const API_KEY = GOOGLE_MAPS_EMBED_KEY ?? '';
 const embedUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=place_id:${PLACE_ID}&zoom=17&language=it`;
 ---
 

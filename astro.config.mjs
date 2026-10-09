@@ -53,6 +53,13 @@ export default defineConfig({
         optional: true,
       }),
       TURNSTILE_SITE_KEY: envField.string({ context: 'server', access: 'public', optional: true }),
+      // Chiave della mappa di /contatti (Maps Embed API, referrer del sito), letta al build della
+      // pagina prerenderizzata e scritta nell'HTML: pubblica, da qui access 'public' (F2).
+      GOOGLE_MAPS_EMBED_KEY: envField.string({
+        context: 'server',
+        access: 'public',
+        optional: true,
+      }),
     },
   },
 

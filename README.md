@@ -82,7 +82,8 @@ In locale si parte da `.env.example` copiato in `.env.local`. Su Vercel si confi
 | `TURNSTILE_SITE_KEY`       | Sitekey Turnstile, pubblica, letta al build di `/preventivo`; obbligatoria nel build di produzione su Vercel                                 | Cloudflare → Turnstile                             |
 | `UPSTASH_REDIS_REST_URL`   | Endpoint REST del database Redis per il rate-limit                                                                                           | [console.upstash.com](https://console.upstash.com) |
 | `UPSTASH_REDIS_REST_TOKEN` | Token REST corrispondente                                                                                                                    | [console.upstash.com](https://console.upstash.com) |
-| `GOOGLE_PLACES_API_KEY`    | Chiave Places API, solo per lo script build-time                                                                                             | Google Cloud Console                               |
+| `GOOGLE_PLACES_API_KEY`    | Chiave Places API, solo per lo script delle recensioni; mai nel browser né in Doppler `prd`                                                  | Google Cloud Console                               |
+| `GOOGLE_MAPS_EMBED_KEY`    | Chiave della mappa di `/contatti`, pubblica: solo Maps Embed API, limitata al referrer del sito; in Doppler `prd`                            | Google Cloud Console                               |
 | `GOOGLE_PLACE_ID`          | Place ID della vetreria, solo per lo script                                                                                                  | Place ID Finder o Google Maps                      |
 
 Le due variabili Upstash sono opzionali in locale: se mancano, il rate-limit di `/api/send-quote` ricade su un contatore in memoria.
