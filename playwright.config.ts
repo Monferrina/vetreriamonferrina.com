@@ -1,13 +1,12 @@
 import { defineConfig, devices } from '@playwright/test';
 
 // In CI gli E2E girano sulla preview Vercel della PR (BASE_URL dal workflow e2e.yml), cioè sul
-// build di produzione; in locale sul dev server. La preview è protetta: il secret "Protection
-// Bypass for Automation" passa come header, senza il quale arriva la pagina di login Vercel;
+// build di produzione; in locale sul dev server. La preview è protetta: il token OIDC per
+// Trusted Sources lo aggiunge tests/e2e/fixtures.ts, senza arriva la pagina di login Vercel;
 // x-vercel-skip-toolbar toglie la toolbar che Vercel inietta nelle preview (misurato il 05/10:
 // lo script vercel.live sparisce dall'HTML), così il DOM sotto test è quello di produzione.
 const remoto = process.env.BASE_URL;
 const baseURL = remoto ?? 'http://localhost:4321';
-const bypass = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
 
 export default defineConfig({
   testDir: 'tests/e2e',
@@ -24,12 +23,10 @@ export default defineConfig({
     : [['html', { open: 'never' }]],
   use: {
     baseURL,
-    extraHTTPHeaders: bypass
-      ? { 'x-vercel-protection-bypass': bypass, 'x-vercel-skip-toolbar': '1' }
-      : undefined,
+    extraHTTPHeaders: remoto ? { 'x-vercel-skip-toolbar': '1' } : undefined,
     // La traccia del tentativo che fallisce, non del retry: sulla preview due fallimenti rari
     // (05/10, pagina senza CSS) erano passati al retry e la traccia non diceva niente.
-    // In CI no: la traccia registra gli header delle richieste, bypass compreso, e
+    // In CI no: la traccia registra gli header delle richieste, token compreso, e
     // e2e.yml la pubblica come artefatto di una repo pubblica (Z1, PT-2).
     trace: process.env.CI ? 'off' : 'retain-on-first-failure',
     screenshot: 'only-on-failure',

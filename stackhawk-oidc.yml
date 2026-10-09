@@ -1,0 +1,27 @@
+# Accesso di HawkScan in GitHub Actions (programmati.yml): hawk scan stackhawk.yml stackhawk-oidc.yml.
+# Vercel Authentication protegge l'alias di produzione (AL1). Si entra con un token OIDC di
+# GitHub accettato da Trusted Sources di Vercel (TS1), al posto del segreto di bypass. Il token
+# dura 300 s (misurato il 09/10/2026, run 37903142803) e la scansione fino a 5 minuti:
+# externalCommand si rilancia quando la sessione cade, e sessionVerification la controlla sul
+# testPath (doc StackHawk). Le variabili ACTIONS_ID_TOKEN_* esistono solo nel job con
+# id-token: write, e il comando le eredita (misurato in locale con un server finto).
+app:
+  authentication:
+    externalCommand:
+      command: sh
+      parameters:
+        - -c
+        - >-
+          curl -sSf -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN"
+          "$ACTIONS_ID_TOKEN_REQUEST_URL"
+          | jq -c '{headers: [{"x-vercel-trusted-oidc-idp-token": .value}]}'
+    sessionVerification:
+      pollFrequency: 15
+    # Senza token Vercel risponde con un redirect al login, con il token 200.
+    testPath:
+      path: /
+      success: '.*200.*'
+  # Nelle richieste salvate nei rilievi e nel log l'header esce [REDACTED] (misurato in locale).
+  redact:
+    headers:
+      - x-vercel-trusted-oidc-idp-token

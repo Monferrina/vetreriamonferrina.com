@@ -1,5 +1,6 @@
 # HawkScan, scansione della produzione (env Production): settimanale da programmati.yml.
 # Per la preview Vercel di una PR si aggiunge stackhawk-preview.yml (vince il file dopo).
+# In CI si aggiunge stackhawk-oidc.yml.
 app:
   applicationId: 60a7a4e9-1923-4cad-a266-918a20d03404
   env: Production
@@ -8,27 +9,10 @@ app:
   # rate limit dei clienti. Il controllo sta in tests/unit/stackhawk-config.test.ts.
   excludePaths:
     - '^/api/send-quote'
-  # Vercel Authentication protegge tutte le deployment (AL1): senza il bypass l'alias
-  # risponde con il login Vercel. Sta in authentication perché lì StackHawk lo oscura
-  # anche nella config caricata ('[REDACTED]', misurato 05/10 con un valore finto); messo
-  # nel replacer finiva in chiaro sulla piattaforma (scan 47b0ee7c). Il controllo sta in
-  # tests/unit/stackhawk-config.test.ts.
-  authentication:
-    external:
-      values:
-        - type: TOKEN
-          value:
-            name: x-vercel-protection-bypass
-            val: ${VERCEL_AUTOMATION_BYPASS_SECRET}
-    # Senza bypass Vercel risponde con un redirect al login, con il bypass 200.
-    testPath:
-      path: /
-      success: '.*200.*'
-  redact:
-    headers:
-      - x-vercel-protection-bypass
-    values:
-      - ${VERCEL_AUTOMATION_BYPASS_SECRET}
+  # Vercel Authentication protegge tutte le deployment (AL1): l'accesso sta nel file che si
+  # aggiunge a questo, stackhawk-oidc.yml in CI o stackhawk-preview.yml in locale. Non qui:
+  # HawkScan fonde i file concatenando le liste e accetta uno solo tra external ed
+  # externalCommand (misurato il 09/10/2026, TS1).
 
 hawk:
   # Un Medium o un High fa uscire la scansione con 42: il job settimanale fallisce e
