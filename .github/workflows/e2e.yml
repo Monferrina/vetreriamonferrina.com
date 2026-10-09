@@ -51,31 +51,10 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      # Sonda temporanea (TS1): claim del token OIDC di GitHub e risposta della preview con il
-      # solo token, prima e dopo la configurazione di Trusted Sources. Si toglie nella stessa PR.
-      - name: Sonda Trusted Sources
-        run: |
-          node --input-type=module <<'EOF'
-          const { ACTIONS_ID_TOKEN_REQUEST_URL: url, ACTIONS_ID_TOKEN_REQUEST_TOKEN: rt, BASE_URL } = process.env;
-          const { value: token } = await (await fetch(url, { headers: { authorization: `bearer ${rt}` } })).json();
-          console.log(`::add-mask::${token}`);
-          const c = JSON.parse(Buffer.from(token.split('.')[1], 'base64url'));
-          console.log(JSON.stringify({ aud: c.aud, sub: c.sub, repository: c.repository, ref: c.ref, event_name: c.event_name, workflow_ref: c.workflow_ref, job_workflow_ref: c.job_workflow_ref, environment: c.environment, durata_s: c.exp - c.iat, nbf_s: c.iat - c.nbf }));
-          for (const [nome, headers] of [['senza token', {}], ['con token', { 'x-vercel-trusted-oidc-idp-token': token }]]) {
-            const res = await fetch(BASE_URL, { headers, redirect: 'manual' });
-            const loc = res.headers.get('location');
-            const titolo = (await res.text()).match(/<title>(.*?)<\/title>/)?.[1];
-            console.log(nome, res.status, loc ? new URL(loc, BASE_URL).pathname : '', titolo ?? '');
-          }
-          EOF
-        env:
-          BASE_URL: ${{ github.event.deployment_status.environment_url }}
-
       - name: Run E2E tests
         run: npm run test:e2e
         env:
           BASE_URL: ${{ github.event.deployment_status.environment_url }}
-          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
 
       - name: Upload report on failure
         if: failure()
