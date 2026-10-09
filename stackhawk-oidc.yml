@@ -10,11 +10,7 @@ app:
     externalCommand:
       command: sh
       parameters:
-        - -c
-        - >-
-          curl -sSf -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN"
-          "$ACTIONS_ID_TOKEN_REQUEST_URL"
-          | jq -c '{headers: [{"x-vercel-trusted-oidc-idp-token": .value}]}'
+        - .github/ts1-diagnosi.sh
     sessionVerification:
       pollFrequency: 15
     # Senza token Vercel risponde con un redirect al login, con il token 200.

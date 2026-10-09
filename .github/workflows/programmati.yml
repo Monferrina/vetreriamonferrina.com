@@ -43,3 +43,7 @@ jobs:
           # La CLI misurata in locale il 05/10; latest cambierebbe senza una PR.
           version: 6.5.0
           configurationFiles: stackhawk.yml stackhawk-oidc.yml
+
+      - name: Diagnosi TS1 (temporanea)
+        if: always()
+        run: cat "$RUNNER_TEMP/ts1-diagnosi.log"
