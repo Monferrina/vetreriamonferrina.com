@@ -8,9 +8,9 @@ import { test as base, expect } from '@playwright/test';
 // test manderebbero metriche vere.
 export const test = base.extend<{ terzi: void }>({
   // La preview è protetta (Vercel Authentication): in e2e.yml passa con un token OIDC di GitHub
-  // accettato da Trusted Sources (TS1), al posto del segreto di bypass. Il token dura 300 s
-  // (misurato il 09/10/2026, run 37903142803) e la suite 1.8 minuti: uno per test, così un run
-  // lento o con retry non finisce sulla pagina di login. Fuori da e2e.yml la variabile non c'è.
+  // accettato da Trusted Sources (TS1). Il token dura 300 s (misurato il 09/10/2026, run
+  // 37903142803) e la suite 1.8 minuti: uno per test, così un run lento o con retry non finisce
+  // sulla pagina di login. Fuori da e2e.yml la variabile non c'è.
   extraHTTPHeaders: async ({ extraHTTPHeaders }, use) => {
     const url = process.env.ACTIONS_ID_TOKEN_REQUEST_URL;
     if (!url) return use(extraHTTPHeaders);
@@ -31,7 +31,7 @@ export const test = base.extend<{ terzi: void }>({
       // Turnstile (Z1): lo script di Cloudflare è fuori dal sito e resterebbe bloccato, con il
       // pulsante di invio spento per sempre (misurato in CI l'08/10/2026: 12 test in timeout).
       // Al suo posto un finto window.turnstile che dà subito il token fittizio della doc: i test
-      // restano ermetici e il bypass non esce dal sito. Il widget vero lo prova il check Checkly
+      // restano ermetici e il token non esce dal sito. Il widget vero lo prova il check Checkly
       // sulla preview (__checks__/scripts/turnstile-widget.ts). Registrata dopo il blocco: Playwright
       // prova le route dall'ultima registrata, quindi questa vince.
       await context.route('https://challenges.cloudflare.com/turnstile/v0/api.js**', (route) =>
