@@ -200,9 +200,11 @@ describe('GET /api/meteo', () => {
     ['simbolo del prototipo', metBody('constructor')],
     ['serie vuota', { properties: { timeseries: [] } }],
     ['non un oggetto', ['MET']],
+    ['corpo vuoto', null],
     ['risposta oltre 1 MB', { ...metBody(), riempitivo: 'x'.repeat(1_100_000) }],
   ])('MET malformato (%s): 502', async (_caso, body) => {
-    const res = await chiamaMeteo(vi.fn().mockResolvedValue(metResponse(body)));
+    const risposta = body === null ? new Response(null, { status: 200 }) : metResponse(body);
+    const res = await chiamaMeteo(vi.fn().mockResolvedValue(risposta));
     expect(res.status).toBe(502);
     expect(await res.text()).not.toMatch(/<|999|150|MET/);
   });
@@ -265,5 +267,14 @@ describe('GET /api/meteo', () => {
     expect(fetchMock.mock.calls[0][1]?.signal).toBeInstanceOf(AbortSignal);
     expect(res.status).toBe(504);
     expect(await res.text()).not.toMatch(/timeout|aborted/i);
+  });
+
+  // OWASP REST Security Cheat Sheet: metodi fuori elenco → 405 Method Not Allowed, con Allow.
+  it('metodi diversi da GET: 405 con Allow: GET', async () => {
+    vi.resetModules();
+    const { ALL } = await import('../../src/pages/api/meteo');
+    const res = ALL();
+    expect(res.status).toBe(405);
+    expect(res.headers.get('Allow')).toBe('GET');
   });
 });
