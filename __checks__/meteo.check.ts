@@ -1,5 +1,5 @@
 import { ApiCheck, AssertionBuilder, Frequency } from 'checkly/constructs';
-import { websiteGroup } from './groups.check';
+import { avvisiSito, websiteGroup } from './groups.check';
 
 // /api/meteo dal dominio pubblico, come la chiama il widget (passa da Cloudflare e dal Worker,
 // che timbra x-origin-verify). Solo lettura, nessun effetto. Controlla i campi che il widget
@@ -10,6 +10,7 @@ new ApiCheck('meteo-api', {
   name: 'Meteo API',
   group: websiteGroup,
   activated: true,
+  alertChannels: avvisiSito,
   frequency: Frequency.EVERY_30M,
   degradedResponseTime: 3000,
   maxResponseTime: 10000,
