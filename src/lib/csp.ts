@@ -10,7 +10,8 @@ export const cspDirectives = [
   "font-src 'self'",
   // Host di ingest dell'org Sentry (regione UE), non *.ingest.de.sentry.io: il wildcard aprirebbe
   // un canale d'uscita verso qualunque org Sentry. Senza, il browser blocca gli invii degli errori.
-  "connect-src 'self' https://api.open-meteo.com https://o4512180292878336.ingest.de.sentry.io",
+  // Il meteo passa da /api/meteo (stesso dominio): nessun servizio meteo qui.
+  "connect-src 'self' https://o4512180292878336.ingest.de.sentry.io",
   'frame-src https://www.google.com',
   "frame-ancestors 'none'",
   "base-uri 'self'",

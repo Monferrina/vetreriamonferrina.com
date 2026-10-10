@@ -15,3 +15,6 @@ export const postalCode = '15033';
 export const town = 'Casale Monferrato';
 export const province = 'AL';
 export const city = `${postalCode} ${town} (${province})`;
+// Al massimo 4 decimali: MET Norway risponde 403 con 5 o più (termini, /api/meteo).
+export const latitude = 45.1334;
+export const longitude = 8.4525;

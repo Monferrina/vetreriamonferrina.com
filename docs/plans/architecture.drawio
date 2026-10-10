@@ -37,10 +37,10 @@
                 <mxCell id="google_api" value="fetch-place-data.mjs (singola chiamata)&#xa;&#xa;• Recensioni >= 4★ (nomi abbreviati GDPR)&#xa;• Orari apertura reali&#xa;• 10 foto scaricate localmente&#xa;• API key solo server-side (env var)&#xa;• Quote: 50 req/day" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" parent="google_group" vertex="1">
                     <mxGeometry x="20" y="35" width="260" height="130" as="geometry"/>
                 </mxCell>
-                <mxCell id="weather_group" value="Open-Meteo (gratis)" style="swimlane;startSize=25;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" parent="1" vertex="1">
+                <mxCell id="weather_group" value="MET Norway via /api/meteo" style="swimlane;startSize=25;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;rounded=1;arcSize=8;" parent="1" vertex="1">
                     <mxGeometry x="40" y="540" width="300" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="weather_api" value="Widget meteo client-side | No API key&#xa;Consigli intelligenti sul vetro (temp/umidita/pioggia)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="weather_group" vertex="1">
+                <mxCell id="weather_api" value="Widget meteo (dati da /api/meteo) | No API key&#xa;Consigli intelligenti sul vetro (temp/umidita/pioggia)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="weather_group" vertex="1">
                     <mxGeometry x="20" y="30" width="260" height="50" as="geometry"/>
                 </mxCell>
                 <mxCell id="arrow1" value="webhook&#xa;on publish" style="endArrow=classic;html=1;fontSize=10;strokeWidth=2;strokeColor=#666;" parent="1" source="cms_group" target="build_group" edge="1">
@@ -73,7 +73,7 @@
                 <mxCell id="arrow3" value="HTTPS&#xa;cached + protected" style="endArrow=classic;endFill=1;html=1;fontSize=10;strokeWidth=2;strokeColor=#1B4965;" parent="1" source="cloudflare_group" target="browser" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="security_box" value="Security Headers (vercel.json + Astro security.csp)&#xa;&#xa;• CSP: self + hash degli script inline (niente unsafe-inline) + Google Maps + Open-Meteo&#xa;• HSTS: max-age=1 anno, includeSubDomains (come la zona Cloudflare)&#xa;• X-Frame-Options: DENY&#xa;• X-Content-Type-Options: nosniff&#xa;• Referrer-Policy: strict-origin-when-cross-origin&#xa;• Permissions-Policy: camera=(), microphone=(), geolocation=()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
+                <mxCell id="security_box" value="Security Headers (vercel.json + Astro security.csp)&#xa;&#xa;• CSP: self + hash degli script inline (niente unsafe-inline) + Google Maps&#xa;• HSTS: max-age=1 anno, includeSubDomains (come la zona Cloudflare)&#xa;• X-Frame-Options: DENY&#xa;• X-Content-Type-Options: nosniff&#xa;• Referrer-Policy: strict-origin-when-cross-origin&#xa;• Permissions-Policy: camera=(), microphone=(), geolocation=()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;align=left;spacingLeft=10;" parent="1" vertex="1">
                     <mxGeometry x="1120" y="380" width="340" height="130" as="geometry"/>
                 </mxCell>
                 <mxCell id="arrow_security" style="endArrow=classic;html=1;fontSize=10;strokeWidth=1.5;strokeColor=#b85450;dashed=1;" parent="1" source="security_box" target="host_group" edge="1">
@@ -151,7 +151,7 @@
                 <mxCell id="reviews_box" value="Recensioni Google (build-time) | Stelle | Filtro >= 4★ | Carousel fluido" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" parent="pages_group" vertex="1">
                     <mxGeometry x="20" y="400" width="305" height="35" as="geometry"/>
                 </mxCell>
-                <mxCell id="weather_box" value="Widget Meteo Open-Meteo (Contatti) | Consigli vetro | No API key" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="pages_group" vertex="1">
+                <mxCell id="weather_box" value="Widget Meteo MET Norway via /api/meteo (Contatti) | Consigli vetro | No API key" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="pages_group" vertex="1">
                     <mxGeometry x="20" y="445" width="305" height="35" as="geometry"/>
                 </mxCell>
                 <mxCell id="lightbox_box" value="Lightbox galleria | z-[9990] | Focus trap | Tastiera (frecce+Esc) | Swipe touch | Counter" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="pages_group" vertex="1">

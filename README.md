@@ -39,7 +39,7 @@ Sito vetrina con form preventivi, galleria lavori, blog, 17 pagine servizio, FAQ
 | Origin lockdown | `x-origin-verify` dal Worker al middleware: API solo via CF |
 | Monitoring      | Checkly, monitoring-as-code su uptime, API, worker e pagine |
 | Mappa           | Google Maps Embed API                                       |
-| Meteo           | Open-Meteo, gratuito e senza API key                        |
+| Meteo           | MET Norway (CC BY 4.0) via `/api/meteo`, senza API key      |
 | Recensioni      | Google Places API (New), dati scaricati a build-time        |
 | Test            | Vitest per gli unit, Playwright per gli end-to-end          |
 | CI              | GitHub Actions                                              |
@@ -162,7 +162,7 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 │   ├── layouts/             # Layout base (dark mode, CSP con hash, SEO)
 │   ├── lib/                 # Logica condivisa (immagini, validazione, sanitize, rate limit, email)
 │   ├── pages/               # Pagine e API routes
-│   │   ├── api/             # Serverless function del form preventivo
+│   │   ├── api/             # Serverless function: form preventivo e meteo
 │   │   ├── blog/            # Blog (7 articoli)
 │   │   └── servizi/         # Pagine servizio generate da [slug].astro
 │   ├── styles/              # Design system CSS (token, dark mode, transizioni)
@@ -197,6 +197,7 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 | `/privacy`               | Informativa privacy                                    | SSG       |
 | `/cookie`                | Policy cookie                                          | SSG       |
 | `/api/send-quote`        | Invio email preventivo, richiede descrizione e misure  | SSR       |
+| `/api/meteo`             | Meteo di Casale Monferrato da MET Norway, in cache     | SSR       |
 | `/404`                   | Pagina errore 404                                      | SSG       |
 | `/500`                   | Pagina errore 500                                      | SSG       |
 | `/maintenance`           | Pagina manutenzione 503                                | SSG       |
@@ -257,6 +258,16 @@ Gestisce l'invio email dal form preventivo, su account `giuseppefioravanti@proto
 | TXT    | `send`              | `v=spf1 include:amazonses.com ~all`                               |
 | TXT    | `_dmarc`            | `v=DMARC1; p=quarantine; rua=mailto:giuseppefioravanti@proton.me` |
 
+### MET Norway (meteo)
+
+Il widget di `/contatti` legge `/api/meteo` (`src/pages/api/meteo.ts`), che chiede a MET Norway la previsione Locationforecast 2.0 per le coordinate di `src/data/contatti.ts` e la riduce a temperatura, umidità, vento, icona, descrizione e due flag (pioggia, temporale) per il consiglio sui vetri. I 41 simboli MET stanno in `src/lib/meteo-simboli.ts`, copiati dalla legenda ufficiale (`metno/weathericons`, `weather/legend.csv`).
+
+- **Licenza**: dati MET sotto NLOD 2.0 e CC BY 4.0, uso commerciale consentito con attribuzione, che il widget mostra con il link alla licenza ([License](https://api.met.no/doc/License)). Open-Meteo è uscito perché la sua API gratuita è riservata all'uso non commerciale (#399).
+- **Termini MET** ([TermsOfService](https://api.met.no/doc/TermsOfService)): chiamata dal server e non dal browser, `User-Agent` con dominio ed email aziendale, coordinate a 4 decimali, nessuna richiesta nuova prima dell'`Expires` della risposta, poi `If-Modified-Since` (con `304` restano i dati in memoria).
+- **Cache**: in memoria nella funzione fino a `Expires` (minimo 60 s, massimo 1 ora), una sola chiamata condivisa dalle richieste contemporanee, e `Vercel-CDN-Cache-Control` per la CDN di Vercel (il catch-all di `vercel.json` mette `Cache-Control: max-age=0` su ogni percorso).
+- **Difese** (OWASP API Security Top 10 2023, ASVS 5.0): i dati di MET si validano prima dell'uso, con tipi, intervalli e simbolo dalla legenda, altrimenti `502` (API10); corpo letto al massimo per 1 MB, timeout di 5 s, redirect non seguiti (API10, ASVS V13.1.3, V15.3.2); dopo un errore di MET 60 s senza nuovi tentativi, così un picco di visite non diventa un picco verso MET (API4); verso il visitatore solo i 7 campi e un errore generico, mai il contenuto di MET (API8, ASVS V16.5.1); nel log solo messaggi nostri e la `X-ErrorClass` di MET se è un nome semplice (ASVS V16.4.1); solo `GET`, gli altri metodi `405` con `Allow: GET`; CORS fermo sul dominio del sito da `vercel.json`.
+- **Errori** (RFC 9110): `502` per una risposta di MET in errore o non valida, `504` se MET non risponde entro 5 s. Gli errori vanno a Sentry con `reportThrottled`, come Upstash e Turnstile. In produzione la rotta passa dal controllo `x-origin-verify` del middleware come ogni `/api/`, tranne quando la risponde la cache della CDN di Vercel, prima della funzione: è l'unica `/api/` in cache, con dati pubblici e uguali per tutti.
+
 ### Checkly
 
 Monitoring-as-code su una sola location (`eu-central-1`) per rientrare nel free tier:
@@ -266,6 +277,7 @@ Monitoring-as-code su una sola location (`eu-central-1`) per rientrare nel free 
 - Send Quote API lockdown, POST diretto all'origin **senza** `x-origin-verify` una volta al giorno, attende il `403` del middleware (`shouldFail`): vede una regressione a fail-open, che il check positivo non vede
 - Cloudflare Worker attivo, verifica gli header `x-worker` e `x-maintenance` ogni 6 ore
 - Pagine chiave (servizi, preventivo, contatti, chi siamo, galleria, FAQ), status 200 ogni 6 ore
+- Meteo API, GET di `/api/meteo` dal dominio pubblico ogni 30 minuti: 200, JSON UTF-8, campi del widget presenti, `Access-Control-Allow-Origin` fermo sul dominio del sito
 - Sitemap raggiungibile, status 200 ogni ora, seguendo il redirect verso `/sitemap-index.xml`
 - Homepage browser, Playwright su titolo e rendering, una volta al giorno
 - Turnstile widget, Playwright su `/preventivo` una volta al giorno: il widget di Cloudflare parte, nessuna violazione CSP, sitekey vera (sulla preview: il pulsante si accende con la sitekey di test)
