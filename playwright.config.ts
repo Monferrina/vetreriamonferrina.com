@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 // In CI gli E2E girano sulla preview Vercel della PR (BASE_URL dal workflow e2e.yml), cioè sul
 // build di produzione; in locale sul dev server. La preview è protetta, senza accesso arriva la
 // pagina di login Vercel: in CI il token OIDC lo aggiunge tests/e2e/fixtures.ts, in locale su una
-// preview passa come header il secret "Protection Bypass for Automation" (Doppler `ci`);
+// preview passa come header il secret "Protection Bypass for Automation" (Doppler `ci_hawkscan`);
 // x-vercel-skip-toolbar toglie la toolbar che Vercel inietta nelle preview (misurato il 05/10:
 // lo script vercel.live sparisce dall'HTML), così il DOM sotto test è quello di produzione.
 const remoto = process.env.BASE_URL;

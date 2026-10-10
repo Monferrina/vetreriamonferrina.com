@@ -19,7 +19,7 @@ import { websiteGroup } from './groups.check';
 // Email-safe: secret errato → 403 (nessuna mail, il 403 precede l'handler).
 //
 // Vercel Authentication protegge anche l'origin (AL1): senza `x-vercel-protection-bypass`
-// (variabile Checkly VERCEL_AUTOMATION_BYPASS_SECRET, stesso valore di Doppler `ci`)
+// (variabile Checkly VERCEL_AUTOMATION_BYPASS_SECRET, stesso valore di Doppler `ci_hawkscan`)
 // Vercel risponde con il login al posto dell'API.
 new ApiCheck('send-quote-api', {
   name: 'Send Quote API',
