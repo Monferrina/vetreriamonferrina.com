@@ -1,4 +1,4 @@
-# Scritta a mano per HawkScan: l'unica API del sito (src/pages/api/send-quote.ts).
+# Scritta a mano per HawkScan: le API del sito (src/pages/api/send-quote.ts, src/pages/api/meteo.ts).
 # Campi da QuoteFormData in src/lib/validation.ts (i limiti stanno solo lì).
 openapi: 3.0.3
 info:
@@ -31,3 +31,11 @@ paths:
                 turnstileToken: { type: string, example: XXXX.DUMMY.TOKEN.XXXX }
       responses:
         '200': { description: OK }
+  /api/meteo:
+    # Il widget la chiama dal JavaScript: il crawler non la trova da solo. Nessun parametro.
+    get:
+      summary: Meteo di Casale Monferrato (MET Norway, in cache)
+      responses:
+        '200': { description: OK }
+        '502': { description: Risposta di MET in errore o non valida }
+        '504': { description: MET non ha risposto in tempo }

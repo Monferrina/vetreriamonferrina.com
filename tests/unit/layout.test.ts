@@ -106,7 +106,9 @@ describe('vercel.json security headers', () => {
     expect(csp).toContain("default-src 'self'");
     expect(csp).toContain("font-src 'self'");
     expect(csp).toContain("img-src 'self' data:");
-    expect(csp).toContain("connect-src 'self' https://api.open-meteo.com");
+    // Il meteo arriva da /api/meteo, stesso dominio: nessun servizio meteo nel CSP.
+    expect(csp).toContain("connect-src 'self' https://o4512180292878336.ingest.de.sentry.io");
+    expect(csp).not.toMatch(/open-meteo|met\.no/);
     expect(csp).toContain('frame-src https://www.google.com');
     expect(csp).toContain("frame-ancestors 'none'");
     expect(csp).toContain("base-uri 'self'");
