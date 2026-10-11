@@ -272,16 +272,18 @@ Il widget di `/contatti` legge `/api/meteo` (`src/pages/api/meteo.ts`), che chie
 
 Monitoring-as-code su una sola location (`eu-central-1`) per rientrare nel free tier:
 
-- Homepage uptime, URL monitor ogni 10 minuti, attende 200
-- Send Quote API, POST in `dryRun` ogni 30 minuti che non invia email, e passa `x-origin-verify` per superare l'origin lockdown
-- Send Quote API lockdown, POST diretto all'origin **senza** `x-origin-verify` una volta al giorno, attende il `403` del middleware (`shouldFail`): vede una regressione a fail-open, che il check positivo non vede
-- Cloudflare Worker attivo, verifica gli header `x-worker` e `x-maintenance` ogni 6 ore
-- Pagine chiave (servizi, preventivo, contatti, chi siamo, galleria, FAQ), status 200 ogni 6 ore
-- Meteo API, GET di `/api/meteo` dal dominio pubblico ogni 30 minuti: 200, JSON UTF-8, campi del widget presenti, `Access-Control-Allow-Origin` fermo sul dominio del sito
-- Sitemap raggiungibile, status 200 ogni ora, seguendo il redirect verso `/sitemap-index.xml`
-- Homepage browser, Playwright su titolo e rendering, una volta al giorno
-- Turnstile widget, Playwright su `/preventivo` una volta al giorno: il widget di Cloudflare parte, nessuna violazione CSP, sitekey vera (sulla preview: il pulsante si accende con la sitekey di test)
-- Send Quote API con token Turnstile fittizio, POST senza `dryRun` una volta al giorno, attende il `403` della verifica (`shouldFail`): un segreto sbagliato o `siteverify` giù danno `503`. In caso di regressione a fail-open manda un'email marcata "Monitor Checkly"
+Tutti nel gruppo **Sito vetreriamonferrina.com**, col nome che dice cosa controllano:
+
+- **Sito: la home risponde**, URL monitor ogni 10 minuti, attende 200
+- **Worker: inoltra al sito, manutenzione spenta**, header `x-worker` e `x-maintenance` ogni 6 ore
+- **Worker: toglie gli header x-vercel-\* dei visitatori**, ogni 6 ore attende `x-worker-filtered: 1`
+- **Preventivi: l'API accetta una richiesta di prova (dryRun)**, POST in `dryRun` ogni 30 minuti che non invia email, e passa `x-origin-verify` per superare l'origin lockdown
+- **Preventivi: l'API rifiuta chi salta il Worker (403)**, POST diretto all'origin **senza** `x-origin-verify` una volta al giorno, attende il `403` del middleware (`shouldFail`): vede una regressione a fail-open, che il check positivo non vede
+- **Preventivi: l'API rifiuta un token Turnstile falso (403)**, POST senza `dryRun` una volta al giorno, attende il `403` della verifica (`shouldFail`): un segreto sbagliato o `siteverify` giù danno `503`. In caso di regressione a fail-open manda un'email marcata "Monitor Checkly"
+- **Preventivi: il widget Turnstile si carica senza errori CSP**, Playwright su `/preventivo` una volta al giorno: il widget di Cloudflare parte, nessuna violazione CSP, sitekey vera (sulla preview: il pulsante si accende con la sitekey di test)
+- **Meteo: /api/meteo risponde con i dati del widget**, GET dal dominio pubblico ogni 30 minuti: 200, JSON UTF-8, campi del widget presenti, `Access-Control-Allow-Origin` fermo sul dominio del sito
+
+Tolti l'11/10/2026 perché doppioni: le sei pagine chiave e la sitemap (pagine statiche dello stesso deploy della home; una pagina rotta la fermano gli E2E sulla preview, la sitemap la controlla anche monferrinoAI) e il browser check della home (lo copre il primo check).
 
 La configurazione sta in `checkly.config.ts` e `__checks__/`. In CI (`checkly.yml`) i check con tag `preview` girano sulla preview di ogni PR; tutti i check si deployano quando il deploy di produzione è pronto, non al merge, perché Checkly esegue subito un check nuovo. Gli altri presuppongono la produzione e non girano sulle PR. Gli alert vanno sulla casella Proton, con integrazioni attive verso Vercel e GitHub.
 

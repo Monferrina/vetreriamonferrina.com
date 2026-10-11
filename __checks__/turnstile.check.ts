@@ -3,12 +3,11 @@ import { ApiCheck, AssertionBuilder, BrowserCheck } from 'checkly/constructs';
 import { avvisiSito, websiteGroup } from './groups.check';
 
 // B6 (Z1): il widget Turnstile funziona su /preventivo e il CSP non blocca niente. Entrypoint
-// esplicito, fuori dal testMatch di checkly.config.ts: così il check sta nel gruppo e ha gli
-// avvisi (homepage.spec.ts resta fuori per non cambiare il suo logicalId). Tag `preview`: è
+// esplicito: così il check sta nel gruppo e ha gli avvisi. Tag `preview`: è
 // l'unico check che checkly.yml esegue sulle PR, contro la preview (gli altri presuppongono la
 // produzione: Worker, lockdown, chiavi Turnstile vere).
 new BrowserCheck('turnstile-widget', {
-  name: 'Turnstile: widget su /preventivo senza violazioni CSP',
+  name: 'Preventivi: il widget Turnstile si carica senza errori CSP',
   group: websiteGroup,
   alertChannels: avvisiSito,
   tags: ['preview'],
@@ -33,7 +32,7 @@ new BrowserCheck('turnstile-widget', {
 // prima che il server verifichi Turnstile manderebbe questa email alla vetreria (successo
 // l'08/10/2026, due run della PR che lo introduceva). Entra con il deploy al merge.
 new ApiCheck('send-quote-turnstile', {
-  name: 'Send Quote API: token Turnstile fittizio → 403',
+  name: "Preventivi: l'API rifiuta un token Turnstile falso (403)",
   group: websiteGroup,
   alertChannels: avvisiSito,
   activated: true,

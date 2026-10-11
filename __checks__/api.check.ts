@@ -22,7 +22,7 @@ import { websiteGroup } from './groups.check';
 // (variabile Checkly VERCEL_AUTOMATION_BYPASS_SECRET, stesso valore di Doppler `ci_hawkscan`)
 // Vercel risponde con il login al posto dell'API.
 new ApiCheck('send-quote-api', {
-  name: 'Send Quote API',
+  name: "Preventivi: l'API accetta una richiesta di prova (dryRun)",
   group: websiteGroup,
   activated: true,
   frequency: Frequency.EVERY_30M,

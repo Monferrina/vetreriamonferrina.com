@@ -22,7 +22,7 @@ import { avvisiSito, websiteGroup } from './groups.check';
 // sito non è l'host dell'alias. Niente corpo: non arriva all'handler, e in caso di regressione
 // a fail-open l'handler risponde 400 senza email.
 new ApiCheck('send-quote-lockdown', {
-  name: 'Send Quote API lockdown (senza x-origin-verify → 403)',
+  name: "Preventivi: l'API rifiuta chi salta il Worker (403)",
   group: websiteGroup,
   alertChannels: avvisiSito,
   activated: true,

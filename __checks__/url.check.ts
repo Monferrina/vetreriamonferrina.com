@@ -4,7 +4,7 @@ import { websiteGroup } from './groups.check';
 // Monitor più importante (il sito è raggiungibile?) → cadenza breve. È un uptime check
 // leggero, il più economico in termini di consumo.
 new UrlMonitor('homepage-uptime', {
-  name: 'Homepage Uptime',
+  name: 'Sito: la home risponde',
   group: websiteGroup,
   activated: true,
   frequency: Frequency.EVERY_10M,

@@ -8,7 +8,7 @@ import { avvisiSito, websiteGroup } from './groups.check';
 // dominio (non sull'origin Vercel) perché è proprio il passaggio dal worker che vogliamo
 // monitorare.
 new ApiCheck('cloudflare-worker-active', {
-  name: 'Cloudflare Worker Active',
+  name: 'Worker: inoltra al sito, manutenzione spenta',
   group: websiteGroup,
   activated: true,
   frequency: Frequency.EVERY_6H,
@@ -35,7 +35,7 @@ new ApiCheck('cloudflare-worker-active', {
 // (misurato 08/10/2026 col Worker vecchio: 200, nessun Set-Cookie) e guarda l'header con cui il
 // Worker dichiara di averlo tolto. Il blocco dei Set-Cookie lo prova il test unitario.
 new ApiCheck('worker-filters-vercel-instructions', {
-  name: 'Cloudflare Worker: filtra le istruzioni x-vercel-* dei visitatori',
+  name: 'Worker: toglie gli header x-vercel-* dei visitatori',
   group: websiteGroup,
   alertChannels: avvisiSito,
   activated: true,

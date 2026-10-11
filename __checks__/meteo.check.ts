@@ -7,7 +7,7 @@ import { avvisiSito, websiteGroup } from './groups.check';
 // Senza tag `preview`: presuppone la rotta già in produzione; il primo run lo fa
 // `checkly deploy` dopo il deploy di produzione (checkly.yml).
 new ApiCheck('meteo-api', {
-  name: 'Meteo API',
+  name: 'Meteo: /api/meteo risponde con i dati del widget',
   group: websiteGroup,
   activated: true,
   alertChannels: avvisiSito,
