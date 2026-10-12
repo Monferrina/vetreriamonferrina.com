@@ -1,6 +1,7 @@
 ---
 // src/components/CtaSection.astro
 import GlassPanel from './GlassPanel.astro';
+import ContattaciButton from './ContattaciButton.astro';
 
 interface Props {
   title?: string;
@@ -33,12 +34,7 @@ const {
         data-reveal
         data-delay="2"
       >
-        <a
-          href="/contatti"
-          class="inline-block rounded-full bg-secondary-dark px-8 py-3.5 text-base font-semibold text-neutral-50 shadow-lg transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-secondary-light focus:ring-offset-2 focus:ring-offset-primary"
-        >
-          Contattaci
-        </a>
+        <ContattaciButton />
       </div>
     </GlassPanel>
   </div>

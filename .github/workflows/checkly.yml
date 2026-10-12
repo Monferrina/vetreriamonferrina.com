@@ -18,7 +18,7 @@ jobs:
     # 21:11:34 UTC, il deploy di produzione era pronto alle 21:12:43: 200 al posto di 403 e
     # un'email vera alla vetreria. Gira su ogni deploy di produzione (il filtro sui file non
     # vale per deployment_status): `checkly deploy` è idempotente e costa pochi secondi.
-    name: Test & Deploy Monitors
+    name: Deploy Monitors
     if: >-
       github.event_name == 'deployment_status' &&
       github.event.deployment.environment == 'Production' &&

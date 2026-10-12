@@ -67,7 +67,7 @@ describe('ChatbotEngine', () => {
     expect(engine.getHistory().length).toBe(50);
   });
 
-  it("ogni dettaglio ha l'opzione preventivo verso i contatti", () => {
+  it("ogni dettaglio ha l'opzione verso i contatti", () => {
     const detailNodes = Object.entries(flow).filter(([key]) => key.startsWith('dettaglio_'));
     // Senza nodi il ciclo sotto passerebbe senza verificare niente.
     expect(detailNodes.length).toBeGreaterThan(0);
@@ -75,7 +75,17 @@ describe('ChatbotEngine', () => {
       const ctaOption = node.options?.find(
         (opt) => 'action' in opt && opt.action === 'open_contacts'
       );
-      expect(ctaOption, `Nodo "${key}" manca CTA preventivo`).toBeDefined();
+      expect(ctaOption, `Nodo "${key}" manca l'opzione Contattaci`).toBeDefined();
+    }
+  });
+
+  it('ogni nodo ha al massimo una opzione verso i contatti, e si chiama Contattaci', () => {
+    for (const [key, node] of Object.entries(flow)) {
+      const contatti = (node.options ?? [])
+        .filter((opt) => 'action' in opt && opt.action === 'open_contacts')
+        .map((opt) => opt.label);
+      expect(contatti.length, `Nodo "${key}"`).toBeLessThanOrEqual(1);
+      for (const label of contatti) expect(label, `Nodo "${key}"`).toBe('📇 Contattaci');
     }
   });
 });

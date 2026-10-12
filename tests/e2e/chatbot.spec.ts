@@ -1,14 +1,14 @@
 import { test, expect } from './fixtures';
 
 test.describe('Chatbot', () => {
-  test('dal servizio scelto la richiesta di preventivo porta ai contatti', async ({ page }) => {
+  test('dal servizio scelto Contattaci porta ai contatti', async ({ page }) => {
     await page.goto('/');
     await page.getByRole('button', { name: /apri glassy/i }).click();
     const panel = page.getByRole('dialog', { name: 'Assistente virtuale' });
     await panel.getByRole('button', { name: /che lavori fate/i }).click();
     await panel.getByRole('button', { name: /installazioni/i }).click();
     await panel.getByRole('button', { name: /box doccia/i }).click();
-    await panel.getByRole('button', { name: /richiedi preventivo/i }).click();
+    await panel.getByRole('button', { name: /contattaci/i }).click();
     await expect(page).toHaveURL(/\/contatti$/);
   });
 

@@ -2,6 +2,7 @@
 // src/pages/trasporto-e-montaggio.astro — Servizio trasporto, montaggio e smaltimento vetri.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GlassPanel from '../components/GlassPanel.astro';
+import ContattaciButton from '../components/ContattaciButton.astro';
 export const prerender = true;
 
 // Icone Heroicons (path d) riusate dalle card. Un'icona può avere più path.
@@ -281,12 +282,7 @@ const guarantees = [
           <strong class="text-primary">Scrivici o chiamaci</strong>, ci organizziamo sempre.
         </p>
         <div class="mt-4 flex flex-wrap items-center justify-center gap-4">
-          <a
-            href="/contatti"
-            class="inline-block rounded-full bg-secondary-dark px-8 py-3.5 text-base font-semibold text-neutral-50 shadow-lg transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-secondary-light focus:ring-offset-2"
-          >
-            Contattaci
-          </a>
+          <ContattaciButton />
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@
 // src/components/HeroSection.astro
 // Hero uses CSS-only animation (no data-reveal) to avoid delaying LCP.
 import GlassPanel from './GlassPanel.astro';
+import ContattaciButton from './ContattaciButton.astro';
 ---
 
 <section
@@ -33,12 +34,7 @@ import GlassPanel from './GlassPanel.astro';
       </p>
 
       <div class="hero-fade-in hero-delay-3 mt-10 flex flex-wrap items-center gap-4">
-        <a
-          href="/contatti"
-          class="inline-block rounded-full bg-secondary-dark px-8 py-3.5 text-base font-semibold text-neutral-50 shadow-lg transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-secondary-light focus:ring-offset-2 focus:ring-offset-primary"
-        >
-          Contattaci
-        </a>
+        <ContattaciButton />
 
         <a
           href="/servizi"
