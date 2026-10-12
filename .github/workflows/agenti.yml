@@ -103,6 +103,9 @@ jobs:
             { tail -n 30 "$RUNNER_TEMP/stderr.log"; exit 1; }
           # Solo errori, avvisi e consumo di token, non il testo della risposta.
           jq '{error, warnings, stats: .stats.models}' "$RUNNER_TEMP/esito.json"
+          # PROVA DI SICUREZZA, solo su questo ramo (non si mergia): strumenti chiamati, per nome e
+          # con l'esito, senza argomenti né testo della risposta.
+          jq '.stats.tools' "$RUNNER_TEMP/esito.json"
           # Se la configurazione è stata saltata il modello ha girato con le regole di default:
           # il job deve fallire, non risultare verde. L'avviso può finire nel JSON o su stderr:
           # si guardano entrambi.
