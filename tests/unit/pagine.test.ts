@@ -153,7 +153,7 @@ describe('servizi', () => {
     expect(cta?.getAttribute('href')).toBe('/contatti');
   });
 
-  test('"Oppure chiamaci" della CTA chiama la vetreria', async () => {
+  test('"Chiamaci" della CTA chiama la vetreria', async () => {
     const d = await renderPage(Servizio, '/servizi/box-doccia', {
       params: { slug: 'box-doccia' },
     });
