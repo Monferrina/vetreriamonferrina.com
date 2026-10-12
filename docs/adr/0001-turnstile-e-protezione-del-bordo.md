@@ -1,6 +1,6 @@
 # ADR-0001: Turnstile sul modulo preventivi e protezione del bordo
 
-**Status:** Accepted (Marco, 08/10/2026)
+**Status:** Superseded by ADR-0003 (12/10/2026)
 **Date:** 2026-10-08
 **Deciders:** Marco Bellingeri
 

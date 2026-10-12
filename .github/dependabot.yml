@@ -47,7 +47,7 @@ updates:
     open-pull-requests-limit: 5
     labels:
       - 'dependencies'
-      - 'github-actions'
+      - 'github_actions'
     groups:
       actions-all:
         patterns:

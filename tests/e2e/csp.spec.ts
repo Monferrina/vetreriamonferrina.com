@@ -59,7 +59,7 @@ test.describe('CSP senza unsafe-inline', () => {
 
   // Il CSP non rompe la build: uno script o uno stile non dichiarato in src/lib/csp.ts (o non
   // hashato da Astro) si vede solo nella console del browser. Questa è la rete: ogni pagina della
-  // sitemap, così una pagina nuova entra da sola. Le pagine fuori sitemap (404, /api) stanno sotto.
+  // sitemap, così una pagina nuova entra da sola. La 404, fuori sitemap, sta sotto.
   test('nessuna violazione CSP su tutte le pagine della sitemap', async ({ page, baseURL }) => {
     // 35 pagine a networkidle: ~1,5 s l'una sulla preview, oltre i 30 s di default.
     test.setTimeout(180_000);

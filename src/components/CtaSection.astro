@@ -1,6 +1,7 @@
 ---
 // src/components/CtaSection.astro
 import GlassPanel from './GlassPanel.astro';
+import { phoneHref } from '../data/contatti';
 
 interface Props {
   title?: string;
@@ -41,7 +42,7 @@ const {
         </a>
 
         <a
-          href="/contatti"
+          href={phoneHref}
           class="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-base font-medium text-neutral-50 transition-colors hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-neutral-50 focus:ring-offset-2 focus:ring-offset-primary"
         >
           Oppure chiamaci

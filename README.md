@@ -63,7 +63,7 @@ npm run dev
 
 ## Variabili d'ambiente
 
-In locale si parte da `.env.example` copiato in `.env.local`. Su Vercel si configurano in Settings, Environment Variables.
+In locale si parte da `.env.example` copiato in `.env.local`. Su Vercel le scrive la sync di Doppler: si cambiano in Doppler, non nelle impostazioni di Vercel.
 
 | Variabile               | Descrizione                                                                                                       | Dove ottenerla                |
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------- |
@@ -84,7 +84,6 @@ I dati vengono scaricati e committati come JSON statico.
 ```bash
 npm run dev          # Dev server (http://localhost:4321)
 npm run build        # Build di produzione
-npm run preview      # Anteprima build locale
 npm test             # Unit test (Vitest)
 npm run test:e2e     # Test end-to-end (Playwright)
 npm run lint         # ESLint
@@ -96,15 +95,15 @@ npm run check        # Type check (astro check)
 
 In `.github/workflows/` ci sono sette workflow. I passi comuni (Node 22 con cache npm e `npm ci`) stanno nella action composita `.github/actions/setup`.
 
-| Workflow                    | Quando gira                                       | Blocca il merge |
-| --------------------------- | ------------------------------------------------- | --------------- |
-| `ci.yml`                    | push su `main`, PR verso `main`                   | sì              |
-| `e2e.yml`                   | preview Vercel pronta (`deployment_status`)       | sì              |
-| `worker-ci.yml`             | PR che toccano `cloudflare/maintenance-worker/`   | no              |
-| `checkly.yml`               | preview e produzione pronte (`deployment_status`) | no              |
-| `update-reviews.yml`        | cron mensile e avvio manuale                      | no              |
-| `dependabot-auto-merge.yml` | PR aperte da Dependabot                           | no              |
-| `agenti.yml`                | PR aperta, o commento `@gemini-cli`               | no              |
+| Workflow                    | Quando gira                                     | Blocca il merge |
+| --------------------------- | ----------------------------------------------- | --------------- |
+| `ci.yml`                    | push su `main`, PR verso `main`                 | sì              |
+| `e2e.yml`                   | preview Vercel pronta (`deployment_status`)     | sì              |
+| `worker-ci.yml`             | PR che toccano `cloudflare/maintenance-worker/` | no              |
+| `checkly.yml`               | produzione pronta (`deployment_status`)         | no              |
+| `update-reviews.yml`        | cron mensile e avvio manuale                    | no              |
+| `dependabot-auto-merge.yml` | PR aperte da Dependabot                         | no              |
+| `agenti.yml`                | PR aperta, o commento `@gemini-cli`             | no              |
 
 Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione e il controllo dei link interni (`npm run check:links`). Il job `dependency-review`, solo sulle PR, blocca le dipendenze vulnerabili che la PR introduce, transitive comprese. Il workflow `e2e.yml` parte quando Vercel ha pronta la preview della PR ed esegue i test Playwright su quella preview, nel container ufficiale di Playwright che ha già Chromium e WebKit.
 
@@ -129,7 +128,7 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 6. Mergia la PR          →  Vercel deploya su vetreriamonferrina.com
 ```
 
-`main` è la produzione live ed è protetto: non ci si pusha direttamente. Le variabili d'ambiente possono differire tra Production e Preview, si impostano in Vercel sotto Settings, Environment Variables.
+`main` è la produzione live ed è protetto: non ci si pusha direttamente.
 
 ## Struttura progetto
 
@@ -157,7 +156,7 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 │   └── e2e/                 # Test end-to-end (Playwright)
 ├── astro.config.mjs
 ├── checkly.config.ts
-├── vercel.json              # Security header (CSP, HSTS, e altri)
+├── vercel.json              # Redirect, cache, security header (il CSP lo genera Astro)
 └── package.json
 ```
 
@@ -177,7 +176,7 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 | `/trasporto-e-montaggio` | Servizio trasporto e montaggio                         | SSG       |
 | `/privacy`               | Informativa privacy                                    | SSG       |
 | `/cookie`                | Policy cookie                                          | SSG       |
-| `/404`                   | Pagina errore 404                                      | SSG       |
+| `/404`                   | Pagina errore 404                                      | On demand |
 | `/500`                   | Pagina errore 500                                      | SSG       |
 | `/maintenance`           | Pagina manutenzione 503                                | SSG       |
 
@@ -195,7 +194,7 @@ La sitemap è generata da `@astrojs/sitemap` e la pagina `/maintenance` ne è es
 
 ### Vercel
 
-Il sito gira con l'adapter `@astrojs/vercel`. Le pagine sono pre-renderizzate, tranne la 404, renderizzata a richiesta perché abbia il CSP con gli hash. Il piano è Hobby, con il rischio sui termini d'uso accettato nell'ADR-0003. `/preventivo` risponde 301 verso `/contatti` (`vercel.json`). Le variabili d'ambiente si configurano su Vercel per Production e Preview.
+Il sito gira con l'adapter `@astrojs/vercel`. Le pagine sono pre-renderizzate, tranne la 404, renderizzata a richiesta perché abbia il CSP con gli hash. Il piano è Hobby, con il rischio sui termini d'uso accettato nell'ADR-0003. `/preventivo` risponde 301 verso `/contatti` (`vercel.json`). Le variabili d'ambiente arrivano da Doppler (sezione "Variabili d'ambiente").
 
 ### Cloudflare
 
@@ -216,7 +215,7 @@ Il Worker in `cloudflare/maintenance-worker/` è collegato a GitHub: ogni push s
 
 ### Vercel Authentication
 
-Il progetto Vercel ha la Deployment Protection su **All Deployments** (gratuita su ogni piano dal 9/9/2026): ogni URL, alias `*.vercel.app` e dominio pubblico compresi, risponde con il login Vercel a chi arriva senza l'header `x-vercel-protection-bypass`. Lo manda il Worker su ogni richiesta verso l'origin. Gli E2E in CI non lo usano: entrano con un token OIDC di GitHub accettato da Trusted Sources, solo sulle Preview. Il valore è il "Protection Bypass for Automation" del progetto, nel Worker, e ancora in Doppler `ci_hawkscan` e in Checkly finché non si tolgono: rigenerarlo su Vercel invalida le deployment già pubblicate, quindi si aggiorna il Worker e si ridistribuisce, altrimenti il sito pubblico risponde con il login. Senza questo strato chi conosce l'IP di Vercel serve il sito con `Host: vetreriamonferrina.com` saltando Cloudflare (misurato il 06/10/2026).
+Il progetto Vercel ha la Deployment Protection su **All Deployments** (gratuita su ogni piano dal 9/9/2026): ogni URL, alias `*.vercel.app` e dominio pubblico compresi, risponde con il login Vercel a chi arriva senza l'header `x-vercel-protection-bypass`. Lo manda il Worker su ogni richiesta verso l'origin. Gli E2E in CI non lo usano: entrano con un token OIDC di GitHub accettato da Trusted Sources, solo sulle Preview. Il valore è il "Protection Bypass for Automation" del progetto, nel Worker e in Doppler `dev` (per gli E2E in locale contro una preview), e fino alla pulizia di ST7 anche in Doppler `ci_hawkscan`, nell'Environment GitHub `Hawkscan` e in Checkly: rigenerarlo su Vercel invalida le deployment già pubblicate, quindi si aggiorna il Worker e si ridistribuisce, altrimenti il sito pubblico risponde con il login. Senza questo strato chi conosce l'IP di Vercel serve il sito con `Host: vetreriamonferrina.com` saltando Cloudflare (misurato il 06/10/2026).
 
 ### Resend
 
@@ -241,7 +240,7 @@ Tutti nel gruppo **Sito vetreriamonferrina.com**, col nome che dice cosa control
 
 Tolti l'11/10/2026 perché doppioni: le sei pagine chiave e la sitemap (pagine statiche dello stesso deploy della home; una pagina rotta la fermano gli E2E sulla preview, la sitemap la controlla anche monferrinoAI) e il browser check della home (lo copre il primo check).
 
-La configurazione sta in `checkly.config.ts` e `__checks__/`. In CI (`checkly.yml`) i check con tag `preview` (oggi nessuno) girano sulla preview di ogni PR; tutti i check si deployano quando il deploy di produzione è pronto, non al merge, perché Checkly esegue subito un check nuovo. Gli altri presuppongono la produzione e non girano sulle PR. Gli alert vanno sulla casella Proton, con integrazioni attive verso Vercel e GitHub.
+La configurazione sta in `checkly.config.ts` e `__checks__/`. In CI (`checkly.yml`) i check si deployano quando il deploy di produzione è pronto, non al merge, perché Checkly esegue subito un check nuovo; presuppongono la produzione e non girano sulle PR. Gli alert vanno sulla casella Proton, con integrazioni attive verso Vercel e GitHub.
 
 ## Aggiornare i dati Google
 
@@ -265,7 +264,6 @@ Sotto c'è un [Cloudflare Worker](https://developers.cloudflare.com/workers/) ch
 
 - `docs/mappa-dati.md`, dove passano e dove si fermano i dati del visitatore
 - `docs/plans/google-reviews-setup.md`, guida a Google Places API
-- `docs/plans/architecture.drawio`, diagramma architettura per draw.io
 - `cloudflare/maintenance-worker/README.md`, modalità manutenzione
 
 ## Licenza

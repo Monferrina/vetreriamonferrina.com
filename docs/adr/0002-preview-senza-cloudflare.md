@@ -1,6 +1,6 @@
 # ADR-0002: la preview prova il frontend, Cloudflare e le email si provano in produzione
 
-**Status:** Accepted (Marco, 11/10/2026)
+**Status:** Superseded in parte da ADR-0003 (12/10/2026): cadono le parti su modulo, Turnstile, Resend e lockdown; resta che la preview prova il frontend e che una modifica al Worker o alle regole Cloudflare si verifica in produzione dopo il merge.
 **Date:** 2026-10-11
 **Deciders:** Marco Bellingeri
 

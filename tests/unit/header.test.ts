@@ -27,12 +27,6 @@ describe('Header', () => {
     expect(html).toContain('<nav');
   });
 
-  test('ha il pulsante CTA Preventivo verso i contatti', async () => {
-    const html = await renderHtml(Header, '/');
-
-    expect(html).toMatch(/<a[^>]*href="\/contatti"[^>]*>\s*Preventivo\s*<\/a>/);
-  });
-
   test('evidenzia il link della pagina corrente', async () => {
     const html = await renderHtml(Header, '/');
 

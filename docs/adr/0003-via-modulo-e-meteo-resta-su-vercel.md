@@ -32,4 +32,4 @@ L'audit legale (`normativa.md`, punti F1-F3) ha trovato tre problemi del piano H
 - Più facile: niente email, segreti e servizi di terzi da tenere allineati per il modulo; meno dati personali trattati; meno superficie da proteggere.
 - Più difficile: chi vuole un preventivo deve telefonare, scrivere su WhatsApp o mandare un'email.
 - Rischio aperto: Vercel può sospendere il progetto Hobby, anche senza preavviso (ToS §4). Se succede, si riprende la migrazione a Cloudflare.
-- I segreti del modulo restano in Doppler e su Vercel finché non si cancellano in ST7: servono a un eventuale rollback.
+- Il modulo non torna (Marco, 12/10/2026): niente rollback, i segreti e i servizi che usava si cancellano in ST7.

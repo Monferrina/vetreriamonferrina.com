@@ -152,6 +152,14 @@ describe('servizi', () => {
     const cta = [...d.querySelectorAll('main a')].find((a) => /richiedi preventivo/i.test(text(a)));
     expect(cta?.getAttribute('href')).toBe('/contatti');
   });
+
+  test('"Oppure chiamaci" della CTA chiama la vetreria', async () => {
+    const d = await renderPage(Servizio, '/servizi/box-doccia', {
+      params: { slug: 'box-doccia' },
+    });
+    const chiama = [...d.querySelectorAll('main a')].find((a) => /chiamaci/i.test(text(a)));
+    expect(chiama?.getAttribute('href')).toBe('tel:+390142563728');
+  });
 });
 
 // Seam S5: chi arriva su una pagina d'errore deve capire cosa è successo e poter tornare.

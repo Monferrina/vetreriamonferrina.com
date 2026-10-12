@@ -1,8 +1,9 @@
 import { describe, expect, test } from 'vitest';
 import { sentryOptions } from '../../src/lib/sentry-options';
 
-// Il form preventivi senza JS fa un GET: nome, email e telefono finiscono nella query
-// string, e l'URL della pagina viaggia nell'evento Sentry anche con urlQueryParams spento.
+// Il form preventivi senza JS faceva un GET: nome, email e telefono finivano nella query
+// string, e un vecchio link arriva ancora (il 301 di /preventivo tiene la query). L'URL della
+// pagina viaggia nell'evento Sentry anche con urlQueryParams spento.
 describe('sentryOptions.beforeSend', () => {
   test("toglie query string e frammento dall'URL della richiesta", () => {
     const event = {

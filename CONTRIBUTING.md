@@ -42,7 +42,7 @@ La CI in `.github/workflows/ci.yml` esegue questi step nel job `Lint, Type Check
 
 I test end-to-end girano nel workflow `e2e.yml`, job `E2E (Playwright)`, sulla preview Vercel della PR (build di produzione), sui progetti `chromium` e `mobile` (iPhone 13). Il job parte quando Vercel segnala la preview pronta; se il deploy fallisce il check è rosso, se non arriva resta in attesa. Il job gira nel container `mcr.microsoft.com/playwright` con la stessa versione di `@playwright/test`: quando Dependabot alza `@playwright/test` l'E2E della sua PR fallisce finché non si aggiornano tag e digest in `e2e.yml`. In locale si eseguono con `npm run test:e2e` sul dev server; con `BASE_URL` e `VERCEL_AUTOMATION_BYPASS_SECRET` su una preview.
 
-Vanno a parte i monitor Checkly (`checkly test --tags preview` sulla preview Vercel di ogni PR, solo per i check con quel tag; `checkly deploy` a ogni deploy di produzione pronto, non al push su `main`, perché Checkly esegue subito i check nuovi; i check senza tag presuppongono la produzione e si verificano dopo il merge) e la CI del Worker (`wrangler deploy --dry-run`, solo sulle PR che toccano `cloudflare/maintenance-worker/`).
+Vanno a parte i monitor Checkly (`checkly deploy` a ogni deploy di produzione pronto, non al push su `main`, perché Checkly esegue subito i check nuovi; i check presuppongono la produzione, non girano sulle PR e si verificano dopo il merge) e la CI del Worker (`wrangler deploy --dry-run`, solo sulle PR che toccano `cloudflare/maintenance-worker/`).
 
 Verifica l'esito guardando il codice di uscita dei comandi, non filtrando l'output: un `grep` sui soli warning può nascondere un errore che poi blocca la CI.
 
