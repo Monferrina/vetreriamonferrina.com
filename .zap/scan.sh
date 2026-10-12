@@ -6,7 +6,9 @@ set -eu
 target=$1
 dir=$(dirname "$0")
 wrk=$(mktemp -d)
-trap 'rm -rf "$wrk"' EXIT
+# In CI i file che il container crea (utente zap, 1000) il runner (1001) non li cancella: un rm
+# fallito nel trap diventava l'uscita dello script (run 38283939602, scansione pulita ma rossa).
+trap 'rm -rf "$wrk" 2>/dev/null || :' EXIT
 cp "$dir/hook.py" "$dir/rules.tsv" "$wrk"/
 # Il container gira come utente zap e deve leggere e scrivere; sticky bit: gli altri utenti
 # della macchina non possono sostituire hook.py, che gira accanto al token.
