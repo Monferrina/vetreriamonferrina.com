@@ -14,13 +14,15 @@ Il CSP non ha `'unsafe-inline'`: `script-src` e `style-src` li genera Astro (`se
 
 ## Segreti
 
-Le variabili di Vercel arrivano da Doppler con la sync ufficiale: config `prd` → Production, `stg` → Preview (`stg` contiene solo riferimenti `${prd.NOME}`). Su Vercel sono di tipo Secret, illeggibili: il valore in uso esiste solo in Doppler, ed è lì che si cambia. Una modifica fatta a mano su Vercel resta finché lo stesso nome non cambia in Doppler, e nessuno la segnala.
+Le variabili di Vercel arrivano da Doppler con la sync ufficiale: config `prd` → Production; Preview non ha variabili (dopo ST2 la preview non legge segreti, e l'ambiente `stg` che la riempiva non c'è più). Su Vercel sono di tipo Secret, illeggibili: il valore in uso esiste solo in Doppler, ed è lì che si cambia. Una modifica fatta a mano su Vercel resta finché lo stesso nome non cambia in Doppler, e nessuno la segnala.
+
+Il quarto ambiente Doppler, il massimo del piano gratuito (misurato: "Your project has reached its limit of 4 environments"), è `playwright_preview`: contiene solo il bypass di Vercel per gli E2E in locale, così gli altri `doppler run` non lo hanno nell'ambiente.
 
 Un cambio in `prd` va in onda al deploy di produzione successivo, qualunque lo inneschi (anche un merge di Dependabot giorni dopo). Dopo ogni cambio: redeploy di produzione subito.
 
 Il Worker Cloudflare ha i suoi segreti, fuori dalla sync (`cloudflare/maintenance-worker/README.md`).
 
-Una sync si stacca lasciando le variabili su Vercel. L'opzione "Delete all secrets in Vercel" cancella tutte le variabili, comprese quelle che il build di produzione legge (`SENTRY_AUTH_TOKEN`, `GOOGLE_MAPS_EMBED_KEY`). (Comportamenti misurati su un progetto di prova il 07/10/2026: la doc Doppler non li descrive.)
+Una sync si stacca lasciando le variabili su Vercel. L'opzione "Delete all secrets in Vercel" cancella tutte le variabili, comprese quelle che il build di produzione legge (`SENTRY_AUTH_TOKEN`, `GOOGLE_MAPS_EMBED_KEY`). Cancellare un nome in Doppler lo cancella anche dove la sync lo scrive (Vercel, secret di GitHub). (Comportamenti misurati su un progetto di prova il 07/10/2026 e su questo progetto il 12/10/2026: la doc Doppler non li descrive.)
 
 ## graphify
 
