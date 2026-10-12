@@ -1,8 +1,6 @@
-// Opzioni dell'SDK Sentry, per il browser (sentry.config.ts) e per il server
-// (sentry.server.config.ts, che cambia solo il DSN).
-// Regola: nessun dato personale verso Sentry.
-// Il sito tratta nome, email e telefono nel modulo preventivi, e la privacy policy
-// dichiara che i rapporti d'errore non contengono né l'IP né i dati del modulo.
+// Opzioni dell'SDK Sentry per il browser (sentry.config.ts).
+// Regola: nessun dato personale verso Sentry: la privacy policy dichiara che i rapporti
+// d'errore non contengono l'IP.
 // In @sentry/* 11 ogni voce di dataCollection è attiva di default. Qui sono spente tutte quelle
 // che possono portare dati del visitatore; restano ai default solo graphQL, genAI,
 // databaseQueryData e queues (il sito non usa quelle integrazioni) e frameContextLines (righe di
@@ -12,26 +10,20 @@ export const sentryOptions = {
   dataCollection: {
     userInfo: false,
     cookies: false,
-    // Deve restare false: X-Forwarded-For porta l'IP anche con userInfo spento, e il Worker
-    // Cloudflare timbra ogni richiesta con x-origin-verify, il segreto dell'origin lockdown.
-    // Con gli header attivi il segreto finirebbe in ogni evento server.
+    // Deve restare false: X-Forwarded-For porta l'IP anche con userInfo spento.
     httpHeaders: false,
-    httpBodies: [], // il POST di send-quote contiene i dati del modulo
+    httpBodies: [],
     urlQueryParams: false,
-    stackFrameVariables: false, // in send-quote le variabili locali sono nome, email, telefono
+    stackFrameVariables: false,
   },
   // Breadcrumbs registra le navigazioni e le richieste fetch con l'URL intero, query compresa
   // (un URL con dati personali in query, come il vecchio GET del form senza JS, e' sempre
   // possibile da un link esterno), e il testo dei click; Console i
   // messaggi della console. Le integrazioni vanno tolte, non solo svuotate: con il solo
   // maxBreadcrumbs: 0 intercettano comunque console, fetch e click. BrowserSession
-  // manderebbe una richiesta a Sentry a ogni pagina vista, ProcessSession (server) una a ogni
-  // avvio della funzione: su Vercel la release c'è sempre (VERCEL_GIT_COMMIT_SHA), e con la
-  // release l'SDK Node apre una sessione (misurato in CI con GITHUB_SHA).
+  // manderebbe una richiesta a Sentry a ogni pagina vista.
   integrations: <I extends { name: string }>(defaults: I[]): I[] =>
-    defaults.filter(
-      (i) => !['Breadcrumbs', 'Console', 'BrowserSession', 'ProcessSession'].includes(i.name)
-    ),
+    defaults.filter((i) => !['Breadcrumbs', 'Console', 'BrowserSession'].includes(i.name)),
   maxBreadcrumbs: 0,
   // urlQueryParams non tocca request.url: il browser lo manda con la query string, che puo'
   // contenere dati personali (fino a F1 il form senza JS faceva un GET con nome, email e

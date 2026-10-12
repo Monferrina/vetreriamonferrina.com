@@ -11,7 +11,6 @@ import Servizio from '../../src/pages/servizi/[slug].astro';
 import ChiSiamo from '../../src/pages/chi-siamo.astro';
 import Contatti from '../../src/pages/contatti.astro';
 import Galleria from '../../src/pages/galleria.astro';
-import Preventivo from '../../src/pages/preventivo.astro';
 import Privacy from '../../src/pages/privacy.astro';
 import Cookie from '../../src/pages/cookie.astro';
 import NonTrovata from '../../src/pages/404.astro';
@@ -24,7 +23,6 @@ const pagine: Record<string, unknown> = {
   '/chi-siamo': ChiSiamo,
   '/contatti': Contatti,
   '/galleria': Galleria,
-  '/preventivo': Preventivo,
   '/privacy': Privacy,
   '/cookie': Cookie,
 };
@@ -113,7 +111,7 @@ describe('home', () => {
 });
 
 describe('contatti', () => {
-  test('ha telefono, email, orari e CTA del preventivo', async () => {
+  test('ha telefono, email e orari', async () => {
     const d = await doc('/contatti');
     expect(d.querySelector('main a[href^="tel:"]')).not.toBeNull();
     expect(d.querySelector('main a[href^="mailto:"]')).not.toBeNull();
@@ -121,8 +119,6 @@ describe('contatti', () => {
     const foglie = [...d.querySelectorAll('main *')].filter((el) => !el.children.length).map(text);
     expect(foglie.some((t) => /8:00.*12:00/.test(t))).toBe(true);
     expect(foglie.some((t) => /chiuso/i.test(t))).toBe(true);
-    const cta = [...d.querySelectorAll('main a')].find((a) => /preventivo gratuito/i.test(text(a)));
-    expect(cta?.getAttribute('href')).toBe('/preventivo');
   });
 });
 
@@ -149,11 +145,12 @@ describe('servizi', () => {
     expect(titoli).toEqual(expect.arrayContaining(services.map((s) => s.name)));
   });
 
-  test('la pagina di un servizio ha la CTA verso il preventivo', async () => {
+  test('la pagina di un servizio ha la CTA del preventivo verso i contatti', async () => {
     const d = await renderPage(Servizio, '/servizi/box-doccia', {
       params: { slug: 'box-doccia' },
     });
-    expect(d.querySelector('main a[href="/preventivo"]')).not.toBeNull();
+    const cta = [...d.querySelectorAll('main a')].find((a) => /richiedi preventivo/i.test(text(a)));
+    expect(cta?.getAttribute('href')).toBe('/contatti');
   });
 });
 

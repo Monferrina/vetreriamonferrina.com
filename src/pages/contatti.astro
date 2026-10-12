@@ -3,7 +3,6 @@ import { city, email, emailHref, phone, phoneHref, street, whatsappHref } from '
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactMap from '../components/ContactMap.astro';
 import GlassPanel from '../components/GlassPanel.astro';
-import WeatherWidget from '../components/WeatherWidget.astro';
 export const prerender = true;
 
 interface OpeningHour {
@@ -212,21 +211,11 @@ const openingHours: OpeningHour[] =
             </div>
           </div>
         </div>
-
-        <div class="mt-10">
-          <a
-            href="/preventivo"
-            class="inline-block rounded-full bg-secondary-dark px-8 py-3.5 text-base font-semibold text-neutral-50 shadow-lg transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-secondary-light focus:ring-offset-2"
-          >
-            Richiedi un preventivo gratuito
-          </a>
-        </div>
       </div>
 
       <div class="space-y-6">
         <h2 class="font-heading text-2xl text-primary sm:text-3xl mb-6">Dove siamo</h2>
         <ContactMap />
-        <WeatherWidget />
       </div>
     </div>
   </section>

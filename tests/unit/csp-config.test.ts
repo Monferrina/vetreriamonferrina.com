@@ -14,7 +14,7 @@ describe('astro.config.mjs, security.csp', () => {
     expect((csp as { directives?: string[] }).directives).toBe(cspDirectives);
   });
 
-  test("script-src e style-src senza 'unsafe-inline' (HawkScan 10055-4 e 10055-5)", () => {
+  test("script-src e style-src senza 'unsafe-inline'", () => {
     const { scriptDirective, styleDirective } = csp as {
       scriptDirective?: { resources?: unknown[] };
       styleDirective?: { resources?: unknown[] };

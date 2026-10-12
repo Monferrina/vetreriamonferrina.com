@@ -12,7 +12,6 @@ describe('Header', () => {
     expect(html).toContain('href="/servizi"');
     expect(html).toContain('href="/galleria"');
     expect(html).toContain('href="/contatti"');
-    expect(html).toContain('href="/preventivo"');
   });
 
   test('ha aria-label sulla navigazione', async () => {
@@ -28,10 +27,10 @@ describe('Header', () => {
     expect(html).toContain('<nav');
   });
 
-  test('ha il pulsante CTA Preventivo', async () => {
+  test('ha il pulsante CTA Preventivo verso i contatti', async () => {
     const html = await renderHtml(Header, '/');
 
-    expect(html).toMatch(/<a[^>]*href="\/preventivo"[^>]*>\s*Preventivo\s*<\/a>/);
+    expect(html).toMatch(/<a[^>]*href="\/contatti"[^>]*>\s*Preventivo\s*<\/a>/);
   });
 
   test('evidenzia il link della pagina corrente', async () => {

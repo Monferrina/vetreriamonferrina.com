@@ -91,7 +91,7 @@ describe('vercel.json security headers', () => {
   // policies") e una con `default-src 'self'` senza hash bloccherebbe gli script inline che
   // Astro hasha. Lo genera Astro (security.csp) per le pagine statiche e il middleware per le
   // risposte on demand, dalle stesse direttive.
-  test('vercel.json non porta più un CSP (HawkScan 10055-5: unsafe-inline)', () => {
+  test('vercel.json non porta più un CSP (aveva unsafe-inline)', () => {
     const vercelPath = resolve(__dirname, '../../vercel.json');
     const vercelConfig = JSON.parse(readFileSync(vercelPath, 'utf-8'));
     const keys = vercelConfig.headers.flatMap((h: { headers: { key: string }[] }) =>
@@ -106,9 +106,7 @@ describe('vercel.json security headers', () => {
     expect(csp).toContain("default-src 'self'");
     expect(csp).toContain("font-src 'self'");
     expect(csp).toContain("img-src 'self' data:");
-    // Il meteo arriva da /api/meteo, stesso dominio: nessun servizio meteo nel CSP.
     expect(csp).toContain("connect-src 'self' https://o4512180292878336.ingest.de.sentry.io");
-    expect(csp).not.toMatch(/open-meteo|met\.no/);
     expect(csp).toContain('frame-src https://www.google.com');
     expect(csp).toContain("frame-ancestors 'none'");
     expect(csp).toContain("base-uri 'self'");

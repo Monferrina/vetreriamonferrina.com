@@ -8,8 +8,6 @@
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org)
-[![Resend](https://img.shields.io/badge/Resend-email-000000?logo=resend&logoColor=white)](https://resend.com)
-[![Upstash](https://img.shields.io/badge/Upstash-rate--limit-00E9A3?logo=upstash&logoColor=white)](https://upstash.com)
 
 [![Cloudflare](https://img.shields.io/badge/Cloudflare-DNS%20%7C%20WAF-F38020?logo=cloudflare&logoColor=white)](https://www.cloudflare.com)
 [![Checkly](https://img.shields.io/badge/Checkly-monitoring-3A52EE)](https://www.checklyhq.com)
@@ -21,29 +19,24 @@
 
 Sito ufficiale della Vetreria Monferrina di Fioravanti Giuseppe, Casale Monferrato (AL).
 
-Sito vetrina con form preventivi, galleria lavori, blog, 17 pagine servizio, FAQ e recensioni da Google Places.
+Sito vetrina con galleria lavori, blog, 17 pagine servizio, FAQ e recensioni da Google Places.
 
 **[vetreriamonferrina.com](https://vetreriamonferrina.com)**
 
 ## Stack
 
-| Categoria       | Tecnologia                                                  |
-| --------------- | ----------------------------------------------------------- |
-| Framework       | Astro 7 (prerender con SSR ibrido)                          |
-| Stile           | Tailwind CSS 4                                              |
-| Email           | Resend (account Proton, TLS enforced)                       |
-| Template email  | HTML con i colori del brand (`src/lib/email-templates/`)    |
-| Rate-limit      | Upstash Redis su `/api/send-quote`, con fallback in memoria |
-| Hosting         | Vercel (serverless)                                         |
-| CDN, DNS, WAF   | Cloudflare con proxy attivo e Worker `maintenance-mode`     |
-| Origin lockdown | `x-origin-verify` dal Worker al middleware: API solo via CF |
-| Monitoring      | Checkly, monitoring-as-code su uptime, API, worker e pagine |
-| Mappa           | Google Maps Embed API                                       |
-| Meteo           | MET Norway (CC BY 4.0) via `/api/meteo`, senza API key      |
-| Recensioni      | Google Places API (New), dati scaricati a build-time        |
-| Test            | Vitest per gli unit, Playwright per gli end-to-end          |
-| CI              | GitHub Actions                                              |
-| Qualità codice  | ESLint, Prettier, Husky, lint-staged                        |
+| Categoria      | Tecnologia                                              |
+| -------------- | ------------------------------------------------------- |
+| Framework      | Astro 7 (prerender con SSR ibrido)                      |
+| Stile          | Tailwind CSS 4                                          |
+| Hosting        | Vercel (serverless)                                     |
+| CDN, DNS, WAF  | Cloudflare con proxy attivo e Worker `maintenance-mode` |
+| Monitoring     | Checkly, monitoring-as-code su uptime e worker          |
+| Mappa          | Google Maps Embed API                                   |
+| Recensioni     | Google Places API (New), dati scaricati a build-time    |
+| Test           | Vitest per gli unit, Playwright per gli end-to-end      |
+| CI             | GitHub Actions                                          |
+| Qualità codice | ESLint, Prettier, Husky, lint-staged                    |
 
 ## Requisiti
 
@@ -72,21 +65,11 @@ npm run dev
 
 In locale si parte da `.env.example` copiato in `.env.local`. Su Vercel si configurano in Settings, Environment Variables.
 
-| Variabile                  | Descrizione                                                                                                                                  | Dove ottenerla                                     |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| `RESEND_API_KEY`           | API key Resend per l'invio email                                                                                                             | [resend.com/api-keys](https://resend.com/api-keys) |
-| `RESEND_FROM_EMAIL`        | Mittente, su dominio verificato su Resend                                                                                                    | Es. `preventivi@vetreriamonferrina.com`            |
-| `VETRERIA_EMAIL`           | Casella che riceve i preventivi                                                                                                              | Casella aziendale                                  |
-| `SITE_URL`                 | URL del sito in produzione                                                                                                                   | `https://vetreriamonferrina.com`                   |
-| `TURNSTILE_SECRET_KEY`     | Secret Turnstile, solo produzione (altrove il codice usa quello di test della doc). Dopo ogni cambio: redeploy e un preventivo vero di prova | Cloudflare → Turnstile                             |
-| `TURNSTILE_SITE_KEY`       | Sitekey Turnstile, pubblica, letta al build di `/preventivo`; obbligatoria nel build di produzione su Vercel                                 | Cloudflare → Turnstile                             |
-| `UPSTASH_REDIS_REST_URL`   | Endpoint REST del database Redis per il rate-limit                                                                                           | [console.upstash.com](https://console.upstash.com) |
-| `UPSTASH_REDIS_REST_TOKEN` | Token REST corrispondente                                                                                                                    | [console.upstash.com](https://console.upstash.com) |
-| `GOOGLE_PLACES_API_KEY`    | Chiave Places API, solo per lo script delle recensioni; mai nel browser né in Doppler `prd`                                                  | Google Cloud Console                               |
-| `GOOGLE_MAPS_EMBED_KEY`    | Chiave della mappa di `/contatti`, pubblica: solo Maps Embed API, limitata al referrer del sito; in Doppler `prd`                            | Google Cloud Console                               |
-| `GOOGLE_PLACE_ID`          | Place ID della vetreria, solo per lo script                                                                                                  | Place ID Finder o Google Maps                      |
-
-Le due variabili Upstash sono opzionali in locale: se mancano, il rate-limit di `/api/send-quote` ricade su un contatore in memoria.
+| Variabile               | Descrizione                                                                                                       | Dove ottenerla                |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| `GOOGLE_PLACES_API_KEY` | Chiave Places API, solo per lo script delle recensioni; mai nel browser né in Doppler `prd`                       | Google Cloud Console          |
+| `GOOGLE_MAPS_EMBED_KEY` | Chiave della mappa di `/contatti`, pubblica: solo Maps Embed API, limitata al referrer del sito; in Doppler `prd` | Google Cloud Console          |
+| `GOOGLE_PLACE_ID`       | Place ID della vetreria, solo per lo script                                                                       | Place ID Finder o Google Maps |
 
 Le due variabili Google servono solo per rigenerare recensioni e orari, non a runtime:
 
@@ -151,22 +134,21 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 ## Struttura progetto
 
 ```
-├── __checks__/              # Monitor Checkly (API, URL, browser)
+├── __checks__/              # Monitor Checkly (URL, Worker)
 ├── .github/workflows/       # CI pipeline
-├── cloudflare/              # Worker (maintenance mode + origin lockdown), deploy via Git
+├── cloudflare/              # Worker (maintenance mode), deploy via Git
 ├── docs/                    # Documentazione tecnica (mappa dati, guide)
 ├── scripts/                 # Script Node (Google Places, check link interni)
 ├── src/
-│   ├── components/          # 19 componenti Astro
+│   ├── components/          # 17 componenti Astro
 │   ├── data/                # Dati statici (chatbot, recensioni, orari, servizi, blog)
 │   ├── layouts/             # Layout base (dark mode, CSP con hash, SEO)
-│   ├── lib/                 # Logica condivisa (immagini, validazione, sanitize, rate limit, email)
-│   ├── pages/               # Pagine e API routes
-│   │   ├── api/             # Serverless function: form preventivo e meteo
+│   ├── lib/                 # Logica condivisa (immagini, CSP, Sentry, chatbot)
+│   ├── pages/               # Pagine
 │   │   ├── blog/            # Blog (7 articoli)
 │   │   └── servizi/         # Pagine servizio generate da [slug].astro
 │   ├── styles/              # Design system CSS (token, dark mode, transizioni)
-│   └── middleware.ts        # Origin lockdown: valida x-origin-verify in produzione
+│   └── middleware.ts        # CSP sulle risposte on demand
 ├── public/
 │   ├── fonts/               # Font self-hosted (Inter, DM Serif Display)
 │   └── images/              # Immagini ottimizzate WebP
@@ -188,16 +170,13 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 | `/servizi/[slug]`        | 17 pagine servizio                                     | SSG       |
 | `/galleria`              | Galleria masonry con lightbox                          | SSG       |
 | `/chi-siamo`             | Storia, team, timeline, sezione memoriale              | SSG       |
-| `/contatti`              | Mappa Google, orari, meteo, contatti                   | SSG       |
-| `/preventivo`            | Form richiesta preventivo                              | SSG       |
+| `/contatti`              | Mappa Google, orari, contatti                          | SSG       |
 | `/faq`                   | FAQ su 7 categorie, con Schema.org FAQPage             | SSG       |
 | `/blog`                  | Blog, 7 articoli sempreverdi con indice                | SSG       |
 | `/blog/[slug]`           | Articoli blog                                          | SSG       |
 | `/trasporto-e-montaggio` | Servizio trasporto e montaggio                         | SSG       |
 | `/privacy`               | Informativa privacy                                    | SSG       |
 | `/cookie`                | Policy cookie                                          | SSG       |
-| `/api/send-quote`        | Invio email preventivo, richiede descrizione e misure  | SSR       |
-| `/api/meteo`             | Meteo di Casale Monferrato da MET Norway, in cache     | SSR       |
 | `/404`                   | Pagina errore 404                                      | SSG       |
 | `/500`                   | Pagina errore 500                                      | SSG       |
 | `/maintenance`           | Pagina manutenzione 503                                | SSG       |
@@ -216,40 +195,36 @@ La sitemap è generata da `@astrojs/sitemap` e la pagina `/maintenance` ne è es
 
 ### Vercel
 
-Il sito gira con l'adapter `@astrojs/vercel`. Le pagine sono pre-renderizzate, mentre `/api/send-quote` e `/api/meteo` sono serverless function. Le variabili d'ambiente si configurano su Vercel per Production e Preview.
+Il sito gira con l'adapter `@astrojs/vercel`. Le pagine sono pre-renderizzate, tranne la 404, renderizzata a richiesta perché abbia il CSP con gli hash. Il piano è Hobby, con il rischio sui termini d'uso accettato nell'ADR-0003. `/preventivo` risponde 301 verso `/contatti` (`vercel.json`). Le variabili d'ambiente si configurano su Vercel per Production e Preview.
 
 ### Cloudflare
 
 Il dominio è su Cloudflare, piano Free, con proxy attivo.
 
-| Configurazione | Dettaglio                                                                               |
-| -------------- | --------------------------------------------------------------------------------------- |
-| DNS            | A verso `76.76.21.21` e CNAME www verso `cname.vercel-dns.com`, entrambi proxied        |
-| SSL/TLS        | Full (Strict)                                                                           |
-| HSTS           | 1 anno (max-age 31536000), includeSubDomains, senza preload (dalla zona Cloudflare)     |
-| WAF            | Bot Fight Mode e AI Bot Blocking                                                        |
-| Cache          | Asset statici 1 anno (`/_astro/`, `.webp`, `.woff2`)                                    |
-| Analytics      | Web Analytics (RUM, zero cookie)                                                        |
-| Rocket Loader  | Disattivato, interferisce con Astro                                                     |
-| Worker         | `maintenance-mode` con toggle da dashboard e origin lockdown, deploy via Workers Builds |
+| Configurazione | Dettaglio                                                                           |
+| -------------- | ----------------------------------------------------------------------------------- |
+| DNS            | A verso `76.76.21.21` e CNAME www verso `cname.vercel-dns.com`, entrambi proxied    |
+| SSL/TLS        | Full (Strict)                                                                       |
+| HSTS           | 1 anno (max-age 31536000), includeSubDomains, senza preload (dalla zona Cloudflare) |
+| WAF            | Bot Fight Mode e AI Bot Blocking                                                    |
+| Cache          | Asset statici 1 anno (`/_astro/`, `.webp`, `.woff2`)                                |
+| Analytics      | Web Analytics (RUM, zero cookie)                                                    |
+| Rocket Loader  | Disattivato, interferisce con Astro                                                 |
+| Worker         | `maintenance-mode` con toggle da dashboard, deploy via Workers Builds               |
 
 Il Worker in `cloudflare/maintenance-worker/` è collegato a GitHub: ogni push su `main` che tocca quella cartella fa build e deploy da solo. `keep_vars = true` nel `wrangler.toml` preserva le variabili impostate da dashboard, come `MAINTENANCE_ENABLED`, e i secret non vengono mai toccati.
 
 ### Origin lockdown
 
-L'URL `*.vercel.app` è pubblico e bypasserebbe WAF e rate-limit di Cloudflare. Per chiuderlo sull'API preventivi, che è il rischio concreto fra spam ed escalation, c'è un handshake a segreto condiviso: il Worker timbra l'header `x-origin-verify` (da `ORIGIN_VERIFY_SECRET`) su ogni richiesta verso l'origin, e il middleware in `src/middleware.ts` risponde `403` in produzione a chi non ce l'ha.
-
-Con le pagine a `prerender=true` il middleware gira solo sulle rotte SSR, che oggi sono `/api/send-quote` e `/api/meteo`. Il comportamento è fail-closed: se il segreto manca o è vuoto su Vercel in Production, l'API risponde `403` a tutti, Worker compreso, e il form si ferma finché il segreto non torna; il monitor Checkly dell'API, che gira ogni 30 minuti, lo vede come 403. Un errore di configurazione si vede, invece di lasciare l'API aperta a chi conosce l'URL Vercel.
-
-Il segreto vive in tre posti con lo stesso valore: secret del Worker su Cloudflare, env di Vercel in Production, env di Checkly per il monitor dell'API. Chi colpisce `*.vercel.app/api/send-quote` direttamente riceve `403`.
+Il Worker timbra ancora ogni richiesta verso l'origin con `x-origin-verify` (da `ORIGIN_VERIFY_SECRET`), ma il sito non lo controlla più: il middleware lo verificava solo sulle rotte `/api/` del modulo preventivi e del meteo, tolte il 12/10/2026 (ADR-0003). A chiudere l'URL `*.vercel.app` resta la Vercel Authentication.
 
 ### Vercel Authentication
 
-Il progetto Vercel ha la Deployment Protection su **All Deployments** (gratuita su ogni piano dal 9/9/2026): ogni URL, alias `*.vercel.app` e dominio pubblico compresi, risponde con il login Vercel a chi arriva senza l'header `x-vercel-protection-bypass`. Lo manda il Worker su ogni richiesta verso l'origin, il monitor Checkly dell'API e la scansione settimanale di HawkScan (`stackhawk.yml`, `authentication.external`). Gli E2E in CI non lo usano: entrano con un token OIDC di GitHub accettato da Trusted Sources, solo sulle Preview. Il valore è il "Protection Bypass for Automation" del progetto, in Doppler `ci_hawkscan` (branch config di `ci`, sincronizzata solo nell'Environment GitHub `hawkscan`, aperto solo a `main`), nel Worker e in Checkly: rigenerarlo su Vercel invalida le deployment già pubblicate, quindi si aggiornano i quattro posti e si ridistribuisce, altrimenti il sito pubblico risponde con il login. Senza questo strato chi conosce l'IP di Vercel serve il sito con `Host: vetreriamonferrina.com` saltando Cloudflare (misurato il 06/10/2026).
+Il progetto Vercel ha la Deployment Protection su **All Deployments** (gratuita su ogni piano dal 9/9/2026): ogni URL, alias `*.vercel.app` e dominio pubblico compresi, risponde con il login Vercel a chi arriva senza l'header `x-vercel-protection-bypass`. Lo manda il Worker su ogni richiesta verso l'origin. Gli E2E in CI non lo usano: entrano con un token OIDC di GitHub accettato da Trusted Sources, solo sulle Preview. Il valore è il "Protection Bypass for Automation" del progetto, nel Worker, e ancora in Doppler `ci_hawkscan` e in Checkly finché non si tolgono: rigenerarlo su Vercel invalida le deployment già pubblicate, quindi si aggiorna il Worker e si ridistribuisce, altrimenti il sito pubblico risponde con il login. Senza questo strato chi conosce l'IP di Vercel serve il sito con `Host: vetreriamonferrina.com` saltando Cloudflare (misurato il 06/10/2026).
 
 ### Resend
 
-Gestisce l'invio email dal form preventivo, su account `giuseppefioravanti@proton.me`. Il dominio mittente è verificato con record DNS (MX, SPF, DKIM), il TLS è enforced e il tracking di click e aperture è disattivato. Le email usano i template HTML in `src/lib/email-templates/`.
+Mandava le email del modulo preventivi, tolto il 12/10/2026 (ADR-0003). Account (`giuseppefioravanti@proton.me`) e record DNS restano finché non si chiudono:
 
 | Record | Nome                | Valore                                                            |
 | ------ | ------------------- | ----------------------------------------------------------------- |
@@ -257,16 +232,6 @@ Gestisce l'invio email dal form preventivo, su account `giuseppefioravanti@proto
 | MX     | `send`              | `feedback-smtp.eu-west-1.amazonses.com` (priorità 10)             |
 | TXT    | `send`              | `v=spf1 include:amazonses.com ~all`                               |
 | TXT    | `_dmarc`            | `v=DMARC1; p=quarantine; rua=mailto:giuseppefioravanti@proton.me` |
-
-### MET Norway (meteo)
-
-Il widget di `/contatti` legge `/api/meteo` (`src/pages/api/meteo.ts`), che chiede a MET Norway la previsione Locationforecast 2.0 per le coordinate di `src/data/contatti.ts` e la riduce a temperatura, umidità, vento, icona, descrizione e due flag (pioggia, temporale) per il consiglio sui vetri. I 41 simboli MET stanno in `src/lib/meteo-simboli.ts`, copiati dalla legenda ufficiale (`metno/weathericons`, `weather/legend.csv`).
-
-- **Licenza**: dati MET sotto NLOD 2.0 e CC BY 4.0, uso commerciale consentito con attribuzione, che il widget mostra con il link alla licenza ([License](https://api.met.no/doc/License)). Open-Meteo è uscito perché la sua API gratuita è riservata all'uso non commerciale (#399).
-- **Termini MET** ([TermsOfService](https://api.met.no/doc/TermsOfService)): chiamata dal server e non dal browser, `User-Agent` con dominio ed email aziendale, coordinate a 4 decimali, nessuna richiesta nuova prima dell'`Expires` della risposta, poi `If-Modified-Since` (con `304` restano i dati in memoria).
-- **Cache**: in memoria nella funzione fino a `Expires` (minimo 60 s, massimo 1 ora), una sola chiamata condivisa dalle richieste contemporanee, e `Vercel-CDN-Cache-Control` per la CDN di Vercel (il catch-all di `vercel.json` mette `Cache-Control: max-age=0` su ogni percorso).
-- **Difese** (OWASP API Security Top 10 2023, ASVS 5.0): i dati di MET si validano prima dell'uso, con tipi, intervalli e simbolo dalla legenda, altrimenti `502` (API10); corpo letto al massimo per 1 MB, timeout di 5 s, redirect non seguiti (API10, ASVS V13.1.3, V15.3.2); dopo un errore di MET 60 s senza nuovi tentativi, così un picco di visite non diventa un picco verso MET (API4); verso il visitatore solo i 7 campi e un errore generico, mai il contenuto di MET (API8, ASVS V16.5.1); nel log solo messaggi nostri e la `X-ErrorClass` di MET se è un nome semplice (ASVS V16.4.1); solo `GET`, gli altri metodi `405` con `Allow: GET`; CORS fermo sul dominio del sito da `vercel.json`.
-- **Errori** (RFC 9110): `502` per una risposta di MET in errore o non valida, `504` se MET non risponde entro 5 s. Gli errori vanno a Sentry con `reportThrottled`, come Upstash e Turnstile. In produzione la rotta passa dal controllo `x-origin-verify` del middleware come ogni `/api/`, tranne quando la risponde la cache della CDN di Vercel, prima della funzione: è l'unica `/api/` in cache, con dati pubblici e uguali per tutti.
 
 ### Checkly
 
@@ -277,15 +242,10 @@ Tutti nel gruppo **Sito vetreriamonferrina.com**, col nome che dice cosa control
 - **Sito: la home risponde**, URL monitor ogni 10 minuti, attende 200
 - **Worker: inoltra al sito, manutenzione spenta**, header `x-worker` e `x-maintenance` ogni 6 ore
 - **Worker: toglie gli header x-vercel-\* dei visitatori**, ogni 6 ore attende `x-worker-filtered: 1`
-- **Preventivi: l'API accetta una richiesta di prova (dryRun)**, POST in `dryRun` ogni 30 minuti che non invia email, e passa `x-origin-verify` per superare l'origin lockdown
-- **Preventivi: l'API rifiuta chi salta il Worker (403)**, POST diretto all'origin **senza** `x-origin-verify` una volta al giorno, attende il `403` del middleware (`shouldFail`): vede una regressione a fail-open, che il check positivo non vede
-- **Preventivi: l'API rifiuta un token Turnstile falso (403)**, POST senza `dryRun` una volta al giorno, attende il `403` della verifica (`shouldFail`): un segreto sbagliato o `siteverify` giù danno `503`. In caso di regressione a fail-open manda un'email marcata "Monitor Checkly"
-- **Preventivi: il widget Turnstile si carica senza errori CSP**, Playwright su `/preventivo` una volta al giorno: il widget di Cloudflare parte, nessuna violazione CSP, sitekey vera (sulla preview: il pulsante si accende con la sitekey di test)
-- **Meteo: /api/meteo risponde con i dati del widget**, GET dal dominio pubblico ogni 30 minuti: 200, JSON UTF-8, campi del widget presenti, `Access-Control-Allow-Origin` fermo sul dominio del sito
 
 Tolti l'11/10/2026 perché doppioni: le sei pagine chiave e la sitemap (pagine statiche dello stesso deploy della home; una pagina rotta la fermano gli E2E sulla preview, la sitemap la controlla anche monferrinoAI) e il browser check della home (lo copre il primo check).
 
-La configurazione sta in `checkly.config.ts` e `__checks__/`. In CI (`checkly.yml`) i check con tag `preview` girano sulla preview di ogni PR; tutti i check si deployano quando il deploy di produzione è pronto, non al merge, perché Checkly esegue subito un check nuovo. Gli altri presuppongono la produzione e non girano sulle PR. Gli alert vanno sulla casella Proton, con integrazioni attive verso Vercel e GitHub.
+La configurazione sta in `checkly.config.ts` e `__checks__/`. In CI (`checkly.yml`) i check con tag `preview` (oggi nessuno) girano sulla preview di ogni PR; tutti i check si deployano quando il deploy di produzione è pronto, non al merge, perché Checkly esegue subito un check nuovo. Gli altri presuppongono la produzione e non girano sulle PR. Gli alert vanno sulla casella Proton, con integrazioni attive verso Vercel e GitHub.
 
 ## Aggiornare i dati Google
 
@@ -307,10 +267,10 @@ Sotto c'è un [Cloudflare Worker](https://developers.cloudflare.com/workers/) ch
 
 ## Documentazione tecnica
 
-- `docs/mappa-dati.md`, dove passano e dove si fermano i dati raccolti dal form preventivo
+- `docs/mappa-dati.md`, dove passano e dove si fermano i dati del visitatore
 - `docs/plans/google-reviews-setup.md`, guida a Google Places API
 - `docs/plans/architecture.drawio`, diagramma architettura per draw.io
-- `cloudflare/maintenance-worker/README.md`, modalità manutenzione e origin lockdown
+- `cloudflare/maintenance-worker/README.md`, modalità manutenzione
 
 ## Licenza
 

@@ -31,17 +31,7 @@ Sulla risposta riscrive l'header `Location` quando punta all'origin Vercel, sost
 
 ## Origin lockdown
 
-L'URL `*.vercel.app` è pubblico e bypasserebbe WAF e rate-limit di Cloudflare. Il worker timbra ogni richiesta verso l'origin con `x-origin-verify`, e il middleware Astro (`src/middleware.ts`) risponde 403 in produzione a chi non ce l'ha.
-
-Lo stesso valore deve esistere in tre posti. Se uno dei tre va fuori sincrono il form preventivi inizia a rispondere 403.
-
-| Dove                             | Come si imposta                                              |
-| -------------------------------- | ------------------------------------------------------------ |
-| Worker Cloudflare                | Settings, Variables and Secrets, come Secret (non variabile) |
-| Vercel, ambiente Production      | Doppler `prd`: la sync lo porta su Vercel                    |
-| Checkly, per il monitor dell'API | variabile d'ambiente `ORIGIN_VERIFY_SECRET`                  |
-
-Anche il fetch della pagina di manutenzione passa dal lockdown: senza il segreto il middleware la respingerebbe e la pagina di manutenzione risulterebbe rotta.
+Il worker timbra ancora ogni richiesta verso l'origin con `x-origin-verify`, ma dal 12/10/2026 il sito non lo controlla più: con il modulo preventivi e il meteo il middleware Astro ha perso le sole rotte `/api/` che proteggeva (ADR-0003). L'header arriva all'origin e nessuno lo legge. Il segreto `ORIGIN_VERIFY_SECRET` resta nel Worker (Settings, Variables and Secrets, come Secret) e il codice del Worker non cambia.
 
 ## Vercel Authentication
 

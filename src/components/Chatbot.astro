@@ -444,7 +444,6 @@
       if (path === '/servizi' || path.startsWith('/servizi/')) return 'welcome_servizi';
       if (path === '/galleria') return 'welcome_galleria';
       if (path === '/contatti') return 'welcome_contatti';
-      if (path === '/preventivo') return 'welcome_preventivo';
       if (path === '/chi-siamo') return 'welcome_chi_siamo';
       if (path === '/blog' || path.startsWith('/blog/')) return 'welcome_blog';
       if (path === '/faq') return 'welcome_faq';
@@ -538,7 +537,7 @@
         btn.type = 'button';
         btn.className = 'chatbot-option-btn';
 
-        if (opt.action === 'open_form') {
+        if (opt.action === 'open_contacts') {
           btn.classList.add('chatbot-option-cta');
         } else if (opt.action === 'open_page') {
           btn.classList.add('chatbot-option-link');
@@ -599,13 +598,6 @@
 
     function handleAction(action: string, param?: string): void {
       switch (action) {
-        case 'open_form':
-          if (param) {
-            window.location.href = '/preventivo?servizio=' + encodeURIComponent(param);
-          } else {
-            window.location.href = '/preventivo';
-          }
-          break;
         case 'open_contacts':
           window.location.href = '/contatti';
           break;
@@ -799,9 +791,6 @@
       } else if (path === '/galleria') {
         titleEl.textContent = 'Ti piace un lavoro?';
         textEl.textContent = 'Chiedi un preventivo simile!';
-      } else if (path === '/preventivo') {
-        titleEl.textContent = 'Hai dubbi sul preventivo?';
-        textEl.textContent = 'Posso darti una mano.';
       } else if (path === '/contatti') {
         titleEl.textContent = 'Vuoi raggiungerci?';
         textEl.textContent = 'Orari, indirizzo e telefono qui.';

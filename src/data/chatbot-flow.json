@@ -5,7 +5,7 @@
       { "label": "\ud83d\udd27 Che lavori fate?", "next": "servizi" },
       { "label": "\u2753 Ho una domanda", "next": "faq" },
       { "label": "\ud83d\udccd Orari e dove trovarci", "next": "orari" },
-      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_contacts" },
       { "label": "\ud83d\udcac Altra domanda", "next": "altra" }
     ]
   },
@@ -61,7 +61,7 @@
         "action": "open_page",
         "param": "/servizi/box-doccia"
       },
-      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "box-doccia" },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
     ]
   },
@@ -73,7 +73,7 @@
         "action": "open_page",
         "param": "/servizi/parapetti"
       },
-      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "parapetti" },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
     ]
   },
@@ -85,7 +85,7 @@
         "action": "open_page",
         "param": "/servizi/pensiline"
       },
-      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "pensiline" },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
     ]
   },
@@ -99,8 +99,7 @@
       },
       {
         "label": "\ud83d\udcdd Richiedi preventivo",
-        "action": "open_form",
-        "param": "porte-interne"
+        "action": "open_contacts"
       },
       { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
     ]
@@ -113,7 +112,7 @@
         "action": "open_page",
         "param": "/servizi/vetrine"
       },
-      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "vetrine" },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
     ]
   },
@@ -127,8 +126,7 @@
       },
       {
         "label": "\ud83d\udcdd Richiedi preventivo",
-        "action": "open_form",
-        "param": "sostituzione-vetri"
+        "action": "open_contacts"
       },
       { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
     ]
@@ -141,7 +139,7 @@
         "action": "open_page",
         "param": "/servizi/blindati"
       },
-      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "blindati" },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
     ]
   },
@@ -153,7 +151,7 @@
         "action": "open_page",
         "param": "/servizi/madras"
       },
-      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "madras" },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
     ]
   },
@@ -167,8 +165,7 @@
       },
       {
         "label": "\ud83d\udcdd Richiedi preventivo",
-        "action": "open_form",
-        "param": "stratificati"
+        "action": "open_contacts"
       },
       { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
     ]
@@ -181,7 +178,7 @@
         "action": "open_page",
         "param": "/servizi/monolitici"
       },
-      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "monolitici" },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
     ]
   },
@@ -200,8 +197,7 @@
       },
       {
         "label": "\ud83d\udcdd Richiedi preventivo",
-        "action": "open_form",
-        "param": "vetrocamera"
+        "action": "open_contacts"
       },
       { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
     ]
@@ -221,8 +217,7 @@
       },
       {
         "label": "\ud83d\udcdd Richiedi preventivo",
-        "action": "open_form",
-        "param": "vetrocamera-tripli"
+        "action": "open_contacts"
       },
       { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
     ]
@@ -235,7 +230,7 @@
         "action": "open_page",
         "param": "/servizi/specchi"
       },
-      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "specchi" },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "servizi_vetri" }
     ]
   },
@@ -247,7 +242,7 @@
         "action": "open_page",
         "param": "/servizi/sagomature"
       },
-      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "sagomature" },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "servizi_lavorazioni" }
     ]
   },
@@ -259,7 +254,7 @@
         "action": "open_page",
         "param": "/servizi/fori"
       },
-      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "fori" },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "servizi_lavorazioni" }
     ]
   },
@@ -271,7 +266,7 @@
         "action": "open_page",
         "param": "/servizi/molature"
       },
-      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "molature" },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "servizi_lavorazioni" }
     ]
   },
@@ -294,7 +289,7 @@
         "action": "open_page",
         "param": "/blog/vetro-temperato-vs-stratificato"
       },
-      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form" },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "faq" }
     ]
   },
@@ -306,7 +301,7 @@
         "action": "open_page",
         "param": "/blog/come-scegliere-vetro-box-doccia"
       },
-      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form", "param": "box-doccia" },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "faq" }
     ]
   },
@@ -329,7 +324,7 @@
         "action": "open_page",
         "param": "/trasporto-e-montaggio"
       },
-      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_form" },
+      { "label": "\ud83d\udcdd Richiedi preventivo", "action": "open_contacts" },
       { "label": "\u2190 Torna indietro", "next": "faq" }
     ]
   },
@@ -357,14 +352,14 @@
       { "label": "\ud83d\udebf Installazioni", "next": "servizi_installazioni" },
       { "label": "\ud83e\ude9f Tipi di vetro", "next": "servizi_vetri" },
       { "label": "\u2699\ufe0f Lavorazioni", "next": "servizi_lavorazioni" },
-      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_contacts" },
       { "label": "\u2753 Ho una domanda", "next": "faq" }
     ]
   },
   "welcome_galleria": {
     "message": "Ti piace un nostro lavoro? Possiamo realizzarne uno simile per te \u2728",
     "options": [
-      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_contacts" },
       { "label": "\ud83d\udd27 Che lavori fate?", "next": "servizi" },
       { "label": "\ud83d\udccd Orari e dove trovarci", "next": "orari" },
       { "label": "\u2753 Ho una domanda", "next": "faq" }
@@ -375,24 +370,14 @@
     "options": [
       { "label": "\ud83d\udd53 Orari di apertura", "next": "orari" },
       { "label": "\ud83d\udcde Chiamaci ora", "action": "call_phone" },
-      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
       { "label": "\u2753 Ho una domanda", "next": "faq" }
-    ]
-  },
-  "welcome_preventivo": {
-    "message": "Stai compilando il preventivo? Se hai dubbi, Glassy ti aiuta \ud83d\ude0a",
-    "options": [
-      { "label": "\ud83d\udd27 Che lavori fate?", "next": "servizi" },
-      { "label": "\u2753 Ho una domanda", "next": "faq" },
-      { "label": "\ud83d\udcde Chiamaci ora", "action": "call_phone" },
-      { "label": "\ud83d\udccd Orari e dove trovarci", "next": "orari" }
     ]
   },
   "welcome_chi_siamo": {
     "message": "Vuoi saperne di pi\u00f9 su di noi? \ud83d\ude0a",
     "options": [
       { "label": "\ud83d\udd27 Che lavori fate?", "next": "servizi" },
-      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_contacts" },
       { "label": "\u2753 Ho una domanda", "next": "faq" },
       { "label": "\ud83d\udccd Orari e dove trovarci", "next": "orari" }
     ]
@@ -402,7 +387,7 @@
     "options": [
       { "label": "\u2753 Domande frequenti", "next": "faq" },
       { "label": "\ud83d\udd27 Che lavori fate?", "next": "servizi" },
-      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_contacts" },
       { "label": "\ud83d\udccd Orari e dove trovarci", "next": "orari" }
     ]
   },
@@ -410,7 +395,7 @@
     "message": "Non trovi la risposta nelle FAQ? Glassy \u00e8 qui per te \ud83d\ude0a",
     "options": [
       { "label": "\ud83d\udcde Chiamaci ora", "action": "call_phone" },
-      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_contacts" },
       { "label": "\ud83d\udd27 Che lavori fate?", "next": "servizi" },
       { "label": "\ud83d\udccd Apri contatti", "action": "open_contacts" }
     ]
@@ -419,7 +404,7 @@
     "message": "Hai domande su trasporto e montaggio? \ud83d\ude9a",
     "options": [
       { "label": "\ud83d\uddfa\ufe0f Dove operate?", "next": "faq_trasporto" },
-      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_form" },
+      { "label": "\ud83d\udcdd Voglio un preventivo", "action": "open_contacts" },
       { "label": "\ud83d\udcde Chiamaci ora", "action": "call_phone" },
       { "label": "\ud83d\udccd Orari e dove trovarci", "next": "orari" }
     ]

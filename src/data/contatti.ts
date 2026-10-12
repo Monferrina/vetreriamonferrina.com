@@ -1,7 +1,7 @@
 // Contatti e indirizzo della vetreria, in un posto solo: erano scritti a mano in una dozzina di
-// file (footer, contatti, privacy, cookie, 500, manutenzione, chatbot, form, mappa, email,
-// JSON-LD) e un cambio ne avrebbe lasciato indietro qualcuno. Restano a mano, perche' non possono
-// importare: public/llms.txt e src/data/chatbot-flow.json.
+// file (footer, contatti, privacy, cookie, 500, manutenzione, chatbot, mappa, JSON-LD) e un
+// cambio ne avrebbe lasciato indietro qualcuno. Restano a mano, perche' non possono importare:
+// public/llms.txt e src/data/chatbot-flow.json.
 export const phoneLocal = '0142 563728';
 export const phone = `+39 ${phoneLocal}`;
 export const phoneE164 = phone.replaceAll(' ', '');
@@ -15,6 +15,5 @@ export const postalCode = '15033';
 export const town = 'Casale Monferrato';
 export const province = 'AL';
 export const city = `${postalCode} ${town} (${province})`;
-// Al massimo 4 decimali: MET Norway risponde 403 con 5 o più (termini, /api/meteo).
 export const latitude = 45.1334;
 export const longitude = 8.4525;

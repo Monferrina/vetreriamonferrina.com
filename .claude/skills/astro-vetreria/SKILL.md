@@ -15,7 +15,7 @@ files were removed in April 2026 ([withastro/docs#13538](https://github.com/with
 A fact the docs leave out gets measured, and the measurement goes next to the code
 that relies on it.
 
-## Rendering: static pages, on-demand API
+## Rendering: static pages, on-demand 404
 
 `output: 'server'` only flips the default to on-demand; each page here opts back into
 static with `export const prerender = true`
@@ -37,7 +37,6 @@ directly or from `next()` ([middleware](https://docs.astro.build/en/guides/middl
 - It runs **at build time for prerendered pages** and per request for on-demand ones
   (default `middlewareMode: 'classic'`,
   [adapter reference](https://docs.astro.build/en/reference/adapter-reference/#middlewaremode)).
-  That is why the origin check in `src/middleware.ts` gates on `/api/`.
   `context.isPrerendered` is the documented flag for this case
   ([api reference](https://docs.astro.build/en/reference/api-reference/#isprerendered)).
 - `context.clientAddress` works only on on-demand routes.
@@ -59,16 +58,14 @@ server+public and server+secret (`astro:env/server`); secrets stay out of the bu
   the schema). The docs recommend it over `process.env` because the adapter supplies
   it; `@astrojs/vercel` 11.0.3 declares `envGetSecret: 'stable'` (adapter source)
   ([astro:env module](https://docs.astro.build/en/reference/modules/astro-env/#getsecret)).
-  `src/middleware.ts` and `src/lib/rate-limit.ts` read `process.env` instead, which the
-  docs allow "with most adapters".
 - `astro:env` works in middleware, routes, endpoints and components, not in
   `astro.config.mjs` (use `process.env` there).
 - `import.meta.env` values are replaced statically at build; only `PUBLIC_` ones reach
   the browser ([vite env](https://docs.astro.build/en/guides/environment-variables/#vites-built-in-support)).
-- Tests: the docs do not cover modules that import `astro:env`. This repo's unit tests
-  mock the virtual module: `vi.mock('astro:env/server', () => ({ ... }))`
-  (`tests/unit/api-send-quote*.test.ts`), with `vitest.config.ts` built on
-  `getViteConfig` ([testing](https://docs.astro.build/en/guides/testing/#vitest)).
+- Tests: the docs do not cover modules that import `astro:env`; a unit test can mock the
+  virtual module with `vi.mock('astro:env/server', () => ({ ... }))`, with
+  `vitest.config.ts` built on `getViteConfig`
+  ([testing](https://docs.astro.build/en/guides/testing/#vitest)).
 - How runtime variables reach the function on Vercel is not documented on the adapter
   page: measure it on a preview deployment before relying on it.
 

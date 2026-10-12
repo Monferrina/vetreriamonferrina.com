@@ -25,7 +25,7 @@ export default defineConfig({
   security: {
     // script-src e style-src li genera Astro con gli hash degli inline; le altre direttive sono
     // le stesse per tutte le risposte (src/lib/csp.ts, usate anche dal middleware per le on demand).
-    // Niente 'unsafe-inline' nemmeno in style-src (HawkScan 10055-4): gli style="" sono classi,
+    // Niente 'unsafe-inline' nemmeno in style-src: gli style="" sono classi,
     // e il JS cambia gli stili per proprietà (el.style.x = …, permesso), mai con setAttribute/cssText.
     csp: { directives: cspDirectives },
   },
@@ -40,19 +40,6 @@ export default defineConfig({
 
   env: {
     schema: {
-      RESEND_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
-      RESEND_FROM_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
-      VETRERIA_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
-      SITE_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
-      // Turnstile (Z1). Il segreto si legge a runtime. La sitekey si legge al build di /preventivo,
-      // che è prerenderizzata, e finisce nell'HTML: è pubblica per natura, da qui access 'public'.
-      // Niente prefisso PUBLIC_: la sync Doppler → Vercel (tipo Secret) lo rifiuta e si stacca.
-      TURNSTILE_SECRET_KEY: envField.string({
-        context: 'server',
-        access: 'secret',
-        optional: true,
-      }),
-      TURNSTILE_SITE_KEY: envField.string({ context: 'server', access: 'public', optional: true }),
       // Chiave della mappa di /contatti (Maps Embed API, referrer del sito), letta al build della
       // pagina prerenderizzata e scritta nell'HTML: pubblica, da qui access 'public' (F2).
       GOOGLE_MAPS_EMBED_KEY: envField.string({
@@ -87,10 +74,8 @@ export default defineConfig({
     // nessuna .map in .vercel/output (misurato, E2). Senza token il build passa con un avviso.
     // Nelle preview l'integrazione è spenta e il plugin non entra.
     // telemetry: false perché il plugin altrimenti manda a Sentry i dati del build.
-    // Server spento qui, acceso da send-quote che importa sentry.server.config.ts: l'integrazione
-    // inietta l'init solo nelle pagine .astro (injectScript 'page-ssr'), non negli endpoint, e il
-    // suo middleware scrive nell'HTML on demand un <meta name="baggage"> con la chiave pubblica
-    // del DSN (misurato sulla 404: la chiave server, che deve restare non pubblicata).
+    // Server spento: il suo middleware scrive nell'HTML on demand un <meta name="baggage"> con la
+    // chiave pubblica del DSN (misurato sulla 404).
     sentry({
       enabled: { client: process.env.VERCEL_ENV === 'production', server: false },
       clientInitPath: 'sentry.config.ts',

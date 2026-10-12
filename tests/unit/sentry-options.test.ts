@@ -68,6 +68,16 @@ describe('sentryOptions.beforeSend', () => {
       extra: { __serialized__: { url: '/preventivo', nota: 'resta' } },
     });
   });
+
+  // Un evento vero ha campi null, numeri e booleani: la pulizia li lascia com'erano, senza
+  // eccezioni (con un'eccezione in beforeSend l'evento andrebbe perso).
+  test('lascia invariati null, numeri e booleani', () => {
+    const event = { level: null, extra: { tentativi: 3, retry: false, nota: null } };
+
+    const sent = sentryOptions.beforeSend(event);
+
+    expect(sent).toEqual({ level: null, extra: { tentativi: 3, retry: false, nota: null } });
+  });
 });
 
 // Breadcrumbs porterebbe nell'evento gli URL delle navigazioni con la query del form senza JS,

@@ -57,9 +57,8 @@ jobs:
               Security review only. Report only security issues: injection (HTML, script,
               header, command), secrets or keys in code or logs, missing input validation at
               trust boundaries, CSP and security headers (vercel.json, src/middleware.ts),
-              GitHub Actions permissions and untrusted input in workflows, personal data from
-              the quote form (name, email, phone) reaching logs, third parties or URLs. Do not
-              comment on style, naming or performance. Start the summary heading with
+              GitHub Actions permissions and untrusted input in workflows. Do not comment on
+              style, naming or performance. Start the summary heading with
               "🔒 Security Review" instead of "📋 Review Summary".
     env:
       REPO: ${{ github.repository }}

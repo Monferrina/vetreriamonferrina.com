@@ -7,14 +7,13 @@ import Privacy from '../../src/pages/privacy.astro';
 import Cookie from '../../src/pages/cookie.astro';
 
 describe('privacy policy', () => {
-  test('titolare, GDPR, Resend, Sentry, Garante, diritti e link alla cookie policy', async () => {
+  test('titolare, GDPR, Sentry, Garante, diritti e link alla cookie policy', async () => {
     const d = await renderPage(Privacy, '/privacy');
     expect(text(d.querySelector('main h1'))).toMatch(/privacy/i);
     const main = text(d.querySelector('main'));
     for (const atteso of [
       'GDPR',
       'Fioravanti',
-      'Resend',
       'Sentry',
       'Garante per la Protezione dei Dati Personali',
       'garanteprivacy.it',

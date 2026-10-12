@@ -2,10 +2,9 @@ name: Monitor Checkly
 
 # Monitoring as code: sulle PR prova i check con tag `preview` contro la preview Vercel della PR
 # (stesso evento e stesso URL di e2e.yml); quando il deploy di produzione è pronto deploya tutti
-# i check su Checkly. I check senza tag presuppongono la produzione (Worker, lockdown, chiavi
-# Turnstile vere) e non girano sulle PR: un `checkly test` contro la produzione prima del merge ha
-# mandato email vere alla vetreria (08/10/2026, #400). Se i secret non sono configurati, gli step
-# si skippano.
+# i check su Checkly. I check senza tag presuppongono la produzione (Worker) e non girano sulle
+# PR: un `checkly test` contro la produzione prima del merge ha mandato email vere alla vetreria
+# (08/10/2026, #400). Se i secret non sono configurati, gli step si skippano.
 
 on:
   deployment_status:
@@ -50,9 +49,9 @@ jobs:
 
   deploy:
     # Dopo il deploy di produzione, non al push su main: Checkly esegue subito un check nuovo, e
-    # al push la produzione è ancora quella vecchia. Con #400 il check negativo di Turnstile è
-    # partito alle 21:11:34 UTC, il deploy di produzione era pronto alle 21:12:43: 200 al posto di
-    # 403 e un'email vera alla vetreria. Gira su ogni deploy di produzione (il filtro sui file non
+    # al push la produzione è ancora quella vecchia. Con #400 un check nuovo è partito alle
+    # 21:11:34 UTC, il deploy di produzione era pronto alle 21:12:43: 200 al posto di 403 e
+    # un'email vera alla vetreria. Gira su ogni deploy di produzione (il filtro sui file non
     # vale per deployment_status): `checkly deploy` è idempotente e costa pochi secondi.
     name: Test & Deploy Monitors
     if: >-

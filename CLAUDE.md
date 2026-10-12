@@ -6,25 +6,21 @@ Il ramo nasce da `main` di `Monferrina/vetreriamonferrina.com` e si pusha lì, a
 
 ## Dati personali
 
-Ai servizi esterni (modelli, agenti, scanner, issue, commenti nelle PR) va solo il codice pubblico della repo. I dati del form preventivi (elenco in `docs/mappa-dati.md`), i log che contengono IP e i segreti restano fuori.
+Ai servizi esterni (modelli, agenti, scanner, issue, commenti nelle PR) va solo il codice pubblico della repo. I log che contengono IP e i segreti restano fuori (elenco dei dati in `docs/mappa-dati.md`).
 
 ## CSP
 
-Il CSP non ha `'unsafe-inline'`: `script-src` e `style-src` li genera Astro (`security.csp`) con gli hash degli script e degli stili inline di ogni pagina; le altre direttive stanno in `src/lib/csp.ts`, lette anche dal middleware. Uno script o uno stile scritto a mano (`is:inline`, `define:vars`, `style=""`), o una chiamata a un dominio nuovo (`connect-src`, `img-src`, `frame-src`…), **non rompe la build**: il browser lo blocca e l'errore sta solo nella console. Ogni modifica che aggiunge script, stili o servizi esterni dichiara il dominio in `src/lib/csp.ts` (o passa da `Astro.csp.insertScriptHash`) e si verifica sulla preview con `tests/e2e/csp.spec.ts`, che gira su tutte le pagine della sitemap. Un dominio che serve a una pagina sola (Turnstile su `/preventivo`) si dichiara nel frontmatter di quella pagina con `Astro.csp.insertScriptResource` e `insertDirective`: `insertScriptResource` toglie il `'self'` di default di Astro, che va rimesso a mano (misurato l'08/10/2026 sull'header statico in `.vercel/output/config.json`). Cloudflare non inietta script nelle pagine perché l'HTML esce con `Cache-Control: no-transform` (`vercel.json`): toglierlo riporta lo script inline del Bot Fight Mode, che il CSP blocca.
-
-## HawkScan
-
-HawkScan gira solo quando la modifica tocca server, API o header (`src/middleware.ts`, `src/pages/api/`, `vercel.json`). Quando la scansione punta alla produzione, `POST /api/send-quote` resta escluso: ogni richiesta manda una email vera tramite Resend.
+Il CSP non ha `'unsafe-inline'`: `script-src` e `style-src` li genera Astro (`security.csp`) con gli hash degli script e degli stili inline di ogni pagina; le altre direttive stanno in `src/lib/csp.ts`, lette anche dal middleware. Uno script o uno stile scritto a mano (`is:inline`, `define:vars`, `style=""`), o una chiamata a un dominio nuovo (`connect-src`, `img-src`, `frame-src`…), **non rompe la build**: il browser lo blocca e l'errore sta solo nella console. Ogni modifica che aggiunge script, stili o servizi esterni dichiara il dominio in `src/lib/csp.ts` (o passa da `Astro.csp.insertScriptHash`) e si verifica sulla preview con `tests/e2e/csp.spec.ts`, che gira su tutte le pagine della sitemap. Un dominio che serve a una pagina sola si dichiara nel frontmatter di quella pagina con `Astro.csp.insertScriptResource` e `insertDirective`: `insertScriptResource` toglie il `'self'` di default di Astro, che va rimesso a mano (misurato l'08/10/2026 sull'header statico in `.vercel/output/config.json`). Cloudflare non inietta script nelle pagine perché l'HTML esce con `Cache-Control: no-transform` (`vercel.json`): toglierlo riporta lo script inline del Bot Fight Mode, che il CSP blocca.
 
 ## Segreti
 
 Le variabili di Vercel arrivano da Doppler con la sync ufficiale: config `prd` → Production, `stg` → Preview (`stg` contiene solo riferimenti `${prd.NOME}`). Su Vercel sono di tipo Secret, illeggibili: il valore in uso esiste solo in Doppler, ed è lì che si cambia. Una modifica fatta a mano su Vercel resta finché lo stesso nome non cambia in Doppler, e nessuno la segnala.
 
-Un cambio in `prd` va in onda al deploy di produzione successivo, qualunque lo inneschi (anche un merge di Dependabot giorni dopo). Dopo ogni cambio: redeploy di produzione subito, poi un preventivo vero dal sito, con l'email arrivata a `VETRERIA_EMAIL`. Il check Checkly del form usa `dryRun` e non passa da Resend.
+Un cambio in `prd` va in onda al deploy di produzione successivo, qualunque lo inneschi (anche un merge di Dependabot giorni dopo). Dopo ogni cambio: redeploy di produzione subito.
 
-`ORIGIN_VERIFY_SECRET` vive anche nel Worker Cloudflare e in Checkly, dove la sync non arriva: si cambia nei tre posti nello stesso momento (tabella in `cloudflare/maintenance-worker/README.md`). Cambiato solo in Doppler, dopo il redeploy il sito rifiuta ogni richiesta che il Worker inoltra.
+Il Worker Cloudflare ha i suoi segreti, fuori dalla sync (`cloudflare/maintenance-worker/README.md`). Il Worker manda ancora `x-origin-verify`, ma il sito non lo controlla più (ADR-0003).
 
-Una sync si stacca lasciando le variabili su Vercel. L'opzione "Delete all secrets in Vercel" cancella anche `ORIGIN_VERIFY_SECRET`, e il middleware in produzione rifiuta ogni richiesta al form. (Comportamenti misurati su un progetto di prova il 07/10/2026: la doc Doppler non li descrive.)
+Una sync si stacca lasciando le variabili su Vercel. L'opzione "Delete all secrets in Vercel" cancella tutte le variabili, comprese quelle che il build di produzione legge (`SENTRY_AUTH_TOKEN`, `GOOGLE_MAPS_EMBED_KEY`). (Comportamenti misurati su un progetto di prova il 07/10/2026: la doc Doppler non li descrive.)
 
 ## graphify
 

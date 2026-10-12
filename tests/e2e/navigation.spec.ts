@@ -24,7 +24,7 @@ test.describe('Navigazione', () => {
       const bottomNav = page.locator('[data-bottom-nav]');
       await expect(bottomNav).toBeVisible();
       await expect(bottomNav.getByRole('link', { name: /servizi/i })).toBeVisible();
-      await expect(bottomNav.getByRole('link', { name: /preventivo/i })).toBeVisible();
+      await expect(bottomNav.getByRole('link', { name: /contatti/i })).toBeVisible();
     });
 
     test('bottom nav mobile naviga ai servizi', async ({ page }) => {

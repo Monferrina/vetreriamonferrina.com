@@ -67,17 +67,15 @@ describe('ChatbotEngine', () => {
     expect(engine.getHistory().length).toBe(50);
   });
 
-  it('ogni dettaglio ha opzione preventivo con param', () => {
+  it("ogni dettaglio ha l'opzione preventivo verso i contatti", () => {
     const detailNodes = Object.entries(flow).filter(([key]) => key.startsWith('dettaglio_'));
     // Senza nodi il ciclo sotto passerebbe senza verificare niente.
     expect(detailNodes.length).toBeGreaterThan(0);
     for (const [key, node] of detailNodes) {
-      const ctaOption = node.options?.find((opt) => 'action' in opt && opt.action === 'open_form');
+      const ctaOption = node.options?.find(
+        (opt) => 'action' in opt && opt.action === 'open_contacts'
+      );
       expect(ctaOption, `Nodo "${key}" manca CTA preventivo`).toBeDefined();
-      expect(
-        (ctaOption as { param?: string }).param,
-        `Nodo "${key}" manca param per preventivo`
-      ).toBeTruthy();
     }
   });
 });

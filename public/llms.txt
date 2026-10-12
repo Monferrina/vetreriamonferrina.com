@@ -33,8 +33,7 @@ Vetreria Monferrina è il laboratorio artigiano di Giuseppe e Debora Fioravanti,
 - [Galleria](https://vetreriamonferrina.com/galleria): lavori realizzati
 - [Trasporto e montaggio](https://vetreriamonferrina.com/trasporto-e-montaggio): servizio di consegna e installazione professionale
 - [FAQ](https://vetreriamonferrina.com/faq): domande frequenti
-- [Contatti](https://vetreriamonferrina.com/contatti): indirizzo, telefono, email e orari
-- [Preventivo](https://vetreriamonferrina.com/preventivo): richiesta di preventivo gratuito
+- [Contatti](https://vetreriamonferrina.com/contatti): indirizzo, telefono, WhatsApp, email e orari, anche per i preventivi gratuiti
 
 ## Note
 - Zona servita: Casale Monferrato, Monferrato e Piemonte

@@ -21,7 +21,6 @@ export default getViteConfig({
       // regressione fa rosso ma un refactor onesto no.
       thresholds: {
         'src/lib/**': { statements: 98, branches: 95, functions: 100, lines: 98 },
-        'src/pages/api/**': { statements: 100, branches: 90, functions: 100, lines: 100 },
       },
     },
   },
