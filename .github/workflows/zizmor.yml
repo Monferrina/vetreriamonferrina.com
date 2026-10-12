@@ -1,0 +1,33 @@
+name: Sicurezza dei workflow (zizmor)
+
+# Risultati in code scanning: in questa modalità il job non fallisce sui rilievi, il merge lo
+# blocca la regola di code scanning del ruleset protect-main (README di zizmor-action v0.6.4).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: zizmor-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  zizmor:
+    name: zizmor
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      # Carica il SARIF in code scanning; contents e actions servono solo alle repo private.
+      security-events: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: zizmor
+        uses: zizmorcore/zizmor-action@cc914d7f3750a2d13d75c7f184a1060aa0e9d482 # v0.6.4

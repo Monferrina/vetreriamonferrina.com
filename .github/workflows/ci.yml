@@ -32,6 +32,10 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
+      # Firme del registry e provenienza dei pacchetti installati: una firma non valida fa rosso.
+      - name: Package signatures
+        run: npm audit signatures
+
       - name: Lint
         run: npm run lint
 

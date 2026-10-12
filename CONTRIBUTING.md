@@ -31,6 +31,7 @@ La CI in `.github/workflows/ci.yml` esegue questi step nel job `Lint, Type Check
 
 | Comando locale                             | Step corrispondente in `ci.yml` |
 | ------------------------------------------ | ------------------------------- |
+| `npm audit signatures`                     | Package signatures              |
 | `npm run lint`                             | Lint                            |
 | `npm run format:check`                     | Format check                    |
 | `npm run check`                            | Type check                      |

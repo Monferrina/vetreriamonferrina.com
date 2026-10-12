@@ -61,7 +61,7 @@ Un `npx wrangler login && npx wrangler deploy` dalla cartella funziona, ma è un
 
 ## Verifiche automatiche
 
-Il workflow `.github/workflows/worker-ci.yml` gira su ogni PR che tocca questa cartella ed esegue `npx wrangler@4 deploy --dry-run`, che compila il sorgente e valida `wrangler.toml` (route, `keep_vars`, compatibility date) in locale, senza contattare Cloudflare e senza segreti.
+Il workflow `.github/workflows/worker-ci.yml` gira su ogni PR che tocca questa cartella ed esegue `npx wrangler@4.147.0 deploy --dry-run` (versione esatta, si alza a mano), che compila il sorgente e valida `wrangler.toml` (route, `keep_vars`, compatibility date) in locale, senza contattare Cloudflare e senza segreti.
 
 Il monitor Checkly `cloudflare-worker-active` interroga il dominio ogni 6 ore e verifica `x-worker: active` e `x-maintenance: off`. Se il worker cadesse, venisse scollegato o la manutenzione restasse accesa per errore, il check fallisce.
 

@@ -38,6 +38,10 @@ export default defineConfig({
   // cioe' due parole attaccate nel testo visibile. Succedeva su ogni pagina.
   compressHTML: false,
 
+  // Oggi il sito non ha Markdown (il blog sta in src/data/blog-posts.ts): Shiki non serve, e con
+  // gli stili inline che genera avvisava a ogni build di non essere compatibile con il CSP.
+  markdown: { syntaxHighlight: false },
+
   env: {
     schema: {
       // Chiave della mappa di /contatti (Maps Embed API, referrer del sito), letta al build della

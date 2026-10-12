@@ -93,7 +93,7 @@ npm run check        # Type check (astro check)
 
 ## CI/CD
 
-In `.github/workflows/` ci sono sette workflow. I passi comuni (Node 22 con cache npm e `npm ci`) stanno nella action composita `.github/actions/setup`.
+In `.github/workflows/` ci sono otto workflow. I passi comuni (Node 22 con cache npm e `npm ci`) stanno nella action composita `.github/actions/setup`.
 
 | Workflow                    | Quando gira                                     | Blocca il merge |
 | --------------------------- | ----------------------------------------------- | --------------- |
@@ -104,12 +104,15 @@ In `.github/workflows/` ci sono sette workflow. I passi comuni (Node 22 con cach
 | `update-reviews.yml`        | cron mensile e avvio manuale                    | no              |
 | `dependabot-auto-merge.yml` | PR aperte da Dependabot                         | no              |
 | `agenti.yml`                | PR aperta, o commento `@gemini-cli`             | no              |
+| `zizmor.yml`                | push su `main`, PR verso `main`                 | sì (ruleset)    |
 
-Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione e il controllo dei link interni (`npm run check:links`). Il job `dependency-review`, solo sulle PR, blocca le dipendenze vulnerabili che la PR introduce, transitive comprese. Il workflow `e2e.yml` parte quando Vercel ha pronta la preview della PR ed esegue i test Playwright su quella preview, nel container ufficiale di Playwright che ha già Chromium e WebKit.
+Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza la verifica delle firme dei pacchetti (`npm audit signatures`), ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione e il controllo dei link interni (`npm run check:links`). Il job `dependency-review`, solo sulle PR, blocca le dipendenze vulnerabili che la PR introduce, transitive comprese. Il workflow `e2e.yml` parte quando Vercel ha pronta la preview della PR ed esegue i test Playwright su quella preview, nel container ufficiale di Playwright che ha già Chromium e WebKit.
 
 Il workflow `agenti.yml` fa rivedere la PR a due agenti Gemini (`gemini-3.5-flash-lite`, a pagamento con credito prepagato e tetto mensile): `revisione` (correttezza e qualità) e `sicurezza` (solo problemi di sicurezza). Ognuno pubblica un riassunto e commenti sulle righe cambiate, mai approvazioni né commit. Partono all'apertura di una PR del repo (non da fork, non da Dependabot, non in bozza) o quando un collaboratore scrive un commento che inizia con `@gemini-cli`. Gemini CLI è installata da npm a versione e impronta fisse, senza `--yolo`: il modello legge la PR solo via GitHub, ha tre strumenti autorizzati per nome, non ha la shell e non vede i segreti; i vincoli li fissa `tests/unit/agenti-workflow.test.ts`.
 
 La sicurezza la controllano gli strumenti, dalle loro app GitHub: CodeQL (impostazione automatica di GitHub) e Semgrep (`semgrep-cloud-platform/scan`). I segreti li controllano secret scanning e push protection di GitHub; le dipendenze già presenti le corregge Dependabot.
+
+La supply chain ha quattro controlli. zizmor (`zizmor.yml`) legge workflow, action composita e `dependabot.yml` e cerca action non fissate, permessi larghi, iniezioni, action con vulnerabilità note e commit impostori; i risultati vanno in code scanning e il merge lo blocca la regola di code scanning del ruleset, da medio in su. `npm audit signatures` gira nel job `quality`. Dependency Review mostra il punteggio OpenSSF Scorecard delle dipendenze nuove, con un avviso sotto 3 (default dell'action). In CI `npm audit signatures` gira dopo `npm ci`: lo script d'installazione di un pacchetto falsificato girerebbe prima del controllo, nel job senza segreti e con permessi di sola lettura, e il merge resta bloccato. `allowScripts` in `package.json` elenca i soli pacchetti a cui npm permette script d'installazione (oggi `esbuild`); vale con npm 11 o successivo, cioè nel build su Vercel, non in CI e in locale con Node 22 (npm 10).
 
 Il workflow `dependabot-auto-merge.yml` attiva l'auto-merge (squash) sulle PR Dependabot minor e patch: GitHub le mergia quando tutti i check obbligatori sono verdi. Le major restano a mano. Dependabot propone una versione nuova solo dopo sette giorni dalla pubblicazione (`cooldown`); gli aggiornamenti di sicurezza non aspettano.
 

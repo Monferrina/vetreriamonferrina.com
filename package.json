@@ -65,5 +65,8 @@
     "@vercel/functions": {
       "ws": "^8.21.0"
     }
+  },
+  "allowScripts": {
+    "esbuild": true
   }
 }

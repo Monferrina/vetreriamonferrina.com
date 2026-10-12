@@ -40,4 +40,6 @@ jobs:
           node-version: 22
 
       - name: Validate worker (compile + wrangler.toml)
-        run: npx --yes wrangler@4 deploy --dry-run --outdir /tmp/worker-build
+        # Versione esatta: npx scarica fuori dal lockfile, senza firme né Dependency Review; con
+        # `wrangler@4` ogni run poteva prendere una 4.x appena pubblicata. Si alza a mano.
+        run: npx --yes wrangler@4.147.0 deploy --dry-run --outdir /tmp/worker-build
