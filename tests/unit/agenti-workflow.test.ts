@@ -24,12 +24,13 @@ describe('agenti.yml, revisione delle PR con Gemini', () => {
 
   // Stringa intera, non clausole sparse: una clausola spostata nell'altro ramo dell'OR aprirebbe
   // il cancello senza far fallire un controllo per pezzi.
-  test('su una PR esclude fork, Dependabot e bozze; da commento vuole @gemini-cli di un collaboratore', () => {
+  test('su una PR esclude fork, Dependabot, bozze e recensioni; da commento vuole @gemini-cli di un collaboratore', () => {
     expect(job.if).toBe(`(
   github.event_name == 'pull_request' &&
   github.event.pull_request.head.repo.fork == false &&
   github.event.pull_request.user.login != 'dependabot[bot]' &&
-  github.event.pull_request.draft == false
+  github.event.pull_request.draft == false &&
+  !startsWith(github.event.pull_request.head.ref, 'chore/update-reviews-')
 ) || (
   github.event_name == 'issue_comment' &&
   github.event.issue.pull_request &&
@@ -38,11 +39,15 @@ describe('agenti.yml, revisione delle PR con Gemini', () => {
 )`);
   });
 
-  // issue_comment non dice se la PR viene da un fork: lo chiede uno step prima di Gemini.
-  test('Gemini parte solo se la PR non viene da un fork, anche quando la chiede un commento', () => {
+  // issue_comment non dice da quale ramo viene la PR né se viene da un fork: lo chiede uno step
+  // prima di Gemini. Le PR mensili delle recensioni portano nomi di persone (R10).
+  test('Gemini parte solo se la PR non viene da un fork né è delle recensioni, anche quando la chiede un commento', () => {
     const pr = job.steps.find((step: { id?: string }) => step.id === 'pr');
-    expect(pr.run).toContain('--jq .head.repo.fork');
-    expect(gemini.if).toBe("steps.pr.outputs.fork == 'false'");
+    expect(pr.run).toContain('.head.repo.fork');
+    expect(pr.run).toContain('.head.ref');
+    expect(gemini.if).toBe(
+      "steps.pr.outputs.fork == 'false' && !startsWith(steps.pr.outputs.ramo, 'chore/update-reviews-')"
+    );
   });
 
   // Con tools.core vuoto Gemini CLI nega ogni strumento, MCP compresi; senza --yolo, in headless,
