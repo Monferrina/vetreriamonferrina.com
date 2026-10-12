@@ -61,6 +61,8 @@ Il ruleset blocca il pulsante di merge finché non passano cinque check:
 
 Ogni check è legato alla sua app nel ruleset: un job con lo stesso nome lanciato da un'altra app non lo soddisfa.
 
+In più il ruleset ha una regola di code scanning per zizmor (`zizmor.yml`): il merge è bloccato se la PR porta rilievi di gravità media o alta (livelli SARIF `warning` ed `error`). I rilievi bassi restano visibili nella scheda Security e non bloccano.
+
 ## Convenzioni
 
 I messaggi di commit seguono [Conventional Commits](https://www.conventionalcommits.org/) nella forma `tipo(scope): descrizione`, con la descrizione in italiano. I tipi in uso nella storia del repo sono `feat`, `fix`, `chore`, `docs`, `refactor`, `perf`, `test`, `ci`, `harden`, oltre a `seo` e `content` per le modifiche ai contenuti. Non c'è un commitlint automatico: la convenzione è tenuta a mano.
