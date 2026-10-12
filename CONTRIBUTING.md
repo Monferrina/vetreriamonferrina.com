@@ -43,13 +43,15 @@ La CI in `.github/workflows/ci.yml` esegue questi step nel job `Lint, Type Check
 
 I test end-to-end girano nel workflow `e2e.yml`, job `E2E (Playwright)`, sulla preview Vercel della PR (build di produzione), sui progetti `chromium` e `mobile` (iPhone 13). Il job parte quando Vercel segnala la preview pronta; se il deploy fallisce il check è rosso, se non arriva resta in attesa. Il job gira nel container `mcr.microsoft.com/playwright` con la stessa versione di `@playwright/test`: quando Dependabot alza `@playwright/test` l'E2E della sua PR fallisce finché non si aggiornano tag e digest in `e2e.yml`. In locale si eseguono con `npm run test:e2e` sul dev server; con `BASE_URL` e `VERCEL_AUTOMATION_BYPASS_SECRET` su una preview.
 
+La scansione ZAP (`zap.yml`) parte anche lei dalla preview pronta e lancia `.zap/scan.sh`. Gli header che aggiungono Cloudflare e il Worker la preview non li ha, e dalla CI il dominio pubblico risponde con la sfida del Bot Fight Mode. Per questo, prima di ogni modifica al bordo (header, regole Cloudflare, Worker) e dopo il suo merge, si scansiona il sito vero dalla propria macchina: `.zap/scan.sh https://vetreriamonferrina.com` (serve Docker; esce 0 senza rilievi, 2 con rilievi, 3 se non ha raggiunto il sito). Un rilievo accettato va in `.zap/rules.tsv` con il motivo in un commento. L'immagine di ZAP è fissata a digest in `.zap/scan.sh` e Dependabot non la aggiorna: si aggiorna a mano.
+
 Vanno a parte i monitor Checkly (`checkly deploy` a ogni deploy di produzione pronto, non al push su `main`, perché Checkly esegue subito i check nuovi; i check presuppongono la produzione, non girano sulle PR e si verificano dopo il merge) e la CI del Worker (`wrangler deploy --dry-run`, solo sulle PR che toccano `cloudflare/maintenance-worker/`).
 
 Verifica l'esito guardando il codice di uscita dei comandi, non filtrando l'output: un `grep` sui soli warning può nascondere un errore che poi blocca la CI.
 
 ## Check richiesti al merge
 
-Il ruleset blocca il pulsante di merge finché non passano cinque check:
+Il ruleset blocca il pulsante di merge finché non passano sei check:
 
 | Check                         | Origine                                            |
 | ----------------------------- | -------------------------------------------------- |
@@ -58,6 +60,7 @@ Il ruleset blocca il pulsante di merge finché non passano cinque check:
 | `CodeQL`                      | code scanning di GitHub (impostazione automatica)  |
 | `semgrep-cloud-platform/scan` | app Semgrep                                        |
 | `Dependency Review`           | job `dependency-review` di `ci.yml`, solo sulle PR |
+| `ZAP (preview)`               | job `zap` di `zap.yml`, sulla preview Vercel       |
 
 Ogni check è legato alla sua app nel ruleset: un job con lo stesso nome lanciato da un'altra app non lo soddisfa.
 

@@ -1,0 +1,44 @@
+name: Scansione ZAP sulla preview
+
+# ZAP baseline (spider e regole passive, nessun attacco) sulla preview Vercel della PR, con lo
+# stesso script che in locale scansiona il sito vero (.zap/scan.sh). Vede gli header del build,
+# non quelli di Cloudflare e del Worker: perché il dominio pubblico non si scansiona da qui, in
+# CONTRIBUTING.
+
+on:
+  deployment_status:
+
+permissions: {}
+
+jobs:
+  zap:
+    # Come e2e.yml: Vercel crea il deployment con lo SHA della PR e il check si attacca lì.
+    # Una preview fallita la segnala già l'E2E, qui si salta.
+    name: ZAP (preview)
+    if: >-
+      github.event.deployment.environment == 'Preview' &&
+      github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write # token OIDC per Trusted Sources di Vercel (TS1)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Il token dura 300 s (TS1); una scansione ne usa ~50 (misurato il 12/10/2026). Va solo
+      # all'host della preview (ZAP_AUTH_HEADER_SITE), non ai siti esterni che lo spider tocca.
+      # Non c'è action-baseline: carica sempre il report come artifact, pubblico su questa repo.
+      - name: ZAP baseline
+        shell: bash # -eo pipefail: un token non ottenuto ferma il passo qui
+        run: |
+          token=$(curl -sf -H "authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL" | jq -r .value)
+          echo "::add-mask::$token"
+          ZAP_AUTH_HEADER=x-vercel-trusted-oidc-idp-token ZAP_AUTH_HEADER_VALUE="$token" \
+            ZAP_AUTH_HEADER_SITE="${PREVIEW#https://}" .zap/scan.sh "$PREVIEW"
+        env:
+          PREVIEW: ${{ github.event.deployment_status.environment_url }}

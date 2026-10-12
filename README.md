@@ -93,7 +93,7 @@ npm run check        # Type check (astro check)
 
 ## CI/CD
 
-In `.github/workflows/` ci sono otto workflow. I passi comuni (Node 22 con cache npm e `npm ci`) stanno nella action composita `.github/actions/setup`.
+In `.github/workflows/` ci sono nove workflow. I passi comuni (Node 22 con cache npm e `npm ci`) stanno nella action composita `.github/actions/setup`.
 
 | Workflow                    | Quando gira                                     | Blocca il merge |
 | --------------------------- | ----------------------------------------------- | --------------- |
@@ -105,12 +105,13 @@ In `.github/workflows/` ci sono otto workflow. I passi comuni (Node 22 con cache
 | `dependabot-auto-merge.yml` | PR aperte da Dependabot                         | no              |
 | `agenti.yml`                | PR aperta, o commento `@gemini-cli`             | no              |
 | `zizmor.yml`                | push su `main`, PR verso `main`                 | sì (ruleset)    |
+| `zap.yml`                   | preview Vercel pronta (`deployment_status`)     | sì              |
 
 Il workflow `ci.yml` ha due job. Il job `quality` esegue in sequenza la verifica delle firme dei pacchetti (`npm audit signatures`), ESLint, Prettier in modalità check, `astro check`, Vitest con coverage, la build di produzione e il controllo dei link interni (`npm run check:links`). Il job `dependency-review`, solo sulle PR, blocca le dipendenze vulnerabili che la PR introduce, transitive comprese. Il workflow `e2e.yml` parte quando Vercel ha pronta la preview della PR ed esegue i test Playwright su quella preview, nel container ufficiale di Playwright che ha già Chromium e WebKit.
 
 Il workflow `agenti.yml` fa rivedere la PR a due agenti Gemini (`gemini-3.5-flash-lite`, a pagamento con credito prepagato e tetto mensile): `revisione` (correttezza e qualità) e `sicurezza` (solo problemi di sicurezza). Ognuno pubblica un riassunto e commenti sulle righe cambiate, mai approvazioni né commit. Partono all'apertura di una PR del repo (non da fork, non da Dependabot, non in bozza) o quando un collaboratore scrive un commento che inizia con `@gemini-cli`. Gemini CLI è installata da npm a versione e impronta fisse, senza `--yolo`: il modello legge la PR solo via GitHub, ha tre strumenti autorizzati per nome, non ha la shell e non vede i segreti; i vincoli li fissa `tests/unit/agenti-workflow.test.ts`.
 
-La sicurezza la controllano gli strumenti, dalle loro app GitHub: CodeQL (impostazione automatica di GitHub) e Semgrep (`semgrep-cloud-platform/scan`). I segreti li controllano secret scanning e push protection di GitHub; le dipendenze già presenti le corregge Dependabot.
+La sicurezza la controllano gli strumenti, dalle loro app GitHub: CodeQL (impostazione automatica di GitHub) e Semgrep (`semgrep-cloud-platform/scan`). Il sito pubblicato lo interroga ZAP (`zap.yml`, job `ZAP (preview)`): spider e regole passive sulla preview della PR, con il token OIDC come gli E2E, e il check è rosso se ZAP trova un rilievo non motivato in `.zap/rules.tsv` o se la scansione non raggiunge il sito (risposte 302, 401 o 403, nessuna 200). Il dominio pubblico non si scansiona dalla CI, perché ai runner GitHub Cloudflare risponde con la sfida del Bot Fight Mode: lo si scansiona in locale (`.zap/scan.sh`, vedi CONTRIBUTING). I segreti li controllano secret scanning e push protection di GitHub; le dipendenze già presenti le corregge Dependabot.
 
 La supply chain ha quattro controlli. zizmor (`zizmor.yml`) legge workflow, action composita e `dependabot.yml` e cerca action non fissate, permessi larghi, iniezioni, action con vulnerabilità note e commit impostori; i risultati vanno in code scanning e il merge lo blocca la regola di code scanning del ruleset, da medio in su. `npm audit signatures` gira nel job `quality`. Dependency Review mostra il punteggio OpenSSF Scorecard delle dipendenze nuove, con un avviso sotto 3 (default dell'action). In CI `npm audit signatures` gira dopo `npm ci`: lo script d'installazione di un pacchetto falsificato girerebbe prima del controllo, nel job senza segreti e con permessi di sola lettura, e il merge resta bloccato. `allowScripts` in `package.json` elenca i soli pacchetti a cui npm permette script d'installazione (oggi `esbuild`), e `strict-allow-scripts=true` nel file `.npmrc` fa fallire l'install, e quindi il build, se un pacchetto fuori lista ne ha uno; vale con npm 11 o successivo, cioè nel build su Vercel, non in CI e in locale con Node 22 (npm 10, che lo ignora).
 
@@ -138,6 +139,7 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 ```
 ├── __checks__/              # Monitor Checkly (URL, Worker)
 ├── .github/workflows/       # CI pipeline
+├── .zap/                    # Scansione ZAP: script, hook, eccezioni (rules.tsv)
 ├── cloudflare/              # Worker (maintenance mode), deploy via Git
 ├── docs/                    # Documentazione tecnica (mappa dati, guide)
 ├── scripts/                 # Script Node (Google Places, check link interni)

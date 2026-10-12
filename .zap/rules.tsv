@@ -1,0 +1,6 @@
+# Eccezioni di zap-baseline.py: id regola, livello (IGNORE/OUTOFSCOPE), regex o nome. Una riga
+# OUTOFSCOPE prende tutto il resto della riga come regex: il motivo sta nel commento sopra.
+#
+# 90004 (COEP/COOP): /contatti non ha COEP perché l'iframe di Google Maps non manda né COEP
+# né CORP (misurato il 12/10/2026) e con COEP require-corp Firefox e Safari lo bloccano (MDN).
+90004	OUTOFSCOPE	.*/contatti$
