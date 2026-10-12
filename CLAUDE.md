@@ -18,7 +18,7 @@ Le variabili di Vercel arrivano da Doppler con la sync ufficiale: config `prd` ‚
 
 Un cambio in `prd` va in onda al deploy di produzione successivo, qualunque lo inneschi (anche un merge di Dependabot giorni dopo). Dopo ogni cambio: redeploy di produzione subito.
 
-Il Worker Cloudflare ha i suoi segreti, fuori dalla sync (`cloudflare/maintenance-worker/README.md`). Il Worker manda ancora `x-origin-verify`, ma il sito non lo controlla pi√π (ADR-0003).
+Il Worker Cloudflare ha i suoi segreti, fuori dalla sync (`cloudflare/maintenance-worker/README.md`).
 
 Una sync si stacca lasciando le variabili su Vercel. L'opzione "Delete all secrets in Vercel" cancella tutte le variabili, comprese quelle che il build di produzione legge (`SENTRY_AUTH_TOKEN`, `GOOGLE_MAPS_EMBED_KEY`). (Comportamenti misurati su un progetto di prova il 07/10/2026: la doc Doppler non li descrive.)
 

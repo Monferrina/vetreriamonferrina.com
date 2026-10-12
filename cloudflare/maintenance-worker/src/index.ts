@@ -1,13 +1,9 @@
 /**
- * Cloudflare Worker — Maintenance Mode + Origin Lockdown
+ * Cloudflare Worker — Maintenance Mode
  *
  * Intercepts all requests to vetreriamonferrina.com.
  * When MAINTENANCE_ENABLED=true, serves the /maintenance page with 503 status.
  * When MAINTENANCE_ENABLED=false, passes through to origin (Vercel).
- *
- * Origin lockdown: ogni richiesta verso l'origin viene timbrata con l'header segreto
- * `x-origin-verify` (ORIGIN_VERIFY_SECRET). Il middleware Astro, in produzione, rifiuta
- * chi non ce l'ha → chi colpisce *.vercel.app diretto (bypassando CF) prende 403.
  *
  * Vercel Authentication: l'origin risponde con il login Vercel a chi arriva senza
  * `x-vercel-protection-bypass` (VERCEL_AUTOMATION_BYPASS_SECRET); dove vive il valore e
@@ -15,14 +11,13 @@
  *
  * Toggle manutenzione: Cloudflare Dashboard → Workers & Pages → maintenance-mode →
  *         Settings → Variabili e segreti → MAINTENANCE_ENABLED
- * Il secret ORIGIN_VERIFY_SECRET va aggiunto come Secret (runtime), stesso valore su Vercel.
+ * Il secret VERCEL_AUTOMATION_BYPASS_SECRET va aggiunto come Secret (runtime).
  *
  * @see https://developers.cloudflare.com/workers/
  */
 
 interface Env {
   MAINTENANCE_ENABLED: string;
-  ORIGIN_VERIFY_SECRET: string;
   VERCEL_AUTOMATION_BYPASS_SECRET: string;
 }
 
@@ -41,12 +36,11 @@ const SECURITY_HEADERS: Record<string, string> = {
     "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
 };
 
-// Header che l'origin pretende su ogni richiesta: senza il lockdown il middleware risponde
-// 403 sull'API, senza il bypass Vercel risponde con il login. In un posto solo perché il
-// fetch della pagina di manutenzione ne ha bisogno quanto il passthrough.
+// Header che l'origin pretende su ogni richiesta: senza il bypass Vercel risponde con il
+// login. In un posto solo perché il fetch della pagina di manutenzione ne ha bisogno quanto
+// il passthrough.
 function originAuth(env: Env): Record<string, string> {
   return {
-    'x-origin-verify': env.ORIGIN_VERIFY_SECRET,
     'x-vercel-protection-bypass': env.VERCEL_AUTOMATION_BYPASS_SECRET,
   };
 }
@@ -69,7 +63,7 @@ async function passthrough(request: Request, env: Env): Promise<Response> {
     kept.length === pairs.length ? url.search : kept.length ? `?${kept.join('&')}` : '';
   const originUrl = `${ORIGIN}${url.pathname}${search}`;
 
-  // Copia mutabile degli header + timbri segreti. `.set()` (non `.append()`) sovrascrive
+  // Copia mutabile degli header + bypass. `.set()` (non `.append()`) sovrascrive
   // un eventuale valore falso mandato dal client → sul path CF è airtight.
   const originHeaders = new Headers(request.headers);
   // Chiavi raccolte prima: Headers non va modificato mentre lo si itera.
@@ -157,19 +151,8 @@ export default {
         return await passthrough(request, env);
       }
 
-      if (path.startsWith('/api/')) {
-        return new Response(JSON.stringify({ error: 'Sito in manutenzione. Riprova più tardi.' }), {
-          status: 503,
-          headers: {
-            ...SECURITY_HEADERS,
-            'Content-Type': 'application/json',
-            'Retry-After': '3600',
-          },
-        });
-      }
-
-      // Anche il fetch della pagina di manutenzione passa dall'origin lockdown: senza il
-      // segreto il middleware la 403-erebbe e la pagina di manutenzione risulterebbe rotta.
+      // Anche il fetch della pagina di manutenzione porta il bypass: senza, Vercel risponde
+      // con il login e la pagina di manutenzione risulterebbe rotta.
       const maintenanceResponse = await fetch(`${ORIGIN}/maintenance`, {
         headers: originAuth(env),
       });

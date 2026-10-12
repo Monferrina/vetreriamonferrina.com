@@ -6,7 +6,6 @@ import worker from '../../cloudflare/maintenance-worker/src/index';
 // Vercel a chi non porta il bypass: se il Worker non lo mette, il sito pubblico va giù.
 const env = {
   MAINTENANCE_ENABLED: 'false',
-  ORIGIN_VERIFY_SECRET: 'origin-secret',
   VERCEL_AUTOMATION_BYPASS_SECRET: 'bypass-secret',
 };
 

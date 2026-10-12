@@ -5,7 +5,7 @@ compatibility_date = "2026-03-25"
 # Preserva le variabili impostate da dashboard tra i deploy collegati a Git.
 # Senza questo, `wrangler deploy` cancella tutte le vars e le riporta a quelle del toml →
 # il toggle manutenzione impostato da dashboard verrebbe resettato a ogni push. I secret
-# (es. ORIGIN_VERIFY_SECRET) non vengono mai toccati dai deploy.
+# (es. VERCEL_AUTOMATION_BYPASS_SECRET) non vengono mai toccati dai deploy.
 # https://developers.cloudflare.com/workers/wrangler/configuration/#source-of-truth
 keep_vars = true
 
