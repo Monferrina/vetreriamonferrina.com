@@ -4,6 +4,9 @@ name: Revisione Gemini delle PR
 # PR: per questo parte solo su PR del repo, mai da fork (lì i secret non devono arrivare) né
 # da Dependabot (le sue run non ricevono i secret Actions), oppure quando un collaboratore lo
 # chiede con un commento che inizia con @gemini-cli.
+# Mai sulle PR mensili delle recensioni (rami chore/update-reviews-*, update-reviews.yml): il loro
+# diff contiene nomi e testi di chi ha scritto la recensione, dati personali che a Gemini non vanno
+# (CLAUDE.md, "Dati personali"). Le apre un utente, non un bot, quindi il filtro è sul ramo.
 
 on:
   pull_request:
@@ -21,7 +24,8 @@ jobs:
         github.event_name == 'pull_request' &&
         github.event.pull_request.head.repo.fork == false &&
         github.event.pull_request.user.login != 'dependabot[bot]' &&
-        github.event.pull_request.draft == false
+        github.event.pull_request.draft == false &&
+        !startsWith(github.event.pull_request.head.ref, 'chore/update-reviews-')
       ) || (
         github.event_name == 'issue_comment' &&
         github.event.issue.pull_request &&
@@ -65,11 +69,12 @@ jobs:
     # PR (GEMINI.md, .gemini/) può diventare configurazione o istruzione. Nella cartella di
     # lavoro c'è solo la configurazione scritta dall'action, per questo la si dichiara fidata.
     steps:
-      # Il payload di issue_comment non dice se la PR viene da un fork: lo si chiede all'API.
-      # Se la risposta manca o non è "false" (fork cancellato: head.repo è null), Gemini non parte.
-      - name: PR non da fork
+      # Il payload di issue_comment non dice da quale ramo viene la PR né se viene da un fork: lo si
+      # chiede all'API. Se la risposta manca o non è "false" (fork cancellato: head.repo è null),
+      # Gemini non parte; non parte neanche sui rami delle recensioni.
+      - name: PR non da fork né delle recensioni
         id: pr
-        run: echo "fork=$(gh api "repos/$REPO/pulls/$PR" --jq .head.repo.fork)" >> "$GITHUB_OUTPUT"
+        run: gh api "repos/$REPO/pulls/$PR" --jq '"fork=\(.head.repo.fork)", "ramo=\(.head.ref)"' >> "$GITHUB_OUTPUT"
         env:
           GH_TOKEN: ${{ github.token }}
 
@@ -78,7 +83,7 @@ jobs:
       # senza dipendenze obbligatorie) si verifica contro l'impronta e gira senza --yolo.
       - name: Revisione
         id: gemini
-        if: steps.pr.outputs.fork == 'false'
+        if: steps.pr.outputs.fork == 'false' && !startsWith(steps.pr.outputs.ramo, 'chore/update-reviews-')
         run: |
           set -euo pipefail
           cd "$RUNNER_TEMP"
