@@ -8,6 +8,7 @@ import { renderPage, text } from './render-page';
 import Home from '../../src/pages/index.astro';
 import Servizi from '../../src/pages/servizi.astro';
 import Servizio from '../../src/pages/servizi/[slug].astro';
+import Trasporto from '../../src/pages/trasporto-e-montaggio.astro';
 import ChiSiamo from '../../src/pages/chi-siamo.astro';
 import Contatti from '../../src/pages/contatti.astro';
 import Galleria from '../../src/pages/galleria.astro';
@@ -145,20 +146,26 @@ describe('servizi', () => {
     expect(titoli).toEqual(expect.arrayContaining(services.map((s) => s.name)));
   });
 
-  test('la pagina di un servizio ha la CTA del preventivo verso i contatti', async () => {
+  test('il blocco finale di un servizio ha un solo pulsante: Contattaci verso i contatti', async () => {
     const d = await renderPage(Servizio, '/servizi/box-doccia', {
       params: { slug: 'box-doccia' },
     });
-    const cta = [...d.querySelectorAll('main a')].find((a) => /richiedi preventivo/i.test(text(a)));
-    expect(cta?.getAttribute('href')).toBe('/contatti');
+    const links = [...d.querySelectorAll('section[data-section="cta"] a')].map((a) => [
+      text(a),
+      a.getAttribute('href'),
+    ]);
+    expect(links).toEqual([['Contattaci', '/contatti']]);
   });
 
-  test('"Chiamaci" della CTA chiama la vetreria', async () => {
-    const d = await renderPage(Servizio, '/servizi/box-doccia', {
-      params: { slug: 'box-doccia' },
-    });
-    const chiama = [...d.querySelectorAll('main a')].find((a) => /chiamaci/i.test(text(a)));
-    expect(chiama?.getAttribute('href')).toBe('tel:+390142563728');
+  test('trasporto e montaggio: il riquadro "arriviamo da te?" ha un solo pulsante, Contattaci', async () => {
+    const d = await renderPage(Trasporto, '/trasporto-e-montaggio');
+    const riquadro = d.querySelector('.reassure-link')?.parentElement;
+    expect(riquadro).toBeTruthy();
+    const links = [...riquadro!.querySelectorAll('a')].map((a) => [
+      text(a),
+      a.getAttribute('href'),
+    ]);
+    expect(links).toEqual([['Contattaci', '/contatti']]);
   });
 });
 
