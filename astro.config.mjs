@@ -87,6 +87,24 @@ export default defineConfig({
       project: 'vetreriamonferrina-com',
       telemetry: false,
     }),
+    // Il plugin Vite di Sentry gira anche nei build prerender e ssr. Il prerender scrive solo in
+    // dist/server/.prerender/, che il suo glob ({.vercel,dist}/**/*, senza dot) non attraversa:
+    // "Didn't find any matching sources for debug ID upload" a ogni build di produzione. Col server
+    // spento servono solo le mappe del client, quindi il plugin resta nell'ambiente client
+    // (applyToEnvironment di Vite, sperimentale). Misurato il 13/10/2026 con @sentry/astro 11.4.0:
+    // se Sentry rinomina il plugin, l'avviso torna.
+    {
+      name: 'sentry-solo-client',
+      hooks: {
+        'astro:build:setup': ({ vite }) => {
+          for (const plugin of vite.plugins?.flat(Infinity) ?? []) {
+            if (plugin?.name === 'sentry-vite-plugin') {
+              plugin.applyToEnvironment = (environment) => environment.name === 'client';
+            }
+          }
+        },
+      },
+    },
     sitemap({
       // Esclude la pagina di manutenzione (503 servita dal Worker Cloudflare): non navigabile né indicizzabile.
       filter: (page) => !page.endsWith('/maintenance') && !page.endsWith('/maintenance/'),

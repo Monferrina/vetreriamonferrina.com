@@ -199,7 +199,7 @@ La sitemap è generata da `@astrojs/sitemap` e la pagina `/maintenance` ne è es
 
 ### Vercel
 
-Il sito gira con l'adapter `@astrojs/vercel`. Le pagine sono pre-renderizzate, tranne la 404, renderizzata a richiesta perché abbia il CSP con gli hash. Il piano è Hobby, con il rischio sui termini d'uso accettato nell'ADR-0003. `/preventivo` risponde 301 verso `/contatti` (`vercel.json`). Le variabili d'ambiente arrivano da Doppler (sezione "Variabili d'ambiente").
+Il sito gira con l'adapter `@astrojs/vercel`. Le pagine sono pre-renderizzate, tranne la 404, renderizzata a richiesta perché abbia il CSP con gli hash. Il piano è Hobby, con il rischio sui termini d'uso accettato nell'ADR-0003. `/preventivo` risponde 301 verso `/contatti` (`vercel.json`). Install e build in `vercel.json` tolgono `npm_config_cache_dir`, che l'ambiente di build di Vercel imposta: npm 11 (Node 24) la segnala come "Unknown env config" a ogni deploy (misurato il 13/10/2026). Le variabili d'ambiente arrivano da Doppler (sezione "Variabili d'ambiente").
 
 ### Cloudflare
 
