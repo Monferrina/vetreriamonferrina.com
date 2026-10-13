@@ -41,15 +41,8 @@ const activeIndex = tabs.findIndex((tab) => isActive(tab.href));
 const bubblePosition = ['left-0', 'left-1/4', 'left-1/2', 'left-3/4'][activeIndex] ?? 'opacity-0';
 ---
 
-<!--
-  after: lo sfondo continua sotto la barra. Safari 26 colora la zona dietro la sua barra degli
-  indirizzi solo se c'è un elemento fixed attaccato a quel bordo (WebKit, bug 301756); durante la
-  transizione tra pagine ci sono solo le immagini catturate, e lì si vedeva il contenuto della
-  pagina per ~150 ms (AU1, video da iPhone 15 Pro). L'immagine catturata della barra comprende
-  anche questo prolungamento, e copre la zona.
--->
 <nav
-  class="fixed bottom-0 left-0 right-0 z-50 border-t border-neutral-200 bg-neutral-50/95 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-md [transform:translateZ(0)] [view-transition-name:bottom-nav] after:absolute after:inset-x-0 after:top-full after:h-40 after:bg-neutral-50/95 md:hidden"
+  class="fixed bottom-0 left-0 right-0 z-50 border-t border-neutral-200 bg-neutral-50/95 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-md [transform:translateZ(0)] [view-transition-name:bottom-nav] md:hidden"
   aria-label="Navigazione rapida"
   data-bottom-nav
 >

@@ -415,9 +415,13 @@ html {
 /* ==================== View Transitions ==================== */
 /* Transizioni tra pagine native del browser (cross-document, solo CSS): niente ClientRouter,
    che non è supportato con security.csp (CSP1). Chrome 126+, Safari 18.2+; Firefox naviga
-   senza animazione. */
-@view-transition {
-  navigation: auto;
+   senza animazione. Solo da 768 px (dove sparisce la barra in basso): su iPhone con iOS 26,
+   durante la transizione, dietro la barra degli indirizzi di Safari si vedeva il contenuto della
+   pagina, anche con lo sfondo della barra prolungato sotto (AU1, 13/10, video di Marco). */
+@media (min-width: 768px) {
+  @view-transition {
+    navigation: auto;
+  }
 }
 
 /* Fast crossfade between pages — no gap */
