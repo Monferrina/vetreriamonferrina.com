@@ -33,17 +33,33 @@ function isActive(href: string): boolean {
   if (href === '/') return pathname === '/';
   return pathname.startsWith(href);
 }
+
+// Posizione iniziale della bolla nell'HTML, non dallo script: nel cambio pagina Safari (iOS 26)
+// disegna la pagina nuova prima che lo script giri, e la bolla compariva come una riga di 2 px
+// che poi si allargava (AU1, video da iPhone 15 Pro). Le quattro voci sono larghe uguali.
+const activeIndex = tabs.findIndex((tab) => isActive(tab.href));
+const bubblePosition = ['left-0', 'left-1/4', 'left-1/2', 'left-3/4'][activeIndex] ?? 'opacity-0';
 ---
 
+<!--
+  after: lo sfondo continua sotto la barra. Safari 26 colora la zona dietro la sua barra degli
+  indirizzi solo se c'è un elemento fixed attaccato a quel bordo (WebKit, bug 301756); durante la
+  transizione tra pagine ci sono solo le immagini catturate, e lì si vedeva il contenuto della
+  pagina per ~150 ms (AU1, video da iPhone 15 Pro). L'immagine catturata della barra comprende
+  anche questo prolungamento, e copre la zona.
+-->
 <nav
-  class="fixed bottom-0 left-0 right-0 z-50 border-t border-neutral-200 bg-neutral-50/95 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-md [transform:translateZ(0)] [view-transition-name:bottom-nav] md:hidden"
+  class="fixed bottom-0 left-0 right-0 z-50 border-t border-neutral-200 bg-neutral-50/95 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-md [transform:translateZ(0)] [view-transition-name:bottom-nav] after:absolute after:inset-x-0 after:top-full after:h-40 after:bg-neutral-50/95 md:hidden"
   aria-label="Navigazione rapida"
   data-bottom-nav
 >
   <div class="relative flex h-14 items-center justify-around">
     <span
       data-nav-bubble
-      class="pointer-events-none absolute top-1 h-12 rounded-2xl border border-white/25 bg-white/15 shadow-[0_2px_12px_rgb(0_0_0/0.06),inset_0_1px_0_rgb(255_255_255/0.2)] backdrop-blur-lg backdrop-saturate-150 transition-[left,width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none"
+      class:list={[
+        'pointer-events-none absolute top-1 h-12 w-1/4 rounded-2xl border border-white/25 bg-white/15 shadow-[0_2px_12px_rgb(0_0_0/0.06),inset_0_1px_0_rgb(255_255_255/0.2)] backdrop-blur-lg backdrop-saturate-150 transition-[left,width] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none',
+        bubblePosition,
+      ]}
       aria-hidden="true"></span>
     {
       tabs.map((tab) => (
@@ -152,13 +168,6 @@ function isActive(href: string): boolean {
       bubble!.style.left = `${tabRect.left - containerRect.left}px`;
       bubble!.style.width = `${tabRect.width}px`;
       bubble!.style.opacity = '1';
-    }
-
-    const active = nav.querySelector<HTMLAnchorElement>('a[aria-current="page"]');
-    if (active) {
-      moveBubbleTo(active);
-    } else {
-      bubble.style.opacity = '0';
     }
 
     // Feedback immediato al tap: la bolla si sposta sulla voce toccata prima

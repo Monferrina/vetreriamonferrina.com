@@ -9,9 +9,17 @@ import ContattaciButton from './ContattaciButton.astro';
   data-section="hero"
   class="relative overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-primary"
 >
+  <!-- Aloni come gradiente a tinta unita, non come colore di fondo: a colore pieno axe li prendeva
+       per lo sfondo del pulsante "Scopri i nostri servizi" e ignorava il blu sotto (1,07:1 a
+       412 px, PageSpeed mobile a 96; sui pixel è 9,73:1). Stessi pixel, misurato (AU1). -->
   <div class="absolute inset-0 opacity-10 will-change-transform" data-hero-parallax>
-    <div class="absolute top-10 right-10 h-64 w-64 rounded-full bg-secondary blur-3xl"></div>
-    <div class="absolute bottom-10 left-10 h-48 w-48 rounded-full bg-secondary-light blur-3xl">
+    <div
+      class="absolute top-10 right-10 h-64 w-64 rounded-full bg-[linear-gradient(var(--color-secondary),var(--color-secondary))] blur-3xl"
+    >
+    </div>
+    <div
+      class="absolute bottom-10 left-10 h-48 w-48 rounded-full bg-[linear-gradient(var(--color-secondary-light),var(--color-secondary-light))] blur-3xl"
+    >
     </div>
   </div>
 

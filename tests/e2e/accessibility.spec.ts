@@ -38,6 +38,20 @@ for (const colorScheme of ['light', 'dark'] as const) {
   });
 }
 
+// AU1: PageSpeed su mobile (Lighthouse, 412x823) dava 96 per il pulsante "Scopri i nostri
+// servizi" della testata: axe leggeva come sfondo l'alone arancio sfocato e non il blu sotto
+// (1,07:1; sui pixel è 9,73:1). Solo a questa larghezza l'alone finisce dietro il pulsante.
+test('nessun testo sotto il contrasto AA nella home con la vista mobile di Lighthouse', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 412, height: 823 });
+  await page.clock.setFixedTime(new Date('2026-10-13T12:00:00+02:00'));
+  await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'reduce' });
+  await page.goto('/', { waitUntil: 'networkidle' });
+  const { violations } = await new AxeBuilder({ page }).withRules(['color-contrast']).analyze();
+  expect(violations.flatMap((v) => v.nodes.map((n) => n.target.join(' ')))).toEqual([]);
+});
+
 // AU1: senza una regola del sito il contorno di focus era quello del browser, e in WebKit a tema
 // chiaro (#5b9be8 su #fafafa) restava a 2,76:1, sotto il 3:1 di WCAG 1.4.11 (misurato sui pixel).
 // Colori attesi: --color-primary dei due temi in global.css (#1b4965 e #5ba3cc).

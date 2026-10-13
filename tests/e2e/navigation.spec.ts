@@ -36,5 +36,24 @@ test.describe('Navigazione', () => {
         .click();
       await expect(page).toHaveURL(/\/servizi/, { timeout: 10000 });
     });
+
+    // AU1 (13/10/2026, video da iPhone 15 Pro, iOS 26): nel cambio pagina Safari disegna la pagina
+    // nuova prima che giri lo script, e la bolla compariva come una riga di 2 px che poi si
+    // allargava. La posizione iniziale deve venire dall'HTML: senza JavaScript la bolla sta già
+    // sopra la voce attiva.
+    test.describe('senza JavaScript', () => {
+      test.use({ javaScriptEnabled: false });
+
+      for (const path of ['/', '/galleria', '/contatti']) {
+        test(`la bolla della bottom nav è già sulla voce attiva in ${path}`, async ({ page }) => {
+          await page.goto(path);
+          const nav = page.locator('[data-bottom-nav]');
+          const bolla = await nav.locator('[data-nav-bubble]').boundingBox();
+          const voce = await nav.locator('a[aria-current="page"]').boundingBox();
+          expect(Math.abs(bolla!.x - voce!.x)).toBeLessThanOrEqual(1);
+          expect(Math.abs(bolla!.width - voce!.width)).toBeLessThanOrEqual(1);
+        });
+      }
+    });
   });
 });
