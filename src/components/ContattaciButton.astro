@@ -1,13 +1,14 @@
 ---
 // Il pulsante arancione "Contattaci" verso /contatti: uno solo per blocco, uguale ovunque
 // (hero, blocco finale, trasporto). Scritto a mano in tre posti, lo stile divergeva.
-// ring-offset trasparente: lo spazio attorno all'anello di focus mostra lo sfondo che c'è,
-// chiaro o scuro, senza dover dire al componente dove si trova.
+// Focus: il contorno globale di global.css (primario sui fondi chiari, bianco su quelli blu).
+// L'anello arancio chiaro che aveva qui restava a 2,4:1 sui fondi chiari (AU1).
+// Al passaggio del mouse si scurisce: il bianco sull'arancio più chiaro di prima scendeva a 3,9:1.
 ---
 
 <a
   href="/contatti"
-  class="inline-block rounded-full bg-secondary-dark px-8 py-3.5 text-base font-semibold text-neutral-50 shadow-lg transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-secondary-light focus:ring-offset-2 focus:ring-offset-transparent"
+  class="inline-block rounded-full bg-secondary-dark px-8 py-3.5 text-base font-semibold text-neutral-50 shadow-lg transition hover:brightness-90"
 >
   Contattaci
 </a>

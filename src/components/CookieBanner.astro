@@ -11,7 +11,7 @@
   aria-live="polite"
   class="cookie-banner fixed bottom-14 left-0 right-0 z-[51] mb-[env(safe-area-inset-bottom,0px)] hidden border-t border-primary-light/30 bg-primary-dark text-white md:bottom-0"
 >
-  <div class="mx-auto flex max-w-3xl flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:gap-4">
+  <div class="mx-auto flex max-w-3xl items-center gap-3 px-4 py-3 sm:gap-4 sm:px-5">
     <p class="flex-1 text-sm leading-relaxed">
       Questo sito usa solo cookie tecnici. Nessun tracciamento.
       <a
@@ -23,7 +23,7 @@
     <button
       id="cookie-banner-dismiss"
       type="button"
-      class="shrink-0 self-end rounded-full bg-white px-6 py-3 text-sm font-semibold text-primary-dark transition-colors hover:bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-dark min-h-[44px] min-w-[44px] sm:self-auto"
+      class="shrink-0 rounded-full bg-white px-6 py-3 text-sm font-semibold text-primary-dark transition-colors hover:bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-dark min-h-[44px] min-w-[44px]"
     >
       OK
     </button>
@@ -45,6 +45,24 @@
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  /* Su mobile, col banner aperto, pulsante e fumetto della chat restano nascosti: il pulsante
+     finiva dietro il banner, e insieme alla barra in basso coprivano mezzo schermo (AU1). Su
+     desktop restano, sopra il banner (una riga, ~70 px). */
+  @media (max-width: 767px) {
+    :global(body:has(.cookie-banner-visible) #chatbot-toggle),
+    :global(body:has(.cookie-banner-visible) #chatbot-tooltip) {
+      display: none;
+    }
+  }
+  @media (min-width: 768px) {
+    :global(body:has(.cookie-banner-visible) #chatbot-toggle) {
+      bottom: 6rem;
+    }
+    :global(body:has(.cookie-banner-visible) #chatbot-tooltip) {
+      bottom: 10rem;
     }
   }
 
@@ -77,18 +95,9 @@
       return;
     }
 
-    // Show the banner and push chatbot button up
+    // Show the banner (the chat stays hidden while it is open: see the style above)
     banner.classList.remove('hidden');
     banner.classList.add('cookie-banner-visible');
-
-    // Defer layout read to next frame to avoid forced synchronous layout
-    const chatToggle = document.getElementById('chatbot-toggle');
-    const chatTooltip = document.getElementById('chatbot-tooltip');
-    requestAnimationFrame(() => {
-      const bannerHeight = banner.offsetHeight;
-      if (chatToggle) chatToggle.style.bottom = `${bannerHeight + 24}px`;
-      if (chatTooltip) chatTooltip.style.bottom = `${bannerHeight + 88}px`;
-    });
 
     // Guard against duplicate handlers on re-init
     if (dismissBtn.dataset.initialized) return;
@@ -103,12 +112,6 @@
       }
       banner.classList.remove('cookie-banner-visible');
       banner.classList.add('hidden');
-
-      // Restore chatbot position
-      const chatToggle = document.getElementById('chatbot-toggle');
-      const chatTooltip = document.getElementById('chatbot-tooltip');
-      if (chatToggle) chatToggle.style.bottom = '';
-      if (chatTooltip) chatTooltip.style.bottom = '';
     });
   }
 

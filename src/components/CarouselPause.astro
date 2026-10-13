@@ -1,0 +1,67 @@
+---
+// Pulsante pausa/riprendi dei caroselli che scorrono da soli, e lo script che li fa girare.
+// Va dentro il contenitore .auto-carousel (posizionato, overflow nascosto), accanto alla traccia
+// .auto-carousel-track con gli elementi ripetuti due volte. Prima di AU1 solo il carosello del
+// laboratorio aveva il pulsante: quello delle recensioni si fermava solo col mouse (WCAG 2.2.2).
+// Anello di focus bianco con distacco nero: resta visibile sopra qualunque foto.
+---
+
+<button
+  type="button"
+  class="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+  aria-label="Metti in pausa il carosello"
+  data-carousel-pause
+>
+  <svg class="h-4 w-4" data-pause-icon fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <rect x="6" y="4" width="4" height="16"></rect>
+    <rect x="14" y="4" width="4" height="16"></rect>
+  </svg>
+  <svg
+    class="hidden h-4 w-4"
+    data-play-icon
+    fill="currentColor"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <polygon points="5,3 19,12 5,21"></polygon>
+  </svg>
+</button>
+
+<script>
+  function initCarousel(container: HTMLElement): void {
+    const track = container.querySelector<HTMLElement>('.auto-carousel-track');
+    const pauseBtn = container.querySelector<HTMLButtonElement>('[data-carousel-pause]');
+    if (!track || !pauseBtn) return;
+
+    // Larghezza esatta della prima metà (elementi + gap): il giro torna all'inizio senza scatti.
+    const children = Array.from(track.children) as HTMLElement[];
+    const halfCount = children.length / 2;
+    if (halfCount < 1) return;
+    const gap = parseFloat(getComputedStyle(track).gap) || 0;
+    let setWidth = 0;
+    for (let i = 0; i < halfCount; i++) {
+      setWidth += children[i].offsetWidth + gap;
+    }
+    track.style.setProperty('--scroll-width', `-${setWidth}px`);
+    track.style.setProperty('--scroll-duration', `${setWidth / 50}s`); // ~50 px/s
+
+    const pauseIcon = pauseBtn.querySelector('[data-pause-icon]') as SVGElement;
+    const playIcon = pauseBtn.querySelector('[data-play-icon]') as SVGElement;
+    let isPaused = false;
+    pauseBtn.addEventListener('click', () => {
+      isPaused = !isPaused;
+      // Alla ripresa si toglie lo stile in linea: un 'running' scritto qui vincerebbe sulla pausa
+      // al passaggio del mouse (.auto-carousel:hover in global.css).
+      if (isPaused) track.style.animationPlayState = 'paused';
+      else track.style.removeProperty('animation-play-state');
+      pauseIcon.classList.toggle('hidden', isPaused);
+      playIcon.classList.toggle('hidden', !isPaused);
+      pauseBtn.setAttribute(
+        'aria-label',
+        isPaused ? 'Riprendi il carosello' : 'Metti in pausa il carosello'
+      );
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>('.auto-carousel').forEach(initCarousel);
+</script>

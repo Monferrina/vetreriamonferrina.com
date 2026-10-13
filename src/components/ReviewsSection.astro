@@ -4,6 +4,7 @@
 // Only reviews with rating >= 4 are shown (filtered in reviews.json).
 // Data is validated at build time — any corrupted JSON fails the build.
 import rawData from '../data/reviews.json';
+import CarouselPause from './CarouselPause.astro';
 
 // --- Build-time validation ---
 interface ReviewEntry {
@@ -138,11 +139,13 @@ const hasHalfStar = rating - fullStars >= 0.3;
     </div>
 
     <div
-      class="reviews-carousel mt-12 overflow-hidden"
+      class="auto-carousel relative mt-12 overflow-hidden"
       role="region"
       aria-label="Recensioni clienti"
+      aria-roledescription="carousel"
     >
-      <div class="reviews-track flex gap-6">
+      <CarouselPause />
+      <div class="auto-carousel-track flex gap-6">
         {/* Original + duplicate for seamless loop */}
         {
           [...reviews, ...reviews].map((review) => (
@@ -190,61 +193,3 @@ const hasHalfStar = rating - fullStars >= 0.3;
     </p>
   </div>
 </section>
-
-<style>
-  /* Infinite auto-scroll — JS sets --scroll-width for pixel-perfect loop */
-  .reviews-track {
-    animation: reviews-scroll var(--scroll-duration, 30s) linear infinite;
-    will-change: transform;
-  }
-
-  /* Pause on hover so users can read */
-  .reviews-carousel:hover .reviews-track {
-    animation-play-state: paused;
-  }
-
-  @keyframes reviews-scroll {
-    0% {
-      transform: translate3d(0, 0, 0);
-    }
-    100% {
-      transform: translate3d(var(--scroll-width, -50%), 0, 0);
-    }
-  }
-
-  /* Respect prefers-reduced-motion */
-  @media (prefers-reduced-motion: reduce) {
-    .reviews-track {
-      animation: none;
-    }
-    .reviews-carousel {
-      overflow-x: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--color-neutral-200) transparent;
-    }
-  }
-</style>
-
-<script>
-  function initReviewsCarousel(): void {
-    const track = document.querySelector<HTMLElement>('.reviews-track');
-    if (!track) return;
-    const children = Array.from(track.children) as HTMLElement[];
-    const halfCount = children.length / 2;
-    if (halfCount < 1) return;
-
-    // Measure the exact width of the first set of items + gap
-    const gap = parseFloat(getComputedStyle(track).gap) || 0;
-    let setWidth = 0;
-    for (let i = 0; i < halfCount; i++) {
-      setWidth += children[i].offsetWidth + gap;
-    }
-
-    track.style.setProperty('--scroll-width', `-${setWidth}px`);
-    // Scale duration proportionally to content width for consistent speed
-    const speed = setWidth / 50; // ~50px/sec
-    track.style.setProperty('--scroll-duration', `${speed}s`);
-  }
-
-  initReviewsCarousel();
-</script>

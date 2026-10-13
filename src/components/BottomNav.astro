@@ -128,6 +128,14 @@ function isActive(href: string): boolean {
   </div>
 </nav>
 
+<style>
+  /* Tema scuro: la bolla bianca al 15% schiarisce il fondo della voce attiva, e il primario ci
+     stava a 4,35:1 (axe in modalità mobile, AU1); il primario chiaro arriva a 5,6:1. */
+  :global([data-theme='dark']) a[aria-current='page'] {
+    color: var(--color-primary-light);
+  }
+</style>
+
 <script>
   function initNavBubble(): void {
     const nav = document.querySelector<HTMLElement>('[data-bottom-nav]');

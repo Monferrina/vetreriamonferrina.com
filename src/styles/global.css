@@ -27,7 +27,8 @@
   --color-neutral-100: #f5f5f5;
   --color-neutral-200: #e5e5e5;
   --color-neutral-400: #a3a3a3;
-  --color-neutral-500: #737373;
+  /* AU1: #737373 dava 4,4:1 sui fondi chiari col testo da 12 px (minimo AA 4,5). */
+  --color-neutral-500: #6b6b6b;
   --color-neutral-600: #525252;
   --color-neutral-700: #404040;
   --color-neutral-800: #262626;
@@ -48,12 +49,13 @@
   --color-primary-dark: #1b4965;
   --color-secondary: #d4955e;
   --color-secondary-light: #e0a875;
-  --color-secondary-dark: #b86e35;
+  /* AU1: #b86e35 come testo sulle card scure dava 3,7:1. */
+  --color-secondary-dark: #cc8650;
   --color-neutral-50: #111318;
   --color-neutral-100: #1a1d24;
   --color-neutral-200: #3a3d46;
   --color-neutral-400: #6b7280;
-  --color-neutral-500: #808891;
+  --color-neutral-500: #8f97a1; /* AU1: #808891 dava 4,1:1 su surface */
   --color-neutral-600: #959da8;
   --color-neutral-700: #b0b7c2;
   --color-neutral-800: #d1d5db;
@@ -86,10 +88,30 @@
   --color-neutral-200: #e5e5e5;
   --color-surface: #ffffff;
 }
+/* Pulsanti arancio con testo bianco: l'arancio del tema chiaro, come le sezioni blu sopra. Con
+   quello del tema scuro, più chiaro, il bianco scendeva a 3,8:1 (AU1). */
+[data-theme='dark'] .bg-secondary-dark {
+  --color-secondary-dark: #964f1e;
+}
 [data-theme='dark'] .bg-secondary,
 [data-theme='dark'] .bg-secondary-dark {
   --color-neutral-50: #fafafa;
   --color-neutral-200: #e5e5e5;
+}
+
+/* Contorno di focus del sito al posto di quello del browser: in WebKit a tema chiaro quello di
+   default (#5b9be8) restava a 2,76:1 sul fondo, sotto il 3:1 di WCAG 1.4.11 (AU1, misurato sui
+   pixel). In @layer base perché i componenti con un loro anello (focus:outline-none + ring)
+   restino come sono: fuori dai layer questa regola vincerebbe sulle utility di Tailwind. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  /* Sui fondi blu il primario sparisce: lì il contorno è bianco. */
+  :is(.bg-primary, .bg-primary-dark, .from-primary) :focus-visible {
+    outline-color: #fff;
+  }
 }
 
 /* Liquid glass panel — reusable on colored backgrounds */
@@ -134,6 +156,26 @@
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* ==================== Caroselli che scorrono da soli ==================== */
+/* Recensioni e laboratorio: la traccia contiene gli elementi due volte e scorre di metà
+   (--scroll-width e --scroll-duration li misura CarouselPause.astro). Si ferma al passaggio del
+   mouse e col pulsante di CarouselPause. */
+.auto-carousel-track {
+  animation: auto-carousel-scroll var(--scroll-duration, 30s) linear infinite;
+  will-change: transform;
+}
+.auto-carousel:hover .auto-carousel-track {
+  animation-play-state: paused;
+}
+@keyframes auto-carousel-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(var(--scroll-width, -50%), 0, 0);
+  }
 }
 
 /* ==================== Global Scroll Reveal ==================== */
@@ -348,6 +390,18 @@ html {
   }
   [data-lightbox-image] {
     transition: none;
+  }
+  /* Fermi: si scorrono a mano, e il pulsante di pausa non serve. */
+  .auto-carousel-track {
+    animation: none;
+  }
+  .auto-carousel {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-neutral-200) transparent;
+  }
+  [data-carousel-pause] {
+    display: none;
   }
   ::view-transition-old(root),
   ::view-transition-new(root) {

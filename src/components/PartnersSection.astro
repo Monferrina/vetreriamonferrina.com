@@ -62,6 +62,17 @@ const partners = [
     }
   }
 
+  /* Tema scuro: i loghi hanno il fondo bianco, e grigio più opacità li riducevano a quadrati grigi
+     sul fondo scuro (AU1). Qui sono tessere chiare a colori pieni. */
+  :global([data-theme='dark']) .partner-logo,
+  :global([data-theme='dark']) .partner-item:hover .partner-logo,
+  :global([data-theme='dark']) .partner-item:active .partner-logo {
+    filter: none;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    padding: 0.375rem;
+  }
+
   /* Touch: active only while pressing */
   @media (hover: none) {
     .partner-item:active .partner-logo {
