@@ -6,7 +6,7 @@
 // databaseQueryData e queues (il sito non usa quelle integrazioni) e frameContextLines (righe di
 // codice sorgente, non dati).
 export const sentryOptions = {
-  dsn: 'https://8e0c585416092c688c12138e25763318@o4512180292878336.ingest.de.sentry.io/4512180302446672',
+  dsn: 'https://5980b0a6c1d33cfe07af58afa543cc6c@o4512180292878336.ingest.de.sentry.io/4512180302446672',
   dataCollection: {
     userInfo: false,
     cookies: false,

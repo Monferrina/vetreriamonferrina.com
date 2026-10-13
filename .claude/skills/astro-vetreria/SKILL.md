@@ -1,6 +1,6 @@
 ---
 name: astro-vetreria
-description: Astro 7 and @astrojs/vercel 11 as used in this site, checked against the official docs. Use before writing or reviewing code that touches `astro:env` (secrets, `getSecret`), `src/middleware.ts`, API endpoints in `src/pages/api/`, `prerender`/on-demand rendering, `<Image>`/`<Picture>`, `astro.config.mjs`, the Vercel adapter, or the `astro` CLI (dev, check, preview, sync).
+description: Astro 7 and @astrojs/vercel 11 as used in this site, checked against the official docs. Use before writing or reviewing code that touches `astro:env` (secrets, `getSecret`), `src/middleware.ts`, `prerender`/on-demand rendering, `<Image>`/`<Picture>`, `astro.config.mjs`, the Vercel adapter, or the `astro` CLI (dev, check, preview, sync).
 ---
 
 # Astro on this site
@@ -21,12 +21,6 @@ that relies on it.
 static with `export const prerender = true`
 ([on-demand rendering](https://docs.astro.build/en/guides/on-demand-rendering/#server-mode)).
 A new page without that line is rendered on every request.
-
-Endpoints export one function per HTTP method, typed with `satisfies APIRoute`; an
-unhandled method falls to the 404 page. Read JSON with `await request.json()` after
-checking `Content-Type`, forms with `await request.formData()`, and validate every
-value before use ([endpoints](https://docs.astro.build/en/guides/endpoints/),
-[forms recipe](https://docs.astro.build/en/recipes/build-forms-api/)).
 
 ## Middleware
 

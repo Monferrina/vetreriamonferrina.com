@@ -218,20 +218,11 @@ Il dominio è su Cloudflare, piano Free, con proxy attivo.
 
 Il Worker in `cloudflare/maintenance-worker/` è collegato a GitHub: ogni push su `main` che tocca quella cartella fa build e deploy da solo. `keep_vars = true` nel `wrangler.toml` preserva le variabili impostate da dashboard, come `MAINTENANCE_ENABLED`, e i secret non vengono mai toccati.
 
+I record `send` (MX, SPF) e `resend._domainkey` servono alle email di monferrinoAI attraverso Resend, `_dmarc` protegge il dominio dalle email falsificate: il sito non li usa, non si cancellano.
+
 ### Vercel Authentication
 
-Il progetto Vercel ha la Deployment Protection su **All Deployments** (gratuita su ogni piano dal 9/9/2026): ogni URL, alias `*.vercel.app` e dominio pubblico compresi, risponde con il login Vercel a chi arriva senza l'header `x-vercel-protection-bypass`. Lo manda il Worker su ogni richiesta verso l'origin. Gli E2E in CI non lo usano: entrano con un token OIDC di GitHub accettato da Trusted Sources, solo sulle Preview. Il valore è il "Protection Bypass for Automation" del progetto, nel Worker e in Doppler `playwright_preview`, una config che contiene solo lui e serve solo agli E2E in locale contro una preview (`doppler run --config playwright_preview -- npm run test:e2e`), e fino alla pulizia di ST7 anche in una variabile di Checkly: rigenerarlo su Vercel invalida le deployment già pubblicate, quindi si aggiorna il Worker e si ridistribuisce, altrimenti il sito pubblico risponde con il login. Senza questo strato chi conosce l'IP di Vercel serve il sito con `Host: vetreriamonferrina.com` saltando Cloudflare (misurato il 06/10/2026).
-
-### Resend
-
-Mandava le email del modulo preventivi, tolto il 12/10/2026 (ADR-0003). Account (`giuseppefioravanti@proton.me`) e record DNS restano finché non si chiudono:
-
-| Record | Nome                | Valore                                                            |
-| ------ | ------------------- | ----------------------------------------------------------------- |
-| TXT    | `resend._domainkey` | Chiave DKIM Resend                                                |
-| MX     | `send`              | `feedback-smtp.eu-west-1.amazonses.com` (priorità 10)             |
-| TXT    | `send`              | `v=spf1 include:amazonses.com ~all`                               |
-| TXT    | `_dmarc`            | `v=DMARC1; p=quarantine; rua=mailto:giuseppefioravanti@proton.me` |
+Il progetto Vercel ha la Deployment Protection su **All Deployments** (gratuita su ogni piano dal 9/9/2026): ogni URL, alias `*.vercel.app` e dominio pubblico compresi, risponde con il login Vercel a chi arriva senza l'header `x-vercel-protection-bypass`. Lo manda il Worker su ogni richiesta verso l'origin. Gli E2E in CI non lo usano: entrano con un token OIDC di GitHub accettato da Trusted Sources, solo sulle Preview. Il valore è il "Protection Bypass for Automation" del progetto, nel Worker e in Doppler `playwright_preview`, una config che contiene solo lui e serve solo agli E2E in locale contro una preview (`doppler run --config playwright_preview -- npm run test:e2e`): rigenerarlo su Vercel invalida le deployment già pubblicate, quindi si aggiorna il Worker e si ridistribuisce, altrimenti il sito pubblico risponde con il login. Senza questo strato chi conosce l'IP di Vercel serve il sito con `Host: vetreriamonferrina.com` saltando Cloudflare (misurato il 06/10/2026).
 
 ### Checkly
 

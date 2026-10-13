@@ -6,7 +6,7 @@
 
 ## Context
 
-Il modulo preventivi ha ricevuto una sola richiesta vera in tutta la sua vita, e per proteggerlo il sito teneva in piedi Resend, Upstash, Turnstile, il lockdown dell'origine, una chiave Sentry server e quattro check Checkly (ADR-0001). Il widget meteo chiamava MET Norway da una funzione server. Erano le sole due rotte on demand del sito oltre alla 404.
+Il modulo preventivi ha ricevuto una sola richiesta vera in tutta la sua vita, e per proteggerlo il sito teneva in piedi Resend, Upstash, Turnstile, il lockdown dell'origine, una chiave Sentry server e quattro check Checkly. Il widget meteo chiamava MET Norway da una funzione server. Erano le sole due rotte on demand del sito oltre alla 404.
 
 L'audit legale (`normativa.md`, punti F1-F3) ha trovato tre problemi del piano Hobby di Vercel:
 
@@ -21,6 +21,7 @@ L'audit legale (`normativa.md`, punti F1-F3) ha trovato tre problemi del piano H
 3. Opt-out dell'addestramento IA (F3) fatto da Marco il 12/10/2026 in Team Settings > Data Preferences. Vale da quella data in avanti.
 4. Via anche HawkScan: senza funzioni server resta poco da scansionare, e la prova di StackHawk scade. Nessuno strumento al suo posto per ora.
 5. Il Worker Cloudflare di manutenzione resta com'è.
+6. La preview Vercel prova il frontend; una modifica al Worker o alle regole Cloudflare si verifica in produzione, dopo il merge, perché la preview non passa da Cloudflare (decisione dell'11/10/2026).
 
 ## Options Considered
 
@@ -32,4 +33,4 @@ L'audit legale (`normativa.md`, punti F1-F3) ha trovato tre problemi del piano H
 - Più facile: niente email, segreti e servizi di terzi da tenere allineati per il modulo; meno dati personali trattati; meno superficie da proteggere.
 - Più difficile: chi vuole un preventivo deve telefonare, scrivere su WhatsApp o mandare un'email.
 - Rischio aperto: Vercel può sospendere il progetto Hobby, anche senza preavviso (ToS §4). Se succede, si riprende la migrazione a Cloudflare.
-- Il modulo non torna (Marco, 12/10/2026): niente rollback, i segreti e i servizi che usava si cancellano in ST7.
+- Il modulo non torna (Marco, 12/10/2026): niente rollback, i segreti e i servizi che usava sono stati cancellati in ST7 (13/10/2026).
