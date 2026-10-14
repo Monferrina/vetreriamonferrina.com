@@ -29,11 +29,11 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
-    "@astrojs/vercel": "^11.0.11",
-    "@sentry/astro": "^11.4.0",
+    "@astrojs/vercel": "^11.0.12",
+    "@sentry/astro": "^11.5.0",
     "@tailwindcss/vite": "^4.3.2",
     "@vercel/speed-insights": "^2.0.0",
-    "astro": "^7.3.5",
+    "astro": "^7.3.6",
     "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
@@ -52,7 +52,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "sharp": "^0.35.5",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.71.0",
+    "typescript-eslint": "^8.71.1",
     "vitest": "^4.1.11",
     "yaml": "2.9.1"
   },
