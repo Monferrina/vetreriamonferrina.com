@@ -197,7 +197,7 @@ Il dominio è su Cloudflare, piano Free, con proxy attivo.
 | HSTS           | 1 anno (max-age 31536000), includeSubDomains, senza preload (dalla zona Cloudflare) |
 | WAF            | Bot Fight Mode e AI Bot Blocking                                                    |
 | Cache          | Asset statici 1 anno (`/_astro/`, `.webp`, `.woff2`)                                |
-| Analytics      | Web Analytics (RUM, zero cookie)                                                    |
+| Analytics      | Nessuno script: Web Analytics (RUM) non è nelle pagine (misurato il 14/10/2026)     |
 | Rocket Loader  | Disattivato, interferisce con Astro                                                 |
 | Worker         | `maintenance-mode` con toggle da dashboard, deploy via Workers Builds               |
 
@@ -243,6 +243,7 @@ Sotto c'è un [Cloudflare Worker](https://developers.cloudflare.com/workers/) ch
 
 - [CONTRIBUTING](CONTRIBUTING.md), flusso di lavoro, controlli e convenzioni
 - [SECURITY](SECURITY.md), come segnalare una vulnerabilità
+- [`docs/architettura.md`](docs/architettura.md), architettura: obiettivi di qualità e diagrammi C4
 - [`docs/adr/`](docs/adr/README.md), registro delle decisioni
 - [`docs/mappa-dati.md`](docs/mappa-dati.md), dove passano e dove si fermano i dati del visitatore
 - [`docs/google-reviews-setup.md`](docs/google-reviews-setup.md), guida a Google Places API

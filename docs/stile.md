@@ -18,7 +18,7 @@ Ogni fatto sta in un posto solo; gli altri documenti ci rimandano con un link.
 | `CONTRIBUTING.md`           | Flusso di lavoro, controlli in locale, check al merge, commit |
 | `SECURITY.md`               | Come segnalare una vulnerabilità                              |
 | `docs/adr/`                 | Decisioni di architettura, una per file, con l'indice         |
-| `docs/*.md`                 | Guide operative e spiegazioni (mappa dei dati, Google Places) |
+| `docs/*.md`                 | Guide e spiegazioni (architettura, mappa dei dati, Google)    |
 | `cloudflare/…/README.md`    | Il Worker: cosa fa, come si accende la manutenzione, deploy   |
 | `CLAUDE.md`, `docs/agents/` | Solo ciò che serve all'agente e non sta già altrove           |
 
