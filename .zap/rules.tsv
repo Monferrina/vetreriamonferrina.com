@@ -1,6 +1,10 @@
 # Eccezioni di zap-baseline.py: id regola, livello (IGNORE/OUTOFSCOPE), regex o nome. Una riga
 # OUTOFSCOPE prende tutto il resto della riga come regex: il motivo sta nel commento sopra.
 #
-# 90004 (COEP/COOP): /contatti non ha COEP perché l'iframe di Google Maps non manda né COEP
-# né CORP (misurato il 12/10/2026) e con COEP require-corp Firefox e Safari lo bloccano (MDN).
-90004	OUTOFSCOPE	.*/contatti$
+# 90004 (COEP/COOP): nessuna pagina ha COEP, per scelta di Marco (14/10/2026). Con require-corp su
+# tutte le pagine tranne /contatti (l'iframe di Google Maps non manda né COEP né CORP), il passaggio
+# da e verso /contatti cambiava l'isolamento: il browser apriva un contesto nuovo e riscaricava
+# tutto (primo disegno 300-440 ms invece di ~90, misurato in WebKit), e su iPhone con iOS 26 dietro
+# la barra di Safari si vedeva la pagina. Il sito è statico e non usa funzioni che chiedono
+# l'isolamento (SharedArrayBuffer): l'avviso non dice niente qui.
+90004	OUTOFSCOPE	.*
