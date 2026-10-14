@@ -235,6 +235,16 @@ Lo script genera due soli file, `src/data/reviews.json` e `src/data/opening-hour
 
 La chiave non va mai committata e va limitata a "Places API" e "Places API (New)" nella Google Cloud Console.
 
+## Chiusure straordinarie
+
+Ferie e festività stanno in `src/data/chiusure.json`, una voce per chiusura:
+
+```json
+[{ "dal": "2027-08-09", "al": "2027-08-23", "motivo": "ferie" }]
+```
+
+L'avviso "Chiusi per ferie dal 9 agosto al 23 agosto." compare in cima a ogni pagina 14 giorni prima dell'inizio e sparisce dopo l'ultimo giorno: la data la controlla il browser, quindi non serve un deploy il giorno giusto. Il file è separato dagli orari di Google, che il workflow mensile sovrascrive. Date in formato `AAAA-MM-GG`; un errore (data inesistente, `dal` dopo `al`) fa fallire `tests/unit/chiusure.test.ts` e blocca il merge.
+
 ## Manutenzione
 
 Sotto c'è un [Cloudflare Worker](https://developers.cloudflare.com/workers/) che intercetta le richieste prima che arrivino a Vercel. Con la manutenzione attiva recupera la pagina `/maintenance` da Vercel e la serve con status 503; altrimenti fa da semplice passthrough. Il codice sta in `cloudflare/maintenance-worker/`; come accendere e spegnere la manutenzione è nel suo [README](cloudflare/maintenance-worker/README.md).

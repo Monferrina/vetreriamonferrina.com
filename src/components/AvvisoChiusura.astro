@@ -1,0 +1,42 @@
+---
+// Avviso di chiusura straordinaria in cima a ogni pagina. Il sito è statico: l'avviso esce
+// nascosto dal build con le date, e lo script lo mostra dal preavviso all'ultimo giorno.
+import type { Chiusura } from '../lib/chiusure';
+
+interface Props {
+  chiusure: Chiusura[];
+}
+
+const { chiusure } = Astro.props;
+// timeZone UTC: la data è un giorno del calendario, non un istante da spostare nel fuso.
+const giorno = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', timeZone: 'UTC' });
+const data = (d: string) => giorno.format(new Date(`${d}T00:00:00Z`));
+---
+
+{
+  chiusure.map((c) => (
+    <aside
+      data-chiusura
+      data-dal={c.dal}
+      data-al={c.al}
+      hidden
+      aria-label="Chiusura straordinaria"
+      class="bg-primary-dark px-4 py-2 text-center text-sm font-medium text-white"
+    >
+      Chiusi per {c.motivo} dal {data(c.dal)} al {data(c.al)}.
+    </aside>
+  ))
+}
+
+<script>
+  import { chiusuraDaMostrare, oggiInItalia } from '../lib/chiusure';
+
+  // ponytail: l'avviso compare dopo il primo disegno e sposta la pagina di una riga (CLS), solo
+  // nelle settimane di preavviso e chiusura; uno script sincrono in testa lo eviterebbe.
+  const avvisi = [...document.querySelectorAll<HTMLElement>('[data-chiusura]')];
+  const scelta = chiusuraDaMostrare(
+    avvisi.map((el) => ({ dal: el.dataset.dal ?? '', al: el.dataset.al ?? '', el })),
+    oggiInItalia()
+  );
+  if (scelta) scelta.el.hidden = false;
+</script>
