@@ -197,7 +197,7 @@ Il dominio è su Cloudflare, piano Free, con proxy attivo.
 | HSTS           | 1 anno (max-age 31536000), includeSubDomains, senza preload (dalla zona Cloudflare) |
 | WAF            | Bot Fight Mode e AI Bot Blocking                                                    |
 | Cache          | Asset statici 1 anno (`/_astro/`, `.webp`, `.woff2`)                                |
-| Analytics      | Nessuno script: Web Analytics (RUM) non è nelle pagine (misurato il 14/10/2026)     |
+| Analytics      | Solo statistiche del dominio, senza script nelle pagine (niente Web Analytics)      |
 | Rocket Loader  | Disattivato, interferisce con Astro                                                 |
 | Worker         | `maintenance-mode` con toggle da dashboard, deploy via Workers Builds               |
 
