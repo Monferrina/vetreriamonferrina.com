@@ -9,6 +9,33 @@ export const prerender = true;
 const heroTitle = 'Chi siamo';
 const heroIntro =
   'Giuseppe, Debora e il loro laboratorio: dal cuore di Casale Monferrato, artigiani del vetro da oltre 40 anni.';
+
+// Foto del carosello del laboratorio: la traccia le ripete due volte per il giro infinito, e la
+// copia è nascosta ai lettori di schermo e, su mobile, anche a vista (global.css, AU1).
+const labPhotos = [
+  {
+    src: '/images/lab/operaio-lastra.webp',
+    alt: 'Operaio che movimenta una grande lastra in laboratorio',
+  },
+  { src: '/images/lab/macchina-taglio.webp', alt: 'Macchina da taglio automatica per lastre' },
+  {
+    src: '/images/lab/lavorazione-blindato.webp',
+    alt: 'Mastro vetraio al lavoro su lastra blindata',
+  },
+  {
+    src: '/images/lab/lavorazione-stratificato.webp',
+    alt: 'Lavorazione vetro stratificato su macchinario',
+  },
+  { src: '/images/lab/magazzino-lastre.webp', alt: 'Magazzino lastre con rack di stoccaggio' },
+  {
+    src: '/images/lab/banco-grandi-lastre-2.webp',
+    alt: 'Banco delle grandi lastre con carroponte',
+  },
+  {
+    src: '/images/lab/squadra-laboratorio.webp',
+    alt: 'La squadra della Vetreria Monferrina in un momento di pausa in laboratorio',
+  },
+];
 ---
 
 <BaseLayout
@@ -342,65 +369,11 @@ const heroIntro =
         <CarouselPause />
         <div class="auto-carousel-track flex gap-6">
           {
-            [
-              {
-                src: '/images/lab/operaio-lastra.webp',
-                alt: 'Operaio che movimenta una grande lastra in laboratorio',
-              },
-              {
-                src: '/images/lab/macchina-taglio.webp',
-                alt: 'Macchina da taglio automatica per lastre',
-              },
-              {
-                src: '/images/lab/lavorazione-blindato.webp',
-                alt: 'Mastro vetraio al lavoro su lastra blindata',
-              },
-              {
-                src: '/images/lab/lavorazione-stratificato.webp',
-                alt: 'Lavorazione vetro stratificato su macchinario',
-              },
-              {
-                src: '/images/lab/magazzino-lastre.webp',
-                alt: 'Magazzino lastre con rack di stoccaggio',
-              },
-              {
-                src: '/images/lab/banco-grandi-lastre-2.webp',
-                alt: 'Banco delle grandi lastre con carroponte',
-              },
-              {
-                src: '/images/lab/squadra-laboratorio.webp',
-                alt: 'La squadra della Vetreria Monferrina in un momento di pausa in laboratorio',
-              },
-              {
-                src: '/images/lab/operaio-lastra.webp',
-                alt: 'Operaio che movimenta una grande lastra in laboratorio',
-              },
-              {
-                src: '/images/lab/macchina-taglio.webp',
-                alt: 'Macchina da taglio automatica per lastre',
-              },
-              {
-                src: '/images/lab/lavorazione-blindato.webp',
-                alt: 'Mastro vetraio al lavoro su lastra blindata',
-              },
-              {
-                src: '/images/lab/lavorazione-stratificato.webp',
-                alt: 'Lavorazione vetro stratificato su macchinario',
-              },
-              {
-                src: '/images/lab/magazzino-lastre.webp',
-                alt: 'Magazzino lastre con rack di stoccaggio',
-              },
-              {
-                src: '/images/lab/banco-grandi-lastre-2.webp',
-                alt: 'Banco delle grandi lastre con carroponte',
-              },
-              {
-                src: '/images/lab/squadra-laboratorio.webp',
-                alt: 'La squadra della Vetreria Monferrina in un momento di pausa in laboratorio',
-              },
-            ].map((photo) => (
-              <div class="w-80 shrink-0 overflow-hidden rounded-2xl border border-neutral-200 bg-surface shadow-sm sm:w-96">
+            [...labPhotos, ...labPhotos].map((photo, n) => (
+              <div
+                aria-hidden={n >= labPhotos.length ? 'true' : undefined}
+                class="w-80 shrink-0 overflow-hidden rounded-2xl border border-neutral-200 bg-surface shadow-sm sm:w-96"
+              >
                 <ProtectedImage src={photo.src} alt={photo.alt} wrapperClass="aspect-[4/3]" />
               </div>
             ))

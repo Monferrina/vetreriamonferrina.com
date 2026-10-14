@@ -141,7 +141,7 @@ const faqSchema = {
           Non trovi la risposta?
           <a
             href="/contatti"
-            class="faq-shine-link relative overflow-hidden underline decoration-neutral-50/40 underline-offset-4 hover:decoration-neutral-50"
+            class="glass-shine underline decoration-neutral-50/40 underline-offset-4 hover:decoration-neutral-50"
             >Contattaci</a
           >.
         </p>
@@ -204,7 +204,7 @@ const faqSchema = {
                         />
                       </svg>
                     </summary>
-                    <div class="px-5 pb-5 text-neutral-800 leading-relaxed" set:html={item.a} />
+                    <p class="px-5 pb-5 text-neutral-800 leading-relaxed" set:html={item.a} />
                   </details>
                 ))}
               </div>
@@ -223,7 +223,7 @@ const faqSchema = {
 
 <style>
   /* Smooth open/close animation */
-  details[open] > div {
+  details[open] > p {
     animation: faq-open 0.3s ease-out;
   }
   @keyframes faq-open {
@@ -245,50 +245,15 @@ const faqSchema = {
     display: none;
   }
 
-  /* Glass shine effect */
-  .faq-shine-link {
-    clip-path: inset(0);
-  }
-  .faq-shine-link::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      115deg,
-      transparent 15%,
-      rgb(255 255 255 / 0.05) 30%,
-      rgb(255 255 255 / 0.15) 38%,
-      rgb(255 255 255 / 0.85) 47%,
-      rgb(255 255 255 / 0.4) 53%,
-      rgb(255 255 255 / 0.1) 62%,
-      rgb(255 255 255 / 0.03) 72%,
-      transparent 85%
-    );
-    transform: translateX(-100%);
-    pointer-events: none;
-  }
-  .faq-shine-link.drawn::after {
-    animation: faq-shine 2.5s ease-in-out forwards;
-  }
-  @keyframes faq-shine {
-    to {
-      transform: translateX(100%);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    details[open] > div {
+    details[open] > p {
       animation: none;
-    }
-    .faq-shine-link::after {
-      display: none;
     }
   }
 </style>
 
 <script>
   let faqNavObserver: IntersectionObserver | null = null;
-  let faqShineObserver: IntersectionObserver | null = null;
 
   function initFaqNav(): void {
     if (faqNavObserver) faqNavObserver.disconnect();
@@ -317,29 +282,4 @@ const faqSchema = {
   }
 
   initFaqNav();
-
-  function initFaqShine(): void {
-    if (faqShineObserver) faqShineObserver.disconnect();
-
-    const el = document.querySelector<HTMLElement>('.faq-shine-link');
-    if (!el) return;
-
-    faqShineObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            el.classList.remove('drawn');
-            void el.offsetWidth;
-            setTimeout(() => el.classList.add('drawn'), 600);
-          } else {
-            el.classList.remove('drawn');
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-    faqShineObserver.observe(el);
-  }
-
-  initFaqShine();
 </script>

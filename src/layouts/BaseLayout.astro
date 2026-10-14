@@ -259,6 +259,23 @@ Astro.csp?.insertScriptHash(themeScriptHash);
         );
         revealEls.forEach((el) => revealObserver.observe(el));
 
+        // --- Riflesso .glass-shine (global.css): riparte ogni volta che l'elemento torna a metà
+        // nello schermo ---
+        const shineObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              const el = entry.target as HTMLElement;
+              el.classList.remove('drawn');
+              if (entry.isIntersecting) {
+                void el.offsetWidth; // riparte l'animazione
+                el.classList.add('drawn');
+              }
+            });
+          },
+          { threshold: 0.5 }
+        );
+        document.querySelectorAll('.glass-shine').forEach((el) => shineObserver.observe(el));
+
         // --- Scroll Progress Bar ---
         const progressBar = document.querySelector<HTMLElement>('.scroll-progress');
 
@@ -297,6 +314,7 @@ Astro.csp?.insertScriptHash(themeScriptHash);
 
         globalCleanup = () => {
           revealObserver.disconnect();
+          shineObserver.disconnect();
           window.removeEventListener('scroll', onScroll);
           if (backToTop) backToTop.removeEventListener('click', onBackToTop);
         };
@@ -306,17 +324,34 @@ Astro.csp?.insertScriptHash(themeScriptHash);
     </script>
 
     <script>
-      function applyTheme(): void {
-        const h = new Date().getHours();
-        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const nightTime = h >= 20 || h < 7;
-        const dark = systemDark || nightTime;
+      // Tema: la regola (scelta dell'interruttore, altrimenti automatico) è window.__temaScuro,
+      // definita da themeScript (src/lib/csp.ts) prima del primo disegno. Prima di AU1 (A10) non
+      // si poteva cambiare: alle 21 chi aveva il sistema chiaro vedeva il tema scuro.
+      const temaScuro = (window as unknown as { __temaScuro: () => boolean }).__temaScuro;
+      const toggle = document.querySelector('[data-theme-toggle]');
+
+      function setTheme(dark: boolean): void {
         if (dark) {
           document.documentElement.setAttribute('data-theme', 'dark');
         } else {
           document.documentElement.removeAttribute('data-theme');
         }
+        toggle?.setAttribute('aria-pressed', String(dark));
       }
+
+      function applyTheme(): void {
+        setTheme(temaScuro());
+      }
+
+      toggle?.addEventListener('click', () => {
+        const dark = document.documentElement.getAttribute('data-theme') !== 'dark';
+        try {
+          localStorage.setItem('theme', dark ? 'dark' : 'light');
+        } catch {
+          // Senza storage la scelta vale fino al prossimo cambio di pagina.
+        }
+        setTheme(dark);
+      });
 
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
       setInterval(applyTheme, 15 * 60 * 1000);

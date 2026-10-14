@@ -26,6 +26,8 @@
   --color-neutral-50: #fafafa;
   --color-neutral-100: #f5f5f5;
   --color-neutral-200: #e5e5e5;
+  /* AU1 (C4): mancava, e text-neutral-300 prendeva il grigio di default di Tailwind. */
+  --color-neutral-300: #d4d4d4;
   --color-neutral-400: #a3a3a3;
   /* AU1: #737373 dava 4,4:1 sui fondi chiari col testo da 12 px (minimo AA 4,5). */
   --color-neutral-500: #6b6b6b;
@@ -135,7 +137,7 @@
 }
 [data-theme='dark'] .gallery-filter-active {
   background-color: var(--color-primary-dark);
-  color: #f3f4f6;
+  color: var(--color-neutral-900);
 }
 .gallery-filter-inactive {
   background-color: var(--color-neutral-200);
@@ -145,8 +147,7 @@
   background-color: color-mix(in srgb, var(--color-neutral-200) 70%, var(--color-neutral-700));
 }
 [data-theme='dark'] .gallery-filter-inactive:hover {
-  background-color: color-mix(in srgb, var(--color-neutral-200) 70%, var(--color-neutral-700));
-  color: #f3f4f6;
+  color: var(--color-neutral-900);
 }
 
 /* Scrollbar-hide utility for horizontal scroll filters (Apple-style chips) */
@@ -168,6 +169,25 @@
 }
 .auto-carousel:hover .auto-carousel-track {
   animation-play-state: paused;
+}
+/* Su mobile i caroselli non scorrono da soli: si scorrono col dito, un elemento alla volta, senza
+   le copie che servono solo al giro infinito (AU1, B4: le card delle recensioni tagliate ai bordi). */
+@media (max-width: 767px) {
+  .auto-carousel {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .auto-carousel-track {
+    animation: none;
+  }
+  .auto-carousel-track > * {
+    scroll-snap-align: center;
+  }
+  .auto-carousel-track > [aria-hidden='true'],
+  [data-carousel-pause] {
+    display: none;
+  }
 }
 @keyframes auto-carousel-scroll {
   from {
@@ -254,7 +274,7 @@
 }
 .back-to-top:hover {
   border-color: var(--color-primary);
-  box-shadow: 0 4px 12px rgb(27 73 101 / 0.15);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary) 15%, transparent);
 }
 @media (min-width: 768px) {
   .back-to-top {
@@ -272,7 +292,7 @@
 }
 .glass-hover:hover {
   box-shadow:
-    0 8px 32px rgb(27 73 101 / 0.1),
+    0 8px 32px color-mix(in srgb, var(--color-primary) 10%, transparent),
     inset 0 0 0 1px rgb(255 255 255 / 0.08);
   border-color: rgb(255 255 255 / 0.4);
   backdrop-filter: blur(8px) saturate(120%);
@@ -292,9 +312,9 @@
   background: linear-gradient(
     105deg,
     transparent 38%,
-    rgb(27 73 101 / 0.03) 43%,
+    color-mix(in srgb, var(--color-primary) 3%, transparent) 43%,
     rgb(255 255 255 / 0.15) 50%,
-    rgb(27 73 101 / 0.03) 57%,
+    color-mix(in srgb, var(--color-primary) 3%, transparent) 57%,
     transparent 62%
   );
   transform: translateX(-100%);
@@ -362,51 +382,34 @@ html {
     color 0.3s ease;
 }
 
-/* ==================== Reduced Motion ==================== */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    transition: none;
-  }
-  [data-reveal].reveal-ready {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  .scroll-progress {
-    display: none;
-  }
-  .back-to-top {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  .glass-reflect::after {
-    display: none;
-  }
-  .gallery-blur-up img {
-    filter: none;
-    transform: none;
-    transition: none;
-  }
-  [data-lightbox-image] {
-    transition: none;
-  }
-  /* Fermi: si scorrono a mano, e il pulsante di pausa non serve. */
-  .auto-carousel-track {
-    animation: none;
-  }
-  .auto-carousel {
-    overflow-x: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-neutral-200) transparent;
-  }
-  [data-carousel-pause] {
-    display: none;
-  }
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none;
-  }
+/* ==================== Riflesso che attraversa un testo ==================== */
+/* Una passata di luce 600 ms dopo che l'elemento entra nello schermo (classe .drawn, la mette
+   lo script in BaseLayout). Prima erano tre copie quasi uguali in servizi, faq e trasporto (AU1, C1). */
+.glass-shine {
+  position: relative;
+  /* clip-path e non overflow: taglia la passata anche su un link in linea (faq). */
+  clip-path: inset(0);
+}
+.glass-shine::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 15%,
+    rgb(255 255 255 / 0.05) 30%,
+    rgb(255 255 255 / 0.15) 38%,
+    rgb(255 255 255 / 0.85) 47%,
+    rgb(255 255 255 / 0.4) 53%,
+    rgb(255 255 255 / 0.1) 62%,
+    rgb(255 255 255 / 0.03) 72%,
+    transparent 85%
+  );
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+.glass-shine.drawn::before {
+  animation: glass-sweep 2.5s ease-in-out 600ms forwards;
 }
 
 /* ==================== View Transitions ==================== */
@@ -490,7 +493,7 @@ html {
 
 /* GitHub icon: il nero brand (#181717) è invisibile sul footer scuro → schiarisci in dark mode */
 [data-theme='dark'] .github-icon {
-  color: #f0f6fc;
+  color: var(--color-neutral-900);
 }
 
 @keyframes social-bounce {
@@ -520,4 +523,61 @@ html {
 ::view-transition-new(chatbot-toggle) {
   animation: none;
   mix-blend-mode: normal;
+}
+
+/* ==================== Reduced Motion ==================== */
+/* In fondo al file: a parità di specificità vince la regola che viene dopo, e qui sopra stava
+   prima delle transizioni tra pagine e del rimbalzo delle icone, che quindi giravano anche con
+   "riduci movimento" (AU1, A7: misurato con getAnimations()).*/
+@media (prefers-reduced-motion: reduce) {
+  html {
+    transition: none;
+  }
+  [data-reveal].reveal-ready {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .scroll-progress {
+    display: none;
+  }
+  .back-to-top {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .glass-reflect::after {
+    display: none;
+  }
+  .gallery-blur-up img {
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+  [data-lightbox-image] {
+    transition: none;
+  }
+  /* Fermi: si scorrono a mano, e il pulsante di pausa non serve. */
+  .auto-carousel-track {
+    animation: none;
+  }
+  .auto-carousel {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-neutral-200) transparent;
+  }
+  [data-carousel-pause] {
+    display: none;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+  .social-icon:hover > svg {
+    animation: none;
+  }
+  .glass-shine::before {
+    display: none;
+  }
 }

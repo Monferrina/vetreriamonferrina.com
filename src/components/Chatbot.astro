@@ -4,132 +4,135 @@
 // Pure Astro + vanilla JS — no framework hydration needed.
 ---
 
-<button
-  id="chatbot-toggle"
-  type="button"
-  aria-label="Apri Glassy"
-  class="[view-transition-name:chatbot-toggle] fixed bottom-20 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary/85 text-white shadow-lg backdrop-blur-md transition-transform hover:scale-105 hover:bg-primary-light/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 md:bottom-6"
->
-  <svg
-    id="chatbot-icon-open"
-    xmlns="http://www.w3.org/2000/svg"
-    width="28"
-    height="28"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
-  >
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-  </svg>
-  <svg
-    id="chatbot-icon-close"
-    class="hidden"
-    xmlns="http://www.w3.org/2000/svg"
-    width="28"
-    height="28"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
-  >
-    <line x1="18" y1="6" x2="6" y2="18"></line>
-    <line x1="6" y1="6" x2="18" y2="18"></line>
-  </svg>
-</button>
-
-<div
-  id="chatbot-tooltip"
-  class="chatbot-tooltip fixed bottom-[8.5rem] right-6 z-50 hidden rounded-xl bg-primary px-4 py-3 text-sm text-white shadow-lg md:bottom-[5.5rem]"
->
-  <p id="chatbot-tooltip-title" class="font-medium">Ciao! Sono Glassy</p>
-  <p id="chatbot-tooltip-text" class="mt-1 text-white/80">Clicca per parlare con me!</p>
+<!-- AU1 (A8): il fumetto di benvenuto stava fuori da ogni regione (axe "region"). -->
+<aside aria-label="Assistente Glassy">
   <button
-    id="chatbot-tooltip-close"
+    id="chatbot-toggle"
     type="button"
-    aria-label="Chiudi suggerimento"
-    class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-surface text-primary shadow-md text-xs font-bold hover:bg-neutral-100"
-    >✕</button
+    aria-label="Apri Glassy"
+    class="[view-transition-name:chatbot-toggle] fixed bottom-20 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary/85 text-white shadow-lg backdrop-blur-md transition-transform hover:scale-105 hover:bg-primary-light/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 md:bottom-6"
   >
-  <div
-    class="absolute -bottom-2 right-6 h-0 w-0 border-x-8 border-t-8 border-x-transparent border-t-primary"
-  >
-  </div>
-</div>
-
-<div
-  id="chatbot-panel"
-  data-chatbot-panel
-  role="dialog"
-  aria-modal="true"
-  aria-label="Assistente virtuale"
-  class="chatbot-panel fixed z-50 hidden flex-col overflow-hidden rounded-2xl border border-white/30 bg-surface/80 shadow-2xl backdrop-blur-xl backdrop-saturate-150"
->
-  <div class="flex items-center justify-between bg-primary px-4 py-3 text-white">
-    <div class="flex items-center gap-2">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-      </svg>
-      <span class="flex flex-col leading-tight">
-        <span class="font-heading text-lg font-semibold">Glassy</span>
-        <span class="text-xs font-normal text-white/70">Assistente virtuale automatizzato</span>
-      </span>
-    </div>
-    <button
-      id="chatbot-close"
-      type="button"
-      aria-label="Chiudi Glassy"
-      class="rounded-lg p-1 transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50"
+    <svg
+      id="chatbot-icon-open"
+      xmlns="http://www.w3.org/2000/svg"
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+    <svg
+      id="chatbot-icon-close"
+      class="hidden"
+      xmlns="http://www.w3.org/2000/svg"
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+
+  <div
+    id="chatbot-tooltip"
+    class="chatbot-tooltip fixed bottom-[8.5rem] right-6 z-50 hidden rounded-xl bg-primary px-4 py-3 text-sm text-white shadow-lg md:bottom-[5.5rem]"
+  >
+    <p id="chatbot-tooltip-title" class="font-medium">Ciao! Sono Glassy</p>
+    <p id="chatbot-tooltip-text" class="mt-1 text-white/80">Clicca per parlare con me!</p>
+    <button
+      id="chatbot-tooltip-close"
+      type="button"
+      aria-label="Chiudi suggerimento"
+      class="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-surface text-primary shadow-md text-xs font-bold hover:bg-neutral-100"
+      >✕</button
+    >
+    <div
+      class="absolute -bottom-2 right-6 h-0 w-0 border-x-8 border-t-8 border-x-transparent border-t-primary"
+    >
+    </div>
+  </div>
+
+  <div
+    id="chatbot-panel"
+    data-chatbot-panel
+    role="dialog"
+    aria-modal="true"
+    aria-label="Assistente virtuale"
+    class="chatbot-panel fixed z-50 hidden flex-col overflow-hidden rounded-2xl border border-white/30 bg-surface/80 shadow-2xl backdrop-blur-xl backdrop-saturate-150"
+  >
+    <div class="flex items-center justify-between bg-primary px-4 py-3 text-white">
+      <div class="flex items-center gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span class="flex flex-col leading-tight">
+          <span class="font-heading text-lg font-semibold">Glassy</span>
+          <span class="text-xs font-normal text-white/70">Assistente virtuale automatizzato</span>
+        </span>
+      </div>
+      <button
+        id="chatbot-close"
+        type="button"
+        aria-label="Chiudi Glassy"
+        class="rounded-lg p-1 transition-colors hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
       >
-        <line x1="18" y1="6" x2="6" y2="18"></line>
-        <line x1="6" y1="6" x2="18" y2="18"></line>
-      </svg>
-    </button>
-  </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
 
-  <div
-    id="chatbot-messages"
-    class="chatbot-messages flex-1 overflow-y-auto px-4 py-5"
-    aria-live="polite"
-    aria-relevant="additions"
-  >
-  </div>
+    <div
+      id="chatbot-messages"
+      class="chatbot-messages flex-1 overflow-y-auto px-4 py-5"
+      aria-live="polite"
+      aria-relevant="additions"
+    >
+    </div>
 
-  <div
-    id="chatbot-options"
-    class="chatbot-options max-h-[45%] border-t border-neutral-200 bg-neutral-50 px-3 py-3 overflow-y-auto"
-  >
+    <div
+      id="chatbot-options"
+      class="chatbot-options max-h-[45%] border-t border-neutral-200 bg-neutral-50 px-3 py-3 overflow-y-auto"
+    >
+    </div>
   </div>
-</div>
+</aside>
 
 <style is:global>
   /* Panel positioning: bottom-right on desktop, full-screen on mobile */
@@ -281,7 +284,7 @@
   .chatbot-option-btn {
     display: block;
     width: 100%;
-    text-align: left !important;
+    text-align: left;
     padding: 0.625rem 0.875rem;
     border-radius: 0.5rem;
     border: 1px solid var(--color-neutral-200);
@@ -313,7 +316,7 @@
     background-color: var(--color-secondary);
     color: var(--color-neutral-50);
     border-color: var(--color-secondary);
-    text-align: center !important;
+    text-align: center;
   }
 
   .chatbot-option-cta:hover {
@@ -325,7 +328,7 @@
     background-color: transparent;
     color: var(--color-primary);
     border: 1px dashed var(--color-primary-light);
-    text-align: center !important;
+    text-align: center;
     font-size: 0.8125rem;
   }
 
@@ -341,7 +344,7 @@
     background-color: transparent;
     box-shadow: none;
     font-size: 0.8125rem;
-    text-align: center !important;
+    text-align: center;
     padding: 0.375rem;
   }
 

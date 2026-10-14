@@ -277,7 +277,7 @@ const guarantees = [
         data-reveal
         class="mt-12 rounded-2xl border border-neutral-200 bg-neutral-50 p-6 text-center shadow-sm sm:p-8"
       >
-        <p class="reassure-link text-lg text-neutral-800">
+        <p class="reassure-link glass-shine block text-lg text-neutral-800">
           Non sei sicuro che arriviamo da te?
           <strong class="text-primary">Scrivici o chiamaci</strong>, ci organizziamo sempre.
         </p>
@@ -343,68 +343,3 @@ const guarantees = [
     </div>
   </section>
 </BaseLayout>
-
-<style>
-  .reassure-link {
-    position: relative;
-    overflow: hidden;
-    display: block;
-  }
-  .reassure-link::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      115deg,
-      transparent 15%,
-      rgb(255 255 255 / 0.05) 30%,
-      rgb(255 255 255 / 0.15) 38%,
-      rgb(255 255 255 / 0.85) 47%,
-      rgb(255 255 255 / 0.4) 53%,
-      rgb(255 255 255 / 0.1) 62%,
-      rgb(255 255 255 / 0.03) 72%,
-      transparent 85%
-    );
-    transform: translateX(-100%);
-    pointer-events: none;
-  }
-  .reassure-link.drawn::after {
-    animation: reassure-shine 2.5s ease-in-out forwards;
-  }
-  @keyframes reassure-shine {
-    to {
-      transform: translateX(100%);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .reassure-link::after {
-      display: none;
-    }
-  }
-</style>
-
-<script>
-  function initReassureLink(): void {
-    const el = document.querySelector<HTMLElement>('.reassure-link');
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            el.classList.remove('drawn');
-            void el.offsetWidth;
-            setTimeout(() => el.classList.add('drawn'), 600);
-          } else {
-            el.classList.remove('drawn');
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-    observer.observe(el);
-  }
-
-  initReassureLink();
-</script>

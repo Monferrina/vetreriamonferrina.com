@@ -23,10 +23,20 @@ export const cspHeader = cspDirectives.join('; ');
 // Tema prima del primo paint: deve restare inline in <head>, prima del CSS. Astro non hasha
 // gli script is:inline (misurato, CSP1): l'hash lo dichiariamo noi, dalla stessa stringa, così
 // non può divergere dal contenuto. I blocchi ld+json non servono: il browser non li esegue.
+// Prima del primo disegno, per non far lampeggiare il tema sbagliato. La scelta dell'interruttore
+// (localStorage 'theme') vince sull'automatico: scuro col sistema scuro oppure dalle 20 alle 7.
+// La regola sta solo qui: window.__temaScuro la riusa lo script di BaseLayout.
 export const themeScript = `(function () {
-  const h = new Date().getHours();
-  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches || h >= 20 || h < 7;
-  if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+  window.__temaScuro = function () {
+    let scelta = null;
+    try {
+      scelta = localStorage.getItem('theme');
+    } catch (e) {}
+    const h = new Date().getHours();
+    if (scelta) return scelta === 'dark';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches || h >= 20 || h < 7;
+  };
+  if (window.__temaScuro()) document.documentElement.setAttribute('data-theme', 'dark');
 })();`;
 
 export const themeScriptHash =

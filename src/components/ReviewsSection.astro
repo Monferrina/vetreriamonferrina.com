@@ -109,7 +109,7 @@ const hasHalfStar = rating - fullStars >= 0.3;
       <h2 class="font-heading text-3xl text-primary sm:text-4xl" data-reveal>
         Cosa dicono i nostri clienti
       </h2>
-      <div class="mt-4 flex items-center justify-center gap-2">
+      <div class="mt-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
         <div class="flex items-center gap-0.5" role="img" aria-label={`Valutazione ${rating} su 5`}>
           {
             Array.from({ length: 5 }).map((_, i) => (
@@ -134,7 +134,8 @@ const hasHalfStar = rating - fullStars >= 0.3;
           }
         </div>
         <span class="font-heading text-2xl text-primary">{rating}</span>
-        <span class="text-neutral-700">su Google ({totalReviews} recensioni)</span>
+        <span class="whitespace-nowrap text-neutral-700">su Google ({totalReviews} recensioni)</span
+        >
       </div>
     </div>
 
@@ -146,10 +147,16 @@ const hasHalfStar = rating - fullStars >= 0.3;
     >
       <CarouselPause />
       <div class="auto-carousel-track flex gap-6">
-        {/* Original + duplicate for seamless loop */}
         {
-          [...reviews, ...reviews].map((review) => (
-            <article class="flex w-80 shrink-0 flex-col rounded-2xl border border-neutral-200/60 bg-surface/80 p-6 shadow-sm backdrop-blur-md backdrop-saturate-125 sm:w-96">
+          /* Original + duplicate for seamless loop: la copia è nascosta ai lettori di schermo e,
+            su mobile, anche a vista (global.css, caroselli). */
+        }
+        {
+          [...reviews, ...reviews].map((review, n) => (
+            <article
+              aria-hidden={n >= reviews.length ? 'true' : undefined}
+              class="flex w-80 shrink-0 flex-col rounded-2xl border border-neutral-200/60 bg-surface/80 p-6 shadow-sm backdrop-blur-md backdrop-saturate-125 sm:w-96"
+            >
               <div class="flex items-center gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <svg

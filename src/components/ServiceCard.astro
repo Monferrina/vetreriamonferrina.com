@@ -64,7 +64,7 @@ const { name, description, slug, category, image, loading, fetchpriority } = Ast
       <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2">
         <a
           href={`/servizi/${slug}`}
-          class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary-dark"
+          class="inline-flex min-h-6 items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary-dark"
         >
           Scopri di più
           <svg
@@ -83,7 +83,7 @@ const { name, description, slug, category, image, loading, fetchpriority } = Ast
         </a>
         <a
           href={`/galleria?categoria=${category}`}
-          class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary-light"
+          class="inline-flex min-h-6 items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary-light"
         >
           Galleria
           <svg

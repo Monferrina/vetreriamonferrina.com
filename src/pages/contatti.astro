@@ -27,6 +27,12 @@ const openingHours: OpeningHour[] =
         { days: 'Sabato', hours: '08:00 - 12:00' },
         { days: 'Domenica', hours: 'Chiuso' },
       ];
+
+// AU1 (B6): su mobile "Lunedì - / Venerdì" e "13:30 - / 17:30" andavano a capo a metà. Nomi brevi
+// e ogni fascia oraria su una riga; i dati (Google Places o quelli sopra) restano come sono.
+function giorniBrevi(days: string): string {
+  return days.replace(/(Lun|Mar|Mer|Gio|Ven|Sab|Dom)\p{L}*/gu, '$1').replaceAll(' - ', '–');
+}
 ---
 
 <BaseLayout
@@ -195,10 +201,19 @@ const openingHours: OpeningHour[] =
                   {
                     openingHours.map((oh) => (
                       <tr>
-                        <th scope="row" class="pr-4 py-0.5 font-medium text-left">
-                          {oh.days}
+                        <th
+                          scope="row"
+                          class="pr-4 py-0.5 align-top font-medium text-left whitespace-nowrap"
+                        >
+                          {giorniBrevi(oh.days)}
                         </th>
-                        <td class="py-0.5">{oh.hours}</td>
+                        <td class="py-0.5">
+                          {oh.hours.split(' / ').map((fascia) => (
+                            <span class="block whitespace-nowrap">
+                              {fascia.replaceAll(' - ', '–')}
+                            </span>
+                          ))}
+                        </td>
                       </tr>
                     ))
                   }
