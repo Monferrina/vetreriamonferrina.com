@@ -50,7 +50,7 @@ server+public and server+secret (`astro:env/server`); secrets stay out of the bu
   ([configuration reference](https://docs.astro.build/en/reference/configuration-reference/#envvalidatesecrets)).
 - `getSecret(name)` from `astro:env/server` returns the raw value (also for keys outside
   the schema). The docs recommend it over `process.env` because the adapter supplies
-  it; `@astrojs/vercel` 11.0.3 declares `envGetSecret: 'stable'` (adapter source)
+  it; `@astrojs/vercel` 11.0.11 declares `envGetSecret: 'stable'` (adapter source)
   ([astro:env module](https://docs.astro.build/en/reference/modules/astro-env/#getsecret)).
 - `astro:env` works in middleware, routes, endpoints and components, not in
   `astro.config.mjs` (use `process.env` there).

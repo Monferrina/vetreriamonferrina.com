@@ -23,7 +23,7 @@ Non aprire una issue pubblica.
 
 Il canale preferito è il [private vulnerability reporting di GitHub](https://github.com/Monferrina/vetreriamonferrina.com/security/advisories/new), attivo su questo repository: la segnalazione resta privata, la conversazione è tracciata e la fix può essere coordinata con un advisory.
 
-In alternativa si può scrivere alla casella `vetreriamonferrinacasale@gmail.com`.
+In alternativa si può scrivere alla casella `vetreriamonferrina@gmail.com`.
 
 In entrambi i casi servono la descrizione della vulnerabilità, i passaggi per riprodurla e l'impatto potenziale.
 
@@ -54,7 +54,7 @@ Do not open a public issue.
 
 The preferred channel is [GitHub private vulnerability reporting](https://github.com/Monferrina/vetreriamonferrina.com/security/advisories/new), enabled on this repository: the report stays private, the thread is tracked, and the fix can be coordinated through an advisory.
 
-As an alternative, write to `vetreriamonferrinacasale@gmail.com`.
+As an alternative, write to `vetreriamonferrina@gmail.com`.
 
 Either way, include a description of the vulnerability, steps to reproduce it, and the potential impact.
 

@@ -14,7 +14,7 @@ Il CSP non ha `'unsafe-inline'`: `script-src` e `style-src` li genera Astro (`se
 
 ## Segreti
 
-Le variabili di Vercel arrivano da Doppler con la sync ufficiale: config `prd` → Production; Preview non ha variabili (dopo ST2 la preview non legge segreti, e l'ambiente `stg` che la riempiva non c'è più). Su Vercel sono di tipo Secret, illeggibili: il valore in uso esiste solo in Doppler, ed è lì che si cambia. Una modifica fatta a mano su Vercel resta finché lo stesso nome non cambia in Doppler, e nessuno la segnala.
+Le variabili di Vercel arrivano da Doppler con la sync ufficiale: config `prd` → Production; Preview non ha variabili (dalla #414 la preview non legge segreti, e l'ambiente `stg` che la riempiva non c'è più). Su Vercel sono di tipo Secret, illeggibili: il valore in uso esiste solo in Doppler, ed è lì che si cambia. Una modifica fatta a mano su Vercel resta finché lo stesso nome non cambia in Doppler, e nessuno la segnala.
 
 Il quarto ambiente Doppler, il massimo del piano gratuito (misurato: "Your project has reached its limit of 4 environments"), è `playwright_preview`: contiene solo il bypass di Vercel per gli E2E in locale, così gli altri `doppler run` non lo hanno nell'ambiente.
 
@@ -47,4 +47,4 @@ Le cinque label canoniche con il loro nome (`needs-triage`, `needs-info`, `ready
 
 ### Domain docs
 
-Single-context: `GLOSSARY.md` in radice e ADR in `docs/adr/`. See `docs/agents/domain.md`.
+Single-context: ADR in `docs/adr/` (indice in `docs/adr/README.md`). `GLOSSARY.md` in radice non esiste ancora: si scrive con Marco (skill `domain-modeling`). See `docs/agents/domain.md`.

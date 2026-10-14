@@ -6,19 +6,13 @@ Prima di aprire una PR vale la pena leggere il [README](README.md) per lo stack 
 
 ## Requisiti
 
-Node.js 22 (versione fissata in `.nvmrc`) e npm. Il setup locale è quello del README:
-
-```bash
-npm install
-cp .env.example .env.local
-npm run dev
-```
+Node.js 22 (versione fissata in `.nvmrc`) e npm. Il setup locale è quello del [README](README.md#setup-locale).
 
 ## Flusso di lavoro
 
 Il branch `main` è la produzione live ed è protetto dal ruleset `protect-main`. Non si pusha direttamente: ogni modifica passa da una Pull Request. Il ruleset impone storia lineare, merge esclusivamente in modalità squash, e blocca sia il force push sia la cancellazione del branch. La policy dei check è strict, quindi il branch deve essere aggiornato con `main` al momento del merge: le PR si mergiano una alla volta.
 
-1. Crea un branch da `main`, con nome nella forma `tipo/descrizione` (per esempio `fix/form-validation`).
+1. Crea un branch da `main` del repository `Monferrina/vetreriamonferrina.com`, con un nome breve che dica cosa cambia (per esempio `worker-csp-origine`). Dalle PR aperte da un fork CodeQL non gira e la preview Vercel fallisce.
 2. Fai le modifiche.
 3. Esegui in locale i controlli della tabella qui sotto, nell'ordine.
 4. Committa. Il pre-commit hook esegue lint e format sui soli file in stage.
@@ -68,7 +62,7 @@ In più il ruleset ha una regola di code scanning per zizmor (`zizmor.yml`): il 
 
 ## Convenzioni
 
-I messaggi di commit seguono [Conventional Commits](https://www.conventionalcommits.org/) nella forma `tipo(scope): descrizione`, con la descrizione in italiano. I tipi in uso nella storia del repo sono `feat`, `fix`, `chore`, `docs`, `refactor`, `perf`, `test`, `ci`, `harden`, oltre a `seo` e `content` per le modifiche ai contenuti. Non c'è un commitlint automatico: la convenzione è tenuta a mano.
+Nel merge in squash il commit su `main` prende il titolo della PR, o quello del suo unico commit se la PR ne ha uno solo (impostazione della repo `COMMIT_OR_PR_TITLE`), con il numero della PR in fondo (`… (#429)`). Il titolo è in italiano e dice cosa cambia, non come (per esempio "Via Cross-Origin-Embedder-Policy da tutte le pagine"). Non si usa Conventional Commits: i commit di Dependabot lo seguono per conto loro (`chore(deps): …`).
 
 I contenuti rivolti agli utenti sono in italiano. Nei commenti al codice convivono italiano e inglese; il criterio è spiegare il perché di una scelta, non ripetere cosa fa la riga sotto.
 

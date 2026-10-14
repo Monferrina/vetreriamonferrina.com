@@ -3,12 +3,13 @@
 **Status:** Accepted (Marco, 12/10/2026)
 **Date:** 2026-10-12
 **Deciders:** Marco Bellingeri
+**Supersedes:** ADR-0001; in parte ADR-0002
 
 ## Context
 
-Il modulo preventivi ha ricevuto una sola richiesta vera in tutta la sua vita, e per proteggerlo il sito teneva in piedi Resend, Upstash, Turnstile, il lockdown dell'origine, una chiave Sentry server e quattro check Checkly. Il widget meteo chiamava MET Norway da una funzione server. Erano le sole due rotte on demand del sito oltre alla 404.
+Il modulo preventivi ha ricevuto una sola richiesta vera in tutta la sua vita, e per proteggerlo il sito teneva in piedi Resend, Upstash, Turnstile, il lockdown dell'origine, una chiave Sentry server e quattro check Checkly (ADR-0001). Il widget meteo chiamava MET Norway da una funzione server. Erano le sole due rotte on demand del sito oltre alla 404.
 
-L'audit legale (`normativa.md`, punti F1-F3) ha trovato tre problemi del piano Hobby di Vercel:
+L'audit legale del sito (11/10/2026) ha trovato tre problemi del piano Hobby di Vercel:
 
 - **F1**, ToS §4 (https://vercel.com/legal/terms, aggiornati l'1/6/2026): "You shall only use the Services under a Hobby plan for your personal or non-commercial use." Le Fair Use Guidelines (14/9/2026) lo ribadiscono: "All commercial usage of the platform requires either a Pro or Enterprise plan".
 - **F2**, il DPA (https://vercel.com/legal/dpa, in vigore dal 31/3/2026) dice di applicarsi a "Customers who are on Enterprise and Pro plans" e non nomina Hobby.
@@ -17,11 +18,11 @@ L'audit legale (`normativa.md`, punti F1-F3) ha trovato tre problemi del piano H
 ## Decision
 
 1. Via il modulo preventivi e il widget meteo, con il codice, i test, i check e le dipendenze che servivano solo a loro. `/preventivo` risponde 301 verso `/contatti`, dove restano telefono, WhatsApp ed email.
-2. Il sito resta su Vercel Hobby. Il rischio F1 (sospensione per uso commerciale) lo accetta Marco il 12/10/2026. Senza il modulo il sito non raccoglie più dati inseriti dal visitatore, e il peso di F2 scende: restano gli IP nei log di hosting e del Worker, dichiarati in privacy (NR1).
+2. Il sito resta su Vercel Hobby. Il rischio F1 (sospensione per uso commerciale) lo accetta Marco il 12/10/2026. Senza il modulo il sito non raccoglie più dati inseriti dal visitatore, e il peso di F2 scende: restano gli IP nei log di hosting e del Worker, che l'informativa privacy deve dichiarare.
 3. Opt-out dell'addestramento IA (F3) fatto da Marco il 12/10/2026 in Team Settings > Data Preferences. Vale da quella data in avanti.
 4. Via anche HawkScan: senza funzioni server resta poco da scansionare, e la prova di StackHawk scade. Nessuno strumento al suo posto per ora.
 5. Il Worker Cloudflare di manutenzione resta com'è.
-6. La preview Vercel prova il frontend; una modifica al Worker o alle regole Cloudflare si verifica in produzione, dopo il merge, perché la preview non passa da Cloudflare (decisione dell'11/10/2026).
+6. La preview Vercel prova il frontend; una modifica al Worker o alle regole Cloudflare si verifica in produzione, dopo il merge, perché la preview non passa da Cloudflare (ADR-0002, 11/10/2026).
 
 ## Options Considered
 
@@ -33,4 +34,4 @@ L'audit legale (`normativa.md`, punti F1-F3) ha trovato tre problemi del piano H
 - Più facile: niente email, segreti e servizi di terzi da tenere allineati per il modulo; meno dati personali trattati; meno superficie da proteggere.
 - Più difficile: chi vuole un preventivo deve telefonare, scrivere su WhatsApp o mandare un'email.
 - Rischio aperto: Vercel può sospendere il progetto Hobby, anche senza preavviso (ToS §4). Se succede, si riprende la migrazione a Cloudflare.
-- Il modulo non torna (Marco, 12/10/2026): niente rollback, i segreti e i servizi che usava sono stati cancellati in ST7 (13/10/2026).
+- Il modulo non torna (Marco, 12/10/2026): niente rollback, i segreti e i servizi che usava sono stati cancellati il 13/10/2026 (#424).

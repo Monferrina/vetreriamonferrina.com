@@ -24,7 +24,7 @@ Comportamenti inaccettabili:
 
 I maintainer del progetto hanno il diritto di rimuovere contenuti non conformi a questo codice e di bloccare utenti che violino ripetutamente queste regole.
 
-Segnalazioni di abuso possono essere inviate a: **vetreriamonferrinacasale@gmail.com**
+Segnalazioni di abuso possono essere inviate a: **vetreriamonferrina@gmail.com**
 
 ## Attribuzione
 

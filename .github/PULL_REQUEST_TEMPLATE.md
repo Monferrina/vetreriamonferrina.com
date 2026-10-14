@@ -12,8 +12,6 @@
 
 ## Checklist
 
-- [ ] Il codice segue le convenzioni del progetto
-- [ ] I test passano (`npm test`)
-- [ ] Il lint passa (`npm run lint`)
-- [ ] Ho testato le modifiche localmente
-- [ ] Ho aggiornato la documentazione (se necessario)
+- [ ] Ho eseguito in locale i controlli di [CONTRIBUTING](https://github.com/Monferrina/vetreriamonferrina.com/blob/main/CONTRIBUTING.md#controlli-prima-della-pr), nell'ordine
+- [ ] Ho provato la modifica (comando o pagina, e cosa ha risposto)
+- [ ] Ho aggiornato la documentazione che la modifica rende falsa

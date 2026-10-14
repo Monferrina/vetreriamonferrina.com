@@ -19,9 +19,11 @@
 
 Sito ufficiale della Vetreria Monferrina di Fioravanti Giuseppe, Casale Monferrato (AL).
 
-Sito vetrina con galleria lavori, blog, 17 pagine servizio, FAQ e recensioni da Google Places.
+Sito vetrina con galleria lavori, blog, pagine servizio, FAQ e recensioni da Google Places.
 
 **[vetreriamonferrina.com](https://vetreriamonferrina.com)**
+
+_In English: this is the website of Vetreria Monferrina, a glass workshop in Casale Monferrato, Italy. It is an Astro static site hosted on Vercel behind a Cloudflare Worker. The code and its documentation are in Italian; security reports in English are welcome, see [SECURITY.md](SECURITY.md)._
 
 ## Stack
 
@@ -70,14 +72,9 @@ In locale si parte da `.env.example` copiato in `.env.local`. Su Vercel le scriv
 | `GOOGLE_PLACES_API_KEY` | Chiave Places API, solo per lo script delle recensioni; mai nel browser né in Doppler `prd`                       | Google Cloud Console          |
 | `GOOGLE_MAPS_EMBED_KEY` | Chiave della mappa di `/contatti`, pubblica: solo Maps Embed API, limitata al referrer del sito; in Doppler `prd` | Google Cloud Console          |
 | `GOOGLE_PLACE_ID`       | Place ID della vetreria, solo per lo script                                                                       | Place ID Finder o Google Maps |
+| `SENTRY_AUTH_TOKEN`     | Carica le source map su Sentry durante il build di produzione; solo in Doppler `prd`                              | Sentry, Auth Tokens           |
 
-Le due variabili Google servono solo per rigenerare recensioni e orari, non a runtime:
-
-```bash
-GOOGLE_PLACES_API_KEY=xxx GOOGLE_PLACE_ID=yyy node scripts/fetch-place-data.mjs
-```
-
-I dati vengono scaricati e committati come JSON statico.
+`GOOGLE_PLACES_API_KEY` e `GOOGLE_PLACE_ID` servono solo per rigenerare recensioni e orari, non a runtime: vedi "Aggiornare i dati Google".
 
 ## Comandi principali
 
@@ -117,45 +114,33 @@ La supply chain ha quattro controlli. zizmor (`zizmor.yml`) legge workflow, acti
 
 Il workflow `dependabot-auto-merge.yml` attiva l'auto-merge (squash) sulle PR Dependabot minor e patch: GitHub le mergia quando tutti i check obbligatori sono verdi. Le major restano a mano. Dependabot propone una versione nuova solo dopo sette giorni dalla pubblicazione (`cooldown`); gli aggiornamenti di sicurezza non aspettano.
 
-I pre-commit hook (Husky con lint-staged) eseguono lint e format a ogni commit.
-
 Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro branch o PR ottiene un preview URL.
 
-### Dal branch alla produzione
-
-```
-1. Crea un branch        →  git checkout -b fix/qualcosa
-2. Fai le modifiche      →  edit, commit
-3. Pusha                 →  git push -u origin fix/qualcosa
-4. Vercel fa preview     →  URL temporaneo per verificare le modifiche
-5. Apri PR su main       →  check obbligatori (lint, test, build, E2E, CodeQL, Semgrep, dipendenze)
-6. Mergia la PR          →  Vercel deploya su vetreriamonferrina.com
-```
-
-`main` è la produzione live ed è protetto: non ci si pusha direttamente.
+`main` è la produzione live ed è protetto: non ci si pusha direttamente. Il flusso dal branch al merge, i controlli da lanciare in locale e i check richiesti al merge stanno in [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Struttura progetto
 
 ```
 ├── __checks__/              # Monitor Checkly (URL, Worker)
-├── .github/workflows/       # CI pipeline
+├── .github/                 # Workflow, action composita, template di issue e PR, Dependabot
 ├── .zap/                    # Scansione ZAP: script, hook, eccezioni (rules.tsv)
 ├── cloudflare/              # Worker (maintenance mode), deploy via Git
-├── docs/                    # Documentazione tecnica (mappa dati, guide)
+├── docs/                    # Documentazione tecnica (ADR, mappa dati, guide, stile)
 ├── scripts/                 # Script Node (Google Places, check link interni)
 ├── src/
-│   ├── components/          # 17 componenti Astro
+│   ├── assets/              # Immagini elaborate da Astro (chi siamo, galleria, servizi)
+│   ├── components/          # Componenti Astro
 │   ├── data/                # Dati statici (chatbot, recensioni, orari, servizi, blog)
 │   ├── layouts/             # Layout base (dark mode, CSP con hash, SEO)
 │   ├── lib/                 # Logica condivisa (immagini, CSP, Sentry, chatbot)
 │   ├── pages/               # Pagine
-│   │   ├── blog/            # Blog (7 articoli)
+│   │   ├── blog/            # Articoli del blog
 │   │   └── servizi/         # Pagine servizio generate da [slug].astro
 │   ├── styles/              # Design system CSS (token, dark mode, transizioni)
 │   └── middleware.ts        # CSP sulle risposte on demand
 ├── public/
 │   ├── fonts/               # Font self-hosted (Inter, DM Serif Display)
-│   └── images/              # Immagini ottimizzate WebP
+│   └── images/              # Immagini servite così come sono (logo, partner, blog, lab, og-image)
 ├── tests/
 │   ├── unit/                # Unit test (Vitest)
 │   └── e2e/                 # Test end-to-end (Playwright)
@@ -171,12 +156,12 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 | ------------------------ | ------------------------------------------------------ | --------- |
 | `/`                      | Homepage con hero, servizi, stats, recensioni, partner | SSG       |
 | `/servizi`               | Catalogo servizi con filtri per categoria              | SSG       |
-| `/servizi/[slug]`        | 17 pagine servizio                                     | SSG       |
+| `/servizi/[slug]`        | Pagine servizio, generate da `src/data/services.ts`    | SSG       |
 | `/galleria`              | Galleria masonry con lightbox                          | SSG       |
 | `/chi-siamo`             | Storia, team, timeline, sezione memoriale              | SSG       |
 | `/contatti`              | Mappa Google, orari, contatti                          | SSG       |
-| `/faq`                   | FAQ su 7 categorie, con Schema.org FAQPage             | SSG       |
-| `/blog`                  | Blog, 7 articoli sempreverdi con indice                | SSG       |
+| `/faq`                   | FAQ per categoria, con Schema.org FAQPage              | SSG       |
+| `/blog`                  | Blog, articoli sempreverdi con indice                  | SSG       |
 | `/blog/[slug]`           | Articoli blog                                          | SSG       |
 | `/trasporto-e-montaggio` | Servizio trasporto e montaggio                         | SSG       |
 | `/privacy`               | Informativa privacy                                    | SSG       |
@@ -246,21 +231,24 @@ Recensioni e orari arrivano da Google Places API (New) e vengono salvati come JS
 GOOGLE_PLACES_API_KEY=xxx GOOGLE_PLACE_ID=yyy node scripts/fetch-place-data.mjs
 ```
 
-Lo script genera due soli file, `src/data/reviews.json` e `src/data/opening-hours.json`, e tiene solo le recensioni da 4 stelle in su. Il workflow `update-reviews.yml` lo esegue il primo del mese e apre una PR se i dati sono cambiati. La guida completa è in `docs/plans/google-reviews-setup.md`.
+Lo script genera due soli file, `src/data/reviews.json` e `src/data/opening-hours.json`, e tiene solo le recensioni da 4 stelle in su. Il workflow `update-reviews.yml` lo esegue il primo del mese e apre una PR se i dati sono cambiati. La guida completa è in [`docs/google-reviews-setup.md`](docs/google-reviews-setup.md).
 
 La chiave non va mai committata e va limitata a "Places API" e "Places API (New)" nella Google Cloud Console.
 
 ## Manutenzione
 
-Per attivare la modalità manutenzione si va su [Cloudflare Dashboard](https://dash.cloudflare.com), Workers & Pages, `maintenance-mode`, poi Settings, Variables and Secrets, e si porta `MAINTENANCE_ENABLED` a `true`. L'effetto è immediato e non serve alcun deploy. Per disattivarla si rimette a `false`, stessa pagina.
-
-Sotto c'è un [Cloudflare Worker](https://developers.cloudflare.com/workers/) che intercetta le richieste prima che arrivino a Vercel. Con la manutenzione attiva recupera la pagina `/maintenance` da Vercel e la serve con status 503; altrimenti fa da semplice passthrough. Il codice sta in `cloudflare/maintenance-worker/`.
+Sotto c'è un [Cloudflare Worker](https://developers.cloudflare.com/workers/) che intercetta le richieste prima che arrivino a Vercel. Con la manutenzione attiva recupera la pagina `/maintenance` da Vercel e la serve con status 503; altrimenti fa da semplice passthrough. Il codice sta in `cloudflare/maintenance-worker/`; come accendere e spegnere la manutenzione è nel suo [README](cloudflare/maintenance-worker/README.md).
 
 ## Documentazione tecnica
 
-- `docs/mappa-dati.md`, dove passano e dove si fermano i dati del visitatore
-- `docs/plans/google-reviews-setup.md`, guida a Google Places API
-- `cloudflare/maintenance-worker/README.md`, modalità manutenzione
+- [CONTRIBUTING](CONTRIBUTING.md), flusso di lavoro, controlli e convenzioni
+- [SECURITY](SECURITY.md), come segnalare una vulnerabilità
+- [`docs/adr/`](docs/adr/README.md), registro delle decisioni
+- [`docs/mappa-dati.md`](docs/mappa-dati.md), dove passano e dove si fermano i dati del visitatore
+- [`docs/google-reviews-setup.md`](docs/google-reviews-setup.md), guida a Google Places API
+- [`docs/stile.md`](docs/stile.md), come si scrive la documentazione
+- [`cloudflare/maintenance-worker/README.md`](cloudflare/maintenance-worker/README.md), Worker e modalità manutenzione
+- [`docs/agents/`](docs/agents/), istruzioni per gli agenti (issue, label, dominio)
 
 ## Licenza
 
