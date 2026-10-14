@@ -1,6 +1,6 @@
 # Come si scrive la documentazione
 
-Regole per i documenti di questa repo. Valgono per persone e agenti.
+Valgono per persone e agenti.
 
 ## Riferimenti
 
@@ -26,7 +26,7 @@ Una guida operativa (come si fa) e una spiegazione (perché è così) stanno in 
 
 ## Come si scrive
 
-- Istruzioni con il tu all'imperativo ("Crea un branch"); spiegazioni in forma impersonale. È una scelta del progetto, già usata in CONTRIBUTING.
+- Istruzioni con il tu all'imperativo ("Crea un branch"); spiegazioni in forma impersonale.
 - La condizione prima dell'istruzione: "Se la preview non parte, …".
 - Titoli con la sola iniziale maiuscola, senza punto finale.
 - Date: `14/10/2026` nel testo, `2026-10-14` nei nomi di file. È un'eccezione del progetto: il manuale UE scrive le date con i punti (`7.10.1958`), ma i documenti della repo usano già la barra.
