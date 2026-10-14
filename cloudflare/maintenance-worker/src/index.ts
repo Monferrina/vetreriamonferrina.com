@@ -25,15 +25,14 @@ const ORIGIN = 'https://vetreriamonferrina.vercel.app';
 
 // Security header per le risposte generate DAL worker (503 manutenzione, 502):
 // le risposte dell'origin li hanno già da vercel.json, queste no (finding Low
-// audit 13/7). CSP allineata a quella del sito (la pagina manutenzione usa gli
-// stessi asset/_astro e stili inline).
+// audit 13/7). La CSP qui è il ripiego: la 503 usa quella dell'origin (sotto).
 const SECURITY_HEADERS: Record<string, string> = {
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Content-Security-Policy':
-    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
+    "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
 };
 
 // Header che l'origin pretende su ogni richiesta: senza il bypass Vercel risponde con il
@@ -156,10 +155,14 @@ export default {
       const maintenanceResponse = await fetch(`${ORIGIN}/maintenance`, {
         headers: originAuth(env),
       });
+      // /maintenance ha script inline (8, misurato il 14/10/2026) con l'hash nella CSP che l'origin
+      // le manda: solo quella li lascia girare senza 'unsafe-inline' per tutti.
+      const originCsp = maintenanceResponse.headers.get('content-security-policy');
       return new Response(maintenanceResponse.body, {
         status: 503,
         headers: {
           ...SECURITY_HEADERS,
+          'Content-Security-Policy': originCsp || SECURITY_HEADERS['Content-Security-Policy'],
           'Content-Type': 'text/html;charset=UTF-8',
           'Retry-After': '3600',
           'Cache-Control': 'no-store',

@@ -120,3 +120,38 @@ describe('maintenance-worker, bypass della Vercel Authentication', () => {
     expect(calls[0].headers.get('x-vercel-protection-bypass')).toBe('bypass-secret');
   });
 });
+
+// Perché la 503 usa la CSP dell'origin: commento accanto a `originCsp` nel Worker.
+describe('maintenance-worker, CSP delle risposte generate dal Worker', () => {
+  const manutenzione = { ...env, MAINTENANCE_ENABLED: 'true' };
+  const cspOrigin =
+    "default-src 'self';img-src 'self' data:;frame-ancestors 'none';base-uri 'self';form-action 'self'; script-src 'self' 'sha256-RQU+odFOCSIb8NBjMYXvckRqI85/W9pWuE4PuP9W3W0='";
+
+  test('la 503 di manutenzione porta la CSP con cui l origin serve /maintenance', async () => {
+    originFetch({ 'content-security-policy': cspOrigin });
+    const res = await worker.fetch(new Request('https://vetreriamonferrina.com/'), manutenzione);
+    expect(res.status).toBe(503);
+    expect(res.headers.get('content-security-policy')).toBe(cspOrigin);
+  });
+
+  test('se l origin non manda la CSP, la 503 ha quella di ripiego senza inline', async () => {
+    originFetch();
+    const res = await worker.fetch(new Request('https://vetreriamonferrina.com/'), manutenzione);
+    expect(res.status).toBe(503);
+    const csp = res.headers.get('content-security-policy');
+    expect(csp).toContain("default-src 'self'");
+    expect(csp).not.toContain('unsafe-inline');
+  });
+
+  test('la 502 di ripiego non ammette script né stili inline', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => {
+        throw new Error('origin irraggiungibile');
+      })
+    );
+    const res = await worker.fetch(new Request('https://vetreriamonferrina.com/'), env);
+    expect(res.status).toBe(502);
+    expect(res.headers.get('content-security-policy')).not.toContain('unsafe-inline');
+  });
+});

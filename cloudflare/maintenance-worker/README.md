@@ -43,7 +43,7 @@ Il resto riceve la pagina `/maintenance` con status 503.
 
 ## Security header
 
-Le risposte generate dal worker (il 503 di manutenzione e il 502 di fallback) non passano da `vercel.json`, quindi il worker aggiunge da sé `Strict-Transport-Security`, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` e una `Content-Security-Policy` fissa. Oggi quella CSP ammette `'unsafe-inline'` per script e stili, quindi è più larga di quella del sito, che usa gli hash generati da Astro.
+Le risposte generate dal worker (il 503 di manutenzione e il 502 di fallback) non passano da `vercel.json`, quindi il worker aggiunge da sé `Strict-Transport-Security`, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` e una `Content-Security-Policy`. Il 503 usa la CSP con cui l'origin serve `/maintenance`, cioè quella che Astro genera per quella pagina, con gli hash dei suoi script inline. Il 502, e il 503 se l'origin non manda la CSP, usano una CSP di ripiego senza `'unsafe-inline'`: con il ripiego non girano gli script inline della pagina di manutenzione (il tema chiaro o scuro e Sentry; misurato il 14/10/2026), ma il testo è HTML statico e si legge. I tre casi li fissano gli unit test in `tests/unit/maintenance-worker.test.ts`.
 
 ## Toggle manutenzione
 
