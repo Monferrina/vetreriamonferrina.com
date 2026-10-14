@@ -596,7 +596,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     seoDescription:
       "Specchi su misura a Casale Monferrato. Taglio, molatura e installazione professionale per bagni, armadi e complementi d'arredo.",
-    related: ['box-doccia', 'molature', 'espositori'],
+    related: ['box-doccia', 'lavori-personalizzati', 'espositori'],
     whenToChoose:
       'Uno specchio su misura risolve tutti i casi in cui i modelli standard non bastano: pareti irregolari, spazi sopra il lavabo, ante di armadi, palestre e studi di danza. Possiamo tagliare qualsiasi forma e rifinire i bordi con molatura a filo lucido o bisello, per un risultato sicuro ed elegante. In fase di sopralluogo valutiamo insieme dimensioni, tipo di fissaggio e finitura più adatti all’ambiente.',
     faq: [
@@ -670,7 +670,33 @@ export const serviceDetails: Record<string, ServiceDetail> = {
         a: 'Bastano un panno in microfibra e un detergente per vetri non abrasivo, evitando spugne ruvide che opacizzano la superficie. Sul satinato le impronte si vedono meno che sul trasparente, quindi la manutenzione è ancora più semplice.',
       },
     ],
-    related: ['madras', 'specchi', 'box-doccia'],
+    related: ['madras', 'specchi', 'lavori-personalizzati'],
+  },
+
+  'lavori-personalizzati': {
+    intro:
+      'Realizziamo vetri e specchi con un elemento grafico scelto da te: il logo della tua azienda su una porta, lo stemma della tua squadra su uno specchio, un disegno su un box doccia. Il lavoro si fa sulle tue misure o su misure standard.',
+    features: [
+      {
+        title: 'Logo o disegno a scelta',
+        text: 'Il soggetto lo scegli tu: un logo aziendale, lo stemma di una squadra, un disegno.',
+      },
+      {
+        title: 'Porte, specchi, box doccia, insegne',
+        text: 'Lo applichiamo su vetri e specchi per la casa e per le attività, come un’insegna in vetro decorato.',
+      },
+      {
+        title: 'Su misura o di misura standard',
+        text: 'Il disegno non dipende dalle misure: lo realizziamo anche su un box doccia di misura regolare.',
+      },
+      {
+        title: 'Sopralluogo e posa',
+        text: 'Sopralluogo gratuito in Piemonte e Lombardia; la posa la fanno solo i nostri vetrai.',
+      },
+    ],
+    seoDescription:
+      'Vetri e specchi personalizzati con logo o disegno a Casale Monferrato: porte, specchi, box doccia e insegne in vetro.',
+    related: ['specchi', 'porte-interne', 'box-doccia'],
   },
 
   sagomature: {

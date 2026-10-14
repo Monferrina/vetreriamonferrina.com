@@ -50,6 +50,7 @@
       { "label": "\u2702\ufe0f Sagomature", "next": "dettaglio_sagomature" },
       { "label": "\ud83d\udd33 Fori", "next": "dettaglio_fori" },
       { "label": "\u2728 Molature", "next": "dettaglio_molature" },
+      { "label": "\ud83c\udfa8 Lavori personalizzati", "next": "dettaglio_personalizzati" },
       { "label": "\u2190 Torna indietro", "next": "servizi" }
     ]
   },
@@ -102,6 +103,18 @@
         "action": "open_contacts"
       },
       { "label": "\u2190 Torna indietro", "next": "servizi_installazioni" }
+    ]
+  },
+  "dettaglio_personalizzati": {
+    "message": "\ud83c\udfa8 Vetri e specchi con il logo o il disegno che scegli tu: una porta con il logo della tua azienda, uno specchio con lo stemma della tua squadra.",
+    "options": [
+      {
+        "label": "\ud83d\udd17 Scopri di pi\u00f9",
+        "action": "open_page",
+        "param": "/servizi/lavori-personalizzati"
+      },
+      { "label": "\ud83d\udcc7 Contattaci", "action": "open_contacts" },
+      { "label": "\u2190 Torna indietro", "next": "servizi_lavorazioni" }
     ]
   },
   "dettaglio_vetrine": {

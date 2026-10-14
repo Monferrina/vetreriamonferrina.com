@@ -119,6 +119,14 @@ export const services: Service[] = [
     category: 'personalizzazioni',
     image: '/images/gallery/lavorazioni-porta-fiori.webp',
   },
+  {
+    slug: 'lavori-personalizzati',
+    name: 'Lavori personalizzati',
+    description:
+      'Vetri e specchi con il logo o il disegno che scegli tu, su misura o di misura standard.',
+    category: 'personalizzazioni',
+    image: '/images/gallery/lavorazioni-vetro-insegna.webp',
+  },
   // Lavorazioni
   {
     slug: 'sagomature',
