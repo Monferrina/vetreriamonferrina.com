@@ -38,14 +38,14 @@ Il processo va dalla richiesta del cliente al lavoro concluso: raccolta della ri
 
 ## 5. Regole
 
-| Regola | Cosa vale                                                                                                                                                                                | Fonte                                                                             |
-| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| R1     | Il catalogo dei servizi è completo: un lavoro che non c'è, la vetreria non lo fa. Il cliente può comunque scrivere o telefonare.                                                         | Direzione; vera dopo il merge della PR #436, che aggiunge "Lavori personalizzati" |
-| R2     | Il sopralluogo è gratuito e senza impegno in Piemonte e Lombardia; Liguria, Valle d'Aosta ed estero si valutano caso per caso.                                                           | `/faq`, confermata dalla direzione                                                |
-| R3     | Il preventivo è immediato se il cliente è in sede; per email arriva entro 24-48 ore per i lavori standard, e per i progetti complessi entro pochi giorni lavorativi dopo il sopralluogo. | `/faq`, corretta e confermata dalla direzione                                     |
-| R4     | I lavori semplici, come la sostituzione di un vetro, richiedono pochi giorni; box doccia su misura, parapetti e pensiline alcune settimane. I tempi precisi sono nel preventivo.         | `/faq`, direzione, due recensioni                                                 |
-| R5     | La posa la fanno solo i vetrai della vetreria, mai terzi.                                                                                                                                | `/faq`, confermata dalla direzione                                                |
-| R6     | Una modifica chiesta dalla direzione va online entro 24 ore dalla richiesta.                                                                                                             | Manutentore                                                                       |
+| Regola | Cosa vale                                                                                                                                                                                | Fonte                                                           |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| R1     | Il catalogo dei servizi è completo: un lavoro che non c'è, la vetreria non lo fa. Il cliente può comunque scrivere o telefonare.                                                         | Direzione; il catalogo ha "Lavori personalizzati" dalla PR #436 |
+| R2     | Il sopralluogo è gratuito e senza impegno in Piemonte e Lombardia; Liguria, Valle d'Aosta ed estero si valutano caso per caso.                                                           | `/faq`, confermata dalla direzione                              |
+| R3     | Il preventivo è immediato se il cliente è in sede; per email arriva entro 24-48 ore per i lavori standard, e per i progetti complessi entro pochi giorni lavorativi dopo il sopralluogo. | `/faq`, corretta e confermata dalla direzione                   |
+| R4     | I lavori semplici, come la sostituzione di un vetro, richiedono pochi giorni; box doccia su misura, parapetti e pensiline alcune settimane. I tempi precisi sono nel preventivo.         | `/faq`, direzione, due recensioni                               |
+| R5     | La posa la fanno solo i vetrai della vetreria, mai terzi.                                                                                                                                | `/faq`, confermata dalla direzione                              |
+| R6     | Una modifica chiesta dalla direzione va online entro 24 ore dalla richiesta.                                                                                                             | Manutentore                                                     |
 
 La `/faq` oggi non dice che in sede il preventivo è immediato (R3).
 
