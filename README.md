@@ -243,6 +243,8 @@ Sotto c'è un [Cloudflare Worker](https://developers.cloudflare.com/workers/) ch
 
 - [CONTRIBUTING](CONTRIBUTING.md), flusso di lavoro, controlli e convenzioni
 - [SECURITY](SECURITY.md), come segnalare una vulnerabilità
+- [`docs/analisi-funzionale.md`](docs/analisi-funzionale.md), cosa fa il sito e per chi: attori, casi d'uso, regole
+- [`GLOSSARY.md`](GLOSSARY.md), le parole del dominio
 - [`docs/architettura.md`](docs/architettura.md), architettura: obiettivi di qualità e diagrammi C4
 - [`docs/adr/`](docs/adr/README.md), registro delle decisioni
 - [`docs/mappa-dati.md`](docs/mappa-dati.md), dove passano e dove si fermano i dati del visitatore
