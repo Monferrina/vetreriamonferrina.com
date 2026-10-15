@@ -1,11 +1,9 @@
 import { test as base, expect } from '@playwright/test';
 
 // Fuori dal sito non parte niente (Playwright, "Only test what you control"): senza, ogni run
-// chiamava davvero Vercel Speed Insights e Google Maps (misurato il 05/10), e un loro
-// guasto faceva fallire i nostri test. Bloccare per origine e non per elenco di host vuol dire
-// anche che il token per la preview (extraHTTPHeaders, va a ogni richiesta) non esce mai dal
-// sito. Sulla preview Speed Insights sta sullo stesso dominio, sotto /_vercel/: senza blocco i
-// test manderebbero metriche vere.
+// chiamava davvero Google Maps (misurato il 05/10), e un suo guasto faceva fallire i nostri
+// test. Bloccare per origine e non per elenco di host vuol dire anche che il token per la
+// preview (extraHTTPHeaders, va a ogni richiesta) non esce mai dal sito.
 export const test = base.extend<{ terzi: void }>({
   // La preview è protetta (Vercel Authentication): in e2e.yml passa con un token OIDC di GitHub
   // accettato da Trusted Sources (TS1). Il token dura 300 s (misurato il 09/10/2026, run
@@ -25,7 +23,7 @@ export const test = base.extend<{ terzi: void }>({
     async ({ context, baseURL }, use) => {
       const sito = new URL(baseURL!).origin;
       await context.route(
-        (url) => url.origin !== sito || url.pathname.startsWith('/_vercel/'),
+        (url) => url.origin !== sito,
         (route) => route.abort()
       );
       await use();
