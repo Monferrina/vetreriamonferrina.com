@@ -16,6 +16,9 @@ import {
 import BottomNav from '../components/BottomNav.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import Chatbot from '../components/Chatbot.astro';
+import AvvisoChiusura from '../components/AvvisoChiusura.astro';
+import datiChiusure from '../data/chiusure.json';
+import { oggiInItalia, type Chiusura } from '../lib/chiusure';
 import openingHours from '../data/opening-hours.json';
 import { themeScript, themeScriptHash } from '../lib/csp';
 
@@ -118,6 +121,11 @@ const jsonLd = {
 };
 // Hash dello script del tema nel CSP della pagina (security.csp): vedi src/lib/csp.ts.
 Astro.csp?.insertScriptHash(themeScriptHash);
+
+// Le chiusure già finite al momento del build restano fuori: senza chiusure attive la pagina
+// non porta né l'avviso né il suo script.
+const oggi = oggiInItalia();
+const chiusureAttive = (datiChiusure as Chiusura[]).filter((c) => c.al >= oggi);
 ---
 
 <!doctype html>
@@ -183,6 +191,7 @@ Astro.csp?.insertScriptHash(themeScriptHash);
 
     <div class="scroll-progress" aria-hidden="true"></div>
 
+    {chiusureAttive.length > 0 && <AvvisoChiusura chiusure={chiusureAttive} />}
     <Header />
     <main id="main-content" class="[view-transition-name:main-content]">
       <slot />

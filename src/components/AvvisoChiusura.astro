@@ -1,0 +1,46 @@
+---
+// Avvisi di chiusura straordinaria in cima a ogni pagina. Il sito è statico: gli avvisi escono
+// visibili dal build con le date, così senza JavaScript si leggono comunque, e lo script nasconde
+// quelli fuori dalla finestra (dal preavviso all'ultimo giorno).
+import type { Chiusura } from '../lib/chiusure';
+
+interface Props {
+  chiusure: Chiusura[];
+}
+
+const { chiusure } = Astro.props;
+// timeZone UTC: la data è un giorno del calendario, non un istante da spostare nel fuso.
+const giorno = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', timeZone: 'UTC' });
+const data = (d: string) => giorno.format(new Date(`${d}T00:00:00Z`));
+---
+
+{
+  chiusure.map((c) => (
+    <aside
+      data-chiusura
+      data-dal={c.dal}
+      data-al={c.al}
+      aria-label="Chiusura straordinaria"
+      class="bg-primary-dark px-4 py-2 text-center text-sm font-medium text-white"
+    >
+      Chiusi per {c.motivo} dal {data(c.dal)} al {data(c.al)}.
+    </aside>
+  ))
+}
+
+<script>
+  import { chiusureDaMostrare, oggiInItalia } from '../lib/chiusure';
+
+  // Nasconde tutto e riapre quelli in finestra nello stesso giro, senza un disegno in mezzo.
+  // ponytail: se il browser disegna prima che lo script giri, un avviso fuori finestra si vede e
+  // poi sparisce, e <main> si sposta. Misurato il 15/10/2026 con Lighthouse 12.8.2 mobile sulla
+  // home, chiusura nel 2027, 3 run: CLS 0; 0,041; 0,040 (soglia di QR6: 0,1). Uno script
+  // sincrono subito dopo gli avvisi, con il suo hash nel CSP, lo toglierebbe.
+  const avvisi = [...document.querySelectorAll<HTMLElement>('[data-chiusura]')];
+  for (const el of avvisi) el.hidden = true;
+  const daMostrare = chiusureDaMostrare(
+    avvisi.map((el) => ({ dal: el.dataset.dal ?? '', al: el.dataset.al ?? '', el })),
+    oggiInItalia()
+  );
+  for (const c of daMostrare) c.el.hidden = false;
+</script>
