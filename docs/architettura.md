@@ -82,7 +82,7 @@ flowchart LR
 
 Legenda: come nel contesto; il riquadro contiene i container del sito.
 
-Recensioni e orari sono file JSON nella repo (`src/data/reviews.json`, `src/data/opening-hours.json`) che il build legge: non c'è un database ([`docs/mappa-dati.md`](mappa-dati.md)). La 404 è una funzione di Vercel dello stesso build, renderizzata a richiesta perché abbia la CSP con gli hash. Gli script nel browser sono il tema, il chatbot (un flusso fisso in `src/data/chatbot-flow.json`, senza servizi esterni), Sentry e Vercel Speed Insights, che manda le misure allo stesso dominio.
+Recensioni e orari sono file JSON nella repo (`src/data/reviews.json`, `src/data/opening-hours.json`) che il build legge: non c'è un database ([`docs/mappa-dati.md`](mappa-dati.md)). La 404 è una funzione di Vercel dello stesso build, renderizzata a richiesta perché abbia la CSP con gli hash. Gli script nel browser sono il tema, il chatbot (un flusso fisso in `src/data/chatbot-flow.json`, senza servizi esterni) e Sentry.
 
 ## 4. Deploy
 

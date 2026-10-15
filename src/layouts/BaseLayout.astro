@@ -16,7 +16,6 @@ import {
 import BottomNav from '../components/BottomNav.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import Chatbot from '../components/Chatbot.astro';
-import SpeedInsights from '@vercel/speed-insights/astro';
 import openingHours from '../data/opening-hours.json';
 import { themeScript, themeScriptHash } from '../lib/csp';
 
@@ -192,7 +191,6 @@ Astro.csp?.insertScriptHash(themeScriptHash);
     <BottomNav />
     <CookieBanner />
     <Chatbot />
-    <SpeedInsights />
 
     <button type="button" class="back-to-top" aria-label="Torna in cima" data-back-to-top>
       <svg
