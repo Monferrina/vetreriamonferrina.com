@@ -2,18 +2,28 @@
 import { describe, it, expect } from 'vitest';
 import AvvisoChiusura from '../../src/components/AvvisoChiusura.astro';
 import { renderPage, text } from './render-page';
-import { chiusuraDaMostrare, type Chiusura } from '../../src/lib/chiusure';
+import { chiusureDaMostrare, type Chiusura } from '../../src/lib/chiusure';
 import dati from '../../src/data/chiusure.json';
 
 // Ferie d'agosto: l'avviso parte 14 giorni prima (26/07) e sparisce dopo l'ultimo giorno (23/08).
 const ferie = { dal: '2027-08-09', al: '2027-08-23', motivo: 'ferie' };
+// Ferragosto dentro la finestra delle ferie; l'Immacolata a dicembre, fuori.
+const ferragosto = { dal: '2027-08-14', al: '2027-08-16', motivo: 'Ferragosto' };
+const immacolata = { dal: '2027-12-08', al: '2027-12-08', motivo: "l'Immacolata" };
 
-describe('chiusuraDaMostrare', () => {
+describe('chiusureDaMostrare', () => {
   it("mostra la chiusura dal preavviso di 14 giorni fino all'ultimo giorno compreso", () => {
-    expect(chiusuraDaMostrare([ferie], '2027-07-25')).toBeNull();
-    expect(chiusuraDaMostrare([ferie], '2027-07-26')).toEqual(ferie);
-    expect(chiusuraDaMostrare([ferie], '2027-08-23')).toEqual(ferie);
-    expect(chiusuraDaMostrare([ferie], '2027-08-24')).toBeNull();
+    expect(chiusureDaMostrare([ferie], '2027-07-25')).toEqual([]);
+    expect(chiusureDaMostrare([ferie], '2027-07-26')).toEqual([ferie]);
+    expect(chiusureDaMostrare([ferie], '2027-08-23')).toEqual([ferie]);
+    expect(chiusureDaMostrare([ferie], '2027-08-24')).toEqual([]);
+  });
+
+  it('mostra tutte le chiusure nella finestra, non solo la prima', () => {
+    expect(chiusureDaMostrare([ferie, ferragosto, immacolata], '2027-08-10')).toEqual([
+      ferie,
+      ferragosto,
+    ]);
   });
 });
 
@@ -32,15 +42,20 @@ describe('Dati delle chiusure straordinarie', () => {
   });
 });
 
-// L'avviso esce nascosto dal build (il sito è statico) con le date per lo script del browser,
-// che lo mostra solo nella finestra scelta da chiusuraDaMostrare.
+// Gli avvisi escono visibili dal build (il sito è statico), così si leggono anche senza
+// JavaScript; lo script del browser nasconde quelli fuori dalla finestra di chiusureDaMostrare.
 describe('Avviso di chiusura', () => {
-  it('porta nella pagina il testo e le date della chiusura, nascosto', async () => {
-    const d = await renderPage(AvvisoChiusura, '/', { props: { chiusure: [ferie] } });
-    const avviso = d.querySelector('[data-chiusura]');
-    expect(text(avviso)).toBe('Chiusi per ferie dal 9 agosto al 23 agosto.');
-    expect(avviso?.getAttribute('data-dal')).toBe('2027-08-09');
-    expect(avviso?.getAttribute('data-al')).toBe('2027-08-23');
-    expect(avviso?.hasAttribute('hidden')).toBe(true);
+  it('porta nella pagina un avviso visibile per ogni chiusura, con testo e date', async () => {
+    const d = await renderPage(AvvisoChiusura, '/', { props: { chiusure: [ferie, ferragosto] } });
+    const avvisi = [...d.querySelectorAll('[data-chiusura]')];
+    expect(avvisi.map(text)).toEqual([
+      'Chiusi per ferie dal 9 agosto al 23 agosto.',
+      'Chiusi per Ferragosto dal 14 agosto al 16 agosto.',
+    ]);
+    expect(avvisi.map((a) => [a.getAttribute('data-dal'), a.getAttribute('data-al')])).toEqual([
+      ['2027-08-09', '2027-08-23'],
+      ['2027-08-14', '2027-08-16'],
+    ]);
+    expect(avvisi.some((a) => a.hasAttribute('hidden'))).toBe(false);
   });
 });

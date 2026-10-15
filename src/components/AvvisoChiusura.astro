@@ -1,6 +1,7 @@
 ---
-// Avviso di chiusura straordinaria in cima a ogni pagina. Il sito è statico: l'avviso esce
-// nascosto dal build con le date, e lo script lo mostra dal preavviso all'ultimo giorno.
+// Avvisi di chiusura straordinaria in cima a ogni pagina. Il sito è statico: gli avvisi escono
+// visibili dal build con le date, così senza JavaScript si leggono comunque, e lo script nasconde
+// quelli fuori dalla finestra (dal preavviso all'ultimo giorno).
 import type { Chiusura } from '../lib/chiusure';
 
 interface Props {
@@ -19,7 +20,6 @@ const data = (d: string) => giorno.format(new Date(`${d}T00:00:00Z`));
       data-chiusura
       data-dal={c.dal}
       data-al={c.al}
-      hidden
       aria-label="Chiusura straordinaria"
       class="bg-primary-dark px-4 py-2 text-center text-sm font-medium text-white"
     >
@@ -29,14 +29,18 @@ const data = (d: string) => giorno.format(new Date(`${d}T00:00:00Z`));
 }
 
 <script>
-  import { chiusuraDaMostrare, oggiInItalia } from '../lib/chiusure';
+  import { chiusureDaMostrare, oggiInItalia } from '../lib/chiusure';
 
-  // ponytail: l'avviso compare dopo il primo disegno e sposta la pagina di una riga (CLS), solo
-  // nelle settimane di preavviso e chiusura; uno script sincrono in testa lo eviterebbe.
+  // Nasconde tutto e riapre quelli in finestra nello stesso giro, senza un disegno in mezzo.
+  // ponytail: se il browser disegna prima che lo script giri, un avviso fuori finestra si vede e
+  // poi sparisce, e <main> si sposta. Misurato il 15/10/2026 con Lighthouse 12.8.2 mobile sulla
+  // home, chiusura nel 2027, 3 run: CLS 0; 0,041; 0,040 (soglia di QR6: 0,1). Uno script
+  // sincrono subito dopo gli avvisi, con il suo hash nel CSP, lo toglierebbe.
   const avvisi = [...document.querySelectorAll<HTMLElement>('[data-chiusura]')];
-  const scelta = chiusuraDaMostrare(
+  for (const el of avvisi) el.hidden = true;
+  const daMostrare = chiusureDaMostrare(
     avvisi.map((el) => ({ dal: el.dataset.dal ?? '', al: el.dataset.al ?? '', el })),
     oggiInItalia()
   );
-  if (scelta) scelta.el.hidden = false;
+  for (const c of daMostrare) c.el.hidden = false;
 </script>

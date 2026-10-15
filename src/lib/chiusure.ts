@@ -15,13 +15,13 @@ function menoGiorni(data: string, giorni: number): string {
   return new Date(Date.UTC(a, m - 1, g - giorni)).toISOString().slice(0, 10);
 }
 
-// La chiusura da annunciare oggi: dal preavviso fino all'ultimo giorno compreso. Generica sulle
-// sole date, così lo script del browser le passa insieme all'elemento da mostrare.
-export function chiusuraDaMostrare<T extends Pick<Chiusura, 'dal' | 'al'>>(
+// Le chiusure da annunciare oggi, tutte: dal preavviso fino all'ultimo giorno compreso. Generica
+// sulle sole date, così lo script del browser le passa insieme all'elemento da mostrare.
+export function chiusureDaMostrare<T extends Pick<Chiusura, 'dal' | 'al'>>(
   chiusure: T[],
   oggi: string
-): T | null {
-  return chiusure.find((c) => menoGiorni(c.dal, PREAVVISO_GIORNI) <= oggi && oggi <= c.al) ?? null;
+): T[] {
+  return chiusure.filter((c) => menoGiorni(c.dal, PREAVVISO_GIORNI) <= oggi && oggi <= c.al);
 }
 
 // Oggi nel calendario italiano, come AAAA-MM-GG (il formato di 'sv-SE').
