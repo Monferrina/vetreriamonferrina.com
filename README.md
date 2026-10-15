@@ -235,6 +235,16 @@ Lo script genera due soli file, `src/data/reviews.json` e `src/data/opening-hour
 
 La chiave non va mai committata e va limitata a "Places API" e "Places API (New)" nella Google Cloud Console.
 
+## Chiusure straordinarie
+
+Ferie e festività stanno in `src/data/chiusure.json`, una voce per chiusura:
+
+```json
+[{ "dal": "2027-08-09", "al": "2027-08-23", "motivo": "ferie" }]
+```
+
+L'avviso "Chiusi per ferie dal 9 agosto al 23 agosto." compare in cima a ogni pagina 14 giorni prima dell'inizio e sparisce dopo l'ultimo giorno, uno per ogni chiusura nella finestra: la data la controlla il browser, quindi non serve un deploy il giorno giusto. Senza JavaScript gli avvisi delle chiusure non ancora finite si vedono sempre, fino al primo deploy dopo la fine. Il file è separato dagli orari di Google, che il workflow mensile sovrascrive. Date in formato `AAAA-MM-GG`; un errore (data inesistente, `dal` dopo `al`) fa fallire `tests/unit/chiusure.test.ts` e blocca il merge.
+
 ## Manutenzione
 
 Sotto c'è un [Cloudflare Worker](https://developers.cloudflare.com/workers/) che intercetta le richieste prima che arrivino a Vercel. Con la manutenzione attiva recupera la pagina `/maintenance` da Vercel e la serve con status 503; altrimenti fa da semplice passthrough. Il codice sta in `cloudflare/maintenance-worker/`; come accendere e spegnere la manutenzione è nel suo [README](cloudflare/maintenance-worker/README.md).
@@ -243,6 +253,8 @@ Sotto c'è un [Cloudflare Worker](https://developers.cloudflare.com/workers/) ch
 
 - [CONTRIBUTING](CONTRIBUTING.md), flusso di lavoro, controlli e convenzioni
 - [SECURITY](SECURITY.md), come segnalare una vulnerabilità
+- [`docs/analisi-funzionale.md`](docs/analisi-funzionale.md), cosa fa il sito e per chi: attori, casi d'uso, regole
+- [`GLOSSARY.md`](GLOSSARY.md), le parole del dominio
 - [`docs/architettura.md`](docs/architettura.md), architettura: obiettivi di qualità e diagrammi C4
 - [`docs/adr/`](docs/adr/README.md), registro delle decisioni
 - [`docs/mappa-dati.md`](docs/mappa-dati.md), dove passano e dove si fermano i dati del visitatore

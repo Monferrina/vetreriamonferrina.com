@@ -47,4 +47,4 @@ Le cinque label canoniche con il loro nome (`needs-triage`, `needs-info`, `ready
 
 ### Domain docs
 
-Single-context: ADR in `docs/adr/` (indice in `docs/adr/README.md`). `GLOSSARY.md` in radice non esiste ancora: si scrive con Marco (skill `domain-modeling`). See `docs/agents/domain.md`.
+Single-context: ADR in `docs/adr/` (indice in `docs/adr/README.md`). `GLOSSARY.md` in radice, scritto con Marco il 15/10/2026 (skill `domain-modeling`); l'analisi funzionale sta in `docs/analisi-funzionale.md`. See `docs/agents/domain.md`.
