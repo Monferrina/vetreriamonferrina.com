@@ -232,7 +232,7 @@ Ferie e festività stanno in `src/data/chiusure.json`, una voce per chiusura:
 [{ "dal": "2027-08-09", "al": "2027-08-23", "motivo": "ferie" }]
 ```
 
-L'avviso "Chiusi per ferie dal 9 agosto al 23 agosto." compare in cima a ogni pagina 14 giorni prima dell'inizio e sparisce dopo l'ultimo giorno, uno per ogni chiusura nella finestra: la data la controlla il browser, quindi non serve un deploy il giorno giusto. Senza JavaScript gli avvisi delle chiusure non ancora finite si vedono sempre, fino al primo deploy dopo la fine. Il file è separato dagli orari di Google, che il workflow mensile sovrascrive. Date in formato `AAAA-MM-GG`; un errore (data inesistente, `dal` dopo `al`) fa fallire `tests/unit/chiusure.test.ts` e blocca il merge.
+L'avviso "Chiusi per ferie dal 9 agosto al 23 agosto." compare in cima a ogni pagina 14 giorni prima dell'inizio e sparisce dopo l'ultimo giorno, uno per ogni chiusura nella finestra: la data la controlla il browser, quindi non serve un deploy il giorno giusto. Senza JavaScript gli avvisi delle chiusure non ancora finite si vedono sempre, fino al primo deploy dopo la fine. Date in formato `AAAA-MM-GG`; un errore (data inesistente, `dal` dopo `al`) fa fallire `tests/unit/chiusure.test.ts` e blocca il merge.
 
 ## Manutenzione
 
