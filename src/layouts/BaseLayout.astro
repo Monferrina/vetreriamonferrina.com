@@ -7,9 +7,11 @@ import {
   email,
   latitude,
   longitude,
+  partitaIva,
   phoneE164,
   postalCode,
   province,
+  ragioneSociale,
   street,
   town,
 } from '../data/contatti';
@@ -72,7 +74,9 @@ const openingHoursSpecification = [...specsByTime.values()].map((s) => ({
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
-  name: 'Vetreria Monferrina di Fioravanti Giuseppe',
+  name: ragioneSociale,
+  legalName: ragioneSociale,
+  vatID: `IT${partitaIva}`,
   description:
     'Vetreria storica a Casale Monferrato. Box doccia, parapetti, pensiline, vetri camera, specchi e lavorazioni su misura.',
   '@id': 'https://vetreriamonferrina.com',

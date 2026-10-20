@@ -4,7 +4,7 @@
 [![Vercel](https://img.shields.io/badge/Vercel-deployed-black?logo=vercel)](https://vetreriamonferrina.com)
 [![Astro](https://img.shields.io/badge/Astro-7-FF5D01?logo=astro&logoColor=white)](https://astro.build)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![License](https://img.shields.io/badge/License-All_Rights_Reserved-red)](/LICENSE)
+[![License](https://img.shields.io/badge/License-Apache--2.0-blue)](/LICENSE)
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org)
@@ -250,6 +250,6 @@ Sotto c'è un [Cloudflare Worker](https://developers.cloudflare.com/workers/) ch
 
 ## Licenza
 
-Progetto proprietario, Vetreria Monferrina di Fioravanti Giuseppe. Tutti i diritti riservati.
+Il codice è distribuito con licenza [Apache-2.0](LICENSE), con il consenso del titolare, Vetreria Monferrina di Fioravanti Giuseppe. La licenza copre solo il codice: nome, marchio e logo "Vetreria Monferrina", testi delle pagine e degli articoli, foto dei lavori, del laboratorio e delle persone restano "Tutti i diritti riservati". Il materiale di terzi ha la sua licenza: i font in `public/fonts/OFL.txt` (SIL Open Font License 1.1), le foto del blog in `public/images/blog/CREDITS.md` (Unsplash), i marchi dei produttori dei rispettivi titolari. Il file [`NOTICE`](NOTICE) contiene la riga di copyright.
 
 Sviluppato da [Marco Bellingeri](https://github.com/MK023).

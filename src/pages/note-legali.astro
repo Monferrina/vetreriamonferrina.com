@@ -1,0 +1,121 @@
+---
+// src/pages/note-legali.astro — Dati dell'impresa, diritti sui contenuti, licenze e condizioni di
+// terzi richieste per il sito (Google Maps).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { city, email, emailHref, partitaIva, ragioneSociale, rea, street } from '../data/contatti';
+import GlassPanel from '../components/GlassPanel.astro';
+export const prerender = true;
+
+const link = 'text-primary underline underline-offset-2';
+---
+
+<BaseLayout
+  title="Note legali"
+  description="Note legali del sito di Vetreria Monferrina: dati dell'impresa, diritti su testi e foto, marchi, licenze e condizioni di Google Maps."
+>
+  <section class="bg-primary py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <GlassPanel class="max-w-3xl">
+        <h1 class="font-heading text-4xl text-neutral-50 sm:text-5xl">Note legali</h1>
+        <p class="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-200">
+          Chi gestisce il sito, di chi sono testi e foto, e con quali licenze sono pubblicati il
+          codice e i componenti di terzi.
+        </p>
+      </GlassPanel>
+    </div>
+  </section>
+
+  <section class="bg-surface py-16 sm:py-20">
+    <div class="mx-auto max-w-4xl px-4 lg:px-8">
+      <div class="prose-legal space-y-10 text-justify text-neutral-800 leading-relaxed">
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">1. Chi gestisce il sito</h2>
+          <p class="mt-3 font-semibold">{ragioneSociale}</p>
+          <ul class="mt-3 list-disc pl-6 space-y-1">
+            <li>Sede legale: {street}, {city}</li>
+            <li>P.IVA: {partitaIva}</li>
+            <li>REA: {rea}</li>
+            <li>Email: <a href={emailHref} class={link}>{email}</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">2. Testi, foto e marchi</h2>
+          <p class="mt-3">
+            Il nome e il logo di Vetreria Monferrina, i testi del sito e le foto dei lavori, del
+            laboratorio e delle persone sono di Vetreria Monferrina: tutti i diritti sono riservati.
+            Le foto degli articoli del blog vengono da Unsplash e restano con la licenza Unsplash.
+          </p>
+          <p class="mt-3">
+            I marchi dei produttori citati nel sito, come Saint-Gobain, AGC, Pilkington, Cilvea e
+            Madras, appartengono ai rispettivi titolari.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">3. Preventivi</h2>
+          <p class="mt-3">
+            Le informazioni del sito, compresi colori e foto dei vetri, sono indicative. Prezzi e
+            tempi li indica il preventivo, che prepariamo dopo il sopralluogo quando serve. Il
+            preventivo diventa un accordo quando lo firmi e vale fino alla scadenza scritta.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">4. Google Maps</h2>
+          <p class="mt-3">
+            La pagina Contatti usa le funzioni e i contenuti di Google Maps, soggetti alle versioni
+            in vigore delle <a
+              href="https://maps.google.com/help/terms_maps/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class={link}>Condizioni aggiuntive di Google Maps</a
+            > e delle <a
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              class={link}>Norme sulla privacy di Google</a
+            >.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">5. Codice e licenze</h2>
+          <p class="mt-3">
+            Il codice del sito è pubblicato su <a
+              href="https://github.com/Monferrina/vetreriamonferrina.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class={link}>GitHub</a
+            > con licenza <a
+              href="https://www.apache.org/licenses/LICENSE-2.0"
+              target="_blank"
+              rel="noopener noreferrer"
+              class={link}>Apache-2.0</a
+            >. La licenza copre solo il codice: nome, logo, testi e foto restano di Vetreria
+            Monferrina.
+          </p>
+          <p class="mt-3">
+            Il sito usa componenti di terzi, ciascuno con la sua licenza: i font Inter e DM Serif
+            Display, con la <a href="/fonts/OFL.txt" class={link}>SIL Open Font License 1.1</a>, e
+            il framework Astro e l'SDK di Sentry, con licenza MIT.
+          </p>
+          <p class="mt-3">Sito realizzato da Marco Bellingeri.</p>
+        </div>
+
+        <div>
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl">6. Privacy e cookie</h2>
+          <p class="mt-3">
+            Come trattiamo i dati personali lo spiegano la <a href="/privacy" class={link}
+              >Privacy Policy</a
+            > e la <a href="/cookie" class={link}>Cookie Policy</a>.
+          </p>
+        </div>
+
+        <div class="border-t border-neutral-200 pt-8 text-sm text-neutral-500">
+          <p>Ultimo aggiornamento: ottobre 2026</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

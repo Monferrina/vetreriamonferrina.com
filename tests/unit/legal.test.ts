@@ -5,6 +5,7 @@ import { describe, expect, test } from 'vitest';
 import { renderPage, text } from './render-page';
 import Privacy from '../../src/pages/privacy.astro';
 import Cookie from '../../src/pages/cookie.astro';
+import NoteLegali from '../../src/pages/note-legali.astro';
 
 describe('privacy policy', () => {
   test('titolare, GDPR, Sentry, Garante, diritti e link alla cookie policy', async () => {
@@ -45,5 +46,21 @@ describe('cookie policy', () => {
       expect(main, atteso).toContain(atteso);
     }
     expect(d.querySelector('main a[href="/privacy"]')).not.toBeNull();
+  });
+});
+
+// NR1: dati della ditta per il d.lgs. 70/2003 art. 7 (REA, P.IVA), licenza del codice e la frase
+// che i termini Google Maps Platform EEA §3.2.2 chiedono, con i due link.
+describe('note legali', () => {
+  test('REA, P.IVA, licenza Apache-2.0 e link richiesti da Google Maps', async () => {
+    const d = await renderPage(NoteLegali, '/note-legali');
+    const main = text(d.querySelector('main'));
+    for (const atteso of ['AL-171335', '01574530067', 'Apache-2.0']) {
+      expect(main, atteso).toContain(atteso);
+    }
+    expect(
+      d.querySelector('main a[href="https://maps.google.com/help/terms_maps/"]')
+    ).not.toBeNull();
+    expect(d.querySelector('main a[href="https://policies.google.com/privacy"]')).not.toBeNull();
   });
 });

@@ -14,6 +14,7 @@ import Contatti from '../../src/pages/contatti.astro';
 import Galleria from '../../src/pages/galleria.astro';
 import Privacy from '../../src/pages/privacy.astro';
 import Cookie from '../../src/pages/cookie.astro';
+import NoteLegali from '../../src/pages/note-legali.astro';
 import NonTrovata from '../../src/pages/404.astro';
 import ErroreServer from '../../src/pages/500.astro';
 import { categories, services } from '../../src/data/services';
@@ -26,6 +27,7 @@ const pagine: Record<string, unknown> = {
   '/galleria': Galleria,
   '/privacy': Privacy,
   '/cookie': Cookie,
+  '/note-legali': NoteLegali,
 };
 const percorsi = Object.keys(pagine);
 // Ogni pagina si renderizza una volta sola e la leggono tutti i test.
