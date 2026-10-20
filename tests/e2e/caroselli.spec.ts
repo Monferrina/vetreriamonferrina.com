@@ -1,11 +1,11 @@
 import { test, expect } from './fixtures';
 
-// AU1: il carosello delle recensioni scorreva all'infinito e si fermava solo col mouse sopra
-// (WCAG 2.2.2): da tastiera o da touch non c'era modo di fermarlo. Quello del laboratorio aveva
-// già un pulsante; ora lo hanno tutti e due, con lo stesso codice.
+// AU1: il carosello scorreva all'infinito e si fermava solo col mouse sopra (WCAG 2.2.2): da
+// tastiera o da touch non c'era modo di fermarlo. Resta solo quello del laboratorio: le recensioni
+// in home sono state tolte il 20/10/2026 (NR1, le gestirà monferrinoAI).
 test.skip(({ isMobile }) => isMobile, 'col Tab: solo nel progetto desktop');
 
-for (const pagina of ['/', '/chi-siamo']) {
+for (const pagina of ['/chi-siamo']) {
   test(`${pagina}: il carosello si ferma col pulsante, raggiunto col Tab`, async ({ page }) => {
     await page.goto(pagina);
     const pulsante = page.getByRole('button', { name: 'Metti in pausa il carosello' });

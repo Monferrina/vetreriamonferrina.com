@@ -11,8 +11,7 @@ import { street, town } from '../data/contatti';
 
 const PLACE_ID = 'ChIJcx_Q1ESwh0cRqv3FdLTrU1w';
 // Pubblica per costruzione (finisce nell'HTML): solo Maps Embed API, limitata al referrer del
-// sito. Non è GOOGLE_PLACES_API_KEY, la chiave Places dello script delle recensioni, che non deve
-// stare nel browser: prima lo stesso nome conteneva in prd questa chiave e in dev/ci l'altra (F2).
+// sito.
 const API_KEY = GOOGLE_MAPS_EMBED_KEY ?? '';
 const embedUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=place_id:${PLACE_ID}&zoom=17&language=it`;
 ---

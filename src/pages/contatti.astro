@@ -1,4 +1,5 @@
 ---
+import hoursData from '../data/opening-hours.json';
 import {
   city,
   email,
@@ -19,26 +20,12 @@ interface OpeningHour {
   hours: string;
 }
 
-// Opening hours: Google Places data (build-time) → static fallback
-let googleHours: OpeningHour[] = [];
-try {
-  const hoursData = await import('../data/opening-hours.json');
-  googleHours = hoursData.schedule || [];
-} catch {
-  /* file not yet generated */
-}
-
-const openingHours: OpeningHour[] =
-  googleHours.length > 0
-    ? googleHours
-    : [
-        { days: 'Lunedì - Venerdì', hours: '08:00 - 12:00 / 13:30 - 17:30' },
-        { days: 'Sabato', hours: '08:00 - 12:00' },
-        { days: 'Domenica', hours: 'Chiuso' },
-      ];
+// Orari scritti a mano in opening-hours.json: la stessa fonte del JSON-LD (BaseLayout), così
+// pagina e dati strutturati non divergono.
+const openingHours: OpeningHour[] = hoursData.schedule;
 
 // AU1 (B6): su mobile "Lunedì - / Venerdì" e "13:30 - / 17:30" andavano a capo a metà. Nomi brevi
-// e ogni fascia oraria su una riga; i dati (Google Places o quelli sopra) restano come sono.
+// e ogni fascia oraria su una riga; i dati di opening-hours.json restano come sono.
 function giorniBrevi(days: string): string {
   return days.replace(/(Lun|Mar|Mer|Gio|Ven|Sab|Dom)\p{L}*/gu, '$1').replaceAll(' - ', '–');
 }

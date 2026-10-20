@@ -19,7 +19,7 @@
 
 Sito ufficiale della Vetreria Monferrina di Fioravanti Giuseppe, Casale Monferrato (AL).
 
-Sito vetrina con galleria lavori, blog, pagine servizio, FAQ e recensioni da Google Places.
+Sito vetrina con galleria lavori, blog, pagine servizio e FAQ.
 
 **[vetreriamonferrina.com](https://vetreriamonferrina.com)**
 
@@ -35,7 +35,6 @@ _In English: this is the website of Vetreria Monferrina, a glass workshop in Cas
 | CDN, DNS, WAF  | Cloudflare con proxy attivo e Worker `maintenance-mode` |
 | Monitoring     | Checkly, monitoring-as-code su uptime e worker          |
 | Mappa          | Google Maps Embed API                                   |
-| Recensioni     | Google Places API (New), dati scaricati a build-time    |
 | Test           | Vitest per gli unit, Playwright per gli end-to-end      |
 | CI             | GitHub Actions                                          |
 | Qualità codice | ESLint, Prettier, Husky, lint-staged                    |
@@ -67,14 +66,10 @@ npm run dev
 
 In locale si parte da `.env.example` copiato in `.env.local`. Su Vercel le scrive la sync di Doppler: si cambiano in Doppler, non nelle impostazioni di Vercel.
 
-| Variabile               | Descrizione                                                                                                       | Dove ottenerla                |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| `GOOGLE_PLACES_API_KEY` | Chiave Places API, solo per lo script delle recensioni; mai nel browser né in Doppler `prd`                       | Google Cloud Console          |
-| `GOOGLE_MAPS_EMBED_KEY` | Chiave della mappa di `/contatti`, pubblica: solo Maps Embed API, limitata al referrer del sito; in Doppler `prd` | Google Cloud Console          |
-| `GOOGLE_PLACE_ID`       | Place ID della vetreria, solo per lo script                                                                       | Place ID Finder o Google Maps |
-| `SENTRY_AUTH_TOKEN`     | Carica le source map su Sentry durante il build di produzione; solo in Doppler `prd`                              | Sentry, Auth Tokens           |
-
-`GOOGLE_PLACES_API_KEY` e `GOOGLE_PLACE_ID` servono solo per rigenerare recensioni e orari, non a runtime: vedi "Aggiornare i dati Google".
+| Variabile               | Descrizione                                                                                                       | Dove ottenerla       |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------- |
+| `GOOGLE_MAPS_EMBED_KEY` | Chiave della mappa di `/contatti`, pubblica: solo Maps Embed API, limitata al referrer del sito; in Doppler `prd` | Google Cloud Console |
+| `SENTRY_AUTH_TOKEN`     | Carica le source map su Sentry durante il build di produzione; solo in Doppler `prd`                              | Sentry, Auth Tokens  |
 
 ## Comandi principali
 
@@ -90,7 +85,7 @@ npm run check        # Type check (astro check)
 
 ## CI/CD
 
-In `.github/workflows/` ci sono nove workflow. I passi comuni (Node 22 con cache npm e `npm ci`) stanno nella action composita `.github/actions/setup`.
+In `.github/workflows/` ci sono otto workflow. I passi comuni (Node 22 con cache npm e `npm ci`) stanno nella action composita `.github/actions/setup`.
 
 | Workflow                    | Quando gira                                     | Blocca il merge |
 | --------------------------- | ----------------------------------------------- | --------------- |
@@ -98,7 +93,6 @@ In `.github/workflows/` ci sono nove workflow. I passi comuni (Node 22 con cache
 | `e2e.yml`                   | preview Vercel pronta (`deployment_status`)     | sì              |
 | `worker-ci.yml`             | PR che toccano `cloudflare/maintenance-worker/` | no              |
 | `checkly.yml`               | produzione pronta (`deployment_status`)         | no              |
-| `update-reviews.yml`        | cron mensile e avvio manuale                    | no              |
 | `dependabot-auto-merge.yml` | PR aperte da Dependabot                         | no              |
 | `agenti.yml`                | PR aperta, o commento `@gemini-cli`             | no              |
 | `zizmor.yml`                | push su `main`, PR verso `main`                 | sì (ruleset)    |
@@ -126,11 +120,11 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 ├── .zap/                    # Scansione ZAP: script, hook, eccezioni (rules.tsv)
 ├── cloudflare/              # Worker (maintenance mode), deploy via Git
 ├── docs/                    # Documentazione tecnica (ADR, mappa dati, guide, stile)
-├── scripts/                 # Script Node (Google Places, check link interni)
+├── scripts/                 # Script Node (check link interni)
 ├── src/
 │   ├── assets/              # Immagini elaborate da Astro (chi siamo, galleria, servizi)
 │   ├── components/          # Componenti Astro
-│   ├── data/                # Dati statici (chatbot, recensioni, orari, servizi, blog)
+│   ├── data/                # Dati statici (chatbot, orari, servizi, blog)
 │   ├── layouts/             # Layout base (dark mode, CSP con hash, SEO)
 │   ├── lib/                 # Logica condivisa (immagini, CSP, Sentry, chatbot)
 │   ├── pages/               # Pagine
@@ -152,23 +146,23 @@ Vercel deploya in automatico: ogni push su `main` va in produzione, ogni altro b
 
 ## Pagine
 
-| Route                    | Descrizione                                            | Rendering |
-| ------------------------ | ------------------------------------------------------ | --------- |
-| `/`                      | Homepage con hero, servizi, stats, recensioni, partner | SSG       |
-| `/servizi`               | Catalogo servizi con filtri per categoria              | SSG       |
-| `/servizi/[slug]`        | Pagine servizio, generate da `src/data/services.ts`    | SSG       |
-| `/galleria`              | Galleria masonry con lightbox                          | SSG       |
-| `/chi-siamo`             | Storia, team, timeline, sezione memoriale              | SSG       |
-| `/contatti`              | Mappa Google, orari, contatti                          | SSG       |
-| `/faq`                   | FAQ per categoria, con Schema.org FAQPage              | SSG       |
-| `/blog`                  | Blog, articoli sempreverdi con indice                  | SSG       |
-| `/blog/[slug]`           | Articoli blog                                          | SSG       |
-| `/trasporto-e-montaggio` | Servizio trasporto e montaggio                         | SSG       |
-| `/privacy`               | Informativa privacy                                    | SSG       |
-| `/cookie`                | Policy cookie                                          | SSG       |
-| `/404`                   | Pagina errore 404                                      | On demand |
-| `/500`                   | Pagina errore 500                                      | SSG       |
-| `/maintenance`           | Pagina manutenzione 503                                | SSG       |
+| Route                    | Descrizione                                         | Rendering |
+| ------------------------ | --------------------------------------------------- | --------- |
+| `/`                      | Homepage con hero, servizi, stats, partner          | SSG       |
+| `/servizi`               | Catalogo servizi con filtri per categoria           | SSG       |
+| `/servizi/[slug]`        | Pagine servizio, generate da `src/data/services.ts` | SSG       |
+| `/galleria`              | Galleria masonry con lightbox                       | SSG       |
+| `/chi-siamo`             | Storia, team, timeline, sezione memoriale           | SSG       |
+| `/contatti`              | Mappa Google, orari, contatti                       | SSG       |
+| `/faq`                   | FAQ per categoria, con Schema.org FAQPage           | SSG       |
+| `/blog`                  | Blog, articoli sempreverdi con indice               | SSG       |
+| `/blog/[slug]`           | Articoli blog                                       | SSG       |
+| `/trasporto-e-montaggio` | Servizio trasporto e montaggio                      | SSG       |
+| `/privacy`               | Informativa privacy                                 | SSG       |
+| `/cookie`                | Policy cookie                                       | SSG       |
+| `/404`                   | Pagina errore 404                                   | On demand |
+| `/500`                   | Pagina errore 500                                   | SSG       |
+| `/maintenance`           | Pagina manutenzione 503                             | SSG       |
 
 ## SEO e dati strutturati
 
@@ -223,17 +217,9 @@ Tolti l'11/10/2026 perché doppioni: le sei pagine chiave e la sitemap (pagine s
 
 La configurazione sta in `checkly.config.ts` e `__checks__/`. In CI (`checkly.yml`) i check si deployano quando il deploy di produzione è pronto, non al merge, perché Checkly esegue subito un check nuovo; presuppongono la produzione e non girano sulle PR. Gli alert vanno sulla casella Proton, con integrazioni attive verso Vercel e GitHub.
 
-## Aggiornare i dati Google
+## Orari di apertura
 
-Recensioni e orari arrivano da Google Places API (New) e vengono salvati come JSON statico.
-
-```bash
-GOOGLE_PLACES_API_KEY=xxx GOOGLE_PLACE_ID=yyy node scripts/fetch-place-data.mjs
-```
-
-Lo script genera due soli file, `src/data/reviews.json` e `src/data/opening-hours.json`, e tiene solo le recensioni da 4 stelle in su. Il workflow `update-reviews.yml` lo esegue il primo del mese e apre una PR se i dati sono cambiati. La guida completa è in [`docs/google-reviews-setup.md`](docs/google-reviews-setup.md).
-
-La chiave non va mai committata e va limitata a "Places API" e "Places API (New)" nella Google Cloud Console.
+Gli orari stanno in `src/data/opening-hours.json` e si aggiornano a mano: li leggono la pagina Contatti e il JSON-LD (`openingHoursSpecification`).
 
 ## Chiusure straordinarie
 
@@ -258,7 +244,6 @@ Sotto c'è un [Cloudflare Worker](https://developers.cloudflare.com/workers/) ch
 - [`docs/architettura.md`](docs/architettura.md), architettura: obiettivi di qualità e diagrammi C4
 - [`docs/adr/`](docs/adr/README.md), registro delle decisioni
 - [`docs/mappa-dati.md`](docs/mappa-dati.md), dove passano e dove si fermano i dati del visitatore
-- [`docs/google-reviews-setup.md`](docs/google-reviews-setup.md), guida a Google Places API
 - [`docs/stile.md`](docs/stile.md), come si scrive la documentazione
 - [`cloudflare/maintenance-worker/README.md`](cloudflare/maintenance-worker/README.md), Worker e modalità manutenzione
 - [`docs/agents/`](docs/agents/), istruzioni per gli agenti (issue, label, dominio)

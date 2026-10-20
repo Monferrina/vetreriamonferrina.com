@@ -23,8 +23,8 @@ flowchart LR
   visitatore(["Visitatore<br/>[persona]"])
   titolare(["Titolare della vetreria<br/>[persona]"])
   manutentore(["Manutentore del sito<br/>[persona]"])
-  sito["Sito vetreriamonferrina.com<br/>[sistema]<br/>Pagine su servizi, lavori, blog, recensioni e contatti"]
-  google["Google<br/>[sistema esterno]<br/>Scheda della vetreria e mappa"]
+  sito["Sito vetreriamonferrina.com<br/>[sistema]<br/>Pagine su servizi, lavori, blog e contatti"]
+  google["Google<br/>[sistema esterno]<br/>Mappa"]
   sentry["Sentry<br/>[sistema esterno]<br/>Raccolta degli errori"]
   checkly["Checkly<br/>[sistema esterno]<br/>Monitoraggio"]
   monferrinoai["monferrinoAI<br/>[altro sistema della vetreria]<br/>Agente SEO"]
@@ -32,7 +32,6 @@ flowchart LR
   visitatore -->|"legge le pagine"| sito
   visitatore -.->|"telefona, scrive su WhatsApp o per email, fuori dal sito"| titolare
   visitatore -->|"apre la mappa, dopo un clic su /contatti"| google
-  sito -->|"prende recensioni e orari della scheda, ogni mese con una PR"| google
   sito -->|"manda gli errori del browser"| sentry
   checkly -->|"controlla che il sito risponda"| sito
   checkly -->|"avvisa se un controllo fallisce"| manutentore
@@ -60,10 +59,8 @@ flowchart LR
   subgraph sito["Sito vetreriamonferrina.com"]
     worker["Worker maintenance-mode<br/>[Cloudflare Worker, TypeScript]<br/>Inoltra le richieste o serve la pagina di manutenzione"]
     web["Sito web<br/>[Astro su Vercel]<br/>Pagine statiche, 404 generata a richiesta, script nel browser"]
-    recensioni["Aggiornamento recensioni<br/>[GitHub Actions, Node]<br/>Ogni mese, script fetch-place-data.mjs"]
   end
 
-  places["Google Places API<br/>[sistema esterno]"]
   maps["Google Maps Embed<br/>[sistema esterno]"]
   sentry["Sentry<br/>[sistema esterno]"]
 
@@ -72,17 +69,15 @@ flowchart LR
   worker -->|"prende /maintenance e la serve con stato 503, a manutenzione accesa"| web
   web -->|"incorpora la mappa in un iframe, dopo un clic"| maps
   web -->|"manda gli errori dal browser"| sentry
-  recensioni -->|"chiede recensioni e orari"| places
-  recensioni -->|"apre una PR se i dati sono cambiati"| manutentore
-  manutentore -->|"fonde le PR: ogni merge rifà il build con i dati nuovi"| web
+  manutentore -->|"fonde le PR: ogni merge rifà il build"| web
 
   classDef esterno stroke-dasharray: 5 5
-  class places,maps,sentry esterno
+  class maps,sentry esterno
 ```
 
 Legenda: come nel contesto; il riquadro contiene i container del sito.
 
-Recensioni e orari sono file JSON nella repo (`src/data/reviews.json`, `src/data/opening-hours.json`) che il build legge: non c'è un database ([`docs/mappa-dati.md`](mappa-dati.md)). La 404 è una funzione di Vercel dello stesso build, renderizzata a richiesta perché abbia la CSP con gli hash. Gli script nel browser sono il tema, il chatbot (un flusso fisso in `src/data/chatbot-flow.json`, senza servizi esterni) e Sentry.
+Gli orari sono un file JSON nella repo (`src/data/opening-hours.json`), scritto a mano, che il build legge: non c'è un database ([`docs/mappa-dati.md`](mappa-dati.md)). La 404 è una funzione di Vercel dello stesso build, renderizzata a richiesta perché abbia la CSP con gli hash. Gli script nel browser sono il tema, il chatbot (un flusso fisso in `src/data/chatbot-flow.json`, senza servizi esterni) e Sentry.
 
 ## 4. Deploy
 
