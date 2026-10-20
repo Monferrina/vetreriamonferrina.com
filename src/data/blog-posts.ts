@@ -144,7 +144,7 @@ export const blogPosts: BlogPost[] = [
 <p><strong>Vantaggi aggiuntivi:</strong> l'intercalare in PVB filtra fino al 99% dei raggi UV e migliora l'isolamento acustico.</p>
 
 <h2>La normativa UNI 7697</h2>
-<p>La norma italiana UNI 7697:2021 indica i criteri per scegliere il vetro di sicurezza (temperato o stratificato) in base alla posizione e all'uso. In sintesi, perché il tipo di vetro dipende sempre dall'applicazione:</p>
+<p>La norma italiana UNI 7697:2021 indica i criteri per scegliere il vetro di sicurezza (temperato o stratificato) in base alla posizione e all'uso. In sintesi (il tipo di vetro va comunque scelto caso per caso):</p>
 <ul>
 <li><strong>Parapetti e balaustre</strong>: vetro stratificato (deve restare in posizione).</li>
 <li><strong>Porte interne</strong>: vetro temperato o stratificato.</li>
