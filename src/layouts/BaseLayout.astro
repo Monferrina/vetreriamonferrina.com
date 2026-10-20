@@ -48,26 +48,14 @@ const canonicalURL = Astro.site
   ? new URL(Astro.url.pathname, Astro.site)
   : new URL(Astro.url.pathname, Astro.url.origin);
 
-// openingHoursSpecification derivato da opening-hours.json (unica fonte di verità:
-// stessi period consumati dalla pagina contatti → niente drift schema/pagina).
-const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const specsByTime = new Map<string, { opens: string; closes: string; days: string[] }>();
-for (const p of openingHours.periods) {
-  // Period malformato = build failure rumorosa (JSON.stringify dropperebbe
-  // opens/closes undefined producendo schema invalido in silenzio).
-  if (!p.open || !p.close) {
-    throw new Error(`opening-hours.json: period malformato per day ${p.day}`);
-  }
-  const key = `${p.open}-${p.close}`;
-  const spec = specsByTime.get(key) ?? { opens: p.open, closes: p.close, days: [] };
-  spec.days.push(DAY_NAMES[p.day % 7]);
-  specsByTime.set(key, spec);
-}
-const openingHoursSpecification = [...specsByTime.values()].map((s) => ({
+// Orari del JSON-LD scritti a mano in opening-hours.json, accanto a quelli della pagina contatti
+// (schedule): un cambio d'orario va fatto in tutti e due i punti. Il tipo fa fallire `astro check` se a un
+// gruppo manca opens o closes: senza, il JSON-LD uscirebbe incompleto in silenzio.
+const orari: { dayOfWeek: string[]; opens: string; closes: string }[] =
+  openingHours.openingHoursSpecification;
+const openingHoursSpecification = orari.map((s) => ({
   '@type': 'OpeningHoursSpecification',
-  dayOfWeek: s.days,
-  opens: s.opens,
-  closes: s.closes,
+  ...s,
 }));
 
 // JSON-LD structured data for LocalBusiness

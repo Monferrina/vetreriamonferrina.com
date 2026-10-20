@@ -20,8 +20,8 @@ interface OpeningHour {
   hours: string;
 }
 
-// Orari scritti a mano in opening-hours.json: la stessa fonte del JSON-LD (BaseLayout), così
-// pagina e dati strutturati non divergono.
+// Orari scritti a mano in opening-hours.json (schedule). Il JSON-LD di BaseLayout legge
+// openingHoursSpecification dallo stesso file: un cambio d'orario va fatto in tutti e due.
 const openingHours: OpeningHour[] = hoursData.schedule;
 
 // AU1 (B6): su mobile "Lunedì - / Venerdì" e "13:30 - / 17:30" andavano a capo a metà. Nomi brevi

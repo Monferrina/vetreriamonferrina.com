@@ -1,5 +1,4 @@
 {
-  "lastUpdated": "2026-10-02",
   "schedule": [
     {
       "days": "Lunedì - Venerdì",
@@ -14,61 +13,16 @@
       "hours": "Chiuso"
     }
   ],
-  "periods": [
+  "openingHoursSpecification": [
     {
-      "day": 1,
-      "open": "08:00",
-      "close": "12:00"
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      "opens": "08:00",
+      "closes": "12:00"
     },
     {
-      "day": 1,
-      "open": "13:30",
-      "close": "17:30"
-    },
-    {
-      "day": 2,
-      "open": "08:00",
-      "close": "12:00"
-    },
-    {
-      "day": 2,
-      "open": "13:30",
-      "close": "17:30"
-    },
-    {
-      "day": 3,
-      "open": "08:00",
-      "close": "12:00"
-    },
-    {
-      "day": 3,
-      "open": "13:30",
-      "close": "17:30"
-    },
-    {
-      "day": 4,
-      "open": "08:00",
-      "close": "12:00"
-    },
-    {
-      "day": 4,
-      "open": "13:30",
-      "close": "17:30"
-    },
-    {
-      "day": 5,
-      "open": "08:00",
-      "close": "12:00"
-    },
-    {
-      "day": 5,
-      "open": "13:30",
-      "close": "17:30"
-    },
-    {
-      "day": 6,
-      "open": "08:00",
-      "close": "12:00"
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "13:30",
+      "closes": "17:30"
     }
   ]
 }
