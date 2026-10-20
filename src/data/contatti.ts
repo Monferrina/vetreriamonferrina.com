@@ -8,7 +8,8 @@ export const phoneE164 = phone.replaceAll(' ', '');
 export const phoneHref = `tel:${phoneE164}`;
 export const email = 'vetreriamonferrina@gmail.com';
 export const emailHref = `mailto:${email}`;
-export const whatsappHref = 'https://wa.me/393355955786';
+export const whatsapp = '+39 335 595 5786';
+export const whatsappHref = `https://wa.me/${whatsapp.replace(/\D/g, '')}`;
 
 export const street = 'Strada Statale 31, 98/C';
 export const postalCode = '15033';

@@ -1,5 +1,14 @@
 ---
-import { city, email, emailHref, phone, phoneHref, street, whatsappHref } from '../data/contatti';
+import {
+  city,
+  email,
+  emailHref,
+  phone,
+  phoneHref,
+  street,
+  whatsapp,
+  whatsappHref,
+} from '../data/contatti';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactMap from '../components/ContactMap.astro';
 import GlassPanel from '../components/GlassPanel.astro';
@@ -165,7 +174,7 @@ function giorniBrevi(days: string): string {
                 rel="noopener noreferrer"
                 class="mt-1 inline-block text-primary hover:underline"
               >
-                +39 335 595 5786
+                {whatsapp}
               </a>
             </div>
           </div>

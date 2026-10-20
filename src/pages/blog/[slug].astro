@@ -3,7 +3,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CtaSection from '../../components/CtaSection.astro';
 import GlassPanel from '../../components/GlassPanel.astro';
-import { blogPosts } from '../../data/blog-posts';
+import { autoreBlog, blogPosts } from '../../data/blog-posts';
 export const prerender = true;
 
 export function getStaticPaths() {
@@ -48,8 +48,10 @@ const articleSchema = {
   description: post.description,
   datePublished: post.date,
   author: {
-    '@type': 'Person',
-    name: post.author ?? 'Giuseppe Fioravanti',
+    // Senza un autore proprio scrive la ditta: stesso nome dell'editore, così i motori di ricerca
+    // non vedono un'organizzazione "Staff Monferrina" diversa da Vetreria Monferrina.
+    '@type': post.author ? 'Person' : 'Organization',
+    name: post.author ?? 'Vetreria Monferrina',
     url: 'https://vetreriamonferrina.com/chi-siamo',
   },
   publisher: {
@@ -159,7 +161,7 @@ const breadcrumbSchema = {
               >
                 La stesura di questo articolo è stata assistita da strumenti di intelligenza
                 artificiale. I contenuti tecnici sono verificati e approvati da{' '}
-                {post.author ?? 'Giuseppe Fioravanti'} prima della pubblicazione.
+                {post.author ?? autoreBlog} prima della pubblicazione.
               </p>
             )
           }

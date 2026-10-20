@@ -8,23 +8,37 @@ import { blogPosts } from '../../src/data/blog-posts';
 // ai testi di interesse pubblico, ed esenta comunque i contenuti sotto revisione umana con
 // responsabilità editoriale). Vedi monferrinoAI → docs/ai-act.md §8.2.
 //
-// Il fallimento pericoloso NON è "manca la disclosure": è il suo contrario. Se la condizione
-// si invertisse, articoli scritti da persone dichiarerebbero di essere assistiti dall'IA —
-// una falsa affermazione verso il lettore, sulla trasparenza stessa.
+// Dal 20/10/2026 (NR1, decisione di Marco) tutti gli articoli sono scritti con l'assistenza
+// dell'IA e lo dichiarano, a nome di "Staff Monferrina". Il fallimento pericoloso resta il
+// contrario: un articolo scritto da una persona che dichiara di essere assistito dall'IA,
+// una falsa affermazione verso il lettore sulla trasparenza stessa.
 describe('disclosure IA sugli articoli', () => {
-  const umani = blogPosts.filter((p) => !p.aiAssisted);
-
-  test('oggi nessun articolo è assistito da IA', () => {
-    expect(umani).toHaveLength(blogPosts.length);
+  test('oggi tutti gli articoli sono assistiti da IA', () => {
+    expect(blogPosts.filter((p) => !p.aiAssisted)).toEqual([]);
   });
 
-  test.each(umani.map((p) => p.slug))(
-    'l\'articolo "%s", scritto da una persona, NON dichiara assistenza IA',
+  test.each(blogPosts.map((p) => p.slug))(
+    'l\'articolo "%s" dichiara l\'assistenza IA a nome di Staff Monferrina',
     async (slug) => {
       const d = await renderPage(BlogPost, `/blog/${slug}`, { params: { slug } });
 
-      expect(d.querySelector('[data-ai-disclosure]')).toBeNull();
-      expect(d.documentElement.outerHTML).not.toContain('intelligenza artificiale');
+      const avviso = d.querySelector('[data-ai-disclosure]');
+      expect(avviso?.textContent).toContain('intelligenza');
+      expect(avviso?.textContent).toContain('Staff Monferrina');
+      expect(d.documentElement.outerHTML).not.toContain('Giuseppe Fioravanti');
     }
   );
+
+  test('un articolo senza il flag non dichiara assistenza IA', async () => {
+    const slug = blogPosts[0].slug;
+    const originale = blogPosts[0].aiAssisted;
+    blogPosts[0].aiAssisted = false;
+    try {
+      const d = await renderPage(BlogPost, `/blog/${slug}`, { params: { slug } });
+      expect(d.querySelector('[data-ai-disclosure]')).toBeNull();
+      expect(d.documentElement.outerHTML).not.toContain('intelligenza artificiale');
+    } finally {
+      blogPosts[0].aiAssisted = originale;
+    }
+  });
 });

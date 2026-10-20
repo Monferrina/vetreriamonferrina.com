@@ -55,7 +55,7 @@
     ]
   },
   "dettaglio_doccia": {
-    "message": "\ud83d\udebf Box doccia su misura in vetro temperato. Design moderno, sicurezza garantita e finiture personalizzate per ogni tipo di bagno.",
+    "message": "\ud83d\udebf Box doccia su misura in vetro temperato di sicurezza. Design moderno e finiture personalizzate per ogni tipo di bagno.",
     "options": [
       {
         "label": "\ud83d\udd17 Scopri di pi\u00f9",
@@ -130,7 +130,7 @@
     ]
   },
   "dettaglio_sostituzione_vetri": {
-    "message": "\ud83e\ude9f Sostituzione vetri per finestre. Interveniamo rapidamente per vetri rotti o per migliorare l'isolamento.",
+    "message": "\ud83e\ude9f Sostituzione vetri per finestre, per vetri rotti o per migliorare l'isolamento. Servizio su disponibilit\u00e0: i tempi li indichiamo nel preventivo.",
     "options": [
       {
         "label": "\ud83d\udd17 Scopri di pi\u00f9",
@@ -145,7 +145,7 @@
     ]
   },
   "dettaglio_blindati": {
-    "message": "\ud83d\udee1\ufe0f Vetri blindati antisfondamento e antiproiettile. Protezione certificata per abitazioni, uffici e attivit\u00e0 commerciali.",
+    "message": "\ud83d\udee1\ufe0f Vetri blindati antisfondamento e antiproiettile, con classe di resistenza certificata dal produttore, per abitazioni, uffici e attivit\u00e0 commerciali.",
     "options": [
       {
         "label": "\ud83d\udd17 Scopri di pi\u00f9",
@@ -196,7 +196,7 @@
     ]
   },
   "dettaglio_vetrocamera": {
-    "message": "\ud83c\udf21\ufe0f Vetrocamera doppi: due lastre separate da gas inerte per isolamento termico e acustico eccellente.",
+    "message": "\ud83c\udf21\ufe0f Vetrocamera doppi: due lastre separate da gas inerte per un migliore isolamento termico e acustico.",
     "options": [
       {
         "label": "\ud83d\udd17 Scopri di pi\u00f9",
@@ -260,7 +260,7 @@
     ]
   },
   "dettaglio_fori": {
-    "message": "\ud83d\udd33 Foratura per maniglie, cerniere e fissaggi. Fori precisi con macchinari a controllo numerico.",
+    "message": "\ud83d\udd33 Foratura per maniglie, cerniere e fissaggi. Fori precisi con utensili diamantati.",
     "options": [
       {
         "label": "\ud83d\udd17 Scopri di pi\u00f9",
@@ -330,7 +330,7 @@
     ]
   },
   "faq_trasporto": {
-    "message": "Certo! \ud83d\ude9a Tutti i servizi includono trasporto e montaggio professionale. Operiamo in tutto il Piemonte, con priorit\u00e0 nella provincia di Alessandria.",
+    "message": "Certo! \ud83d\ude9a Trasporto e montaggio sono disponibili per tutti i servizi e li indichiamo nel preventivo. Sopralluogo gratuito in Piemonte e Lombardia; Liguria, Valle d'Aosta ed estero su valutazione.",
     "options": [
       {
         "label": "\ud83d\udd17 Scopri di pi\u00f9",

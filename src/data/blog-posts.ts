@@ -6,7 +6,7 @@ export interface BlogPost {
   image?: string;
   content: string;
   related?: string[];
-  /** Autore reale del post (E-E-A-T). Default: Giuseppe Fioravanti. */
+  /** Autore reale del post (E-E-A-T), una persona. Senza: autoreBlog, cioè la ditta. */
   author?: string;
   /**
    * true se la stesura è stata assistita dall'IA. Mostra una riga di trasparenza in
@@ -21,6 +21,9 @@ export interface BlogPost {
   aiAssisted?: boolean;
 }
 
+// Autore degli articoli senza un autore proprio (Marco, NR1, 20/10/2026: non il nome di Giuseppe).
+export const autoreBlog = 'Staff Monferrina';
+
 export const blogPosts: BlogPost[] = [
   {
     slug: 'come-scegliere-vetro-box-doccia',
@@ -28,6 +31,7 @@ export const blogPosts: BlogPost[] = [
     description:
       'Guida alla scelta del vetro giusto per il box doccia: temperato o stratificato, spessori, finiture e trattamenti.',
     date: '2026-03-26',
+    aiAssisted: true,
     image: '/images/blog/come-scegliere-vetro-box-doccia.webp',
     related: [
       'montare-siliconare-box-doccia',
@@ -38,7 +42,7 @@ export const blogPosts: BlogPost[] = [
     content: `
 <h2>Vetro temperato: lo standard per il box doccia</h2>
 <p>Il vetro temperato è la scelta più diffusa per i box doccia, e per buone ragioni. Sottoposto a un trattamento termico che ne aumenta la resistenza meccanica di 4-5 volte rispetto al vetro comune, in caso di rottura si frantuma in piccoli frammenti a bordi smussati, riducendo al minimo il rischio di tagli.</p>
-<p>Per il box doccia si utilizzano generalmente spessori da <strong>6 mm</strong> (cabine standard) o <strong>8 mm</strong> (soluzioni di pregio o grandi dimensioni). La scelta dipende dalle dimensioni della lastra e dal tipo di apertura.</p>
+<p>Per il box doccia si utilizzano generalmente spessori da <strong>8 mm</strong> (cabine standard) o <strong>10 mm</strong> (soluzioni di pregio o grandi dimensioni). La scelta dipende dalle dimensioni della lastra e dal tipo di apertura.</p>
 
 <h2>Trasparente, satinato o extra-chiaro?</h2>
 <p>La finitura del vetro cambia radicalmente l'aspetto del bagno:</p>
@@ -71,6 +75,7 @@ export const blogPosts: BlogPost[] = [
     description:
       "Differenze tra vetrocamera doppio e triplo: isolamento termico, acustico, costi e quando conviene uno o l'altro.",
     date: '2026-03-26',
+    aiAssisted: true,
     image: '/images/blog/vetrocamera-doppio-o-triplo.webp',
     related: ['come-scegliere-vetro-box-doccia', 'vetro-temperato-vs-stratificato'],
     content: `
@@ -119,6 +124,7 @@ export const blogPosts: BlogPost[] = [
     description:
       'Guida completa alle differenze tra vetro temperato e stratificato: sicurezza, usi, normative e quale scegliere.',
     date: '2026-03-26',
+    aiAssisted: true,
     image: '/images/blog/vetro-temperato-vs-stratificato.webp',
     related: ['come-scegliere-vetro-box-doccia', 'come-pulire-mantenere-vetri'],
     content: `
@@ -126,7 +132,7 @@ export const blogPosts: BlogPost[] = [
 <p>Sia il vetro temperato che lo stratificato sono classificati come "vetri di sicurezza", ma si comportano in modo opposto in caso di rottura. Capire questa differenza è fondamentale per scegliere il vetro giusto.</p>
 
 <h2>Vetro temperato</h2>
-<p>Il vetro temperato viene riscaldato a circa 700°C e poi raffreddato rapidamente. Questo processo crea tensioni interne che aumentano la resistenza meccanica di 4-5 volte.</p>
+<p>Il vetro temperato viene riscaldato a circa 600 °C e poi raffreddato rapidamente. Questo processo crea tensioni interne che aumentano la resistenza meccanica di 4-5 volte.</p>
 <p><strong>In caso di rottura:</strong> si frantuma in piccoli frammenti a bordi arrotondati, simili a granuli. Nessun pezzo tagliente, ma il vetro non resta in posizione.</p>
 <p><strong>Dove si usa:</strong> <a href="/servizi/box-doccia">box doccia</a>, <a href="/servizi/porte-interne">porte interne in vetro</a>, piani tavolo, mensole, ripiani.</p>
 <p><strong>Importante:</strong> il vetro temperato non può essere tagliato, forato o lavorato dopo la tempera. Tutte le lavorazioni (sagomatura, foratura, molatura) vanno eseguite prima del trattamento termico.</p>
@@ -138,9 +144,9 @@ export const blogPosts: BlogPost[] = [
 <p><strong>Vantaggi aggiuntivi:</strong> l'intercalare in PVB filtra fino al 99% dei raggi UV e migliora l'isolamento acustico.</p>
 
 <h2>La normativa UNI 7697</h2>
-<p>La norma italiana UNI 7697 stabilisce quando è obbligatorio l'uso di vetro di sicurezza (temperato o stratificato) in base alla posizione e all'altezza dell'installazione. In sintesi:</p>
+<p>La norma italiana UNI 7697:2021 indica i criteri per scegliere il vetro di sicurezza (temperato o stratificato) in base alla posizione e all'uso. In sintesi, perché il tipo di vetro dipende sempre dall'applicazione:</p>
 <ul>
-<li><strong>Parapetti e balaustre</strong>: vetro stratificato obbligatorio (deve restare in posizione).</li>
+<li><strong>Parapetti e balaustre</strong>: vetro stratificato (deve restare in posizione).</li>
 <li><strong>Porte interne</strong>: vetro temperato o stratificato.</li>
 <li><strong>Box doccia</strong>: vetro temperato.</li>
 <li><strong>Pensiline e coperture</strong>: vetro stratificato (protezione da caduta).</li>
@@ -157,6 +163,7 @@ export const blogPosts: BlogPost[] = [
     description:
       'Consigli pratici per la pulizia e la manutenzione di box doccia, vetrate, parapetti e specchi.',
     date: '2026-03-26',
+    aiAssisted: true,
     image: '/images/blog/come-pulire-mantenere-vetri.webp',
     related: ['come-scegliere-vetro-box-doccia', 'vetro-temperato-vs-stratificato'],
     content: `
@@ -210,6 +217,7 @@ export const blogPosts: BlogPost[] = [
     description:
       'Guida pratica per togliere calcare e incrostazioni dal box doccia in vetro: rimedi che funzionano, errori da evitare e come prevenire gli aloni.',
     date: '2026-06-23',
+    aiAssisted: true,
     image: '/images/blog/come-pulire-box-doccia-incrostato.webp',
     related: [
       'come-scegliere-vetro-box-doccia',
@@ -265,6 +273,7 @@ export const blogPosts: BlogPost[] = [
     description:
       'Si può tagliare il vetro temperato? No: una volta temperato non si taglia né si fora. Ecco perché e come si lavora correttamente, prima della tempera.',
     date: '2026-06-23',
+    aiAssisted: true,
     image: '/images/blog/come-tagliare-vetro-temperato.webp',
     related: ['vetro-temperato-vs-stratificato', 'come-scegliere-vetro-box-doccia'],
     content: `
@@ -303,6 +312,7 @@ export const blogPosts: BlogPost[] = [
     description:
       'Guida passo passo per montare e siliconare un box doccia in vetro: misure, profili, ante e il punto chiave silicone interno o esterno contro le infiltrazioni.',
     date: '2026-06-24',
+    aiAssisted: true,
     image: '/images/blog/montare-siliconare-box-doccia.webp',
     related: [
       'come-scegliere-vetro-box-doccia',
@@ -357,6 +367,7 @@ export const blogPosts: BlogPost[] = [
 
 <h2>Quando conviene affidarsi a un professionista</h2>
 <p>Il fai da te funziona bene su box di misura standard e pareti regolari. Quando lo spazio è irregolare, le pareti sono fuori squadra o servono lastre grandi e pesanti, montare da soli diventa rischioso: una lastra mal sostenuta è pericolosa, e gli errori di misura sul vetro non si correggono (il temperato non si ritaglia, come spiegato nella guida su <a href="/blog/come-tagliare-vetro-temperato">come tagliare il vetro temperato</a>). In questi casi un <a href="/servizi/box-doccia">box doccia su misura</a> con posa professionale ti dà un risultato a tenuta e senza sorprese. Se stai ancora scegliendo le lastre, parti dalla nostra guida su <a href="/blog/come-scegliere-vetro-box-doccia">come scegliere il vetro per il box doccia</a>.</p>
+<p>Queste sono indicazioni generali: segui sempre le istruzioni di montaggio del produttore del tuo box.</p>
 
 <h2>Domande frequenti</h2>
 <ul>

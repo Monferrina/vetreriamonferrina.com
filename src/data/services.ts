@@ -18,7 +18,7 @@ export const services: Service[] = [
   {
     slug: 'box-doccia',
     name: 'Box doccia',
-    description: 'Box doccia su misura in vetro temperato. Design moderno, sicurezza garantita.',
+    description: 'Box doccia su misura in vetro temperato di sicurezza. Design moderno.',
     category: 'box-doccia',
     image: '/images/services/box-doccia.webp',
   },
