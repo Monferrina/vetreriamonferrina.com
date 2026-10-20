@@ -36,8 +36,6 @@
   --color-neutral-800: #262626;
   --color-neutral-900: #171717;
   --color-surface: #ffffff;
-  --color-success: #16a34a;
-  --color-error: #dc2626;
   --font-heading: 'DM Serif Display', serif;
   --font-body: 'Inter', sans-serif;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
@@ -63,8 +61,6 @@
   --color-neutral-800: #d1d5db;
   --color-neutral-900: #f3f4f6;
   --color-surface: #252830;
-  --color-success: #22c55e;
-  --color-error: #ef4444;
   --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.4), 0 0 0 1px rgb(255 255 255 / 0.06);
   --shadow: 0 2px 8px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.06);
 }
@@ -160,7 +156,7 @@
 }
 
 /* ==================== Caroselli che scorrono da soli ==================== */
-/* Recensioni e laboratorio: la traccia contiene gli elementi due volte e scorre di metà
+/* Laboratorio (chi-siamo): la traccia contiene gli elementi due volte e scorre di metà
    (--scroll-width e --scroll-duration li misura CarouselPause.astro). Si ferma al passaggio del
    mouse e col pulsante di CarouselPause. */
 .auto-carousel-track {
@@ -171,7 +167,7 @@
   animation-play-state: paused;
 }
 /* Su mobile i caroselli non scorrono da soli: si scorrono col dito, un elemento alla volta, senza
-   le copie che servono solo al giro infinito (AU1, B4: le card delle recensioni tagliate ai bordi). */
+   le copie che servono solo al giro infinito (AU1, B4: le card tagliate ai bordi). */
 @media (max-width: 767px) {
   .auto-carousel {
     overflow-x: auto;
@@ -493,11 +489,6 @@ html {
 
 .social-icon:hover > svg {
   animation: social-bounce 0.6s ease;
-}
-
-/* GitHub icon: il nero brand (#181717) è invisibile sul footer scuro → schiarisci in dark mode */
-[data-theme='dark'] .github-icon {
-  color: var(--color-neutral-900);
 }
 
 @keyframes social-bounce {

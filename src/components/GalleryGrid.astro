@@ -5,18 +5,16 @@
 import ProtectedImage from './ProtectedImage.astro';
 
 interface GalleryItem {
-  id: number;
   title: string;
   category: string;
   categoryLabel: string;
-  imageUrl?: string;
+  imageUrl: string;
   size?: 'featured' | 'tall';
 }
 
 const items: GalleryItem[] = [
   // --- Box doccia (3) ---
   {
-    id: 1,
     title: 'Box doccia scorrevole in vetro satinato',
     category: 'box-doccia',
     categoryLabel: 'Box doccia',
@@ -24,7 +22,6 @@ const items: GalleryItem[] = [
     size: 'tall',
   },
   {
-    id: 2,
     title: 'Box doccia walk-in con soffitto in legno',
     category: 'box-doccia',
     categoryLabel: 'Box doccia',
@@ -32,7 +29,6 @@ const items: GalleryItem[] = [
     size: 'tall',
   },
   {
-    id: 3,
     title: 'Box doccia con vista colline del Monferrato',
     category: 'box-doccia',
     categoryLabel: 'Box doccia',
@@ -41,21 +37,18 @@ const items: GalleryItem[] = [
   },
   // --- Parapetti (3) ---
   {
-    id: 4,
     title: 'Parapetto balcone in vetro moderno',
     category: 'parapetti',
     categoryLabel: 'Parapetti',
     imageUrl: '/images/gallery/vetri-parapetto-moderno.webp',
   },
   {
-    id: 5,
     title: 'Parapetto terrazza con profilo inox',
     category: 'parapetti',
     categoryLabel: 'Parapetti',
     imageUrl: '/images/gallery/vetri-parapetto-terrazza.webp',
   },
   {
-    id: 6,
     title: 'Parapetto balcone residenziale',
     category: 'parapetti',
     categoryLabel: 'Parapetti',
@@ -63,7 +56,6 @@ const items: GalleryItem[] = [
   },
   // --- Installazioni (6) ---
   {
-    id: 7,
     title: 'Posa vetrata ad arco in villa',
     category: 'installazioni',
     categoryLabel: 'Installazioni',
@@ -71,14 +63,12 @@ const items: GalleryItem[] = [
     size: 'featured',
   },
   {
-    id: 8,
     title: 'Installazione grande vetrata con gru e ventose',
     category: 'installazioni',
     categoryLabel: 'Installazioni',
     imageUrl: '/images/gallery/installazioni-gru-vetrata.webp',
   },
   {
-    id: 9,
     title: 'Posa facciata vetrata con ponteggio',
     category: 'installazioni',
     categoryLabel: 'Installazioni',
@@ -86,21 +76,18 @@ const items: GalleryItem[] = [
     size: 'featured',
   },
   {
-    id: 10,
     title: 'Installazione pensilina con gru',
     category: 'installazioni',
     categoryLabel: 'Installazioni',
     imageUrl: '/images/gallery/installazioni-pensilina-gru.webp',
   },
   {
-    id: 11,
     title: 'Consegna e scarico lastre in cantiere',
     category: 'installazioni',
     categoryLabel: 'Installazioni',
     imageUrl: '/images/gallery/installazioni-consegna.webp',
   },
   {
-    id: 12,
     title: 'Posa vetrina notturna con camion VM',
     category: 'installazioni',
     categoryLabel: 'Installazioni',
@@ -108,7 +95,6 @@ const items: GalleryItem[] = [
   },
   // --- Vetri (5) ---
   {
-    id: 13,
     title: 'Vetri camera isolanti Planitherm',
     category: 'vetri',
     categoryLabel: 'Vetri',
@@ -116,14 +102,12 @@ const items: GalleryItem[] = [
     size: 'tall',
   },
   {
-    id: 14,
     title: 'Porta-finestra ad arco con inglesine',
     category: 'vetri',
     categoryLabel: 'Vetri',
     imageUrl: '/images/gallery/vetri-arco-bianco.webp',
   },
   {
-    id: 15,
     title: 'Chiusura in vetro su casa in pietra',
     category: 'vetri',
     categoryLabel: 'Vetri',
@@ -131,14 +115,12 @@ const items: GalleryItem[] = [
     size: 'featured',
   },
   {
-    id: 16,
     title: 'Dettaglio bordi vetri monolitici temperati',
     category: 'vetri',
     categoryLabel: 'Vetri',
     imageUrl: '/images/gallery/vetri-monolitici-dettaglio.webp',
   },
   {
-    id: 17,
     title: 'Veranda in vetro con chiusura balcone curvo',
     category: 'vetri',
     categoryLabel: 'Vetri',
@@ -147,7 +129,6 @@ const items: GalleryItem[] = [
   },
   // --- Specchi (2) ---
   {
-    id: 18,
     title: 'Specchio a parete intera in ambiente commerciale',
     category: 'specchi',
     categoryLabel: 'Specchi',
@@ -155,7 +136,6 @@ const items: GalleryItem[] = [
     size: 'featured',
   },
   {
-    id: 19,
     title: 'Pannelli specchio in cantiere commerciale',
     category: 'specchi',
     categoryLabel: 'Specchi',
@@ -164,14 +144,12 @@ const items: GalleryItem[] = [
   },
   // --- Personalizzazioni (5) ---
   {
-    id: 20,
     title: 'Scala interna con parapetto in vetro',
     category: 'personalizzazioni',
     categoryLabel: 'Personalizzazioni',
     imageUrl: '/images/gallery/vetri-scala-interna.webp',
   },
   {
-    id: 21,
     title: "Scala in marmo con vetro su misura — vista dall'alto",
     category: 'personalizzazioni',
     categoryLabel: 'Personalizzazioni',
@@ -179,7 +157,6 @@ const items: GalleryItem[] = [
     size: 'tall',
   },
   {
-    id: 22,
     title: 'Scala in marmo con vetro su misura — vista dal basso',
     category: 'personalizzazioni',
     categoryLabel: 'Personalizzazioni',
@@ -187,14 +164,12 @@ const items: GalleryItem[] = [
     size: 'tall',
   },
   {
-    id: 23,
     title: 'Porta in vetro personalizzata — Buzzi',
     category: 'personalizzazioni',
     categoryLabel: 'Personalizzazioni',
     imageUrl: '/images/gallery/vetri-porta-ingresso.webp',
   },
   {
-    id: 24,
     title: 'Insegna in vetro decorato — Toyu Tattoo',
     category: 'personalizzazioni',
     categoryLabel: 'Personalizzazioni',
@@ -202,7 +177,6 @@ const items: GalleryItem[] = [
   },
   // --- Lavorazioni (8) ---
   {
-    id: 25,
     title: 'Porta scorrevole con fiori in stile liberty',
     category: 'lavorazioni',
     categoryLabel: 'Lavorazioni',
@@ -210,49 +184,42 @@ const items: GalleryItem[] = [
     size: 'tall',
   },
   {
-    id: 26,
     title: 'Vetro Madras decorato in arco di mattoni',
     category: 'lavorazioni',
     categoryLabel: 'Lavorazioni',
     imageUrl: '/images/gallery/lavorazioni-arco-sabbiato.webp',
   },
   {
-    id: 27,
     title: 'Porta in vetro decorato con airone',
     category: 'lavorazioni',
     categoryLabel: 'Lavorazioni',
     imageUrl: '/images/gallery/lavorazioni-porta-airone.webp',
   },
   {
-    id: 28,
     title: 'Pannello in vetro satinato con rose',
     category: 'lavorazioni',
     categoryLabel: 'Lavorazioni',
     imageUrl: '/images/gallery/lavorazioni-pannello-rose.webp',
   },
   {
-    id: 29,
     title: 'Tavolino in vetro su misura',
     category: 'lavorazioni',
     categoryLabel: 'Lavorazioni',
     imageUrl: '/images/gallery/lavorazioni-tavolino-vetro.webp',
   },
   {
-    id: 30,
     title: 'Piano tondo in vetro con base in ferro battuto',
     category: 'lavorazioni',
     categoryLabel: 'Lavorazioni',
     imageUrl: '/images/gallery/lavorazioni-tavolino-tondo.webp',
   },
   {
-    id: 31,
     title: 'Mensole in vetro a muro',
     category: 'lavorazioni',
     categoryLabel: 'Lavorazioni',
     imageUrl: '/images/gallery/lavorazioni-mensole-vetro.webp',
   },
   {
-    id: 32,
     title: 'Vetro sagomato ad arco con installazione a ventosa',
     category: 'lavorazioni',
     categoryLabel: 'Lavorazioni',
@@ -282,50 +249,25 @@ const items: GalleryItem[] = [
           ]}
           data-category={item.category}
           data-gallery-item
-          data-gallery-id={item.id}
           data-gallery-title={item.title}
         >
-          {item.imageUrl ? (
-            <div class={`${aspectClass} overflow-hidden`}>
-              <ProtectedImage
-                src={item.imageUrl}
-                alt={item.title}
-                class="transition-transform duration-300 group-hover:scale-105"
-                wrapperClass="h-full w-full bg-neutral-200"
-                width={item.size === 'featured' ? 1200 : 800}
-                height={item.size === 'featured' ? 900 : item.size === 'tall' ? 800 : 600}
-                sizes={
-                  item.size === 'featured'
-                    ? '(min-width: 1024px) 66vw, 100vw'
-                    : '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
-                }
-                loading={isAboveFold ? 'eager' : 'lazy'}
-                fetchpriority={index === 0 ? 'high' : undefined}
-              />
-            </div>
-          ) : (
-            <div
-              class={`flex ${aspectClass} items-center justify-center bg-neutral-200 transition-transform group-hover:scale-105`}
-            >
-              <div class="text-center text-neutral-400">
-                <svg
-                  class="mx-auto h-10 w-10"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z"
-                  />
-                </svg>
-                <p class="mt-1 text-xs">Foto in arrivo</p>
-              </div>
-            </div>
-          )}
+          <div class={`${aspectClass} overflow-hidden`}>
+            <ProtectedImage
+              src={item.imageUrl}
+              alt={item.title}
+              class="transition-transform duration-300 group-hover:scale-105"
+              wrapperClass="h-full w-full bg-neutral-200"
+              width={item.size === 'featured' ? 1200 : 800}
+              height={item.size === 'featured' ? 900 : item.size === 'tall' ? 800 : 600}
+              sizes={
+                item.size === 'featured'
+                  ? '(min-width: 1024px) 66vw, 100vw'
+                  : '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
+              }
+              loading={isAboveFold ? 'eager' : 'lazy'}
+              fetchpriority={index === 0 ? 'high' : undefined}
+            />
+          </div>
 
           {/* Info overlay */}
           <div class="absolute inset-x-0 bottom-0 z-[2] bg-gradient-to-t from-black/80 to-transparent p-3 pt-8">

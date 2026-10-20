@@ -4,9 +4,10 @@ name: Revisione Gemini delle PR
 # PR: per questo parte solo su PR del repo, mai da fork (lì i secret non devono arrivare) né
 # da Dependabot (le sue run non ricevono i secret Actions), oppure quando un collaboratore lo
 # chiede con un commento che inizia con @gemini-cli.
-# Mai sulle PR mensili delle recensioni (rami chore/update-reviews-*, update-reviews.yml): il loro
-# diff contiene nomi e testi di chi ha scritto la recensione, dati personali che a Gemini non vanno
-# (CLAUDE.md, "Dati personali"). Le apre un utente, non un bot, quindi il filtro è sul ramo.
+# Mai sulle PR delle recensioni (rami chore/update-reviews-*): il workflow che le apriva è uscito
+# da questo repo con #442 (le recensioni passano a monferrinoAI); il filtro resta, scelta di Marco.
+# Il loro diff contiene nomi e testi di chi ha scritto la recensione, dati personali che a Gemini
+# non vanno (CLAUDE.md, "Dati personali"). Le apriva un utente, non un bot, quindi il filtro è sul ramo.
 
 on:
   pull_request:

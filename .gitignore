@@ -26,9 +26,6 @@ blob-report/
 # TypeScript
 *.tsbuildinfo
 
-# Build-time generated data (contains API references)
-src/data/place-photos.json
-
 # Graphify knowledge graph (+ hook husky locali con path assoluti della macchina)
 graphify-out/
 .husky/post-commit
@@ -49,7 +46,6 @@ graphify-out/
 # OS
 .DS_Store
 Thumbs.db
-.vercel
 
 # MCP config locale
 .mcp.json
