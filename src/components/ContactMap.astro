@@ -49,7 +49,7 @@ const embedUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=pl
       Carica Google Maps
     </span>
     <span class="mt-1 text-xs text-neutral-500"
-      >Carica Google solo al click, per la tua privacy</span
+      >Al click la mappa arriva da Google, che riceve il tuo indirizzo IP e può usare cookie</span
     >
   </button>
   <p class="bg-neutral-100 px-4 py-2 text-sm text-neutral-700">
@@ -81,7 +81,10 @@ const embedUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=pl
       iframe.height = '400';
       iframe.style.border = '0';
       iframe.loading = 'lazy';
-      iframe.referrerPolicy = 'no-referrer-when-downgrade';
+      // Solo l'origine, come il resto del sito: con l'URL intero Google riceveva la pagina
+      // visitata. La chiave limitata al referrer accetta l'origine (misurato il 20/10/2026:
+      // Referer di sola origine → 200, nessun Referer → 403).
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
       iframe.allowFullscreen = true;
       iframe.title = facade.dataset.title ?? '';
       facade.replaceWith(iframe);

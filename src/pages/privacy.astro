@@ -43,13 +43,29 @@ export const prerender = true;
 
         <div>
           <h2 class="font-heading text-2xl text-primary sm:text-3xl">2. Dati personali raccolti</h2>
-          <p class="mt-3">
-            Il sito non ha moduli e non raccoglie dati inseriti dall'utente. La semplice navigazione
-            sul sito non comporta la raccolta di dati che identificano l'utente, con un'eccezione:
-            se una pagina va in errore, il sito invia un rapporto tecnico (v. punto 6) da cui il
-            servizio ricava il paese di provenienza della connessione. L'indirizzo IP non viene
-            salvato.
-          </p>
+          <ul class="mt-3 list-disc pl-6 space-y-1">
+            <li>
+              <strong>Dati di navigazione</strong>: quando apri una pagina, il tuo browser invia ai
+              server che ospitano il sito l'indirizzo IP, il tipo di browser, la pagina richiesta e
+              quella da cui arrivi. Servono a mostrarti la pagina e a proteggere il sito; non li
+              usiamo per identificarti.
+            </li>
+            <li>
+              <strong>Rapporti d'errore</strong>: se una pagina va in errore, il sito invia un
+              rapporto tecnico (v. punto 6) da cui il servizio ricava il paese di provenienza della
+              connessione. L'indirizzo IP non viene salvato.
+            </li>
+            <li>
+              <strong>Dati che ci mandi tu</strong>: se ci scrivi per email o su WhatsApp, o ci
+              chiami, trattiamo i dati che ci dai (nome, recapiti, descrizione del lavoro, misure o
+              foto).
+            </li>
+            <li>
+              <strong>Richieste dal vecchio modulo</strong>: il sito non ha più moduli. Le richieste
+              di preventivo arrivate dal modulo fino al 12 ottobre 2026 contengono nome, telefono,
+              email, descrizione, misure e indirizzo IP.
+            </li>
+          </ul>
         </div>
 
         <div>
@@ -60,10 +76,20 @@ export const prerender = true;
             I dati non vengono utilizzati per finalità di marketing, profilazione o comunicazione
             commerciale.
           </p>
-          <p class="mt-3">
-            I rapporti tecnici d'errore descritti al punto 6 servono solo a individuare e correggere
-            i malfunzionamenti del sito.
-          </p>
+          <ul class="mt-3 list-disc pl-6 space-y-1">
+            <li>
+              I dati di navigazione servono a mostrarti le pagine e a proteggere il sito dagli
+              abusi.
+            </li>
+            <li>
+              I rapporti tecnici d'errore servono solo a individuare e correggere i malfunzionamenti
+              del sito.
+            </li>
+            <li>
+              I dati che ci mandi, e quelli delle richieste arrivate dal vecchio modulo, servono a
+              risponderti e a preparare il preventivo che ci hai chiesto.
+            </li>
+          </ul>
         </div>
 
         <div>
@@ -71,25 +97,38 @@ export const prerender = true;
             4. Base giuridica del trattamento
           </h2>
           <p class="mt-3">
-            I rapporti tecnici d'errore si fondano sul <strong>legittimo interesse</strong> del titolare
-            a mantenere il sito funzionante e sicuro, ai sensi dell'art. 6, paragrafo 1, lettera f) del
-            GDPR. Il rapporto contiene solo le informazioni tecniche necessarie e nessun dato che identifichi
-            chi ha visitato la pagina.
+            I dati di navigazione e i rapporti tecnici d'errore si fondano sul <strong
+              >legittimo interesse</strong
+            > del titolare a tenere il sito raggiungibile, funzionante e protetto dagli abusi, ai sensi
+            dell'art. 6, paragrafo 1, lettera f) del GDPR. Il rapporto d'errore contiene solo le informazioni
+            tecniche necessarie e nessun dato che identifichi chi ha visitato la pagina.
+          </p>
+          <p class="mt-3">
+            I dati che ci mandi per avere informazioni o un preventivo si fondano sull'esecuzione di
+            <strong>misure precontrattuali adottate su tua richiesta</strong>, ai sensi dell'art. 6,
+            paragrafo 1, lettera b) del GDPR. Darli non è obbligatorio, ma senza i tuoi recapiti non
+            possiamo risponderti.
           </p>
         </div>
 
         <div>
           <h2 class="font-heading text-2xl text-primary sm:text-3xl">5. Conservazione dei dati</h2>
           <p class="mt-3">
-            Le richieste di preventivo arrivate dal modulo del sito, ora tolto (nome, telefono,
-            email, descrizione, misure e indirizzo IP), restano nella casella di posta aziendale per
-            un massimo di <strong>24 mesi</strong> dall'ultimo contatto relativo alla richiesta, dopodiché
-            l'email viene eliminata. Se preferisci che i tuoi dati siano cancellati prima, è sufficiente
-            scriverci (v. punto 7).
+            I messaggi e le richieste di preventivo, comprese quelle arrivate dal vecchio modulo,
+            restano fino alla chiusura della trattativa e comunque <strong
+              >non oltre 6 mesi dall'ultimo contatto</strong
+            > senza seguito; poi vengono cancellati. Se la richiesta diventa un lavoro, i dati del contratto
+            e delle fatture restano per i tempi previsti dalla legge per i documenti contabili e fiscali.
+            Se preferisci che i tuoi dati siano cancellati prima, basta scriverci (v. punto 7).
           </p>
           <p class="mt-3">
-            I rapporti tecnici d'errore (v. punto 6) restano su Sentry per un massimo di
-            <strong>90 giorni</strong>, poi vengono cancellati automaticamente.
+            I rapporti tecnici d'errore (v. punto 6) restano su Sentry per <strong>30 giorni</strong
+            >, poi vengono cancellati automaticamente.
+          </p>
+          <p class="mt-3">
+            I registri tecnici di Vercel che il titolare può consultare durano un'ora. Cloudflare
+            tratta i dati di navigazione per il tempo necessario a far arrivare le pagine e a
+            proteggere il sito, secondo le proprie regole.
           </p>
         </div>
 
@@ -99,26 +138,57 @@ export const prerender = true;
           </h2>
           <p class="mt-3">
             Intervengono, come responsabili del trattamento, i fornitori che ospitano e proteggono
-            il sito: <strong>Vercel</strong> (hosting) e <strong>Cloudflare</strong> (rete e protezione
-            anti-abuso). Ciascuno tratta i dati solo per far funzionare il servizio, su nostra istruzione.
+            il sito. Ciascuno tratta i dati solo per far funzionare il servizio, su nostra
+            istruzione:
+          </p>
+          <ul class="mt-3 list-disc pl-6 space-y-1">
+            <li>
+              <strong>Vercel</strong> (Vercel Inc., Stati Uniti d'America): ospita il sito. Tratta i dati
+              di navigazione e li elabora soprattutto negli USA. Abbiamo disattivato nelle impostazioni
+              di Vercel l'uso dei contenuti del sito per addestrare i suoi modelli di intelligenza artificiale.
+            </li>
+            <li>
+              <strong>Cloudflare</strong> (Cloudflare, Inc., Stati Uniti d'America): la rete da cui passano
+              le richieste al sito, con la protezione dagli abusi. Tratta i dati di navigazione.
+            </li>
+            <li>
+              <strong>Sentry</strong> (Functional Software Inc., Stati Uniti d'America): riceve un rapporto
+              tecnico quando una pagina va in errore, con la pagina visitata e il punto del codice che
+              ha fallito. Il rapporto non contiene l'indirizzo IP; Sentry ne ricava solo il paese di provenienza
+              della connessione. I rapporti sono conservati su server a Francoforte, in Germania.
+            </li>
+          </ul>
+          <p class="mt-3">
+            Le email che ci mandi arrivano su una casella <strong>Gmail</strong>: i messaggi sono
+            conservati da Google. Se ci scrivi su <strong>WhatsApp</strong>, il servizio è di
+            WhatsApp Ireland Limited (gruppo Meta), con le sue condizioni e la sua informativa.
           </p>
           <p class="mt-3">
             La mappa nella pagina contatti è di <strong>Google Maps</strong> e si carica solo quando premi
-            "Visualizza la mappa": da quel momento valgono le condizioni e la privacy policy di Google.
+            "Visualizza la mappa". Da quel momento Google riceve il tuo indirizzo IP, può impostare cookie
+            e tratta i dati come titolare autonomo, secondo le <a
+              href="https://maps.google.com/help/terms_maps/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-primary underline underline-offset-2"
+              >condizioni aggiuntive di Google Maps</a
+            > e la <a
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-primary underline underline-offset-2">privacy policy di Google</a
+            >.
           </p>
           <p class="mt-3">
-            Per individuare e correggere i malfunzionamenti del sito usiamo <strong>Sentry</strong>
-            (Functional Software Inc., con sede negli Stati Uniti d'America), che riceve un rapporto tecnico
-            quando una pagina va in errore: la pagina visitata e il punto del codice che ha fallito. Il
-            rapporto non contiene l'indirizzo IP; Sentry ne ricava solo il paese di provenienza della
-            connessione. I rapporti sono conservati su server a <strong
-              >Francoforte, in Germania</strong
-            >. Per gli eventuali trasferimenti verso gli USA, Sentry adotta le Clausole Contrattuali
-            Standard (SCC) e il Data Privacy Framework (DPF).
+            Vercel, Cloudflare, Sentry e Google sono società con sede negli Stati Uniti o che vi
+            trasferiscono dati. Il trasferimento si basa sulla decisione di adeguatezza della
+            Commissione europea per il Data Privacy Framework UE-USA (decisione 2023/1795), a cui
+            aderiscono, e, dove previste dai contratti, sulle Clausole Contrattuali Standard
+            (decisione 2021/914). Puoi chiederci copia di queste garanzie scrivendo all'indirizzo
+            del punto 1.
           </p>
           <p class="mt-3">
-            I dati personali non vengono ceduti, venduti o comunicati ad altri soggetti terzi, né
-            utilizzati per addestrare sistemi di intelligenza artificiale.
+            I dati personali non vengono ceduti, venduti o comunicati ad altri soggetti terzi.
           </p>
         </div>
 
@@ -155,6 +225,10 @@ export const prerender = true;
             </li>
           </ul>
           <p class="mt-3">
+            Sul sito non vengono prese decisioni basate unicamente su un trattamento automatizzato
+            (art. 22).
+          </p>
+          <p class="mt-3">
             Per esercitare i propri diritti, l'interessato può contattare il titolare del
             trattamento all'indirizzo email:
             <a href={emailHref} class="text-primary underline underline-offset-2">{email}</a>
@@ -164,22 +238,11 @@ export const prerender = true;
         <div>
           <h2 class="font-heading text-2xl text-primary sm:text-3xl">8. Cookie</h2>
           <p class="mt-3">
-            Questo sito utilizza esclusivamente <strong>cookie tecnici</strong>
-            necessari al funzionamento del sito:
+            Questo sito usa solo strumenti tecnici necessari al suo funzionamento: dati salvati nel
+            browser (localStorage e sessionStorage) per l'assistente, il banner e il tema, e un
+            cookie tecnico che Cloudflare può impostare per la protezione dai bot. L'elenco
+            completo, con durata e finalità, è nella Cookie Policy.
           </p>
-          <ul class="mt-3 list-disc pl-6 space-y-1">
-            <li>
-              <strong>sessionStorage</strong> (chatbot): memorizza lo stato della conversazione con l'assistente
-              durante la sessione di navigazione
-            </li>
-            <li>
-              <strong>localStorage</strong> (cookie banner): memorizza la presa visione del banner informativo
-              sui cookie
-            </li>
-            <li>
-              <strong>localStorage</strong> (tema): memorizza il tema chiaro o scuro scelto con l'interruttore
-            </li>
-          </ul>
           <p class="mt-3">
             <strong>Non vengono utilizzati cookie di profilazione</strong> né cookie di terze parti per
             finalità di tracciamento.
@@ -207,9 +270,8 @@ export const prerender = true;
           <p class="mt-3">
             Non è stato nominato un Responsabile della Protezione dei Dati (DPO) in quanto
             l'attività del titolare non comporta trattamenti su larga scala di categorie particolari
-            di dati né monitoraggio regolare e sistematico degli interessati (art. 37 GDPR). Il
-            titolare è una piccola-media impresa (PMI) con trattamento occasionale e non su larga
-            scala.
+            di dati né monitoraggio regolare e sistematico degli interessati su larga scala (art. 37
+            GDPR).
           </p>
         </div>
 

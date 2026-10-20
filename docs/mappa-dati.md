@@ -10,12 +10,14 @@ Le pagine sono statiche, tranne la 404, renderizzata a richiesta solo perché ab
 
 ## 2. Chi tocca cosa, e per quanto
 
-| Fornitore           | Cosa vede                                                                          | Dove                                                  | Per quanto                                                                | Perché                      |
-| ------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------- | --------------------------- |
-| Cloudflare          | IP, metadati di richiesta (anche il Worker `maintenance-mode`)                     | rete globale                                          | log di piattaforma, a breve termine                                       | DNS, TLS, WAF, manutenzione |
-| Vercel              | IP, metadati di richiesta                                                          | region impostata sul progetto (dashboard)             | log di piattaforma                                                        | hosting                     |
-| Sentry              | rapporto tecnico d'errore e paese della connessione, senza IP                      | regione UE, Francoforte; SCC e DPF per i metadati USA | fino a 90 giorni (30 sul piano gratuito)                                  | trovare i malfunzionamenti  |
-| Google Maps (Embed) | IP e metadati del browser, solo dopo il click "Visualizza la mappa" su `/contatti` | Google, privacy policy generale                       | secondo Google; la doc dell'Embed API non dice se l'iframe imposta cookie | mappa interattiva           |
+| Fornitore           | Cosa vede                                                                                                                                | Dove                                                                                  | Per quanto                                                                | Perché                          |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
+| Cloudflare          | IP, metadati di richiesta (anche il Worker `maintenance-mode`)                                                                           | rete globale                                                                          | log di piattaforma, a breve termine                                       | DNS, TLS, WAF, manutenzione     |
+| Vercel              | IP, metadati di richiesta                                                                                                                | region impostata sul progetto (dashboard)                                             | log di piattaforma                                                        | hosting                         |
+| Sentry              | rapporto tecnico d'errore e paese della connessione, senza IP                                                                            | regione UE, Francoforte; SCC e DPF per i metadati USA                                 | 30 giorni (piano Developer; data-retention-periods della doc Sentry)      | trovare i malfunzionamenti      |
+| Google Maps (Embed) | IP, metadati del browser e origine del sito (`strict-origin-when-cross-origin`), solo dopo il click "Visualizza la mappa" su `/contatti` | Google, privacy policy generale                                                       | secondo Google; la doc dell'Embed API non dice se l'iframe imposta cookie | mappa interattiva               |
+| Google (Gmail)      | email dei clienti nella casella `vetreriamonferrina@gmail.com` (`src/data/contatti.ts`)                                                  | Google, account personale (Google non offre il DPA art. 28 per gli account personali) | fino a fine trattativa, max 6 mesi dall'ultimo contatto                   | rispondere e fare il preventivo |
+| WhatsApp            | messaggi di chi scrive con il link `wa.me`                                                                                               | WhatsApp Ireland Limited (Meta), condizioni proprie                                   | come sopra, nell'app della ditta                                          | rispondere e fare il preventivo |
 
 Non esiste un database applicativo.
 
@@ -25,13 +27,15 @@ Nessun analytics che profila. Le statistiche di visita sono quelle aggregate che
 
 Nessun dato di cliente verso l'agente SEO: quella pipeline ingerisce solo pagine web pubbliche.
 
-Nessun addestramento di modelli sui dati raccolti, nessuna cessione o vendita a terzi.
+Nessun addestramento di modelli sui dati raccolti (su Vercel l'uso per l'addestramento è spento in Team Settings > Data Preferences dal 12/10/2026), nessuna cessione o vendita a terzi.
 
 ## 4. Retention
 
-| Dato                                    | Quanto resta                       | Come sparisce |
-| --------------------------------------- | ---------------------------------- | ------------- |
-| Log di piattaforma (Cloudflare, Vercel) | retention di default dei fornitori | automatica    |
+| Dato                                           | Quanto resta                                                                                                            | Come sparisce       |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| Log di piattaforma (Cloudflare, Vercel)        | retention di default dei fornitori (runtime log Vercel Hobby: 1 ora)                                                    | automatica          |
+| Email, messaggi e richieste del vecchio modulo | fino a fine trattativa, max 6 mesi dall'ultimo contatto; se diventa un lavoro, contratto e fatture con i tempi di legge | a mano, dalla ditta |
+| Rapporti d'errore Sentry                       | 30 giorni                                                                                                               | automatica          |
 
 ## 5. Come ricontrollare che questa mappa sia ancora vera
 
