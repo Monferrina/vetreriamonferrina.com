@@ -384,12 +384,7 @@
   import type { ChatbotEngine, ChatFlow, ChatOption } from '../lib/chatbot-engine';
   import { phoneHref } from '../data/contatti';
 
-  let chatbotAbort: AbortController | null = null;
-
   function initChatbot(): void {
-    if (chatbotAbort) chatbotAbort.abort();
-    chatbotAbort = new AbortController();
-    const { signal } = chatbotAbort;
     const SESSION_KEY = 'chatbot_history';
     const TYPING_DELAY = 300;
 
@@ -650,14 +645,10 @@
     }
 
     if (tooltipClose) {
-      tooltipClose.addEventListener(
-        'click',
-        (e) => {
-          e.stopPropagation();
-          hideTooltip();
-        },
-        { signal }
-      );
+      tooltipClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        hideTooltip();
+      });
     }
 
     // --- Focus trap for chatbot panel ---
@@ -751,36 +742,24 @@
       toggle.focus();
     }
 
-    // --- Event listeners (all use AbortController signal for cleanup) ---
-    toggle.addEventListener(
-      'click',
-      () => {
-        if (isOpen) {
-          closePanel();
-        } else {
-          openPanel();
-        }
-      },
-      { signal }
-    );
-
-    closeBtn.addEventListener(
-      'click',
-      () => {
+    // --- Event listeners ---
+    toggle.addEventListener('click', () => {
+      if (isOpen) {
         closePanel();
-      },
-      { signal }
-    );
+      } else {
+        openPanel();
+      }
+    });
 
-    document.addEventListener(
-      'keydown',
-      (e: KeyboardEvent) => {
-        if (e.key === 'Escape' && isOpen) {
-          closePanel();
-        }
-      },
-      { signal }
-    );
+    closeBtn.addEventListener('click', () => {
+      closePanel();
+    });
+
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        closePanel();
+      }
+    });
 
     // Contextual tooltip text
     function updateTooltipText(): void {

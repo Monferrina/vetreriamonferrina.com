@@ -253,16 +253,12 @@ const faqSchema = {
 </style>
 
 <script>
-  let faqNavObserver: IntersectionObserver | null = null;
-
   function initFaqNav(): void {
-    if (faqNavObserver) faqNavObserver.disconnect();
-
     const links = document.querySelectorAll<HTMLAnchorElement>('nav[aria-label="Categorie FAQ"] a');
     const sections = document.querySelectorAll<HTMLElement>('.faq-section');
     if (!links.length || !sections.length) return;
 
-    faqNavObserver = new IntersectionObserver(
+    const faqNavObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -278,7 +274,7 @@ const faqSchema = {
       { rootMargin: '-20% 0px -60% 0px' }
     );
 
-    sections.forEach((section) => faqNavObserver!.observe(section));
+    sections.forEach((section) => faqNavObserver.observe(section));
   }
 
   initFaqNav();

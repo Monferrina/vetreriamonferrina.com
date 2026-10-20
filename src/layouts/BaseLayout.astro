@@ -245,14 +245,7 @@ const chiusureAttive = (datiChiusure as Chiusura[]).filter((c) => c.al >= oggi);
     </script>
 
     <script>
-      let globalCleanup: (() => void) | null = null;
-
       function initGlobalUI(): void {
-        if (globalCleanup) {
-          globalCleanup();
-          globalCleanup = null;
-        }
-
         // --- Scroll Reveal (IntersectionObserver) ---
         const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');
         revealEls.forEach((el) => el.classList.add('reveal-ready'));
@@ -316,19 +309,7 @@ const chiusureAttive = (datiChiusure as Chiusura[]).filter((c) => c.al >= oggi);
         window.addEventListener('scroll', onScroll, { passive: true });
         onScroll();
 
-        function onBackToTop() {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        if (backToTop) {
-          backToTop.addEventListener('click', onBackToTop);
-        }
-
-        globalCleanup = () => {
-          revealObserver.disconnect();
-          shineObserver.disconnect();
-          window.removeEventListener('scroll', onScroll);
-          if (backToTop) backToTop.removeEventListener('click', onBackToTop);
-        };
+        backToTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
       }
 
       initGlobalUI();

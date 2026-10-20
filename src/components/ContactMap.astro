@@ -66,11 +66,9 @@ const embedUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=pl
 <script>
   function initMapFacade() {
     const facade = document.getElementById('map-facade');
-    if (!(facade instanceof HTMLElement) || facade.dataset.loaded) return;
+    if (!(facade instanceof HTMLElement)) return;
 
     const load = () => {
-      if (facade.dataset.loaded) return;
-      facade.dataset.loaded = 'true';
       const url = facade.dataset.embed;
       if (!url) return;
 

@@ -275,16 +275,12 @@ const breadcrumbSchema = {
 </style>
 
 <script>
-  let tocObserver: IntersectionObserver | null = null;
-
   function initBlogToc(): void {
-    if (tocObserver) tocObserver.disconnect();
-
     const links = document.querySelectorAll<HTMLAnchorElement>('.blog-toc-link');
     const headings = document.querySelectorAll<HTMLElement>('.blog-content h2[id]');
     if (!links.length || !headings.length) return;
 
-    tocObserver = new IntersectionObserver(
+    const tocObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -300,7 +296,7 @@ const breadcrumbSchema = {
       { rootMargin: '-20% 0px -60% 0px' }
     );
 
-    headings.forEach((heading) => tocObserver!.observe(heading));
+    headings.forEach((heading) => tocObserver.observe(heading));
   }
 
   initBlogToc();

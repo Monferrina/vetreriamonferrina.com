@@ -419,15 +419,7 @@ const labPhotos = [
   </style>
 
   <script>
-    let cleanupFn: (() => void) | null = null;
-
     function initTimelineEffects(): void {
-      // Cleanup previous instance (View Transitions navigation)
-      if (cleanupFn) {
-        cleanupFn();
-        cleanupFn = null;
-      }
-
       const dotEls = document.querySelectorAll<HTMLElement>('[data-reveal-dot]');
       const line = document.querySelector<HTMLElement>('[data-timeline-line]');
       const container = document.querySelector<HTMLElement>('[data-timeline]');
@@ -452,11 +444,10 @@ const labPhotos = [
       dotEls.forEach((el) => observer.observe(el));
 
       // Timeline line grows with scroll progress
-      let scrollHandler: (() => void) | null = null;
       if (line && container) {
         line.style.setProperty('--progress', '0');
         let ticking = false;
-        scrollHandler = () => {
+        const scrollHandler = () => {
           if (!ticking) {
             requestAnimationFrame(() => {
               const rect = container.getBoundingClientRect();
@@ -471,13 +462,6 @@ const labPhotos = [
         window.addEventListener('scroll', scrollHandler, { passive: true });
         scrollHandler();
       }
-
-      cleanupFn = () => {
-        observer.disconnect();
-        if (scrollHandler) {
-          window.removeEventListener('scroll', scrollHandler);
-        }
-      };
     }
 
     initTimelineEffects();
