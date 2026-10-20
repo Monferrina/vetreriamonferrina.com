@@ -50,14 +50,6 @@ describe('ChatbotEngine', () => {
     expect(engine.getHistory()).toEqual([]);
   });
 
-  it('reset azzera la history', () => {
-    const engine = new ChatbotEngine(flow as ChatFlow);
-    engine.navigate('welcome');
-    engine.navigate('servizi');
-    engine.reset();
-    expect(engine.getHistory()).toEqual([]);
-  });
-
   it('tronca la history a 50 elementi quando supera 100', () => {
     const engine = new ChatbotEngine(flow as ChatFlow);
     // Naviga 101 volte su un nodo esistente per superare la soglia di troncamento

@@ -46,8 +46,4 @@ export class ChatbotEngine {
     // Only restore valid node IDs that exist in the flow
     this.history = history.filter((id) => typeof id === 'string' && id in this.flow);
   }
-
-  reset(): void {
-    this.history = [];
-  }
 }
