@@ -10,7 +10,7 @@ export interface Service {
     | 'specchi'
     | 'personalizzazioni'
     | 'lavorazioni';
-  image?: string;
+  image: string;
 }
 
 export const services: Service[] = [

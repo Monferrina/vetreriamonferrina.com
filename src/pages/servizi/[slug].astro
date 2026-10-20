@@ -19,7 +19,7 @@ const details = serviceDetails[slug!]!;
 
 // Immagine hero risolta da src/assets (srcset + width/height automatici).
 // og:image vuole un URL assoluto → si usa la variante ottimizzata a 1200px.
-const heroImage = service.image ? siteImage(service.image) : undefined;
+const heroImage = siteImage(service.image);
 const ogImageUrl = heroImage
   ? new URL(
       (await getImage({ src: heroImage, width: Math.min(1200, heroImage.width), format: 'webp' }))
