@@ -247,7 +247,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       },
       {
         q: 'Gli espositori sono adatti a negozi e attività?',
-        a: 'Sì, produciamo espositori e vetrine da esposizione per negozi, showroom e attività come gelaterie e pasticcerie, anche con predisposizione per l’illuminazione.',
+        a: 'Sì, realizziamo su misura espositori e vetrine da esposizione per negozi, showroom e attività come gelaterie e pasticcerie, anche con predisposizione per l’illuminazione.',
       },
     ],
     related: ['vetrine', 'specchi', 'molature'],
