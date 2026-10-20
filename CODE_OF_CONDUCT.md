@@ -24,8 +24,8 @@ Comportamenti inaccettabili:
 
 I maintainer del progetto hanno il diritto di rimuovere contenuti non conformi a questo codice e di bloccare utenti che violino ripetutamente queste regole.
 
-Segnalazioni di abuso possono essere inviate a: **vetreriamonferrina@gmail.com**
+Segnalazioni di abuso possono essere inviate a: **giuseppefioravanti@proton.me**
 
 ## Attribuzione
 
-Questo codice di condotta è adattato dal [Contributor Covenant](https://www.contributor-covenant.org/), versione 2.1.
+Questo codice di condotta è adattato dal [Contributor Covenant](https://www.contributor-covenant.org/), versione 2.1, distribuito con licenza [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Il testo è tradotto in italiano e ridotto alle parti che servono a questo progetto.

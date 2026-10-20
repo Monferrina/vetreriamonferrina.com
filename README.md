@@ -35,6 +35,9 @@ _In English: this is the website of Vetreria Monferrina, a glass workshop in Cas
 | CDN, DNS, WAF  | Cloudflare con proxy attivo e Worker `maintenance-mode` |
 | Monitoring     | Checkly, monitoring-as-code su uptime e worker          |
 | Mappa          | Google Maps Embed API                                   |
+| Errori         | Sentry, solo nel browser                                |
+| Segreti        | Doppler, con sync verso Vercel e GitHub                 |
+| Revisione PR   | due agenti Gemini (`agenti.yml`), solo commenti         |
 | Test           | Vitest per gli unit, Playwright per gli end-to-end      |
 | CI             | GitHub Actions                                          |
 | Qualità codice | ESLint, Prettier, Husky, lint-staged                    |
