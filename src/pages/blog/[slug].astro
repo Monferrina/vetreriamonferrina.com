@@ -87,7 +87,6 @@ const breadcrumbSchema = {
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
-
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <GlassPanel class="max-w-3xl">
@@ -98,13 +97,11 @@ const breadcrumbSchema = {
         </nav>
         <h1 class="font-heading text-3xl text-neutral-50 sm:text-5xl">{post.title}</h1>
         <time datetime={post.date} class="mt-4 block text-sm text-neutral-300">
-          {
-            new Date(post.date).toLocaleDateString('it-IT', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })
-          }
+          {new Date(post.date).toLocaleDateString('it-IT', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })}
         </time>
       </GlassPanel>
     </div>
@@ -113,97 +110,79 @@ const breadcrumbSchema = {
   <section class="bg-neutral-50 py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-12">
-        {
-          headings.length > 1 && (
-            <nav class="hidden lg:block" aria-label="Indice dell'articolo">
-              <div class="sticky top-24">
-                <h2 class="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-4">
-                  In questo articolo
-                </h2>
-                <ul class="space-y-1">
-                  {headings.map((h) => (
-                    <li>
-                      <a
-                        href={`#${h.id}`}
-                        class="blog-toc-link block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-primary/10 hover:text-primary"
-                      >
-                        {h.text}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </nav>
-          )
-        }
+        {headings.length > 1 && <nav class="hidden lg:block" aria-label="Indice dell'articolo">
+          <div class="sticky top-24">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-4">
+              In questo articolo
+            </h2>
+            <ul class="space-y-1">
+              {headings.map((h) => <li>
+                <a
+                  href={`#${h.id}`}
+                  class="blog-toc-link block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-primary/10 hover:text-primary"
+                >
+                  {h.text}
+                </a>
+              </li>)}
+            </ul>
+          </div>
+        </nav>}
 
         <div class="mx-auto max-w-3xl">
-          {
-            post.image && (
-              <div class="mx-auto mb-10 max-w-sm sm:max-w-md" data-reveal>
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  class="w-full rounded-2xl shadow-md"
-                  loading="eager"
-                />
-              </div>
-            )
-          }
+          {post.image && <div class="mx-auto mb-10 max-w-sm sm:max-w-md" data-reveal>
+            <img
+              src={post.image}
+              alt={post.title}
+              class="w-full rounded-2xl shadow-md"
+              loading="eager"
+            />
+          </div>}
 
           <article class="blog-content" data-reveal set:html={contentWithIds} />
 
-          {
-            post.aiAssisted && (
-              <p
-                class="mt-8 border-t border-neutral-200 pt-4 text-sm text-neutral-500"
-                data-ai-disclosure
-              >
-                La stesura di questo articolo è stata assistita da strumenti di intelligenza
-                artificiale. I contenuti tecnici sono verificati e approvati da{' '}
-                {post.author ?? autoreBlog} prima della pubblicazione.
-              </p>
-            )
-          }
+          {post.aiAssisted && <p
+            class="mt-8 border-t border-neutral-200 pt-4 text-sm text-neutral-500"
+            data-ai-disclosure
+          >
+            La stesura di questo articolo è stata assistita da strumenti di intelligenza
+            artificiale. I contenuti tecnici sono verificati e approvati da{' '}
+            {post.author ?? autoreBlog} prima della pubblicazione.
+          </p>}
         </div>
       </div>
     </div>
   </section>
 
-  {
-    related.length > 0 && (
-      <section class="bg-surface py-16 sm:py-20">
-        <div class="mx-auto max-w-7xl px-4 lg:px-8">
-          <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-8" data-reveal>
-            Articoli correlati
-          </h2>
+  {related.length > 0 && <section class="bg-surface py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-8" data-reveal>
+        Articoli correlati
+      </h2>
+      <div
+        class:list={[
+          'grid gap-6',
+          related.length === 1 && 'max-w-md mx-auto',
+          related.length >= 2 && 'sm:grid-cols-2 max-w-3xl mx-auto',
+        ]}
+      >
+        {related.map((rel, i) => <a
+          href={`/blog/${rel!.slug}`}
+          data-reveal
+          data-delay={String(i + 1)}
+          class="group pb-1 block"
+        >
           <div
-            class:list={[
-              'grid gap-6',
-              related.length === 1 && 'max-w-md mx-auto',
-              related.length >= 2 && 'sm:grid-cols-2 max-w-3xl mx-auto',
-            ]}
+            class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm transition-all duration-200 group-hover:-translate-y-1"
           >
-            {related.map((rel, i) => (
-              <a
-                href={`/blog/${rel!.slug}`}
-                data-reveal
-                data-delay={String(i + 1)}
-                class="group pb-1 block"
-              >
-                <div class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm transition-all duration-200 group-hover:-translate-y-1">
-                  <h3 class="font-heading text-lg text-primary group-hover:text-primary-dark">
-                    {rel!.title}
-                  </h3>
-                  <p class="mt-2 text-sm text-neutral-800">{rel!.description}</p>
-                </div>
-              </a>
-            ))}
+            <h3 class="font-heading text-lg text-primary group-hover:text-primary-dark">
+              {rel!.title}
+            </h3>
+            <p class="mt-2 text-sm text-neutral-800">{rel!.description}</p>
           </div>
-        </div>
-      </section>
-    )
-  }
+        </a>)}
+      </div>
+    </div>
+  </section>}
 
   <CtaSection
     title="Hai un progetto in mente?"

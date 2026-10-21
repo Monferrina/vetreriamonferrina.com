@@ -138,10 +138,8 @@ const chiusureAttive = (datiChiusure as Chiusura[]).filter((c) => c.al >= oggi);
       property="og:image"
       content={ogImage || 'https://vetreriamonferrina.com/images/og-image.jpg'}
     />
-    {
-      /* Dimensioni note solo per l'og-image di default (1200×630). Su ogImage custom
-         (foto servizi/blog, spesso 4:3) le omettiamo invece di dichiarare misure sbagliate. */
-    }
+    {/* Dimensioni note solo per l'og-image di default (1200×630). Su ogImage custom
+         (foto servizi/blog, spesso 4:3) le omettiamo invece di dichiarare misure sbagliate. */}
     {!ogImage && <meta property="og:image:width" content="1200" />}
     {!ogImage && <meta property="og:image:height" content="630" />}
     <meta property="og:site_name" content="Vetreria Monferrina" />
@@ -231,7 +229,6 @@ const chiusureAttive = (datiChiusure as Chiusura[]).filter((c) => c.al >= oggi);
       }
       initImageProtection();
     </script>
-
     <script>
       function initGlobalUI(): void {
         // --- Scroll Reveal (IntersectionObserver) ---
@@ -302,7 +299,6 @@ const chiusureAttive = (datiChiusure as Chiusura[]).filter((c) => c.al >= oggi);
 
       initGlobalUI();
     </script>
-
     <script>
       // Tema: la regola (scelta dell'interruttore, altrimenti automatico) è window.__temaScuro,
       // definita da themeScript (src/lib/csp.ts) prima del primo disegno. Prima di AU1 (A10) non

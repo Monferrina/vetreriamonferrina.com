@@ -229,55 +229,55 @@ const items: GalleryItem[] = [
 ---
 
 <div class="gallery-masonry" data-gallery-grid>
-  {
-    items.map((item, index) => {
-      const aspectClass =
-        item.size === 'featured'
-          ? 'aspect-[16/9]'
-          : item.size === 'tall'
-            ? 'aspect-[3/4]'
-            : 'aspect-[4/3]';
-      const sizeClass = item.size === 'featured' ? 'gallery-featured' : '';
-      const isAboveFold = index < 3;
+  {items.map((item, index) => {
+    const aspectClass =
+      item.size === 'featured'
+        ? 'aspect-[16/9]'
+        : item.size === 'tall'
+          ? 'aspect-[3/4]'
+          : 'aspect-[4/3]';
+    const sizeClass = item.size === 'featured' ? 'gallery-featured' : '';
+    const isAboveFold = index < 3;
 
-      return (
-        <button
-          type="button"
-          class:list={[
-            'gallery-blur-up group relative overflow-hidden rounded-xl text-left transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
-            sizeClass,
-          ]}
-          data-category={item.category}
-          data-gallery-item
-          data-gallery-title={item.title}
+    return <button
+      type="button"
+      class:list={[
+        'gallery-blur-up group relative overflow-hidden rounded-xl text-left transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
+        sizeClass,
+      ]}
+      data-category={item.category}
+      data-gallery-item
+      data-gallery-title={item.title}
+    >
+      <div class={`${aspectClass} overflow-hidden`}>
+        <ProtectedImage
+          src={item.imageUrl}
+          alt={item.title}
+          class="transition-transform duration-300 group-hover:scale-105"
+          wrapperClass="h-full w-full bg-neutral-200"
+          width={item.size === 'featured' ? 1200 : 800}
+          height={item.size === 'featured' ? 900 : item.size === 'tall' ? 800 : 600}
+          sizes={
+            item.size === 'featured'
+              ? '(min-width: 1024px) 66vw, 100vw'
+              : '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
+          }
+          loading={isAboveFold ? 'eager' : 'lazy'}
+          fetchpriority={index === 0 ? 'high' : undefined}
+        />
+      </div>
+
+      {/* Info overlay */}
+      <div
+        class="absolute inset-x-0 bottom-0 z-[2] bg-gradient-to-t from-black/80 to-transparent p-3 pt-8"
+      >
+        <span
+          class="mb-1 inline-block rounded-full bg-surface/90 px-2 py-0.5 text-xs font-semibold text-neutral-800"
         >
-          <div class={`${aspectClass} overflow-hidden`}>
-            <ProtectedImage
-              src={item.imageUrl}
-              alt={item.title}
-              class="transition-transform duration-300 group-hover:scale-105"
-              wrapperClass="h-full w-full bg-neutral-200"
-              width={item.size === 'featured' ? 1200 : 800}
-              height={item.size === 'featured' ? 900 : item.size === 'tall' ? 800 : 600}
-              sizes={
-                item.size === 'featured'
-                  ? '(min-width: 1024px) 66vw, 100vw'
-                  : '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
-              }
-              loading={isAboveFold ? 'eager' : 'lazy'}
-              fetchpriority={index === 0 ? 'high' : undefined}
-            />
-          </div>
-
-          {/* Info overlay */}
-          <div class="absolute inset-x-0 bottom-0 z-[2] bg-gradient-to-t from-black/80 to-transparent p-3 pt-8">
-            <span class="mb-1 inline-block rounded-full bg-surface/90 px-2 py-0.5 text-xs font-semibold text-neutral-800">
-              {item.categoryLabel}
-            </span>
-            <p class="text-sm font-medium text-white">{item.title}</p>
-          </div>
-        </button>
-      );
-    })
-  }
+          {item.categoryLabel}
+        </span>
+        <p class="text-sm font-medium text-white">{item.title}</p>
+      </div>
+    </button>;
+  })}
 </div>

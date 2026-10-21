@@ -68,7 +68,8 @@ function giorniBrevi(days: string): string {
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                  d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                ></path>
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -78,9 +79,7 @@ function giorniBrevi(days: string): string {
             </div>
             <div>
               <h3 class="font-semibold text-neutral-800">Indirizzo</h3>
-              <p class="mt-1 text-neutral-800">
-                {street}, {city}
-              </p>
+              <p class="mt-1 text-neutral-800">{street}, {city}</p>
             </div>
           </div>
 
@@ -181,7 +180,8 @@ function giorniBrevi(days: string): string {
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+                  d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                ></path>
               </svg>
             </div>
             <div>
@@ -194,25 +194,19 @@ function giorniBrevi(days: string): string {
                   </tr>
                 </thead>
                 <tbody>
-                  {
-                    openingHours.map((oh) => (
-                      <tr>
-                        <th
-                          scope="row"
-                          class="pr-4 py-0.5 align-top font-medium text-left whitespace-nowrap"
-                        >
-                          {giorniBrevi(oh.days)}
-                        </th>
-                        <td class="py-0.5">
-                          {oh.hours.split(' / ').map((fascia) => (
-                            <span class="block whitespace-nowrap">
-                              {fascia.replaceAll(' - ', '–')}
-                            </span>
-                          ))}
-                        </td>
-                      </tr>
-                    ))
-                  }
+                  {openingHours.map((oh) => <tr>
+                    <th
+                      scope="row"
+                      class="pr-4 py-0.5 align-top font-medium text-left whitespace-nowrap"
+                    >
+                      {giorniBrevi(oh.days)}
+                    </th>
+                    <td class="py-0.5">
+                      {oh.hours.split(' / ').map((fascia) => <span class="block whitespace-nowrap">
+                        {fascia.replaceAll(' - ', '–')}
+                      </span>)}
+                    </td>
+                  </tr>)}
                 </tbody>
               </table>
               <p class="mt-2 text-xs text-neutral-500">

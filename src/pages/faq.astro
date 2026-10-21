@@ -157,60 +157,54 @@ const faqSchema = {
             Categorie
           </h2>
           <ul class="space-y-1">
-            {
-              faqs.map((section) => (
-                <li>
-                  <a
-                    href={`#${section.id}`}
-                    class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-primary/10 hover:text-primary"
-                  >
-                    {section.category}
-                  </a>
-                </li>
-              ))
-            }
+            {faqs.map((section) => <li>
+              <a
+                href={`#${section.id}`}
+                class="block rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 transition-colors hover:bg-primary/10 hover:text-primary"
+              >
+                {section.category}
+              </a>
+            </li>)}
           </ul>
         </div>
       </nav>
 
       <div>
-        {
-          faqs.map((section, sIdx) => (
-            <div
-              id={section.id}
-              class:list={['faq-section scroll-mt-24', sIdx > 0 && 'mt-14']}
-              data-reveal
+        {faqs.map((section, sIdx) => <div
+          id={section.id}
+          class:list={['faq-section scroll-mt-24', sIdx > 0 && 'mt-14']}
+          data-reveal
+        >
+          <h2 class="font-heading text-2xl text-primary sm:text-3xl mb-6">
+            {section.category}
+          </h2>
+          <div class="space-y-3">
+            {section.questions.map((item) => <details
+              class="group rounded-2xl border border-neutral-200 bg-surface shadow-sm transition-all duration-200 hover:shadow-md"
             >
-              <h2 class="font-heading text-2xl text-primary sm:text-3xl mb-6">
-                {section.category}
-              </h2>
-              <div class="space-y-3">
-                {section.questions.map((item) => (
-                  <details class="group rounded-2xl border border-neutral-200 bg-surface shadow-sm transition-all duration-200 hover:shadow-md">
-                    <summary class="flex cursor-pointer items-center justify-between gap-4 p-5 text-left font-medium text-neutral-800 select-none">
-                      <span>{item.q}</span>
-                      <svg
-                        class="h-5 w-5 shrink-0 text-primary transition-transform duration-300 group-open:rotate-180"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="2"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                        />
-                      </svg>
-                    </summary>
-                    <p class="px-5 pb-5 text-neutral-800 leading-relaxed" set:html={item.a} />
-                  </details>
-                ))}
-              </div>
-            </div>
-          ))
-        }
+              <summary
+                class="flex cursor-pointer items-center justify-between gap-4 p-5 text-left font-medium text-neutral-800 select-none"
+              >
+                <span>{item.q}</span>
+                <svg
+                  class="h-5 w-5 shrink-0 text-primary transition-transform duration-300 group-open:rotate-180"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                  />
+                </svg>
+              </summary>
+              <p class="px-5 pb-5 text-neutral-800 leading-relaxed" set:html={item.a} />
+            </details>)}
+          </div>
+        </div>)}
       </div>
     </div>
   </section>

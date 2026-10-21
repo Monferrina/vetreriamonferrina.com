@@ -14,19 +14,15 @@ const giorno = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long',
 const data = (d: string) => giorno.format(new Date(`${d}T00:00:00Z`));
 ---
 
-{
-  chiusure.map((c) => (
-    <aside
-      data-chiusura
-      data-dal={c.dal}
-      data-al={c.al}
-      aria-label="Chiusura straordinaria"
-      class="bg-primary-dark px-4 py-2 text-center text-sm font-medium text-white"
-    >
-      Chiusi per {c.motivo} dal {data(c.dal)} al {data(c.al)}.
-    </aside>
-  ))
-}
+{chiusure.map((c) => <aside
+  data-chiusura
+  data-dal={c.dal}
+  data-al={c.al}
+  aria-label="Chiusura straordinaria"
+  class="bg-primary-dark px-4 py-2 text-center text-sm font-medium text-white"
+>
+  Chiusi per {c.motivo} dal {data(c.dal)} al {data(c.al)}.
+</aside>)}
 
 <script>
   import { chiusureDaMostrare, oggiInItalia } from '../lib/chiusure';
