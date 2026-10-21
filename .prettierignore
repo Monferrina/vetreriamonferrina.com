@@ -2,7 +2,6 @@ dist/
 .astro/
 node_modules/
 .vercel/
-pnpm-lock.yaml
 package-lock.json
 # File locali fuori dal versionamento (.git/info/exclude, che Prettier non legge): senza queste
 # righe format:check fallisce in locale e passa in CI.
