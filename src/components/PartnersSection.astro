@@ -22,23 +22,19 @@ const partners = [
     <div
       class="mt-12 grid grid-cols-2 items-center gap-8 sm:grid-cols-3 sm:gap-10 lg:grid-cols-5 lg:gap-16"
     >
-      {
-        partners.map((partner) => (
-          <div class="partner-item flex flex-col items-center gap-3">
-            <div class="flex h-16 items-center justify-center sm:h-20">
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                loading="lazy"
-                width="80"
-                height="80"
-                class="partner-logo h-full w-auto object-contain"
-              />
-            </div>
-            <span class="text-sm font-medium text-neutral-500">{partner.name}</span>
-          </div>
-        ))
-      }
+      {partners.map((partner) => <div class="partner-item flex flex-col items-center gap-3">
+        <div class="flex h-16 items-center justify-center sm:h-20">
+          <img
+            src={partner.logo}
+            alt={partner.name}
+            loading="lazy"
+            width="80"
+            height="80"
+            class="partner-logo h-full w-auto object-contain"
+          />
+        </div>
+        <span class="text-sm font-medium text-neutral-500">{partner.name}</span>
+      </div>)}
     </div>
   </div>
 </section>

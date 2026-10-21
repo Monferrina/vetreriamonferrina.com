@@ -11,18 +11,14 @@ const stats = [
 <section data-section="stats" class="bg-surface py-16 sm:py-20">
   <div class="mx-auto max-w-7xl px-4 lg:px-8">
     <div class="grid gap-10 sm:grid-cols-3">
-      {
-        stats.map((stat, i) => (
-          <div
-            class="rounded-2xl border border-neutral-200/60 bg-surface/80 px-6 py-8 text-center backdrop-blur-md backdrop-saturate-125"
-            data-reveal
-            data-delay={String(i + 1)}
-          >
-            <p class="font-heading text-3xl text-primary sm:text-4xl">{stat.value}</p>
-            <p class="mt-2 text-lg text-neutral-800">{stat.label}</p>
-          </div>
-        ))
-      }
+      {stats.map((stat, i) => <div
+        class="rounded-2xl border border-neutral-200/60 bg-surface/80 px-6 py-8 text-center backdrop-blur-md backdrop-saturate-125"
+        data-reveal
+        data-delay={String(i + 1)}
+      >
+        <p class="font-heading text-3xl text-primary sm:text-4xl">{stat.value}</p>
+        <p class="mt-2 text-lg text-neutral-800">{stat.label}</p>
+      </div>)}
     </div>
   </div>
 </section>

@@ -117,7 +117,6 @@ const breadcrumbSchema = {
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
-
   <section class="bg-primary py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
       <GlassPanel class="max-w-3xl">
@@ -138,145 +137,125 @@ const breadcrumbSchema = {
 
   <section class="bg-neutral-50 py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 lg:px-8">
-      {
-        heroImage && (
-          <div class="mx-auto mb-12 max-w-sm sm:max-w-md" data-reveal>
-            <Image
-              src={heroImage}
-              alt={service.description}
-              class="w-full rounded-2xl shadow-md"
-              loading="eager"
-              fetchpriority="high"
-              widths={[400, 800].filter((w) => w <= heroImage.width)}
-              sizes="(min-width: 640px) 28rem, 24rem"
-            />
-          </div>
-        )
-      }
+      {heroImage && <div class="mx-auto mb-12 max-w-sm sm:max-w-md" data-reveal>
+        <Image
+          src={heroImage}
+          alt={service.description}
+          class="w-full rounded-2xl shadow-md"
+          loading="eager"
+          fetchpriority="high"
+          widths={[400, 800].filter((w) => w <= heroImage.width)}
+          sizes="(min-width: 640px) 28rem, 24rem"
+        />
+      </div>}
 
       <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-12" data-reveal>
         Caratteristiche
       </h2>
       <div class="grid gap-6 sm:grid-cols-2">
-        {
-          details.features.map((feat, i) => (
-            <div data-reveal data-delay={String((i % 4) + 1)} class="group pb-1">
-              <div class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm transition-all duration-200 group-hover:-translate-y-1">
-                <h3 class="font-heading text-lg text-primary">{feat.title}</h3>
-                <p class="mt-2 text-sm leading-relaxed text-neutral-800">{feat.text}</p>
-              </div>
-            </div>
-          ))
-        }
+        {details.features.map((feat, i) => <div
+          data-reveal
+          data-delay={String((i % 4) + 1)}
+          class="group pb-1"
+        >
+          <div
+            class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm transition-all duration-200 group-hover:-translate-y-1"
+          >
+            <h3 class="font-heading text-lg text-primary">{feat.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-neutral-800">{feat.text}</p>
+          </div>
+        </div>)}
       </div>
     </div>
   </section>
 
-  {
-    hasMaterials && (
-      <section class:list={[bgFor.materials, 'py-16 sm:py-20']}>
-        <div class="mx-auto max-w-7xl px-4 lg:px-8">
-          <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-8" data-reveal>
-            Materiali disponibili
-          </h2>
-          <div class="flex flex-wrap justify-center gap-3" data-reveal data-delay="1">
-            {details.materials!.map((mat) => (
-              <span class="rounded-full border border-neutral-200 bg-neutral-50 px-5 py-2.5 text-sm font-medium text-neutral-800 transition-colors hover:border-primary hover:text-primary">
-                {mat}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-    )
-  }
+  {hasMaterials && <section class:list={[bgFor.materials, 'py-16 sm:py-20']}>
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-8" data-reveal>
+        Materiali disponibili
+      </h2>
+      <div class="flex flex-wrap justify-center gap-3" data-reveal data-delay="1">
+        {details.materials!.map((mat) => <span
+          class="rounded-full border border-neutral-200 bg-neutral-50 px-5 py-2.5 text-sm font-medium text-neutral-800 transition-colors hover:border-primary hover:text-primary"
+        >
+          {mat}
+        </span>)}
+      </div>
+    </div>
+  </section>}
 
-  {
-    hasWhenToChoose && (
-      <section class:list={[bgFor.whenToChoose, 'py-16 sm:py-20']}>
-        <div class="mx-auto max-w-3xl px-4 lg:px-8" data-reveal>
-          <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-6">
-            Quando scegliere {service.name.toLowerCase()}
-          </h2>
-          <p class="text-lg leading-relaxed text-neutral-800">{details.whenToChoose}</p>
-        </div>
-      </section>
-    )
-  }
+  {hasWhenToChoose && <section class:list={[bgFor.whenToChoose, 'py-16 sm:py-20']}>
+    <div class="mx-auto max-w-3xl px-4 lg:px-8" data-reveal>
+      <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-6">
+        Quando scegliere {service.name.toLowerCase()}
+      </h2>
+      <p class="text-lg leading-relaxed text-neutral-800">{details.whenToChoose}</p>
+    </div>
+  </section>}
 
-  {
-    hasFaq && (
-      <section class:list={[bgFor.faq, 'py-16 sm:py-20']}>
-        <div class="mx-auto max-w-3xl px-4 lg:px-8">
-          <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-8" data-reveal>
-            Domande frequenti
-          </h2>
-          <div class="space-y-4">
-            {details.faq!.map((item, i) => (
-              <details
-                class="group rounded-2xl border border-neutral-200 bg-surface p-5 shadow-sm"
-                data-reveal
-                data-delay={String((i % 4) + 1)}
-              >
-                <summary class="flex cursor-pointer items-center justify-between gap-4 font-heading text-lg text-primary marker:content-none">
-                  {item.q}
-                  <span
-                    class="shrink-0 text-2xl text-primary transition-transform duration-200 group-open:rotate-45"
-                    aria-hidden="true"
-                  >
-                    +
-                  </span>
-                </summary>
-                <p class="mt-3 text-base leading-relaxed text-neutral-800">{item.a}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-    )
-  }
-
-  {
-    faqSchema && (
-      <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-    )
-  }
-
-  {
-    related.length > 0 && (
-      <section class:list={[bgFor.related, 'py-16 sm:py-20']}>
-        <div class="mx-auto max-w-7xl px-4 lg:px-8">
-          <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-8" data-reveal>
-            Servizi correlati
-          </h2>
-          <div
-            class:list={[
-              'grid gap-6',
-              related.length === 1 && 'max-w-md mx-auto',
-              related.length === 2 && 'sm:grid-cols-2 max-w-3xl mx-auto',
-              related.length >= 3 && 'sm:grid-cols-2 lg:grid-cols-3',
-            ]}
+  {hasFaq && <section class:list={[bgFor.faq, 'py-16 sm:py-20']}>
+    <div class="mx-auto max-w-3xl px-4 lg:px-8">
+      <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-8" data-reveal>
+        Domande frequenti
+      </h2>
+      <div class="space-y-4">
+        {details.faq!.map((item, i) => <details
+          class="group rounded-2xl border border-neutral-200 bg-surface p-5 shadow-sm"
+          data-reveal
+          data-delay={String((i % 4) + 1)}
+        >
+          <summary
+            class="flex cursor-pointer items-center justify-between gap-4 font-heading text-lg text-primary marker:content-none"
           >
-            {related.map((rel, i) => (
-              <a
-                href={`/servizi/${rel.slug}`}
-                data-reveal
-                data-delay={String(i + 1)}
-                class="group pb-1 block"
-              >
-                <div class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm transition-all duration-200 group-hover:-translate-y-1">
-                  <h3 class="font-heading text-lg text-primary group-hover:text-primary-dark">
-                    {rel.name}
-                  </h3>
-                  <p class="mt-2 text-sm text-neutral-800">{rel.description}</p>
-                </div>
-              </a>
-            ))}
+            {item.q}
+            <span
+              class="shrink-0 text-2xl text-primary transition-transform duration-200 group-open:rotate-45"
+              aria-hidden="true"
+            >
+              +
+            </span>
+          </summary>
+          <p class="mt-3 text-base leading-relaxed text-neutral-800">{item.a}</p>
+        </details>)}
+      </div>
+    </div>
+  </section>}
+
+  {faqSchema && (
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  )}
+
+  {related.length > 0 && <section class:list={[bgFor.related, 'py-16 sm:py-20']}>
+    <div class="mx-auto max-w-7xl px-4 lg:px-8">
+      <h2 class="font-heading text-3xl text-primary text-center sm:text-4xl mb-8" data-reveal>
+        Servizi correlati
+      </h2>
+      <div
+        class:list={[
+          'grid gap-6',
+          related.length === 1 && 'max-w-md mx-auto',
+          related.length === 2 && 'sm:grid-cols-2 max-w-3xl mx-auto',
+          related.length >= 3 && 'sm:grid-cols-2 lg:grid-cols-3',
+        ]}
+      >
+        {related.map((rel, i) => <a
+          href={`/servizi/${rel.slug}`}
+          data-reveal
+          data-delay={String(i + 1)}
+          class="group pb-1 block"
+        >
+          <div
+            class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm transition-all duration-200 group-hover:-translate-y-1"
+          >
+            <h3 class="font-heading text-lg text-primary group-hover:text-primary-dark">
+              {rel.name}
+            </h3>
+            <p class="mt-2 text-sm text-neutral-800">{rel.description}</p>
           </div>
-        </div>
-      </section>
-    )
-  }
+        </a>)}
+      </div>
+    </div>
+  </section>}
 
   <CtaSection
     title="Interessato? Parliamone"

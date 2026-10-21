@@ -37,24 +37,20 @@ function isActive(href: string): boolean {
     <div class="flex items-center gap-1 lg:gap-2">
       <nav aria-label="Navigazione principale" class="hidden md:block">
         <ul class="flex items-center gap-1 lg:gap-2">
-          {
-            navLinks.map(({ href, label }) => (
-              <li>
-                <a
-                  href={href}
-                  class:list={[
-                    'rounded-md px-3 py-2 text-sm font-medium transition-colors',
-                    isActive(href)
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-neutral-700 hover:bg-neutral-100 hover:text-primary',
-                  ]}
-                  aria-current={isActive(href) ? 'page' : undefined}
-                >
-                  {label}
-                </a>
-              </li>
-            ))
-          }
+          {navLinks.map(({ href, label }) => <li>
+            <a
+              href={href}
+              class:list={[
+                'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                isActive(href)
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-neutral-700 hover:bg-neutral-100 hover:text-primary',
+              ]}
+              aria-current={isActive(href) ? 'page' : undefined}
+            >
+              {label}
+            </a>
+          </li>)}
         </ul>
       </nav>
 

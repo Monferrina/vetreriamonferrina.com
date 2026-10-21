@@ -169,33 +169,35 @@ const guarantees = [
     </h2>
 
     <div class="grid gap-8 sm:grid-cols-3">
-      {
-        steps.map((step, i) => (
-          <div data-reveal data-delay={String(i + 1)} class="group pb-1">
-            <div class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 group-hover:-translate-y-1">
-              <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                <svg
-                  class="h-8 w-8 text-primary"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  {ICONS[step.icon].map((d) => (
-                    <path stroke-linecap="round" stroke-linejoin="round" d={d} />
-                  ))}
-                </svg>
-              </div>
-              <span class="mt-4 inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50">
-                {i + 1}
-              </span>
-              <h3 class="mt-3 font-heading text-xl text-primary">{step.title}</h3>
-              <p class="mt-2 text-neutral-800">{step.text}</p>
-            </div>
+      {steps.map((step, i) => <div data-reveal data-delay={String(i + 1)} class="group pb-1">
+        <div
+          class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 group-hover:-translate-y-1"
+        >
+          <div
+            class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10"
+          >
+            <svg
+              class="h-8 w-8 text-primary"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              {ICONS[step.icon].map((d) => (
+                <path stroke-linecap="round" stroke-linejoin="round" d={d} />
+              ))}
+            </svg>
           </div>
-        ))
-      }
+          <span
+            class="mt-4 inline-block rounded-full bg-primary px-3 py-1 text-sm font-semibold text-neutral-50"
+          >
+            {i + 1}
+          </span>
+          <h3 class="mt-3 font-heading text-xl text-primary">{step.title}</h3>
+          <p class="mt-2 text-neutral-800">{step.text}</p>
+        </div>
+      </div>)}
     </div>
   </section>
 
@@ -213,19 +215,15 @@ const guarantees = [
       </p>
 
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {
-          installTypes.map((item) => (
-            <a
-              href={item.href}
-              class="group rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
-            >
-              <h3 class="font-heading text-lg text-primary group-hover:text-primary-dark">
-                {item.name}
-              </h3>
-              <p class="mt-2 text-sm text-neutral-800">{item.description}</p>
-            </a>
-          ))
-        }
+        {installTypes.map((item) => <a
+          href={item.href}
+          class="group rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+        >
+          <h3 class="font-heading text-lg text-primary group-hover:text-primary-dark">
+            {item.name}
+          </h3>
+          <p class="mt-2 text-sm text-neutral-800">{item.description}</p>
+        </a>)}
       </div>
     </div>
   </section>
@@ -245,33 +243,35 @@ const guarantees = [
       </p>
 
       <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-        {
-          zones.map((zone, i) => (
-            <div data-reveal data-delay={String(i + 1)} class="group pb-1">
-              <div class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 group-hover:-translate-y-1">
-                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                  <svg
-                    class="h-8 w-8 text-primary"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    {ICONS[zone.icon].map((d) => (
-                      <path stroke-linecap="round" stroke-linejoin="round" d={d} />
-                    ))}
-                  </svg>
-                </div>
-                <h3 class="mt-4 font-heading text-xl text-primary">{zone.title}</h3>
-                <p class="mt-2 text-neutral-800">{zone.text}</p>
-                <span class="mt-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                  {zone.badge}
-                </span>
-              </div>
+        {zones.map((zone, i) => <div data-reveal data-delay={String(i + 1)} class="group pb-1">
+          <div
+            class="glass-hover glass-reflect h-full rounded-2xl border border-neutral-200 bg-surface p-8 text-center shadow-sm transition-all duration-200 group-hover:-translate-y-1"
+          >
+            <div
+              class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10"
+            >
+              <svg
+                class="h-8 w-8 text-primary"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                {ICONS[zone.icon].map((d) => (
+                  <path stroke-linecap="round" stroke-linejoin="round" d={d} />
+                ))}
+              </svg>
             </div>
-          ))
-        }
+            <h3 class="mt-4 font-heading text-xl text-primary">{zone.title}</h3>
+            <p class="mt-2 text-neutral-800">{zone.text}</p>
+            <span
+              class="mt-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
+            >
+              {zone.badge}
+            </span>
+          </div>
+        </div>)}
       </div>
 
       <div
@@ -304,42 +304,38 @@ const guarantees = [
       </p>
 
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {
-          guarantees.map((g, i) => (
-            <div
-              data-reveal
-              data-delay={String((i % 3) + 1)}
-              class="rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm"
-            >
-              <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 mb-4">
-                {g.icon === 'ce' ? (
-                  <span
-                    class="text-lg font-bold tracking-tight text-primary"
-                    aria-label="Marchio CE"
-                    role="img"
-                  >
-                    CE
-                  </span>
-                ) : (
-                  <svg
-                    class="h-6 w-6 text-primary"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    {ICONS[g.icon].map((d) => (
-                      <path stroke-linecap="round" stroke-linejoin="round" d={d} />
-                    ))}
-                  </svg>
-                )}
-              </div>
-              <h3 class="font-heading text-lg text-primary">{g.title}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-neutral-800">{g.text}</p>
-            </div>
-          ))
-        }
+        {guarantees.map((g, i) => <div
+          data-reveal
+          data-delay={String((i % 3) + 1)}
+          class="rounded-2xl border border-neutral-200 bg-surface p-6 shadow-sm"
+        >
+          <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 mb-4">
+            {g.icon === 'ce' ? (
+              <span
+                class="text-lg font-bold tracking-tight text-primary"
+                aria-label="Marchio CE"
+                role="img"
+              >
+                CE
+              </span>
+            ) : (
+              <svg
+                class="h-6 w-6 text-primary"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                {ICONS[g.icon].map((d) => (
+                  <path stroke-linecap="round" stroke-linejoin="round" d={d} />
+                ))}
+              </svg>
+            )}
+          </div>
+          <h3 class="font-heading text-lg text-primary">{g.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-neutral-800">{g.text}</p>
+        </div>)}
       </div>
     </div>
   </section>
