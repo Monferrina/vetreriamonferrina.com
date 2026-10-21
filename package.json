@@ -41,7 +41,7 @@
     "@astrojs/check": "^0.9.10",
     "@axe-core/playwright": "4.13.0",
     "@eslint/js": "^10.0.1",
-    "@playwright/test": "^1.63.0",
+    "@playwright/test": "^1.64.0",
     "@vitest/coverage-v8": "^4.1.11",
     "checkly": "^9.5.0",
     "eslint": "^10.12.0",
