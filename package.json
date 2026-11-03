@@ -32,13 +32,13 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
     "@astrojs/vercel": "^11.0.16",
-    "@sentry/astro": "^11.8.0",
+    "@sentry/astro": "^11.9.0",
     "@tailwindcss/vite": "^4.3.2",
-    "astro": "^7.4.1",
+    "astro": "^7.4.2",
     "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.11",
+    "@astrojs/check": "^0.9.12",
     "@axe-core/playwright": "4.14.0",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.64.1",
@@ -50,10 +50,10 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
-    "prettier-plugin-astro": "^1.1.1",
+    "prettier-plugin-astro": "^1.1.2",
     "sharp": "^0.35.5",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.0",
+    "typescript-eslint": "^8.72.1",
     "vitest": "^5.0.4",
     "yaml": "2.9.1"
   },
